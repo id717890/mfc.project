@@ -47,7 +47,8 @@ namespace mfc.domain.services {
             Int64 result_id = 0;
             Int64 new_id = IdService.GetId();
 
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
 
             try {
                 cmd.CommandText = @"insert into Services (id, caption, org_id) values (@id, @caption, @org_id)";
@@ -62,6 +63,7 @@ namespace mfc.domain.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
                 _is_cache_valid = false;
             }
 
@@ -69,7 +71,8 @@ namespace mfc.domain.services {
         }
 
         public void Update(Service service) {
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection(); 
+            var cmd = conn.CreateCommand();
 
             try {
                 cmd.CommandText = "update Services set caption = @caption, org_id = @org_id where id = @id";
@@ -92,12 +95,14 @@ namespace mfc.domain.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
                 _is_cache_valid = false;
             }
         }
 
         public void Delete(Int64 id) {
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
 
             try {
                 cmd.CommandText = "update Services set is_deleted = 1 where id = @id";
@@ -114,6 +119,7 @@ namespace mfc.domain.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
                 _is_cache_valid = false;
             }
         }
@@ -134,8 +140,9 @@ namespace mfc.domain.services {
 
         private IEnumerable<Service> GetServicesInternal() {
             List<Service> services = new List<Service>();
-
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
             SqlDataReader reader = null;
 
             try {
@@ -158,6 +165,7 @@ namespace mfc.domain.services {
                     reader.Close();
                 }
                 cmd.Dispose();
+                conn.Close();
             }
 
             return services;

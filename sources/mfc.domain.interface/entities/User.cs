@@ -13,5 +13,19 @@ namespace mfc.domain.entities {
         public String Account { get; set; }
         public String Name { get; set; }
         public bool IsAdmin { get; set; }
+
+        public override bool Equals(object obj) {
+            if (obj == null) {
+                return false;
+            }
+            else if (obj.GetType() != typeof(User)) {
+                return false;
+            }
+            return ((User)obj).Id == Id;
+        }
+
+        public override int GetHashCode() {
+            return Id.GetHashCode();
+        }
     }
 }

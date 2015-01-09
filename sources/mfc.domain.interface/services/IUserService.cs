@@ -13,6 +13,7 @@ namespace mfc.domain.services {
         void Update(User user);
         void Delete(Int64 userId);
         IEnumerable<User> GetAllUsers();
+        IEnumerable<User> GetExperts();
         void AddNew(string account, string name, bool is_admin);
         void SetPassword(Int64 userId, string password);
     }

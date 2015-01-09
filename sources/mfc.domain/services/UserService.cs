@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using mfc.domain.entities;
 using Ninject;
 using mfc.infrastructure.services;
+using System.Diagnostics;
 
 namespace mfc.domain.services {
     public class UserService : IUserService {
@@ -18,31 +19,23 @@ namespace mfc.domain.services {
         [Inject]
         public IIdentifierService IdService { get; set; }
 
+        #region Cache
+        private bool _is_cached_valid = false;
+        private Dictionary<Int64, User> _id_cache = new Dictionary<long, User>();
+        private Dictionary<String, User> _name_cache = new Dictionary<string, User>();
+        #endregion
+
         public User GetUser(string account) {
+            Debug.Assert(!string.IsNullOrEmpty(account));
+
+            PrepareCache();
+
             User user = null;
 
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
-            SqlDataReader reader = null;
+            var key = account.ToLower();
 
-            try {
-                cmd.CommandText = @"
-                        select id, account, name, is_admin from Users 
-                        where account = @account
-                            and is_deleted = 0";
-                cmd.Parameters.Add(new SqlParameter("account", account));
-
-                reader = cmd.ExecuteReader();
-
-                if (reader.Read()) {
-                    user = CreateUser(reader);
-                }
-                
-            }
-            finally {
-                if (reader != null) {
-                    reader.Close();
-                }
-                cmd.Dispose();
+            if (_name_cache.ContainsKey(key)) {
+                user = _name_cache[key];
             }
 
             return user;
@@ -50,35 +43,14 @@ namespace mfc.domain.services {
 
 
         public IEnumerable<User> GetAllUsers() {
-            List<User> users = new List<User>();
+            PrepareCache();
 
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
-            SqlDataReader reader = null;
-
-            try {
-                cmd.CommandText = @"
-                        select id, account, name, is_admin from Users 
-                        where is_deleted = 0
-                        order by account";
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read()) {
-                    users.Add(CreateUser(reader));
-                }
-                
-            }
-            finally {
-                if (reader != null) {
-                    reader.Close();
-                }
-                cmd.Dispose();
-            }
-
-            return users;
+            return _name_cache.Values.OrderBy(item=>item.Account.ToLower());
         }
 
         public void AddNew(string account, string name, bool is_admin) {
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
             SqlDataReader reader = null;
 
             try {
@@ -99,70 +71,22 @@ namespace mfc.domain.services {
                     reader.Close();
                 }
                 cmd.Dispose();
+                conn.Close();
+                _is_cached_valid = false;
             }
         }
 
         public bool IsUserExists(string account) {
-            bool is_user_exist = false;
-
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
-            SqlDataReader reader = null;
-
-            try {
-                cmd.CommandText = @"
-                        select id, account, name, is_admin from Users 
-                        where account = @account";
-                cmd.Parameters.Add(new SqlParameter("account", account));
-
-                reader = cmd.ExecuteReader();
-
-                if (reader.Read()) {
-                    is_user_exist = true;
-                }
-            }
-            finally {
-                if (reader != null) {
-                    reader.Close();
-                }
-                cmd.Dispose();
-            }
-
-            return is_user_exist;
+            return GetUser(account) != null;
         }
-
-        private User CreateUser(SqlDataReader reader) {
-            return new User {
-                Id = Convert.ToInt64(reader["id"]),
-                Account = Convert.ToString(reader["account"]),
-                Name = reader["name"] == DBNull.Value ? string.Empty : Convert.ToString(reader["name"]),
-                IsAdmin = Convert.ToBoolean(reader["is_admin"])
-            };
-        }
-
 
         public User GetUserById(long id) {
+            PrepareCache();
+
             User user = null;
-            
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
-            SqlDataReader reader = null;
 
-            try {
-                cmd.CommandText = @"
-                        select id, account, name, is_admin from Users 
-                        where id = @id";
-                cmd.Parameters.Add(new SqlParameter("id", id));
-
-                reader = cmd.ExecuteReader();
-
-                if (reader.Read()) {
-                    user = CreateUser(reader);
-                }
-            }
-            finally {
-                if (reader != null) {
-                    reader.Close();
-                }
-                cmd.Dispose();
+            if (_id_cache.ContainsKey(id)) {
+                user = _id_cache[id];
             }
 
             return user;
@@ -170,7 +94,8 @@ namespace mfc.domain.services {
 
 
         public void Update(User user) {
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
 
             try {
                 cmd.CommandText = @"
@@ -189,11 +114,15 @@ namespace mfc.domain.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
+                _is_cached_valid = false;
             }
         }
 
         public void Delete(Int64 userId) {
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
+
             try {
                 cmd.CommandText = @"
                         update Users set is_deleted = 1
@@ -208,12 +137,16 @@ namespace mfc.domain.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
+                _is_cached_valid = false;
             }
         }
 
 
         public void SetPassword(long userId, string password) {
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
+
             try {
                 cmd.CommandText = @"
                         update Users set password = @password
@@ -229,7 +162,74 @@ namespace mfc.domain.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
             }
         }
+
+        public IEnumerable<User> GetExperts() {
+            PrepareCache();
+
+            return _name_cache.Values.Where(m => !m.IsAdmin).OrderBy(m=>m.Name);
+        }
+
+
+        #region Helpers
+
+        private void PrepareCache() {
+            if (_is_cached_valid) {
+                return;
+            }
+
+            _id_cache.Clear();
+            _name_cache.Clear();
+
+            foreach (var user in GetAllUsersInternal()) {
+                _id_cache.Add(user.Id, user);
+                _name_cache.Add(user.Account.ToLower(), user);
+            }
+
+            _is_cached_valid = true;
+        }
+
+        private IEnumerable<User> GetAllUsersInternal() {
+            List<User> users = new List<User>();
+
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
+            SqlDataReader reader = null;
+
+            try {
+                cmd.CommandText = @"
+                        select id, account, name, is_admin from Users 
+                        where is_deleted = 0
+                        order by account";
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read()) {
+                    users.Add(CreateUser(reader));
+                }
+
+            }
+            finally {
+                if (reader != null) {
+                    reader.Close();
+                }
+                cmd.Dispose();
+                conn.Close();
+            }
+
+            return users;
+        }
+
+        private User CreateUser(SqlDataReader reader) {
+            return new User {
+                Id = Convert.ToInt64(reader["id"]),
+                Account = Convert.ToString(reader["account"]),
+                Name = reader["name"] == DBNull.Value ? string.Empty : Convert.ToString(reader["name"]),
+                IsAdmin = Convert.ToBoolean(reader["is_admin"])
+            };
+        }
+
+        #endregion
     }
 }

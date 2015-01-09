@@ -12,34 +12,17 @@ namespace mfc.infrastructure.services {
         
         private bool _is_init = false;
         private string _connection_string;
-        private SqlConnection _connection;
+        /*private SqlConnection _connection;*/
 
         #endregion
 
         public SqlConnection CreateConnection() {
             ThrowIfNotConfigured();
 
-            if (_connection == null || _connection.State == ConnectionState.Closed || _connection.State == ConnectionState.Broken) {
-                if (_connection != null) {
-                    _connection.Close();
-                }
-                _connection = new SqlConnection(_connection_string);
-                _connection.Open();
-            }
+            var connection = new SqlConnection(_connection_string);
+            connection.Open();
 
-            return _connection;
-        }
-
-        public void CloseConnection() {
-            ThrowIfNotConfigured();
-            try {
-                if (_connection != null && _connection.State == ConnectionState.Open) {
-                    _connection.Close();
-                }
-            }
-            finally {
-                _connection = null;
-            }
+            return connection;
         }
 
         public void Init(string connectionString) {

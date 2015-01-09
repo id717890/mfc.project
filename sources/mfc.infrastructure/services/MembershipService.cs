@@ -14,7 +14,8 @@ namespace mfc.infrastructure.services {
         public bool IsUserValid(string account, string password) {
             bool is_valid = false;
 
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
 
             try {
                 cmd.CommandText = @"
@@ -32,6 +33,7 @@ namespace mfc.infrastructure.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
             }
 
             return is_valid;

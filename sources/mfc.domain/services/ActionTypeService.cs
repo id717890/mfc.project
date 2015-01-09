@@ -44,7 +44,8 @@ namespace mfc.domain.services {
             Int64 result_id = 0;
             Int64 new_id = IdService.GetId();
 
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
 
             try {
                 cmd.CommandText = @"insert into ActionTypes (id, caption) values (@id, @caption)";
@@ -58,6 +59,7 @@ namespace mfc.domain.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
                 _is_cache_valid = false;
             }
 
@@ -65,7 +67,8 @@ namespace mfc.domain.services {
         }
 
         public void Update(ActionType type) {
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
 
             try {
                 cmd.CommandText = "update ActionTypes set caption = @caption where id = @id";
@@ -83,12 +86,14 @@ namespace mfc.domain.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
                 _is_cache_valid = false;
             }
         }
 
         public void Delete(Int64 typeId) {
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
 
             try {
                 cmd.CommandText = "update ActionTypes set is_deleted = 1 where id = @id";
@@ -105,6 +110,7 @@ namespace mfc.domain.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
                 _is_cache_valid = false;
             }
         }
@@ -126,7 +132,8 @@ namespace mfc.domain.services {
         private IEnumerable<ActionType> GetTypesInternal() {
             List<ActionType> types = new List<ActionType>();
 
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
             SqlDataReader reader = null;
 
             try {
@@ -149,6 +156,7 @@ namespace mfc.domain.services {
                     reader.Close();
                 }
                 cmd.Dispose();
+                conn.Close();
             }
 
             return types;

@@ -48,7 +48,8 @@ namespace mfc.domain.services {
             Int64 result_id = 0;
             Int64 new_id = IdService.GetId();
 
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
 
             try {
                 cmd.CommandText = @"insert into OrganizationTypes (id, caption) values (@id, @caption)";
@@ -62,6 +63,7 @@ namespace mfc.domain.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
                 _is_type_cache_valid = false;
             }
 
@@ -69,7 +71,8 @@ namespace mfc.domain.services {
         }
 
         public void DeleteType(long typeId) {
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
 
             try {
                 cmd.CommandText = "update OrganizationTypes set is_deleted = 1 where id = @id";
@@ -86,12 +89,14 @@ namespace mfc.domain.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
                 _is_type_cache_valid = false;
             }
         }
 
         public void UpdateType(OrganizationType type) {
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
 
             try {
                 cmd.CommandText = "update OrganizationTypes set caption = @caption where id = @id";
@@ -109,6 +114,7 @@ namespace mfc.domain.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
                 _is_type_cache_valid = false;
             }
         }
@@ -130,7 +136,8 @@ namespace mfc.domain.services {
             Int64 result_id = 0;
             Int64 new_id = IdService.GetId();
 
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
 
             try {
                 cmd.CommandText = @"insert into Organizations (id, caption, full_caption, type_id) values (@id, @caption, @full_caption, @type_id)";
@@ -146,6 +153,7 @@ namespace mfc.domain.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
                 _is_org_cache_valid = false;
             }
 
@@ -153,7 +161,8 @@ namespace mfc.domain.services {
         }
 
         public void DeleteOrganization(long organizationId) {
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
 
             try {
                 cmd.CommandText = "update Organizations set is_deleted = 1 where id = @id";
@@ -170,12 +179,14 @@ namespace mfc.domain.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
                 _is_org_cache_valid = false; ;
             }
         }
 
         public void UpdateOgranization(Organization organization) {
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
 
             try {
                 cmd.CommandText = "update Organizations set caption = @caption, full_caption = @full_caption, type_id = @type_id where id = @id";
@@ -195,6 +206,7 @@ namespace mfc.domain.services {
             }
             finally {
                 cmd.Dispose();
+                conn.Close();
                 _is_org_cache_valid = false;
             }
         }
@@ -268,7 +280,8 @@ namespace mfc.domain.services {
         private IEnumerable<OrganizationType> GetAllTypesInternal() {
             List<OrganizationType> types = new List<OrganizationType>();
 
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
             SqlDataReader reader = null;
 
             try {
@@ -291,6 +304,7 @@ namespace mfc.domain.services {
                     reader.Close();
                 }
                 cmd.Dispose();
+                conn.Close();
             }
 
             return types;
@@ -301,7 +315,8 @@ namespace mfc.domain.services {
 
             List<Organization> orgs = new List<Organization>();
 
-            var cmd = SqlProvider.CreateConnection().CreateCommand();
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
             SqlDataReader reader = null;
 
             try {
@@ -324,6 +339,7 @@ namespace mfc.domain.services {
                     reader.Close();
                 }
                 cmd.Dispose();
+                conn.Close();
             }
 
             return orgs;

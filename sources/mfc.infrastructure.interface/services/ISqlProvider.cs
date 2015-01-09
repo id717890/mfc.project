@@ -16,10 +16,6 @@ namespace mfc.infrastructure.services {
         /// <returns></returns>
         SqlConnection CreateConnection();
         /// <summary>
-        /// Закрывает ранее открытое подключение
-        /// </summary>
-        void CloseConnection();
-        /// <summary>
         /// Инициализирует класс данными, необходимыми для подключения к северу СУДБ
         /// </summary>
         /// <param name="connectionString">Строка подлючения к серверу</param>
