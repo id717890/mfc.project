@@ -1,0 +1,58 @@
+﻿@model mfc.web.Models.ServiceActionViewModel
+
+<h3>Удалить работу?</h3>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>ServiceActionViewModel</legend>
+
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Date)
+        @Html.HiddenFor(model => model.ExpertId)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ExpertId)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(m => m.Expert)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Date)
+        </div>
+
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.Date)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Customer)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.Customer)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ServiceId)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(m => m.Service)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Type)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(m => m.Type)
+        </div>
+
+        <p>
+            <input type="submit" value="Удалить" />
+        </p>
+    </fieldset>
+}
+<p>
+    @Html.ActionLink("Возврат к списку", "Index", new { date = Model.Date.ToString("dd.MM.yyyy"), user_id = Model.ExpertId })
+</p>
