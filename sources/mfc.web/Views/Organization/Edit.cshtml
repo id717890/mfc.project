@@ -1,0 +1,58 @@
+﻿@model mfc.web.Models.OrganizationModel
+
+@{
+    if (Model.Id > 0) { 
+        ViewBag.Title = "Редактирование ОГВ";
+    }
+    else {
+        ViewBag.Title = "Добавление ОГВ";
+    }
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>OrganizationModel</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Caption)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Caption)
+            @Html.ValidationMessageFor(model => model.Caption)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FullCaption)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FullCaption)
+            @Html.ValidationMessageFor(model => model.FullCaption)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TypeCaption)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(m => m.TypeId, new SelectList(ViewBag.OrganizationTypes, "Id", "Caption"))
+        </div>
+
+        <p>
+            <input type="submit" value="Сохранить" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("К списку ОГВ", "List")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

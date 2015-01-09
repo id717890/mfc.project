@@ -1,0 +1,23 @@
+﻿@model mfc.web.Models.OrganizationModel
+
+<h3>Удалить ОГВ?</h3>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+<fieldset>
+    <legend>OrganizationModel</legend>
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Caption)
+
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Caption)
+    </div>
+</fieldset>
+
+    
+    <p>
+        <input type="submit" value="Удалить" />
+    </p>
+}
+
+<p>@Html.ActionLink("Вернуться к списку", "List")</p>

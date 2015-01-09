@@ -1,0 +1,51 @@
+﻿@model mfc.web.Models.ServiceModel
+
+@{
+    if (Model.Id > 0) { 
+        ViewBag.Title = "Редактирование услуги";
+    }
+    else {
+        ViewBag.Title = "Добавление услуги";
+    }
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>OrganizationModel</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Caption)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Caption)
+            @Html.ValidationMessageFor(model => model.Caption)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OrgCaption)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(m => m.OrgId, new SelectList(ViewBag.Organizations, "Id", "Caption"))
+        </div>
+
+        <p>
+            <input type="submit" value="Сохранить" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("К списку улуг", "List")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

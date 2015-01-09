@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Справочники";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Справочники</h2>
+
+<ul>
+    <li>@Html.ActionLink("Типы ОГВ", "List", "OrganizationType")</li>
+    <li>@Html.ActionLink("ОГВ", "List", "Organization")</li>
+    <li>@Html.ActionLink("Виды деятельности", "List", "ActionType")</li>
+    <li>@Html.ActionLink("Услуги", "List", "Service")</li>
+</ul>
+

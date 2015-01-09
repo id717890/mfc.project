@@ -1,0 +1,7 @@
+D:\__dev\mfc-project\sources\mfc.infrastructure.interface\bin\Debug\mfc.infrastructure.interface.dll
+D:\__dev\mfc-project\sources\mfc.infrastructure.interface\bin\Debug\mfc.infrastructure.interface.pdb
+D:\__dev\mfc-project\sources\mfc.infrastructure.interface\obj\Debug\mfc.infrastructure.interface.csprojResolveAssemblyReference.cache
+D:\__dev\mfc-project\sources\mfc.infrastructure.interface\obj\Debug\mfc.infrastructure.interface.dll
+D:\__dev\mfc-project\sources\mfc.infrastructure.interface\obj\Debug\mfc.infrastructure.interface.pdb
+D:\__dev\mfc-project\sources\mfc.infrastructure.interface\bin\Debug\mfc.domain.interface.dll
+D:\__dev\mfc-project\sources\mfc.infrastructure.interface\bin\Debug\mfc.domain.interface.pdb
