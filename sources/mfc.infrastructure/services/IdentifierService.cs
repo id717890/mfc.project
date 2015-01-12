@@ -18,7 +18,9 @@ namespace mfc.infrastructure.services {
             var cmd = conn.CreateCommand();
 
             try{
-                cmd.CommandText = @"select next value for mfc_seq";
+                cmd.CommandText = @"insert into globalids (null_value) values (null);";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = @"select SCOPE_IDENTITY()";
                 id = Convert.ToInt64(cmd.ExecuteScalar());
                 
             }
