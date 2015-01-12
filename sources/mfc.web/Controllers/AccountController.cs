@@ -48,7 +48,7 @@ namespace mfc.web.Controllers {
                         1,                             // version
                         model.UserName,                      // user name
                         DateTime.Now,                  // created
-                        DateTime.Now.AddMinutes(20),   // expires
+                        DateTime.MaxValue,   // expires
                         true,                    // persistent?
                         user.IsAdmin ? mfc.infrastructure.security.Roles.Admin : mfc.infrastructure.security.Roles.Expert
                         );

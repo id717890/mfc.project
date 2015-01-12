@@ -38,7 +38,7 @@ namespace mfc.web.Controllers {
         }
 
         [HttpPost]
-        public ActionResult Index(DateTime date, Int64 selectedUserId) {
+        public ActionResult Index(DateTime date, Int64 selectedUserId = -1) {
             var user_srv = CompositionRoot.Resolve<IUserService>();
             var user = user_srv.GetUserById(selectedUserId);
 
