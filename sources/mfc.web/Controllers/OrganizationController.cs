@@ -3,6 +3,7 @@ using mfc.domain.entities;
 using mfc.domain.services;
 using mfc.web.Helpers;
 using mfc.web.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,18 @@ namespace mfc.web.Controllers {
             }
 
             return View(items);
+        }
+
+        public ActionResult ListData() {
+            var org_service = CompositionRoot.Resolve<IOrganizationService>();
+
+            List<OrganizationModel> items = new List<OrganizationModel>();
+
+            foreach (var entity in org_service.GetAllOrganizations()) {
+                items.Add(OrganizationModelConverter.ToModel(entity));
+            }
+
+            return Json(items, JsonRequestBehavior.AllowGet);
         }
 
         //

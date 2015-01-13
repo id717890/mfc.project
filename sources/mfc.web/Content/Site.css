@@ -763,3 +763,11 @@ tr.pager td {
     padding: 5px;
 }
 
+.tableizer-table {
+     width:100%;
+}
+
+.tableizer-table td {
+   padding: 5px;
+   border: 1px solid;
+}

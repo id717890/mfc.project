@@ -23,7 +23,7 @@ namespace mfc.domain.services {
         public IEnumerable<ActionType> GetAllTypes() {
             PrepareCache();
 
-            return _cache.Values.OrderBy(m => m.Caption);
+            return _cache.Values.OrderBy(m => m.Id);
         }
 
         public ActionType GetTypeById(long id) {
@@ -141,7 +141,7 @@ namespace mfc.domain.services {
                     select id, caption 
                         from ActionTypes 
                     where is_deleted = 0
-                    order by caption";
+                    order by id";
                 reader = cmd.ExecuteReader();
 
                 while (reader.Read()) {

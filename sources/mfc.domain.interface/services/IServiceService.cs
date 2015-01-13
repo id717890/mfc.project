@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace mfc.domain.services {
     public interface IServiceService {
         IEnumerable<Service> GetAllServices();
+        IEnumerable<Service> GetOrganizationServices(Int64 orgId);
         Service GetServiceById(Int64 Id);
         Int64 Create(string caption, Int64 organizationId);
         void Update(Service service);

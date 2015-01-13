@@ -26,7 +26,16 @@ namespace mfc.domain.services {
         public IEnumerable<Service> GetAllServices() {
             PrepareCache();
 
-            return _cache.Values.OrderBy(m => m.Caption);
+            return _cache.Values.OrderBy(m=>m.Caption).OrderBy(m => m.Organization.Caption);
+        }
+
+        public IEnumerable<Service> GetOrganizationServices(Int64 orgId) {
+            PrepareCache();
+
+            return 
+                _cache.Values
+                    .Where(item => item.Organization.Id == orgId)
+                    .OrderBy(m => m.Caption);
         }
 
         public Service GetServiceById(long id) {

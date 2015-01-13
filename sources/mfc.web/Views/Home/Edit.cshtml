@@ -1,9 +1,115 @@
 ﻿@model mfc.web.Models.ServiceActionViewModel
 
 @{
-    ViewBag.Title = "Новый прием";
+    if (Model.Id == 0) { 
+        ViewBag.Title = "Новый прием";
+    }
+    else {
+        ViewBag.Title = "Редактирование приема";
+    }
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<script>
+    var dialog_org, dialog_srv;
+    $(function () {
+        //инициализируем заголовки для ОГВ и услуги
+        var org_caption;
+        org_caption = $('#Organization').attr('value');
+        if (org_caption != '') {
+            $('#selected-org').html(org_caption);
+        }
+
+        var srv_caption;
+        srv_caption = $('#Service').attr('value');
+
+        if (srv_caption != '') {
+            $('#selected-service').html(srv_caption);
+        }
+
+        //создаем диалоги
+        dialog_org = $("#select-org-form").dialog({
+            autoOpen: false,
+            height: 400,
+            width: 350,
+            modal: true,
+            open: fillOrgList
+        });
+
+        dialog_srv = $("#select-srv-form").dialog({
+            autoOpen: false,
+            height: 500,
+            width: 500,
+            modal: true,
+            open: fillSrvList
+        });
+
+        function fillOrgList() {
+            $.get('/../Organization/ListData', null, function (data, textStatus) {
+                var list_div;
+                list_div = $('#select-org-form');
+                list_div.html('');
+
+                data.forEach(function (item, i, arr) {
+                    list_div.append('<div><a href="javascript:void(0)" onclick="selectOrg(' + item.Id + ', \'' + item.Caption + '\')">' + item.Caption + '</a></div>');
+                });
+            });
+        }
+
+        function fillSrvList() {
+            var org_id;
+            org_id = $('input#OrganizationId').attr('value');
+
+            var list_div;
+            list_div = $('#select-srv-form');
+            list_div.html('');
+
+            $.get('/../Service/ListData/' + org_id, null, function (data, textStatus) {
+                data.forEach(function (item, i, arr) {
+                    list_div.append('<div><a href="#" onclick="selectSrv(' + item.Id + ', \'' + item.Caption + '\')">' + item.Caption + '</a></div>');
+                    list_div.append('<hr/>')
+                });
+            });
+        }
+
+        $("#select-org").button().on("click", function () {
+            dialog_org.dialog('open');
+        });
+
+        $("#select-service").button().on("click", function () {
+            var org_id;
+            org_id = $('#OrganizationId').attr('value');
+            if (org_id == undefined || org_id == null || org_id =='') {
+                alert("Не выбрана ОГВ");
+                return;
+            }
+            dialog_srv.dialog('open');
+        });
+    });
+
+    function selectOrg(id, caption) {
+        $('#selected-org').html(caption);
+        $('input#OrganizationId').attr('value', id);
+        $('input#Organization').attr('value', caption);
+        dialog_org.dialog('close');
+
+    }
+
+    function selectSrv(id, caption) {
+        $('#selected-service').html(caption);
+        $('input#ServiceId').attr('value', id);
+        $('input#Service').attr('value', caption);
+        dialog_srv.dialog('close');
+    }
+</script>
+
+<div id="select-org-form" title="Выбор ОГВ">
+    
+</div>
+
+<div id="select-srv-form" title="Выбор услуги">
+
+</div>
 
 <h2>@ViewBag.Title</h2>
 
@@ -15,6 +121,12 @@
         <legend>ServiceActionViewModel</legend>
 
         @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.ServiceId)
+        @Html.HiddenFor(model => model.OrganizationId)
+        @Html.HiddenFor(model => model.Organization)
+        @Html.HiddenFor(model => model.Service)
+
+        <input hidden="hidden" id="org_id" />
 
         <div class="editor-label">
             @Html.LabelFor(model => model.ExpertId)
@@ -42,25 +154,39 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ServiceId)
+            @Html.LabelFor(model => model.OrganizationId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(m => m.ServiceId, new SelectList(ViewBag.Services, "Id", "Caption"))
-            @Html.ValidationMessageFor(model => model.ServiceId)
+            <div id="selected-org" class="float-left" style="margin-right:10px">Не выбрана</div><button id="select-org" type="button">...</button>
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.TypeId)
+            @Html.LabelFor(model => model.ServiceId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(m => m.TypeId, new SelectList(ViewBag.ActionTypes, "Id", "Caption"))
-            @Html.ValidationMessageFor(model => model.TypeId)
+            <div id="selected-service" class="float-left" style="margin-right:10px">Не выбрана</div><button id="select-service" type="button">...</button>
         </div>
 
-        <p>
-            <input type="submit" value="Добавить" />
-        </p>
-    </fieldset>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.TypeId)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(m => m.TypeId, new SelectList(ViewBag.ActionTypes, "Id", "Caption"))
+                @Html.ValidationMessageFor(model => model.TypeId)
+            </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comments)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model=>model.Comments)
+            @Html.ValidationMessageFor(model => model.Comments)
+        </div>
+
+            <p>
+                <input type="submit" value="Сохранить" />
+            </p>
+</fieldset>
 }
 <div>
     @Html.ActionLink("Возврат к списку", "Index", new { date = Model.Date.ToString("dd.MM.yyyy"), user_id = Model.ExpertId})

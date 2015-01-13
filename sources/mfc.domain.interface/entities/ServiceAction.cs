@@ -15,5 +15,6 @@ namespace mfc.domain.entities {
         public Service Service { get; set; }
         public ActionType Type { get; set; }
         public User User { get; set; }
+        public string Comments { get; set; }
     }
 }

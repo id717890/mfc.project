@@ -34,7 +34,7 @@ namespace mfc.domain.services {
 
             try {
                 cmd.CommandText = @"
-                    select id, dt, customer, service_id, type_id, user_id
+                    select id, dt, customer, service_id, type_id, user_id, comments
                         from Actions
                     where is_deleted = 0
                         and id = @id
@@ -72,7 +72,7 @@ namespace mfc.domain.services {
             
             try{
                 cmd.CommandText = @"
-                    select id, dt, customer, service_id, type_id, user_id
+                    select id, dt, customer, service_id, type_id, user_id, comments
                         from Actions
                     where is_deleted = 0
                         and user_id = @user_id
@@ -110,7 +110,7 @@ namespace mfc.domain.services {
             throw new NotImplementedException();
         }
 
-        public long Add(DateTime date, Int64 serviceId, string customer, Int64 typeId, Int64 userId) {
+        public long Add(DateTime date, Int64 serviceId, string customer, Int64 typeId, Int64 userId, string comments) {
             Int64 result_id = -1;
 
             var conn = SqlProvider.CreateConnection();
@@ -121,8 +121,8 @@ namespace mfc.domain.services {
 
                 cmd.CommandText = @"
                     insert into Actions 
-                            (id, dt, customer, service_id, type_id, user_id) 
-                    values  (@id, @dt, @customer, @service_id, @type_id, @user_id)";
+                            (id, dt, customer, service_id, type_id, user_id, comments) 
+                    values  (@id, @dt, @customer, @service_id, @type_id, @user_id, @comments)";
 
                 cmd.Parameters.Add(new SqlParameter("id", new_id));
                 cmd.Parameters.Add(new SqlParameter("dt", date));
@@ -130,6 +130,12 @@ namespace mfc.domain.services {
                 cmd.Parameters.Add(new SqlParameter("service_id", serviceId));
                 cmd.Parameters.Add(new SqlParameter("type_id", typeId));
                 cmd.Parameters.Add(new SqlParameter("user_id", userId));
+                cmd.Parameters.Add(new SqlParameter("comments", DBNull.Value));
+
+                if (!string.IsNullOrEmpty(comments)) {
+                    cmd.Parameters["comments"].Value = comments;
+                }
+
 
                 cmd.ExecuteNonQuery();
 
@@ -158,7 +164,8 @@ namespace mfc.domain.services {
                         customer = @customer,
                         service_id = @service_id,
                         type_id = @type_id,
-                        user_id = @user_id
+                        user_id = @user_id,
+                        comments = @comments
                      where id = @id";
 
                 cmd.Parameters.Add(new SqlParameter("id", action.Id));
@@ -167,6 +174,11 @@ namespace mfc.domain.services {
                 cmd.Parameters.Add(new SqlParameter("service_id", action.Service.Id));
                 cmd.Parameters.Add(new SqlParameter("type_id", action.Type.Id));
                 cmd.Parameters.Add(new SqlParameter("user_id", action.User.Id));
+                cmd.Parameters.Add(new SqlParameter("comments", DBNull.Value));
+
+                if (!string.IsNullOrEmpty(action.Comments)) {
+                    cmd.Parameters["comments"].Value = action.Comments;
+                }
 
                 cmd.ExecuteNonQuery();
             }
@@ -210,7 +222,8 @@ namespace mfc.domain.services {
                 Type = TypeService.GetTypeById(Convert.ToInt64(reader["type_id"])),
                 Service = ServiceService.GetServiceById(Convert.ToInt64(reader["service_id"])),
                 Customer = Convert.ToString(reader["customer"]),
-                Date = Convert.ToDateTime(reader["dt"])
+                Date = Convert.ToDateTime(reader["dt"]),
+                Comments = Convert.ToString(reader["comments"])
             };
 
             return action;

@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Справочник услуг";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    Int64 last_org = -1; 
+    bool render_hr = false;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -10,7 +12,7 @@
 <p>
     @Html.ActionLink("Новый", "Create")
 </p>
-<table>
+<table class="tableizer-table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Caption)
@@ -21,19 +23,20 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Caption)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OrgCaption)
-        </td>
-        <td>
-            @Html.ActionLink("Изменить", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Удалить", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Caption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrgCaption)
+            </td>
+            <td>
+                @Html.ActionLink("Изменить", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+
+    }
 
 </table>

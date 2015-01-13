@@ -26,6 +26,18 @@ namespace mfc.web.Controllers {
             return View(items);
         }
 
+        public ActionResult ListData(int id) {
+            var srv = CompositionRoot.Resolve<IServiceService>();
+
+            List<ServiceModel> items = new List<ServiceModel>();
+
+            foreach (var entity in srv.GetOrganizationServices(id)) {
+                items.Add(ModelConverter.ToModel(entity));
+            }
+
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
         //
         // GET: /Organization/Create
 

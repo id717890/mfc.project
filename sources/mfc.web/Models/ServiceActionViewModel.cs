@@ -33,6 +33,16 @@ namespace mfc.web.Models {
         [Display(Name = "Услуга")]
         public string Service { get; set; }
 
+        [Display(Name = "ОГВ")]
+        public Int64 OrganizationId { get; set; }
+
+        [Display(Name = "ОГВ")]
+        public string Organization { get; set; }
+
+        [Display(Name = "Комментарий")]
+        [DataType(DataType.MultilineText)]
+        public string Comments { get; set; }
+
         [Required]
         [Display(Name = "Дата")]
         [DataType(DataType.Date)]

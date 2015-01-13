@@ -75,7 +75,7 @@ namespace mfc.web.Controllers {
                 bool has_error = false;
 
                 try {
-                    action_srv.Add(model.Date, model.ServiceId, model.Customer, model.TypeId, model.ExpertId);
+                    action_srv.Add(model.Date, model.ServiceId, model.Customer, model.TypeId, model.ExpertId, model.Comments);
                 }
                 catch (Exception e) {
                     has_error = true;
@@ -185,7 +185,7 @@ namespace mfc.web.Controllers {
             }
             else {
                 PrepareForCreate();
-                return View();
+                return View(model);
             }
         }
 

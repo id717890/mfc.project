@@ -21,7 +21,8 @@ namespace mfc.web.Helpers {
                 Customer = model.Customer,
                 Service = _service_srv.GetServiceById(model.ServiceId),
                 Date = model.Date,
-                Type = _action_type_srv.GetTypeById(model.TypeId)
+                Type = _action_type_srv.GetTypeById(model.TypeId),
+                Comments = model.Comments
             };
         }
 
@@ -35,7 +36,10 @@ namespace mfc.web.Helpers {
                 TypeId = entity.Type.Id,
                 Type = entity.Type.Caption,
                 Date = entity.Date,
-                Customer = entity.Customer
+                Customer = entity.Customer,
+                OrganizationId = entity.Service.Organization.Id,
+                Organization = entity.Service.Organization.Caption,
+                Comments = entity.Comments
             };
         }
     }
