@@ -1,4 +1,5 @@
-﻿using mfc.infrastructure.services;
+﻿using mfc.infrastructure.report;
+using mfc.infrastructure.services;
 using Ninject.Modules;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace mfc.infrastructure {
             Kernel.Bind<ISqlProvider>().To<SqlProvider>().InSingletonScope();
             Kernel.Bind<IIdentifierService>().To<IdentifierService>().InSingletonScope();
             Kernel.Bind<IMembershipService>().To<MembershipService>().InSingletonScope();
+            Kernel.Bind<IReportService>().To<ReportService>();
+            Kernel.Bind<IReportModel>().To<ReportModel>();
         }
     }
 }

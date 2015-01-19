@@ -94,3 +94,4 @@ D:\__dev\mfc-project\sources\mfc.web\obj\Debug\mfc.web.csprojResolveAssemblyRefe
 D:\__dev\mfc-project\sources\mfc.web\obj\Debug\mfc.web.dll
 D:\__dev\mfc-project\sources\mfc.web\obj\Debug\mfc.web.pdb
 D:\__dev\mfc-project\sources\mfc.web\bin\mfc.web.dll.config
+D:\__dev\mfc-project\sources\mfc.web\bin\SpreadsheetGear.dll

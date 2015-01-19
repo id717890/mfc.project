@@ -43,6 +43,7 @@
     <Compile Include="security\Roles.cs" />
     <Compile Include="services\IIdentifierService.cs" />
     <Compile Include="services\IMembershipService.cs" />
+    <Compile Include="services\IReportService.cs" />
     <Compile Include="services\ISqlProvider.cs" />
   </ItemGroup>
   <ItemGroup>

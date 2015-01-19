@@ -12,5 +12,20 @@ namespace mfc.domain.entities {
         public Int64 Id { get; set; }
         public string Caption { get; set; }
         public Organization Organization { get; set; }
+
+        public override bool Equals(object obj) {
+            if (obj == null) {
+                return false;
+            }
+            if (obj.GetType() == typeof(Service)) {
+                return ((Service)obj).Id.Equals(Id);
+            }
+
+            return ReferenceEquals(obj, this);
+        }
+
+        public override int GetHashCode() {
+            return Id.GetHashCode();
+        }
     }
 }

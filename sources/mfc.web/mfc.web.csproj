@@ -201,6 +201,7 @@
     <Compile Include="CompostionRoot.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\ActionTypeController.cs" />
@@ -216,7 +217,9 @@
     <Compile Include="Models\AccountInfo.cs" />
     <Compile Include="Models\ActionListViewModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\ServiceActionViewModel.cs" />
+    <Compile Include="Models\ServiceListViewModel.cs" />
     <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Models\OrganizationModel.cs" />
     <Compile Include="Models\ActionTypeModel.cs" />
@@ -328,9 +331,10 @@
     <Content Include="Views\Service\Delete.cshtml" />
     <Content Include="Views\Service\Edit.cshtml" />
     <Content Include="Views\Service\List.cshtml" />
-    <Content Include="Views\Home\EditorTemplates\Date.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
     <Content Include="Views\Home\Edit.cshtml" />
     <Content Include="Views\Home\Delete.cshtml" />
+    <Content Include="Views\Report\Make.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -33,8 +33,12 @@
     <Reference Include="Ninject">
       <HintPath>..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="SpreadsheetGear">
+      <HintPath>..\..\libs\SpreadsheetGear.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,19 +48,28 @@
   <ItemGroup>
     <Compile Include="CompositeModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="report\IReportModel.cs" />
+    <Compile Include="report\ReportModel.cs" />
+    <Compile Include="report\ReportRow.cs" />
     <Compile Include="services\IdentifierService.cs" />
     <Compile Include="services\MembershipService.cs" />
+    <Compile Include="services\ReportService.cs" />
     <Compile Include="services\SqlProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\mfc.domain.interface\mfc.domain.interface.csproj">
+      <Project>{ca144fb7-3be0-4e32-898f-b2f4a33b4846}</Project>
+      <Name>mfc.domain.interface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\mfc.infrastructure.interface\mfc.infrastructure.interface.csproj">
       <Project>{a7ee3c17-9577-4ab4-92f1-2e617730b65e}</Project>
       <Name>mfc.infrastructure.interface</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

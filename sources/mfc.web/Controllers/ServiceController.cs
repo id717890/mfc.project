@@ -16,14 +16,17 @@ namespace mfc.web.Controllers {
 
         public ActionResult List() {
             var srv = CompositionRoot.Resolve<IServiceService>();
+            var org_srv = CompositionRoot.Resolve<IOrganizationService>();
 
-            List<ServiceModel> items = new List<ServiceModel>();
+            ServiceListViewModel model = new ServiceListViewModel();
 
-            foreach (var entity in srv.GetAllServices()) {
-                items.Add(ModelConverter.ToModel(entity));
-            }
+            model.Organizations = new List<Organization>(org_srv.GetAllOrganizations());
+            model.Organizations.Insert(0, new Organization { Id = -1, Caption = "<Все>" });
 
-            return View(items);
+            model.OrganizationId = model.Organizations[0].Id;
+            model.Services = new List<Service>(srv.GetAllServices());
+
+            return View(model);
         }
 
         public ActionResult ListData(int id) {

@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace mfc.domain.services {
     public class OrganizationService : IOrganizationService {
+        private readonly object sync_obj1 = new object();
+        private readonly object sync_obj2 = new object();
+
         [Inject]
         public ISqlProvider SqlProvider { get; set; }
 
@@ -256,25 +259,28 @@ namespace mfc.domain.services {
                 return;
             }
 
-            _cache_types.Clear();
-            foreach (var type in GetAllTypesInternal()) {
-                _cache_types.Add(type.Id, type);
-            }
+            lock (sync_obj2) {
+                _cache_types.Clear();
+                foreach (var type in GetAllTypesInternal()) {
+                    _cache_types.Add(type.Id, type);
+                }
 
-            _is_type_cache_valid = true;
+                _is_type_cache_valid = true;
+            }
         }
 
         private void PrepareOrgCache() {
             if (_is_org_cache_valid) {
                 return;
             }
+            lock (sync_obj1) {
+                _cache_orgs.Clear();
+                foreach (var org in GetAllOrganizationsInternal()) {
+                    _cache_orgs.Add(org.Id, org);
+                }
 
-            _cache_orgs.Clear();
-            foreach (var org in GetAllOrganizationsInternal()) {
-                _cache_orgs.Add(org.Id, org);
+                _is_org_cache_valid = true;
             }
-
-            _is_org_cache_valid = true;
         }
 
         private IEnumerable<OrganizationType> GetAllTypesInternal() {

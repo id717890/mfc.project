@@ -1,0 +1,24 @@
+﻿@model mfc.web.Models.ReportModel
+@{
+    ViewBag.Title = "Отчеты";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title"><h2>@ViewBag.Title</h2></hgroup>
+            <p>
+                @using (Html.BeginForm()) {
+                    <div style="margin: 0 10px;float:left">
+                        <div style="margin: 0 10px;float:left">Дата начала: @Html.EditorFor(m => m.DateBegin)</div>
+                        <div style="margin: 0 10px;float:left">Дата окончания: @Html.EditorFor(m => m.DateEnd)</div>
+                    </div>
+                    <input type="submit" value="Сформировать" />
+                    <div style="clear:both" />
+                }
+            </p>
+        </div>
+    </section>
+}
+
+

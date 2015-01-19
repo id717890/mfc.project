@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace mfc.domain.services {
     public class ActionTypeService : IActionTypeService {
+        private readonly object sync_obj = new object();
+
         [Inject]
         public ISqlProvider SqlProvider { get; set; }
 
@@ -122,10 +124,16 @@ namespace mfc.domain.services {
                 return;
             }
 
-            _cache.Clear();
+            lock (sync_obj) {
+                _cache.Clear();
 
-            foreach (var type in GetTypesInternal()) {
-                _cache.Add(type.Id, type);
+                foreach (var type in GetTypesInternal()) {
+                    if (!_cache.ContainsKey(type.Id)) {
+                        _cache.Add(type.Id, type);
+                    }
+                }
+
+                _is_cache_valid = true;
             }
         }
 
