@@ -14,7 +14,7 @@ namespace mfc.infrastructure {
             Kernel.Bind<IIdentifierService>().To<IdentifierService>().InSingletonScope();
             Kernel.Bind<IMembershipService>().To<MembershipService>().InSingletonScope();
             Kernel.Bind<IReportService>().To<ReportService>();
-            Kernel.Bind<IReportModel>().To<ReportModel>();
+            Kernel.Bind<IReportSumModel>().To<ReportSumModel>();
         }
     }
 }

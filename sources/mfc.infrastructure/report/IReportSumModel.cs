@@ -6,10 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace mfc.infrastructure.report {
-    public interface IReportModel {
+    public interface IReportSumModel {
         void Refresh(DateTime dateBegin, DateTime dateEnd);
         IEnumerable<OrganizationType> GetTypes();
         IEnumerable<Organization> GetOrganizations(OrganizationType type);
-        IEnumerable<ReportRow> GetRows(Organization org);
+        IEnumerable<ReportSumRow> GetRows(Organization org);
     }
 }

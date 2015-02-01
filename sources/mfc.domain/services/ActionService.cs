@@ -107,7 +107,41 @@ namespace mfc.domain.services {
         }
 
         public IEnumerable<ServiceAction> GetActions(DateTime dateBegin, DateTime dateEnd) {
-            throw new NotImplementedException();
+            List<ServiceAction> items = new List<ServiceAction>();
+
+            var conn = SqlProvider.CreateConnection();
+            var cmd = conn.CreateCommand();
+            SqlDataReader reader = null;
+
+            try {
+                cmd.CommandText = @"
+                    select id, dt, customer, service_id, type_id, user_id, comments
+                        from Actions
+                    where is_deleted = 0
+                        and dt between @dt_begin and @dt_end
+                    order by id";
+
+                cmd.Parameters.Add(new SqlParameter("dt_begin", dateBegin));
+                cmd.Parameters.Add(new SqlParameter("dt_end", dateEnd));
+
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read()) {
+                    items.Add(CreateAction(reader));
+                }
+            }
+            catch (Exception e) {
+                throw new DomainException(e);
+            }
+            finally {
+                if (reader != null) {
+                    reader.Close();
+                }
+                cmd.Dispose();
+                conn.Close();
+            }
+
+            return items;
         }
 
         public long Add(DateTime date, Int64 serviceId, string customer, Int64 typeId, Int64 userId, string comments) {

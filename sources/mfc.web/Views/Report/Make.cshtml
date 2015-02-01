@@ -3,22 +3,30 @@
     ViewBag.Title = "Отчеты";
 }
 
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title"><h2>@ViewBag.Title</h2></hgroup>
-            <p>
-                @using (Html.BeginForm()) {
-                    <div style="margin: 0 10px;float:left">
-                        <div style="margin: 0 10px;float:left">Дата начала: @Html.EditorFor(m => m.DateBegin)</div>
-                        <div style="margin: 0 10px;float:left">Дата окончания: @Html.EditorFor(m => m.DateEnd)</div>
-                    </div>
-                    <input type="submit" value="Сформировать" />
-                    <div style="clear:both" />
-                }
-            </p>
-        </div>
-    </section>
-}
 
+    @section featured {
+        <section class="featured">
+            <div class="content-wrapper">
+                <hgroup class="title"><h2>@ViewBag.Title</h2></hgroup>
+                
+            </div>
+        </section>
+    }
+@using (Html.BeginForm()) {
+    <p>
+
+        <div style="margin: 0 10px;float:left">
+            <div style="margin: 0 10px;float:left">Дата начала: @Html.EditorFor(m => m.DateBegin)</div>
+            <div style="margin: 0 10px;float:left">Дата окончания: @Html.EditorFor(m => m.DateEnd)</div>
+        </div>
+        <input type="submit" value="Сформировать" />
+        <div style="clear:both" />
+
+    </p>
+    <ul style="list-style: none">
+        @foreach (var radioitem in Model.Reports) {
+
+            <li>@Html.RadioButtonFor(model => model.Report, radioitem.Value) @radioitem.Text</li>
+        }
+    </ul>}
 

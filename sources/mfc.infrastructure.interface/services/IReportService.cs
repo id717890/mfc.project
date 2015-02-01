@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace mfc.infrastructure.services {
     public interface IReportService {
-        void MakeReport(DateTime dateBegin, DateTime dateEnd, Stream stream);
+        void MakeReportSum(DateTime dateBegin, DateTime dateEnd, Stream stream);
+        void MakeReportOper(DateTime dateBegin, DateTime dateEnd, Stream stream);
     }
 }

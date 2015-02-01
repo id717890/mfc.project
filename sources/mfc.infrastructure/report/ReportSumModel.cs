@@ -10,9 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace mfc.infrastructure.report {
-    public class ReportModel : IReportModel {
+    public class ReportSumModel : IReportSumModel {
         #region Fields
-        private Dictionary<OrganizationType, Dictionary<Organization, Dictionary<Service, ReportRow>>> _data = new Dictionary<OrganizationType, Dictionary<Organization, Dictionary<Service, ReportRow>>>();
+        private Dictionary<OrganizationType, Dictionary<Organization, Dictionary<Service, ReportSumRow>>> _data = new Dictionary<OrganizationType, Dictionary<Organization, Dictionary<Service, ReportSumRow>>>();
         #endregion
         [Inject]
         public ISqlProvider SqlProvider { get; set; }
@@ -61,7 +61,7 @@ namespace mfc.infrastructure.report {
                     }
 
                     if (!_data.ContainsKey(type)) {
-                        _data.Add(type, new Dictionary<Organization, Dictionary<Service, ReportRow>>());
+                        _data.Add(type, new Dictionary<Organization, Dictionary<Service, ReportSumRow>>());
                     }
 
                     var org_id = Convert.ToInt64(reader["org_id"]);
@@ -72,7 +72,7 @@ namespace mfc.infrastructure.report {
                     }
 
                     if (!_data[type].ContainsKey(org)) {
-                        _data[type].Add(org, new Dictionary<Service, ReportRow>());
+                        _data[type].Add(org, new Dictionary<Service, ReportSumRow>());
                     }
 
                     var srv_id = Convert.ToInt64(reader["srv_id"]);
@@ -83,7 +83,7 @@ namespace mfc.infrastructure.report {
                     }
 
                     if (!_data[type][org].ContainsKey(srv)) {
-                        _data[type][org].Add(srv, new ReportRow { Service = srv.Caption });
+                        _data[type][org].Add(srv, new ReportSumRow { Service = srv.Caption });
                     }
 
                     var act_id = Convert.ToInt64(reader["action_id"]);
@@ -126,7 +126,7 @@ namespace mfc.infrastructure.report {
             return _data[type].Keys.OrderBy(t => t.Caption);
         }
 
-        public IEnumerable<ReportRow> GetRows(Organization org) {
+        public IEnumerable<ReportSumRow> GetRows(Organization org) {
             return _data[org.Type][org].Values.OrderBy(r => r.Service);
         }
     }

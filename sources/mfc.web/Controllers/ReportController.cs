@@ -27,13 +27,19 @@ namespace mfc.web.Controllers {
         }
 
         [HttpPost]
-        public ActionResult Make(DateTime dateBegin, DateTime dateEnd) {
+        public ActionResult Make(DateTime dateBegin, DateTime dateEnd, Int32 report) {
             var report_srv = CompositionRoot.Resolve<IReportService>();
             Response.Clear();
             Response.ContentType = "application/vnd.ms-excel";
             Response.AddHeader("Content-Disposition",
                                string.Format("attachment; filename={0}.xls", "rep"));
-            report_srv.MakeReport(dateBegin, dateEnd, Response.OutputStream);
+            if (report == 1) {
+                report_srv.MakeReportSum(dateBegin, dateEnd, Response.OutputStream);
+            }
+            else if (report == 2) {
+                report_srv.MakeReportOper(dateBegin, dateEnd, Response.OutputStream);
+            }
+
             Response.End();
 
             return View(new ReportModel {

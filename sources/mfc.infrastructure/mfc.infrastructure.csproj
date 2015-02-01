@@ -48,9 +48,9 @@
   <ItemGroup>
     <Compile Include="CompositeModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="report\IReportModel.cs" />
-    <Compile Include="report\ReportModel.cs" />
-    <Compile Include="report\ReportRow.cs" />
+    <Compile Include="report\IReportSumModel.cs" />
+    <Compile Include="report\ReportSumModel.cs" />
+    <Compile Include="report\ReportSumRow.cs" />
     <Compile Include="services\IdentifierService.cs" />
     <Compile Include="services\MembershipService.cs" />
     <Compile Include="services\ReportService.cs" />
