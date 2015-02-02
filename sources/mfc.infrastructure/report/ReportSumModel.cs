@@ -119,7 +119,7 @@ namespace mfc.infrastructure.report {
         }
 
         public IEnumerable<OrganizationType> GetTypes() {
-            return _data.Keys.OrderBy(t => t.Id);
+            return _data.Keys.OrderBy(t => t.Caption);
         }
 
         public IEnumerable<Organization> GetOrganizations(OrganizationType type) {
