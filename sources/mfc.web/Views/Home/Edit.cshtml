@@ -164,7 +164,9 @@
             @Html.LabelFor(model => model.ServiceId)
         </div>
         <div class="editor-field">
-            <div id="selected-service" class="float-left" style="margin-right:10px">Не выбрана</div><button id="select-service" type="button">...</button>
+            <div id="selected-service" class="float-left" style="margin-right:10px">Не выбрана</div><button id="select-service" type="button" style="float:left">...</button>
+            <div>@Html.ValidationMessageFor(model => model.Service)</div>
+            <div style="clear:both" />
         </div>
 
             <div class="editor-label">

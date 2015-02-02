@@ -169,24 +169,23 @@ namespace mfc.web.Controllers {
         [HttpPost]
         public ActionResult Edit(ServiceActionViewModel model) {
             bool has_error = false;
+            if (ModelState.IsValid) {
+                var action_srv = CompositionRoot.Resolve<IActionService>();
+                try {
+                    var action = ServiceActionModelConverter.FromModel(model);
+                    action_srv.Update(action);
+                }
+                catch (DomainException e) {
+                    ModelState.AddModelError("", e);
+                    has_error = true;
+                }
 
-            var action_srv = CompositionRoot.Resolve<IActionService>();
-            try {
-                var action = ServiceActionModelConverter.FromModel(model);
-                action_srv.Update(action);
+                if (!has_error) {
+                    return RedirectToAction("Index", new { date = model.Date.ToString("dd.MM.yyyy"), user_id = model.ExpertId });
+                }
             }
-            catch (DomainException e) {
-                ModelState.AddModelError("", e);
-                has_error = true;
-            }
-
-            if (!has_error) {
-                return RedirectToAction("Index", new { date = model.Date.ToString("dd.MM.yyyy"), user_id = model.ExpertId });
-            }
-            else {
-                PrepareForCreate();
-                return View(model);
-            }
+            PrepareForCreate();
+            return View(model);
         }
 
         #region Helpers
