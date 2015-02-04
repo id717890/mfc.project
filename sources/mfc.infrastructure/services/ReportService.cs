@@ -122,8 +122,9 @@ namespace mfc.infrastructure.services {
 
             row_index++;
 
-            foreach (var org in ReportSumModel.GetOrganizations(type)) {
-                RenderOrganization(org, sheet, ref row_index);
+            foreach (var row in ReportSumModel.GetRows(type)) {
+                RenderRow(row, sheet, row_index);
+                row_index++;
             }
 
             if (row_index == first_row) {
@@ -151,18 +152,14 @@ namespace mfc.infrastructure.services {
             row_index++;
         }
 
-        private void RenderOrganization(Organization org, IWorksheet sheet, ref Int32 row_index) {
-            foreach (var row in ReportSumModel.GetRows(org)) {
-                sheet.Cells[row_index, 0].Value = org.Caption;
-                RenderRow(row, sheet, row_index);
-                row_index++;
-            }
-        }
-
         private void RenderRow(ReportSumRow row, IWorksheet sheet, Int32 row_index) {
-            var range = sheet.Cells[row_index, 1];
+            var range = sheet.Cells[row_index, 0];
 
-            range.Value = row.Service;
+            range.Value = row.Service.Organization.FullCaption;
+            range.WrapText = true;
+
+            range = sheet.Cells[row_index, 1];
+            range.Value = row.Service.Caption;
             range.WrapText = true;
 
             sheet.Cells[row_index, 2].FormulaR1C1 = "=RC[1] + RC[2] + RC[3]";
@@ -189,12 +186,12 @@ namespace mfc.infrastructure.services {
             range.Font.Bold = true;
 
             //Ширины колонок
-            sheet.Cells[0, 0].ColumnWidth = 14;
+            sheet.Cells[0, 0].ColumnWidth = 50;
             sheet.Cells[0, 1].ColumnWidth = 90;
-            sheet.Cells[0, 2].ColumnWidth = 20;
+            sheet.Cells[0, 2].ColumnWidth = 15;
             sheet.Cells[0, 3].ColumnWidth = 14;
             sheet.Cells[0, 4].ColumnWidth = 14;
-            sheet.Cells[0, 5].ColumnWidth = 20;
+            sheet.Cells[0, 5].ColumnWidth = 14;
 
             //Заловок таблицы
             sheet.Cells[2, 0].Value = "ОГВ";

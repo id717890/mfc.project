@@ -9,7 +9,6 @@ namespace mfc.infrastructure.report {
     public interface IReportSumModel {
         void Refresh(DateTime dateBegin, DateTime dateEnd);
         IEnumerable<OrganizationType> GetTypes();
-        IEnumerable<Organization> GetOrganizations(OrganizationType type);
-        IEnumerable<ReportSumRow> GetRows(Organization org);
+        IEnumerable<ReportSumRow> GetRows(OrganizationType type);
     }
 }
