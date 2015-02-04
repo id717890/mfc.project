@@ -165,7 +165,7 @@ namespace mfc.infrastructure.services {
             range.Value = row.Service;
             range.WrapText = true;
 
-            sheet.Cells[row_index, 2].Value = row.All;
+            sheet.Cells[row_index, 2].FormulaR1C1 = "=RC[1] + RC[2] + RC[3]";
             if (row.Priem > 0) {
                 sheet.Cells[row_index, 3].Value = row.Priem;
             }
