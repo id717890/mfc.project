@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace mfc.web.Controllers {
-    [Authorize(Roles = Roles.Admin)]
     public class ReportController : Controller {
         public ActionResult Index() {
             return Make();

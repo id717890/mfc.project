@@ -1,7 +1,8 @@
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(mfc.web.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(mfc.web.App_Start.NinjectWebCommon), "Stop")]
 
-namespace mfc.web.App_Start {
+namespace mfc.web.App_Start
+{
     using System;
     using System.Web;
 
@@ -10,40 +11,45 @@ namespace mfc.web.App_Start {
     using Ninject;
     using Ninject.Web.Common;
 
-    public static class NinjectWebCommon {
+    public static class NinjectWebCommon 
+    {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
         /// <summary>
         /// Starts the application
         /// </summary>
-        public static void Start() {
+        public static void Start() 
+        {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
         }
-
+        
         /// <summary>
         /// Stops the application.
         /// </summary>
-        public static void Stop() {
+        public static void Stop()
+        {
             bootstrapper.ShutDown();
         }
-
+        
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
         /// <returns>The created kernel.</returns>
-        private static IKernel CreateKernel() {
+        private static IKernel CreateKernel()
+        {
             var kernel = new StandardKernel();
-            try {
-                CompositionRoot.Init(kernel);
+            try
+            {
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
                 RegisterServices(kernel);
                 return kernel;
             }
-            catch {
+            catch
+            {
                 kernel.Dispose();
                 throw;
             }
@@ -53,9 +59,8 @@ namespace mfc.web.App_Start {
         /// Load your modules or register your services here!
         /// </summary>
         /// <param name="kernel">The kernel.</param>
-        private static void RegisterServices(IKernel kernel) {
-            kernel.Load(new mfc.domain.CompositeModule());
-            kernel.Load(new mfc.infrastructure.CompositeModule());
-        }
+        private static void RegisterServices(IKernel kernel)
+        {
+        }        
     }
 }

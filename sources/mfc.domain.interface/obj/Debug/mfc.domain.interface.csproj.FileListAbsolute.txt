@@ -1,5 +1,12 @@
 D:\__dev\mfc-project\sources\mfc.domain.interface\bin\Debug\mfc.domain.interface.dll
 D:\__dev\mfc-project\sources\mfc.domain.interface\bin\Debug\mfc.domain.interface.pdb
+D:\__dev\mfc-project\sources\mfc.domain.interface\obj\Debug\mfc.domain.interface.csprojResolveAssemblyReference.cache
 D:\__dev\mfc-project\sources\mfc.domain.interface\obj\Debug\mfc.domain.interface.dll
 D:\__dev\mfc-project\sources\mfc.domain.interface\obj\Debug\mfc.domain.interface.pdb
-D:\__dev\mfc-project\sources\mfc.domain.interface\obj\Debug\mfc.domain.interface.csprojResolveAssemblyReference.cache
+D:\__dev\mfc-project\bin\Debug\mfc.domain.interface.dll
+D:\__dev\mfc-project\bin\Debug\mfc.domain.interface.pdb
+D:\__dev\mfc-project.old\bin\Debug\mfc.domain.interface.dll
+D:\__dev\mfc-project.old\bin\Debug\mfc.domain.interface.pdb
+D:\__dev\mfc-project.old\sources\mfc.domain.interface\obj\Debug\mfc.domain.interface.csprojResolveAssemblyReference.cache
+D:\__dev\mfc-project.old\sources\mfc.domain.interface\obj\Debug\mfc.domain.interface.dll
+D:\__dev\mfc-project.old\sources\mfc.domain.interface\obj\Debug\mfc.domain.interface.pdb

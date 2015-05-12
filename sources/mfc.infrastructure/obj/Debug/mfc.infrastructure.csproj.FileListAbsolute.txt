@@ -7,3 +7,10 @@ D:\__dev\mfc-project\sources\mfc.infrastructure\bin\Debug\Ninject.xml
 D:\__dev\mfc-project\sources\mfc.infrastructure\obj\Debug\mfc.infrastructure.csprojResolveAssemblyReference.cache
 D:\__dev\mfc-project\sources\mfc.infrastructure\obj\Debug\mfc.infrastructure.dll
 D:\__dev\mfc-project\sources\mfc.infrastructure\obj\Debug\mfc.infrastructure.pdb
+D:\__dev\mfc-project\bin\Debug\mfc.infrastructure.dll
+D:\__dev\mfc-project\bin\Debug\mfc.infrastructure.pdb
+D:\__dev\mfc-project.old\bin\Debug\mfc.infrastructure.dll
+D:\__dev\mfc-project.old\bin\Debug\mfc.infrastructure.pdb
+D:\__dev\mfc-project.old\sources\mfc.infrastructure\obj\Debug\mfc.infrastructure.csprojResolveAssemblyReference.cache
+D:\__dev\mfc-project.old\sources\mfc.infrastructure\obj\Debug\mfc.infrastructure.dll
+D:\__dev\mfc-project.old\sources\mfc.infrastructure\obj\Debug\mfc.infrastructure.pdb

@@ -27,20 +27,25 @@ namespace mfc.web.Helpers {
         }
 
         public static ServiceActionViewModel ToModel(ServiceAction entity) {
-            return new ServiceActionViewModel {
+            var item = new ServiceActionViewModel {
                 Id = entity.Id,
                 ExpertId = entity.User.Id,
                 Expert = entity.User.Name,
-                ServiceId = entity.Service.Id,
-                Service = entity.Service.Caption,
                 TypeId = entity.Type.Id,
                 Type = entity.Type.Caption,
                 Date = entity.Date,
                 Customer = entity.Customer,
-                OrganizationId = entity.Service.Organization.Id,
-                Organization = entity.Service.Organization.Caption,
                 Comments = entity.Comments
             };
+
+            if (entity.Service != null) {
+                item.ServiceId = entity.Service.Id;
+                item.Service = entity.Service.Caption;
+                item.OrganizationId = entity.Service.Organization.Id;
+                item.Organization = entity.Service.Organization.Caption;
+            }
+
+            return item;
         }
     }
 }

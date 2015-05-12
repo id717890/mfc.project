@@ -7,3 +7,8 @@ D:\__dev\mfc-project\sources\mfc.infrastructure.interface\obj\Debug\mfc.infrastr
 D:\__dev\mfc-project\sources\mfc.infrastructure.interface\obj\Debug\mfc.infrastructure.interface.pdb
 D:\__dev\mfc-project\bin\Debug\mfc.infrastructure.interface.dll
 D:\__dev\mfc-project\bin\Debug\mfc.infrastructure.interface.pdb
+D:\__dev\mfc-project.old\bin\Debug\mfc.infrastructure.interface.dll
+D:\__dev\mfc-project.old\bin\Debug\mfc.infrastructure.interface.pdb
+D:\__dev\mfc-project.old\sources\mfc.infrastructure.interface\obj\Debug\mfc.infrastructure.interface.csprojResolveAssemblyReference.cache
+D:\__dev\mfc-project.old\sources\mfc.infrastructure.interface\obj\Debug\mfc.infrastructure.interface.dll
+D:\__dev\mfc-project.old\sources\mfc.infrastructure.interface\obj\Debug\mfc.infrastructure.interface.pdb
