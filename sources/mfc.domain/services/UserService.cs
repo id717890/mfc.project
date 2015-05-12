@@ -48,17 +48,19 @@ namespace mfc.domain.services {
             return _name_cache.Values.OrderBy(item=>item.Account.ToLower());
         }
 
-        public void AddNew(string account, string name, bool is_admin) {
+        public void AddNew(string account, string name, bool is_admin, bool is_expert, bool is_controller) {
             var conn = SqlProvider.CreateConnection();
             var cmd = conn.CreateCommand();
             SqlDataReader reader = null;
 
             try {
-                cmd.CommandText = @"insert into Users (id, account, name, is_admin) values (@id, @account, @name, @is_admin)";
+                cmd.CommandText = @"insert into Users (id, account, name, is_admin) values (@id, @account, @name, @is_admin, @is_expert, @is_controller)";
                 cmd.Parameters.Add(new SqlParameter("id", IdService.GetId()));
                 cmd.Parameters.Add(new SqlParameter("account", account));
                 cmd.Parameters.Add(new SqlParameter("name", name));
                 cmd.Parameters.Add(new SqlParameter("is_admin", is_admin));
+                cmd.Parameters.Add(new SqlParameter("is_expert", is_expert));
+                cmd.Parameters.Add(new SqlParameter("is_controller", is_controller));
 
                 int row_count = cmd.ExecuteNonQuery();
 
@@ -99,12 +101,14 @@ namespace mfc.domain.services {
 
             try {
                 cmd.CommandText = @"
-                        update Users set account = @account, name = @name, is_admin = @is_admin
+                        update Users set account = @account, name = @name, is_admin = @is_admin, is_expert = @is_expert, is_controller = @is_controller
                         where id = @id";
                 cmd.Parameters.Add(new SqlParameter("id", user.Id));
                 cmd.Parameters.Add(new SqlParameter("account", user.Account));
                 cmd.Parameters.Add(new SqlParameter("name", user.Name));
                 cmd.Parameters.Add(new SqlParameter("is_admin", user.IsAdmin));
+                cmd.Parameters.Add(new SqlParameter("is_expert", user.IsExpert));
+                cmd.Parameters.Add(new SqlParameter("is_controller", user.IsController));
 
                 int row_count = cmd.ExecuteNonQuery();
 
@@ -169,8 +173,15 @@ namespace mfc.domain.services {
         public IEnumerable<User> GetExperts() {
             PrepareCache();
 
-            return _name_cache.Values.Where(m => !m.IsAdmin).OrderBy(m=>m.Name);
+            return _name_cache.Values.Where(m => m.IsExpert).OrderBy(m=>m.Name);
         }
+
+        public IEnumerable<User> GetControllers() {
+            PrepareCache();
+
+            return _name_cache.Values.Where(m => m.IsController).OrderBy(m => m.Name);
+        }
+
 
 
         #region Helpers
@@ -200,7 +211,7 @@ namespace mfc.domain.services {
 
             try {
                 cmd.CommandText = @"
-                        select id, account, name, is_admin from Users 
+                        select id, account, name, is_admin, is_expert, is_controller from Users 
                         where is_deleted = 0
                         order by account";
                 reader = cmd.ExecuteReader();
@@ -226,7 +237,9 @@ namespace mfc.domain.services {
                 Id = Convert.ToInt64(reader["id"]),
                 Account = Convert.ToString(reader["account"]),
                 Name = reader["name"] == DBNull.Value ? string.Empty : Convert.ToString(reader["name"]),
-                IsAdmin = Convert.ToBoolean(reader["is_admin"])
+                IsAdmin = reader["is_admin"] == DBNull.Value ? false : Convert.ToBoolean(reader["is_admin"]),
+                IsExpert = reader["is_expert"] == DBNull.Value ? false : Convert.ToBoolean(reader["is_expert"]),
+                IsController = reader["is_controller"] == DBNull.Value ? false : Convert.ToBoolean(reader["is_controller"])
             };
         }
 

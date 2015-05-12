@@ -17,5 +17,7 @@ namespace mfc.web.Models {
         public string Description { get; set; }
 
         public bool IsAdmin { get; set; }
+        public bool IsExpert { get; set; }
+        public bool IsController { get; set; }
     }
 }   

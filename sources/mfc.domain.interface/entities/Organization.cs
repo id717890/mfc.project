@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace mfc.domain.entities {
     public class Organization {
+        public static Organization All = new Organization { Id = -1, Caption = "Все" };
+
+
         public Int64 Id { get; set; }
         public string Caption { get; set; }
         public string FullCaption { get; set; }

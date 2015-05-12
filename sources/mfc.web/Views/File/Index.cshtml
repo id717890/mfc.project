@@ -1,0 +1,71 @@
+﻿@model mfc.web.Models.FileListViewModel
+
+@{
+    ViewBag.Title = "Список дел";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+            </hgroup>
+            <p>
+               @using (Html.BeginForm()) {
+                <div style="margin: 0 10px;float:left">Дата: @Html.EditorFor(m => m.Date)</div>
+                <div style="margin: 0 10px;float:left">
+                    Статус: @Html.DropDownListFor(m => m.SelectedStatusId, new SelectList(Model.Statuses, "Id", "Caption"))
+                </div>
+                <div style="margin: 0 10px;float:left">
+                    ОГВ: @Html.DropDownListFor(m => m.SelectedOgvId, new SelectList(Model.Organizations, "Id", "Caption"))
+                </div>
+                <div style="margin: 0 10px;float:left">
+                    Контроллер: @Html.DropDownListFor(m => m.SelectedUserId, new SelectList(Model.Controllers, "Id", "Name"))
+                </div>
+                <input type="submit" value="Обновить" />
+                <div style="clear:both" />
+               }
+            </p>
+        </div>
+    </section>
+}
+<p>
+    @Html.ActionLink("Новый", "Create", new { date = Model.Date.ToShortDateString(), user_id = Model.SelectedUserId })
+</p>
+<table id="actions-list">
+    <tr>
+        <th>Дата</th>
+        <th>Номер</th>
+        <th>Услуга</th>
+        <th>ОГВ</th>
+        <th>Эксперт</th>
+        <th>Контроллёр</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Files) {
+        <tr>
+            <td>
+                @item.Date.ToString("dd.MM.yyyy")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Service.Caption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ogv.Caption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Excpert.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Controller.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Изменить", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>

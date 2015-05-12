@@ -26,6 +26,8 @@
                     <nav>
                         <ul id="menu">
                             <li>@Html.ActionLink("Главная", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Приемы", "Index", "Action")</li>
+                            <li>@Html.ActionLink("Дела", "Index", "File")</li>
                             @if (User.IsInRole(MfcRoles.Admin)) {
                              <li>@Html.ActionLink("Отчеты", "Make", "Report")</li>
                             <li>@Html.ActionLink("Справочники", "Directories", "Home")</li>

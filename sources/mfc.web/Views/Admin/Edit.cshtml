@@ -37,8 +37,9 @@
         </div>
         <div class="editor-field">
             <ul style="list-style: none">
-                <li>@Html.RadioButtonFor(m => m.IsAdmin, "true") Администратор</li>
-                <li>@Html.RadioButtonFor(m => m.IsAdmin, "false") Экперт</li>
+                <li>@Html.CheckBoxFor(m => m.IsAdmin) Администратор</li>
+                <li>@Html.CheckBoxFor(m => m.IsExpert) Эксперт</li>
+                <li>@Html.CheckBoxFor(m => m.IsController) Контролер</li>
             </ul>
         </div>
 

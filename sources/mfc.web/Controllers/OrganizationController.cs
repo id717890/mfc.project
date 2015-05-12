@@ -3,7 +3,6 @@ using mfc.domain.entities;
 using mfc.domain.services;
 using mfc.web.Helpers;
 using mfc.web.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -14,7 +14,8 @@ namespace mfc.domain.services {
         void Delete(Int64 userId);
         IEnumerable<User> GetAllUsers();
         IEnumerable<User> GetExperts();
-        void AddNew(string account, string name, bool is_admin);
+        IEnumerable<User> GetControllers();
+        void AddNew(string account, string name, bool is_admin, bool is_expert, bool is_controller);
         void SetPassword(Int64 userId, string password);
     }
 }

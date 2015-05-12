@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="entities\File.cs" />
+    <Compile Include="entities\FileStatus.cs" />
+    <Compile Include="entities\FileStatusInfo.cs" />
     <Compile Include="entities\ServiceAction.cs" />
     <Compile Include="entities\ActionType.cs" />
     <Compile Include="entities\Organization.cs" />
@@ -48,6 +51,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="services\IActionService.cs" />
     <Compile Include="services\IActionTypeService.cs" />
+    <Compile Include="services\IDeloService.cs" />
+    <Compile Include="services\IFileStatusService.cs" />
     <Compile Include="services\IOrganizationService.cs" />
     <Compile Include="services\IServiceService.cs" />
     <Compile Include="services\IUserService.cs" />

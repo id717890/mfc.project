@@ -13,6 +13,8 @@ namespace mfc.domain.entities {
         public String Account { get; set; }
         public String Name { get; set; }
         public bool IsAdmin { get; set; }
+        public bool IsExpert { get; set; }
+        public bool IsController { get; set; }
 
         public override bool Equals(object obj) {
             if (obj == null) {

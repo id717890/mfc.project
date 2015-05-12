@@ -44,7 +44,7 @@ namespace mfc.web.Controllers {
 
                 if (!has_error) {
                     try {
-                        user_service.AddNew(account.UserName, account.Description, account.IsAdmin);
+                        user_service.AddNew(account.UserName, account.Description, account.IsAdmin, account.IsExpert, account.IsController);
                     }
                     catch (DomainException e) {
                         ModelState.AddModelError("", e);
@@ -177,7 +177,9 @@ namespace mfc.web.Controllers {
                     Id = account.Id,
                     Account = account.UserName,
                     Name = account.Description,
-                    IsAdmin = account.IsAdmin
+                    IsAdmin = account.IsAdmin,
+                    IsExpert = account.IsExpert,
+                    IsController = account.IsController
                 };
             }
 
@@ -186,7 +188,9 @@ namespace mfc.web.Controllers {
                     Id = user.Id,
                     UserName = user.Account,
                     Description = user.Name,
-                    IsAdmin = user.IsAdmin
+                    IsAdmin = user.IsAdmin,
+                    IsController = user.IsController,
+                    IsExpert = user.IsExpert
                 };
             }
         }

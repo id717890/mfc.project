@@ -214,7 +214,10 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="CompostionRoot.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ActionController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\FileStatusController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
@@ -225,11 +228,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ActionTypeModelConverter.cs" />
+    <Compile Include="Helpers\FileStatusModelConverter.cs" />
     <Compile Include="Helpers\OrganizationModelConverter.cs" />
     <Compile Include="Helpers\OrganizationTypeModelConverter.cs" />
     <Compile Include="Helpers\ServiceActionModelConverter.cs" />
     <Compile Include="Models\AccountInfo.cs" />
     <Compile Include="Models\ActionListViewModel.cs" />
+    <Compile Include="Models\FileListViewModel.cs" />
+    <Compile Include="Models\FileStatusModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\ServiceActionViewModel.cs" />
@@ -350,6 +356,10 @@
     <Content Include="Views\Home\Edit.cshtml" />
     <Content Include="Views\Home\Delete.cshtml" />
     <Content Include="Views\Report\Make.cshtml" />
+    <Content Include="Views\File\Index.cshtml" />
+    <Content Include="Views\FileStatus\Delete.cshtml" />
+    <Content Include="Views\FileStatus\Edit.cshtml" />
+    <Content Include="Views\FileStatus\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
