@@ -328,7 +328,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Action\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -339,7 +339,7 @@
     <Content Include="Views\Admin\Delete.cshtml" />
     <Content Include="Views\Admin\SetPassword.cshtml" />
     <Content Include="Views\Account\Manage.cshtml" />
-    <Content Include="Views\Home\Directories.cshtml" />
+    <Content Include="Views\Action\Directories.cshtml" />
     <Content Include="Views\OrganizationType\List.cshtml" />
     <Content Include="Views\OrganizationType\Delete.cshtml" />
     <Content Include="Views\OrganizationType\Edit.cshtml" />
@@ -353,13 +353,14 @@
     <Content Include="Views\Service\Edit.cshtml" />
     <Content Include="Views\Service\List.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
-    <Content Include="Views\Home\Edit.cshtml" />
-    <Content Include="Views\Home\Delete.cshtml" />
+    <Content Include="Views\Action\Edit.cshtml" />
+    <Content Include="Views\Action\Delete.cshtml" />
     <Content Include="Views\Report\Make.cshtml" />
     <Content Include="Views\File\Index.cshtml" />
     <Content Include="Views\FileStatus\Delete.cshtml" />
     <Content Include="Views\FileStatus\Edit.cshtml" />
     <Content Include="Views\FileStatus\List.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
