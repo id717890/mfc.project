@@ -11,5 +11,8 @@ namespace mfc.web.Models {
         [Required]
         [Display(Name = "Название")]
         public string Caption { get; set; }
+
+        [Display(Name = "Создавать дело")]
+        public bool NeedMakeFile { get; set; }
     }
 }

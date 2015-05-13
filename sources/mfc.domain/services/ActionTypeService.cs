@@ -40,7 +40,7 @@ namespace mfc.domain.services {
             return type;
         }
 
-        public long Create(string caption) {
+        public long Create(string caption, bool needMakeFile) {
             Debug.Assert(!string.IsNullOrEmpty(caption));
 
             Int64 result_id = 0;
@@ -50,9 +50,10 @@ namespace mfc.domain.services {
             var cmd = conn.CreateCommand();
 
             try {
-                cmd.CommandText = @"insert into ActionTypes (id, caption) values (@id, @caption)";
+                cmd.CommandText = @"insert into ActionTypes (id, caption, make_file) values (@id, @caption, @make_file)";
                 cmd.Parameters.Add(new SqlParameter("id", new_id));
                 cmd.Parameters.Add(new SqlParameter("caption", caption));
+                cmd.Parameters.Add(new SqlParameter("make_file", needMakeFile));
 
                 cmd.ExecuteNonQuery();
             }
@@ -73,9 +74,10 @@ namespace mfc.domain.services {
             var cmd = conn.CreateCommand();
 
             try {
-                cmd.CommandText = "update ActionTypes set caption = @caption where id = @id";
+                cmd.CommandText = "update ActionTypes set caption = @caption, make_file = @make_file where id = @id";
                 cmd.Parameters.Add(new SqlParameter("id", type.Id));
                 cmd.Parameters.Add(new SqlParameter("caption", type.Caption));
+                cmd.Parameters.Add(new SqlParameter("make_file", type.NeedMakeFile));
 
                 int count = cmd.ExecuteNonQuery();
 
@@ -146,7 +148,7 @@ namespace mfc.domain.services {
 
             try {
                 cmd.CommandText = @"
-                    select id, caption 
+                    select id, caption, make_file 
                         from ActionTypes 
                     where is_deleted = 0
                     order by id";
@@ -173,7 +175,8 @@ namespace mfc.domain.services {
         private ActionType CreateType(SqlDataReader reader) {
             return new ActionType {
                 Id = Convert.ToInt64(reader["id"]),
-                Caption = Convert.ToString(reader["caption"])
+                Caption = Convert.ToString(reader["caption"]),
+                NeedMakeFile = reader["make_file"] == DBNull.Value ? false : Convert.ToBoolean(reader["make_file"]),
             };
         }
 

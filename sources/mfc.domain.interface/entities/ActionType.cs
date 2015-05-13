@@ -11,5 +11,9 @@ namespace mfc.domain.entities {
     public class ActionType {
         public Int64 Id { get; set; }
         public string Caption { get; set; }
+        /// <summary>
+        /// Признак необходимости создавать дела для всех приемов данного типа
+        /// </summary>
+        public bool NeedMakeFile { get; set; }
     }
 }

@@ -37,7 +37,7 @@ namespace mfc.web.Controllers {
             if (ModelState.IsValid) {
                 var srv = CompositionRoot.Resolve<IActionTypeService>();
                 try {
-                    srv.Create(model.Caption);
+                    srv.Create(model.Caption, model.NeedMakeFile);
                 }
                 catch (DomainException e) {
                     ModelState.AddModelError("", e);

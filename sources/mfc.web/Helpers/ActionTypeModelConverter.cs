@@ -10,14 +10,16 @@ namespace mfc.web.Helpers {
         public static ActionTypeModel ToModel(ActionType type) {
             return new ActionTypeModel {
                 Id = type.Id,
-                Caption = type.Caption
+                Caption = type.Caption,
+                NeedMakeFile = type.NeedMakeFile
             };
         }
 
         public static ActionType FromModel(ActionTypeModel model) {
             return new ActionType {
                 Id = model.Id,
-                Caption = model.Caption
+                Caption = model.Caption,
+                NeedMakeFile = model.NeedMakeFile
             };
         }
     }
