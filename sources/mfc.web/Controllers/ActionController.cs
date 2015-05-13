@@ -48,11 +48,6 @@ namespace mfc.web.Controllers {
             return View(model);
         }
 
-        [Authorize(Roles = Roles.Admin)]
-        public ActionResult Directories() {
-            return View();
-        }
-
         public ActionResult Create(string date, Int64 user_id) {
             var model = new ServiceActionViewModel();
 

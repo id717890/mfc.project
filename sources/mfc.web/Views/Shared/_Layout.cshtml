@@ -30,7 +30,7 @@
                             <li>@Html.ActionLink("Дела", "Index", "File")</li>
                             @if (User.IsInRole(MfcRoles.Admin)) {
                              <li>@Html.ActionLink("Отчеты", "Make", "Report")</li>
-                            <li>@Html.ActionLink("Справочники", "Directories", "Home")</li>
+                            <li>@Html.ActionLink("Справочники", "Index", "Directory")</li>
                             <li>@Html.ActionLink("Администрирование", "Index", "Admin")</li>
                             }
                         </ul>
