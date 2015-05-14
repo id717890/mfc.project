@@ -8,6 +8,10 @@
         ViewBag.Title = "Редактирование приема";
     }
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (ViewData.ModelState.ContainsKey("save_file_error")) {
+        ViewBag.ErrorMessage = String.Format("Ошибка при сохранении дела: {0}", ViewData.ModelState["save_file_error"].Errors[0].ErrorMessage);
+    }
 }
 
 <script>
@@ -119,6 +123,11 @@
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
+
+    if (ViewBag.ErrorMessage != null) { 
+        <h3 class="validation-summary-errors">*@ViewBag.ErrorMessage</h3>
+    }
+
 
     <fieldset>
         <legend>ServiceActionViewModel</legend>

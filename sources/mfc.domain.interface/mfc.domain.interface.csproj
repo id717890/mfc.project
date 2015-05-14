@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="entities\Entity.cs" />
     <Compile Include="entities\File.cs" />
     <Compile Include="entities\FileStatus.cs" />
     <Compile Include="entities\FileStatusInfo.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="services\IActionService.cs" />
     <Compile Include="services\IActionTypeService.cs" />
     <Compile Include="services\IDeloService.cs" />
+    <Compile Include="services\IEntityDAO.cs" />
     <Compile Include="services\IFileStatusService.cs" />
     <Compile Include="services\IOrganizationService.cs" />
     <Compile Include="services\IServiceService.cs" />

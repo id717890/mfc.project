@@ -4,21 +4,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using mfc.domain.entities;
+using Ninject;
+using mfc.infrastructure.services;
+using System.Data.SqlClient;
+using mfc.dal.services;
 
 namespace mfc.domain.services {
     public class FileService : IFileService {
-        public IEnumerable<File> GetFiles(User user, DateTime date) {
-            List<File> files = new List<File>();
+        [Inject]
+        public ISqlProvider SqlProvider { get; set; }
 
-            return files;
+        [Inject]
+        public IIdentifierService IdService { get; set; }
+
+        [Inject]
+        public IFileRepository FileRepository { get; set; }
+
+        public IEnumerable<File> GetFiles(User user, DateTime date) {
+            return FileRepository.GetAll();
         }
 
         public File GetFileById(long Id) {
-            throw new NotImplementedException();
+            return FileRepository.GetById(Id);
         }
 
         public long Add(ServiceAction action) {
-            throw new NotImplementedException();
+            File file = new File {
+                Caption = action.Customer
+            };
+
+            FileRepository.Create(file);
+
+            return file.Id;
         }
 
         public void Update(File file) {

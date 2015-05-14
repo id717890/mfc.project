@@ -284,6 +284,9 @@
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="nhibernate.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\datepicker-ru.js" />
     <Content Include="Scripts\editor_hooksup.js" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
@@ -371,6 +374,14 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\mfc.dal.interface\mfc.dal.interface.csproj">
+      <Project>{a9515720-68c7-4dca-a748-56f528063320}</Project>
+      <Name>mfc.dal.interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mfc.dal\mfc.dal.csproj">
+      <Project>{1631c6f3-f3d5-48ad-88d8-950f884d2976}</Project>
+      <Name>mfc.dal</Name>
+    </ProjectReference>
     <ProjectReference Include="..\mfc.domain.interface\mfc.domain.interface.csproj">
       <Project>{ca144fb7-3be0-4e32-898f-b2f4a33b4846}</Project>
       <Name>mfc.domain.interface</Name>

@@ -8,42 +8,38 @@ namespace mfc.domain.entities {
     /// <summary>
     /// Дело
     /// </summary>
-    public class File {
-        /// <summary>
-        /// Уникальный идентификато
-        /// </summary>
-        public Int64 Id { get; set; }
+    public class File : Entity {
         /// <summary>
         /// Дата создания дела - дата-время приема документов
         /// </summary>
-        public DateTime Date { get; set; }
+        public virtual DateTime Date { get; set; }
         /// <summary>
         /// Ссылка на действие по приему документов
         /// </summary>
-        public Int64 ActionId { get; set; }
+        public virtual Int64 ActionId { get; set; }
         /// <summary>
         /// Номер дела
         /// </summary>
-        public string Caption { get; set; }
+        public virtual string Caption { get; set; }
         /// <summary>
         /// Идентификатор контроллера по делу
         /// </summary>
-        public User Controller { get; set; }
+        public virtual User Controller { get; set; }
         /// <summary>
         /// Идентификатор эксперта, принявшего документы
         /// </summary>
-        public User Excpert { get; set; }
+        public virtual User Excpert { get; set; }
         /// <summary>
         /// Действиющий (последний) статус дела
         /// </summary>
-        public FileStatus CurrentStatus { get; set; }
+        public virtual FileStatus CurrentStatus { get; set; }
         /// <summary>
         /// Идентификатор ОГВ, куда должно быть направлено дело
         /// </summary>
-        public Organization Ogv { get; set; }
+        public virtual Organization Ogv { get; set; }
         /// <summary>
         /// Услуга
         /// </summary>
-        public Service Service { get; set; }
+        public virtual Service Service { get; set; }
     }
 }

@@ -70,12 +70,29 @@ namespace mfc.web.Controllers {
                 var action_srv = CompositionRoot.Resolve<IActionService>();
                 bool has_error = false;
 
+                Int64 id = -1;
+
                 try {
-                    action_srv.Add(model.Date, model.ServiceId, model.Customer, model.TypeId, model.ExpertId, model.Comments);
+                    id = action_srv.Add(model.Date, model.ServiceId, model.Customer, model.TypeId, model.ExpertId, model.Comments);
                 }
                 catch (Exception e) {
                     has_error = true;
                     ModelState.AddModelError("", e.Message);
+                }
+
+                //в случае успешного сохранения приема, добавляем дело
+                if (!has_error) {
+                    var action = action_srv.GetActionById(id);
+                    if (action != null && action.Type.NeedMakeFile) {
+                        var file_srv = CompositionRoot.Resolve<IFileService>();
+                        try {
+                            file_srv.Add(action);
+                        }
+                        catch (Exception e) {
+                            has_error = true;
+                            ModelState.AddModelError("save_file_error", e.Message);
+                        }
+                    }
                 }
 
                 if (!has_error) {
@@ -84,6 +101,7 @@ namespace mfc.web.Controllers {
             }
 
             PrepareForCreate();
+
             return View("Edit", model);
         }
 
