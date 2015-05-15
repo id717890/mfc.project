@@ -46,7 +46,6 @@
     <Compile Include="services\IReportService.cs" />
     <Compile Include="services\IRepository.cs" />
     <Compile Include="services\ISqlProvider.cs" />
-    <Compile Include="services\IUnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\mfc.domain.interface\mfc.domain.interface.csproj">

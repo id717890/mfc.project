@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace mfc.domain.entities {
-    public class OrganizationType {
-        public Int64 Id { get; set; }
-        public string Caption { get; set; }
+    public class OrganizationType : Entity {
+        public virtual string Caption { get; set; }
 
         public override bool Equals(object obj) {
             if (obj == null) {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace mfc.infrastructure.services {
+namespace mfc.dal.services {
     public interface IUnitOfWork {
         void BeginTransaction();
         void Commit();

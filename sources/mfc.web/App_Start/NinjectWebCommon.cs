@@ -9,6 +9,7 @@ namespace mfc.web.App_Start {
 
     using Ninject;
     using Ninject.Web.Common;
+    using mfc.domain.services;
 
     public static class NinjectWebCommon {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();

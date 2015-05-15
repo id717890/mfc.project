@@ -1,4 +1,5 @@
-﻿using mfc.domain.entities;
+﻿using mfc.dal.services;
+using mfc.domain.entities;
 using mfc.infrastructure.services;
 using Ninject;
 using System;
@@ -19,6 +20,12 @@ namespace mfc.domain.services {
 
         [Inject]
         public IIdentifierService IdService { get; set; }
+
+        [Inject]
+        public IOrganizationTypeRepository TypeRepo { get; set; }
+
+        [Inject]
+        public IUnitOfWork UnitOfWork { get; set; }
 
         private Dictionary<Int64, OrganizationType> _cache_types = new Dictionary<long, OrganizationType>();
         private Dictionary<Int64, Organization> _cache_orgs = new Dictionary<long, Organization>();
@@ -48,78 +55,24 @@ namespace mfc.domain.services {
         public long CreateType(string caption) {
             Debug.Assert(!string.IsNullOrEmpty(caption));
 
-            Int64 result_id = 0;
-            Int64 new_id = IdService.GetId();
+            OrganizationType type = new OrganizationType { Caption = caption, IsDeleted = false };
+            UnitOfWork.BeginTransaction(); 
+            TypeRepo.Create(type);
+            UnitOfWork.Commit();
 
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
-
-            try {
-                cmd.CommandText = @"insert into OrganizationTypes (id, caption) values (@id, @caption)";
-                cmd.Parameters.Add(new SqlParameter("id", new_id));
-                cmd.Parameters.Add(new SqlParameter("caption", caption));
-
-                cmd.ExecuteNonQuery();
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                cmd.Dispose();
-                conn.Close();
-                _is_type_cache_valid = false;
-            }
-
-            return result_id;
+            return 0;
         }
 
         public void DeleteType(long typeId) {
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
-
-            try {
-                cmd.CommandText = "update OrganizationTypes set is_deleted = 1 where id = @id";
-                cmd.Parameters.Add(new SqlParameter("id", typeId));
-
-                int count = cmd.ExecuteNonQuery();
-
-                if (count == 0) {
-                    throw new DomainException("Не удалось обновить запись в таблице OrganizationTypes");
-                }
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                cmd.Dispose();
-                conn.Close();
-                _is_type_cache_valid = false;
-            }
+            UnitOfWork.BeginTransaction();
+            TypeRepo.Delete(typeId);
+            UnitOfWork.Commit();
         }
 
         public void UpdateType(OrganizationType type) {
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
-
-            try {
-                cmd.CommandText = "update OrganizationTypes set caption = @caption where id = @id";
-                cmd.Parameters.Add(new SqlParameter("id", type.Id));
-                cmd.Parameters.Add(new SqlParameter("caption", type.Caption));
-                
-                int count = cmd.ExecuteNonQuery();
-                
-                if (count == 0) {
-                    throw new DomainException("Не удалось обновить запись в таблице OrganizationTypes");
-                }
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                cmd.Dispose();
-                conn.Close();
-                _is_type_cache_valid = false;
-            }
+            UnitOfWork.BeginTransaction();
+            TypeRepo.Update(type);
+            UnitOfWork.Commit();
         }
 
 
@@ -284,36 +237,7 @@ namespace mfc.domain.services {
         }
 
         private IEnumerable<OrganizationType> GetAllTypesInternal() {
-            List<OrganizationType> types = new List<OrganizationType>();
-
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
-            SqlDataReader reader = null;
-
-            try {
-                cmd.CommandText = @"
-                    select id, caption 
-                        from OrganizationTypes 
-                    where is_deleted = 0
-                    order by caption";
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read()) {
-                    types.Add(CreateType(reader));
-                }
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                if (reader != null) {
-                    reader.Close();
-                }
-                cmd.Dispose();
-                conn.Close();
-            }
-
-            return types;
+            return TypeRepo.GetAll();
         }
 
         public IEnumerable<Organization> GetAllOrganizationsInternal() {
