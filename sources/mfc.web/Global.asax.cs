@@ -32,6 +32,8 @@ namespace mfc.web
             string conntion_string_name = ConfigurationManager.AppSettings["ConnectionStringName"];
             string connection_string = ConfigurationManager.ConnectionStrings[conntion_string_name].ConnectionString;
             CompositionRoot.Resolve<ISqlProvider>().Init(connection_string);
+
+            log4net.Config.XmlConfigurator.Configure(); 
         }
 
         protected void Application_AuthenticateRequest(Object sender, EventArgs e) {
