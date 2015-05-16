@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace mfc.dal.services {
     public class OrganizationTypeRepository : Repository<OrganizationType>, IOrganizationTypeRepository {
-        public OrganizationTypeRepository(IUnitOfWork unitOfWork) : base(unitOfWork) {
+        public OrganizationTypeRepository(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider) {
 
         }
     }

@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 
 namespace mfc.dal.services {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity {
-        private UnitOfWork _unitOfWork;
+        private IUnitOfWorkProvider _unitOfWorkProvider;
         [Inject]
         public IIdentifierService IdService { get; set; }
 
-        public Repository(IUnitOfWork unitOfWork) {
-            _unitOfWork = (UnitOfWork)unitOfWork;
+        public Repository(IUnitOfWorkProvider unitOfWorkProvider) {
+            _unitOfWorkProvider = unitOfWorkProvider;
         }
 
-        protected ISession Session { get { return _unitOfWork.Session; } }
+        protected ISession Session { get { return ((UnitOfWork)_unitOfWorkProvider.GetUnitOfWork()).Session; } }
 
         public IEnumerable<TEntity> GetAll() {
             return Session.Query<TEntity>().Where(x=>!x.IsDeleted).ToList<TEntity>();

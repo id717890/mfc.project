@@ -44,6 +44,7 @@
     <Compile Include="services\IOrganizationTypeRepository.cs" />
     <Compile Include="services\IRepository.cs" />
     <Compile Include="services\IUnitOfWork.cs" />
+    <Compile Include="services\IUnitOfWorkProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\mfc.domain.interface\mfc.domain.interface.csproj">

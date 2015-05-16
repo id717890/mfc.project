@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 
 namespace mfc.dal.services {
     public class FileRepository : Repository<File>, IFileRepository {
-        public FileRepository(IUnitOfWork unitOfWork) : base(unitOfWork) { }
+        public FileRepository(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider) { }
     }
 }

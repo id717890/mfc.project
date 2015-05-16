@@ -59,6 +59,7 @@
     <Compile Include="services\OrganizationTypeRepository.cs" />
     <Compile Include="services\Repository.cs" />
     <Compile Include="services\UnitOfWork.cs" />
+    <Compile Include="services\UnitOfWorkProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\mfc.dal.interface\mfc.dal.interface.csproj">
