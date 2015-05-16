@@ -21,7 +21,7 @@ namespace mfc.dal.services {
 
         protected ISession Session { get { return ((UnitOfWork)_unitOfWorkProvider.GetUnitOfWork()).Session; } }
 
-        public IEnumerable<TEntity> GetAll() {
+        public virtual IEnumerable<TEntity> GetAll() {
             return Session.Query<TEntity>().Where(x=>!x.IsDeleted).ToList<TEntity>();
         }
 
