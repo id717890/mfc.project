@@ -25,7 +25,10 @@ namespace mfc.domain.services {
         public IOrganizationTypeRepository TypeRepo { get; set; }
 
         [Inject]
-        public IUnitOfWork UnitOfWork { get; set; }
+        public IUnitOfWorkProvider UnitOfWorkProvider { get; set; }
+
+        [Inject]
+        public IOrganizationRepository OrgRepo { get; set; }
 
         private Dictionary<Int64, OrganizationType> _cache_types = new Dictionary<long, OrganizationType>();
         private Dictionary<Int64, Organization> _cache_orgs = new Dictionary<long, Organization>();
@@ -56,23 +59,35 @@ namespace mfc.domain.services {
             Debug.Assert(!string.IsNullOrEmpty(caption));
 
             OrganizationType type = new OrganizationType { Caption = caption, IsDeleted = false };
-            UnitOfWork.BeginTransaction(); 
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
+            
+            unit_of_work.BeginTransaction(); 
             TypeRepo.Create(type);
-            UnitOfWork.Commit();
+            unit_of_work.Commit();
+
+            _is_type_cache_valid = false;
 
             return 0;
         }
 
         public void DeleteType(long typeId) {
-            UnitOfWork.BeginTransaction();
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
+            
+            unit_of_work.BeginTransaction();
             TypeRepo.Delete(typeId);
-            UnitOfWork.Commit();
+            unit_of_work.Commit();
+
+            _is_type_cache_valid = false;
         }
 
         public void UpdateType(OrganizationType type) {
-            UnitOfWork.BeginTransaction();
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
+
+            unit_of_work.BeginTransaction();
             TypeRepo.Update(type);
-            UnitOfWork.Commit();
+            unit_of_work.Commit();
+
+            _is_type_cache_valid = false;
         }
 
 
@@ -89,82 +104,42 @@ namespace mfc.domain.services {
         public long CreateOrganization(string caption, string fullCaption, Int64 typeId) {
             Debug.Assert(!string.IsNullOrEmpty(caption));
 
-            Int64 result_id = 0;
-            Int64 new_id = IdService.GetId();
+            var org = new Organization {
+                Caption = caption,
+                Id = IdService.GetId(),
+                FullCaption = fullCaption,
+                Type = _cache_types[typeId]
+            };
 
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
-            try {
-                cmd.CommandText = @"insert into Organizations (id, caption, full_caption, type_id) values (@id, @caption, @full_caption, @type_id)";
-                cmd.Parameters.Add(new SqlParameter("id", new_id));
-                cmd.Parameters.Add(new SqlParameter("caption", caption));
-                cmd.Parameters.Add(new SqlParameter("full_caption", fullCaption));
-                cmd.Parameters.Add(new SqlParameter("type_id", typeId));
+            unit_of_work.BeginTransaction();
+            OrgRepo.Create(org);
+            unit_of_work.Commit();
 
-                cmd.ExecuteNonQuery();
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                cmd.Dispose();
-                conn.Close();
-                _is_org_cache_valid = false;
-            }
+            _is_org_cache_valid = false;
 
-            return result_id;
+            return 0;
         }
 
         public void DeleteOrganization(long organizationId) {
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
-            try {
-                cmd.CommandText = "update Organizations set is_deleted = 1 where id = @id";
-                cmd.Parameters.Add(new SqlParameter("id", organizationId));
+            unit_of_work.BeginTransaction();
+            OrgRepo.Delete(organizationId);
+            unit_of_work.Commit();
 
-                int count = cmd.ExecuteNonQuery();
-
-                if (count == 0) {
-                    throw new DomainException("Не удалось обновить запись в таблице Organizations");
-                }
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                cmd.Dispose();
-                conn.Close();
-                _is_org_cache_valid = false; ;
-            }
+            _is_org_cache_valid = false;
         }
 
         public void UpdateOgranization(Organization organization) {
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
-            try {
-                cmd.CommandText = "update Organizations set caption = @caption, full_caption = @full_caption, type_id = @type_id where id = @id";
-                cmd.Parameters.Add(new SqlParameter("id", organization.Id));
-                cmd.Parameters.Add(new SqlParameter("caption", organization.Caption));
-                cmd.Parameters.Add(new SqlParameter("full_caption", organization.FullCaption));
-                cmd.Parameters.Add(new SqlParameter("type_id", organization.Type.Id));
+            unit_of_work.BeginTransaction();
+            OrgRepo.Update(organization);
+            unit_of_work.Commit();
 
-                int count = cmd.ExecuteNonQuery();
-
-                if (count == 0) {
-                    throw new DomainException("Не удалось обновить запись в таблице Organizations");
-                }
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                cmd.Dispose();
-                conn.Close();
-                _is_org_cache_valid = false;
-            }
+            _is_org_cache_valid = false;
         }
 
         public Organization GetOrganizationById(long id) {
@@ -183,29 +158,6 @@ namespace mfc.domain.services {
 
 
         #region Helper Methods
-
-        private OrganizationType CreateType(SqlDataReader reader) {
-            return new OrganizationType {
-                Id = Convert.ToInt64(reader["id"]),
-                Caption = Convert.ToString(reader["caption"])
-            };
-        }
-
-        private Organization CreateOrganization(SqlDataReader reader) {
-            var org = new Organization {
-                Id = Convert.ToInt64(reader["id"]),
-                Caption = Convert.ToString(reader["caption"]),
-                FullCaption = reader["full_caption"] != DBNull.Value ? Convert.ToString(reader["full_caption"]) : string.Empty
-            };
-
-            Int64 type_id = reader["type_id"] != DBNull.Value ? Convert.ToInt64(reader["type_id"]) : -1;
-
-            if (type_id > 0 && _cache_types.ContainsKey(type_id)) {
-                org.Type = _cache_types[type_id];
-            }
-
-            return org;
-        }
 
         private void PrepareTypeCache() {
             if (_is_type_cache_valid) {
@@ -241,38 +193,7 @@ namespace mfc.domain.services {
         }
 
         public IEnumerable<Organization> GetAllOrganizationsInternal() {
-            PrepareTypeCache();
-
-            List<Organization> orgs = new List<Organization>();
-
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
-            SqlDataReader reader = null;
-
-            try {
-                cmd.CommandText = @"
-                    select id, caption, full_caption, type_id 
-                        from Organizations
-                    where is_deleted = 0
-                    order by caption";
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read()) {
-                    orgs.Add(CreateOrganization(reader));
-                }
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                if (reader != null) {
-                    reader.Close();
-                }
-                cmd.Dispose();
-                conn.Close();
-            }
-
-            return orgs;
+            return OrgRepo.GetAll().ToList();
         }
 
         #endregion

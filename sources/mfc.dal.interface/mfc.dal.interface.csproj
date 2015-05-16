@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="services\IFileRepository.cs" />
+    <Compile Include="services\IOrganizationRepository.cs" />
     <Compile Include="services\IOrganizationTypeRepository.cs" />
     <Compile Include="services\IRepository.cs" />
     <Compile Include="services\IUnitOfWork.cs" />

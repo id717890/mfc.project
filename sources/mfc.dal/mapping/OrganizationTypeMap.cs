@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace mfc.dal.mapping {
-    public class OrganizationTypeMapping : ClassMap<OrganizationType>{
-        public OrganizationTypeMapping() {
+    public class OrganizationTypeMap : ClassMap<OrganizationType>{
+        public OrganizationTypeMap() {
             Table("OrganizationTypes");
             Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Caption);

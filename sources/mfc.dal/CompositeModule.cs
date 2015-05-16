@@ -12,8 +12,9 @@ namespace mfc.dal {
     public class CompositeModule : NinjectModule {
         public override void Load() {
             Kernel.Bind<IOrganizationTypeRepository>().To<OrganizationTypeRepository>().InSingletonScope();
+            Kernel.Bind<IOrganizationRepository>().To<OrganizationRepository>().InSingletonScope();
             Kernel.Bind<IFileRepository>().To<FileRepository>();
-            Kernel.Bind<IUnitOfWorkProvider>().ToConstant(new UnitOfWorkProvider(Kernel));
+            Kernel.Bind<IUnitOfWorkProvider>().ToConstant(new UnitOfWorkProvider(Kernel)).InSingletonScope();
         }
     }
 }
