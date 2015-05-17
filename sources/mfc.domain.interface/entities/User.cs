@@ -8,13 +8,12 @@ namespace mfc.domain.entities {
     /// <summary>
     /// Класс с данными пользователя
     /// </summary>
-    public class User {
-        public Int64 Id { get; set; }
-        public String Account { get; set; }
-        public String Name { get; set; }
-        public bool IsAdmin { get; set; }
-        public bool IsExpert { get; set; }
-        public bool IsController { get; set; }
+    public class User : Entity {
+        public virtual String Account { get; set; }
+        public virtual String Name { get; set; }
+        public virtual bool IsAdmin { get; set; }
+        public virtual bool IsExpert { get; set; }
+        public virtual bool IsController { get; set; }
 
         public override bool Equals(object obj) {
             if (obj == null) {

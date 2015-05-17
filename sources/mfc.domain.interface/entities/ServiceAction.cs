@@ -8,13 +8,12 @@ namespace mfc.domain.entities {
     /// <summary>
     /// Класс данных, содержащих информацию об оказанной услуге
     /// </summary>
-    public class ServiceAction {
-        public Int64 Id { get; set; }
-        public DateTime Date { get; set; }
-        public string Customer { get; set; }
-        public Service Service { get; set; }
-        public ActionType Type { get; set; }
-        public User User { get; set; }
-        public string Comments { get; set; }
+    public class ServiceAction : Entity {
+        public virtual DateTime Date { get; set; }
+        public virtual string Customer { get; set; }
+        public virtual Service Service { get; set; }
+        public virtual ActionType Type { get; set; }
+        public virtual User User { get; set; }
+        public virtual string Comments { get; set; }
     }
 }

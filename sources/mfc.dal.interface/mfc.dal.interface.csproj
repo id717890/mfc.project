@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="services\IServiceActionRepository.cs" />
     <Compile Include="services\IServiceRepository.cs" />
     <Compile Include="services\IFileRepository.cs" />
     <Compile Include="services\IOrganizationRepository.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="services\IRepository.cs" />
     <Compile Include="services\IUnitOfWork.cs" />
     <Compile Include="services\IUnitOfWorkProvider.cs" />
+    <Compile Include="services\IUserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\mfc.domain.interface\mfc.domain.interface.csproj">

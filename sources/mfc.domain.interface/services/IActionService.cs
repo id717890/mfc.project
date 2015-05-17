@@ -11,7 +11,6 @@ namespace mfc.domain.services {
     /// </summary>
     public interface IActionService {
         IEnumerable<ServiceAction> GetActions(User user, DateTime date);
-        IEnumerable<ServiceAction> GetActions(User user, DateTime dateBegin, DateTime dateEnd);
         IEnumerable<ServiceAction> GetActions(DateTime dateBegin, DateTime dateEnd);
         ServiceAction GetActionById(Int64 Id);
         Int64 Add(DateTime date, Int64 serviceId, string curtomer, Int64 typeId, Int64 userId, string comments);

@@ -40,7 +40,7 @@ namespace mfc.infrastructure.report {
                 Dictionary<Service, ReportSumRow> services = null;
 
                 if (!_data.ContainsKey(action.Service.Organization.Type)) {
-                    services = new Dictionary<Service,ReportSumRow>();
+                    services = new Dictionary<Service, ReportSumRow>();
                     _data.Add(action.Service.Organization.Type, services);
                 }
                 else {

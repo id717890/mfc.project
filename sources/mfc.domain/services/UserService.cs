@@ -10,6 +10,7 @@ using mfc.domain.entities;
 using Ninject;
 using mfc.infrastructure.services;
 using System.Diagnostics;
+using mfc.dal.services;
 
 namespace mfc.domain.services {
     public class UserService : IUserService {
@@ -18,6 +19,12 @@ namespace mfc.domain.services {
 
         [Inject]
         public IIdentifierService IdService { get; set; }
+
+        [Inject]
+        public IUserRepository Repository { get; set; }
+
+        [Inject]
+        public IUnitOfWorkProvider UnitOfWorkProvider { get; set; }
 
         #region Cache
         private bool _is_cached_valid = false;
@@ -49,33 +56,24 @@ namespace mfc.domain.services {
         }
 
         public void AddNew(string account, string name, bool is_admin, bool is_expert, bool is_controller) {
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
-            SqlDataReader reader = null;
+            var user = new User {
+                Id = IdService.GetId(),
+                Account = account,
+                Name = name,
+                IsAdmin = is_admin,
+                IsController = is_controller,
+                IsExpert = is_expert,
+                IsDeleted = false
+            };
 
-            try {
-                cmd.CommandText = @"insert into Users (id, account, name, is_admin) values (@id, @account, @name, @is_admin, @is_expert, @is_controller)";
-                cmd.Parameters.Add(new SqlParameter("id", IdService.GetId()));
-                cmd.Parameters.Add(new SqlParameter("account", account));
-                cmd.Parameters.Add(new SqlParameter("name", name));
-                cmd.Parameters.Add(new SqlParameter("is_admin", is_admin));
-                cmd.Parameters.Add(new SqlParameter("is_expert", is_expert));
-                cmd.Parameters.Add(new SqlParameter("is_controller", is_controller));
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
-                int row_count = cmd.ExecuteNonQuery();
+            unit_of_work.BeginTransaction();
+            Repository.Create(user);
+            unit_of_work.Commit();
 
-                if (row_count == 0) {
-                    throw new DomainException("Подсистеме работы с данными не удалось добавить строку в таблицу Users");
-                }
-            }
-            finally {
-                if (reader != null) {
-                    reader.Close();
-                }
-                cmd.Dispose();
-                conn.Close();
-                _is_cached_valid = false;
-            }
+            _is_cached_valid = false;
+            
         }
 
         public bool IsUserExists(string account) {
@@ -96,54 +94,23 @@ namespace mfc.domain.services {
 
 
         public void Update(User user) {
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
-            try {
-                cmd.CommandText = @"
-                        update Users set account = @account, name = @name, is_admin = @is_admin, is_expert = @is_expert, is_controller = @is_controller
-                        where id = @id";
-                cmd.Parameters.Add(new SqlParameter("id", user.Id));
-                cmd.Parameters.Add(new SqlParameter("account", user.Account));
-                cmd.Parameters.Add(new SqlParameter("name", user.Name));
-                cmd.Parameters.Add(new SqlParameter("is_admin", user.IsAdmin));
-                cmd.Parameters.Add(new SqlParameter("is_expert", user.IsExpert));
-                cmd.Parameters.Add(new SqlParameter("is_controller", user.IsController));
+            unit_of_work.BeginTransaction();
+            Repository.Update(user);
+            unit_of_work.Commit();
 
-                int row_count = cmd.ExecuteNonQuery();
-
-                if (row_count == 0) {
-                    throw new DomainException("Подсистеме работы с данными не удалось обновить информацию в таблице Users");
-                }
-            }
-            finally {
-                cmd.Dispose();
-                conn.Close();
-                _is_cached_valid = false;
-            }
+            _is_cached_valid = false;
         }
 
         public void Delete(Int64 userId) {
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
-            try {
-                cmd.CommandText = @"
-                        update Users set is_deleted = 1
-                        where id = @id";
-                cmd.Parameters.Add(new SqlParameter("id", userId));
+            unit_of_work.BeginTransaction();
+            Repository.Delete(userId);
+            unit_of_work.Commit();
 
-                int row_count = cmd.ExecuteNonQuery();
-
-                if (row_count == 0) {
-                    throw new DomainException("Подсистеме работы с данными не удалось обновить информацию в таблице Users");
-                }
-            }
-            finally {
-                cmd.Dispose();
-                conn.Close();
-                _is_cached_valid = false;
-            }
+            _is_cached_valid = false;
         }
 
 
@@ -203,44 +170,7 @@ namespace mfc.domain.services {
         }
 
         private IEnumerable<User> GetAllUsersInternal() {
-            List<User> users = new List<User>();
-
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
-            SqlDataReader reader = null;
-
-            try {
-                cmd.CommandText = @"
-                        select id, account, name, is_admin, is_expert, is_controller from Users 
-                        where is_deleted = 0
-                        order by account";
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read()) {
-                    users.Add(CreateUser(reader));
-                }
-
-            }
-            finally {
-                if (reader != null) {
-                    reader.Close();
-                }
-                cmd.Dispose();
-                conn.Close();
-            }
-
-            return users;
-        }
-
-        private User CreateUser(SqlDataReader reader) {
-            return new User {
-                Id = Convert.ToInt64(reader["id"]),
-                Account = Convert.ToString(reader["account"]),
-                Name = reader["name"] == DBNull.Value ? string.Empty : Convert.ToString(reader["name"]),
-                IsAdmin = reader["is_admin"] == DBNull.Value ? false : Convert.ToBoolean(reader["is_admin"]),
-                IsExpert = reader["is_expert"] == DBNull.Value ? false : Convert.ToBoolean(reader["is_expert"]),
-                IsController = reader["is_controller"] == DBNull.Value ? false : Convert.ToBoolean(reader["is_controller"])
-            };
+            return Repository.GetAll();
         }
 
         #endregion

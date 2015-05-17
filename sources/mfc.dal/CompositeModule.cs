@@ -15,6 +15,8 @@ namespace mfc.dal {
             Kernel.Bind<IActionTypeRepository>().To<ActionTypeRepository>().InSingletonScope();
             Kernel.Bind<IOrganizationRepository>().To<OrganizationRepository>().InSingletonScope();
             Kernel.Bind<IFileRepository>().To<FileRepository>();
+            Kernel.Bind<IUserRepository>().To<UserRepository>();
+            Kernel.Bind<IServiceActionRepository>().To<ServiceActionRepository>();
             Kernel.Bind<IServiceRepository>().To<ServiceRepository>();
             Kernel.Bind<IUnitOfWorkProvider>().ToConstant(new UnitOfWorkProvider(Kernel)).InSingletonScope();
         }
