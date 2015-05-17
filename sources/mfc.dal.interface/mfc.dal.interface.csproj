@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="services\IServiceRepository.cs" />
     <Compile Include="services\IFileRepository.cs" />
     <Compile Include="services\IOrganizationRepository.cs" />
     <Compile Include="services\IActionTypeRepository.cs" />

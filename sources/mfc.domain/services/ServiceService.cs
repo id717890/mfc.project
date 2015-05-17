@@ -1,4 +1,5 @@
-﻿using mfc.domain.entities;
+﻿using mfc.dal.services;
+using mfc.domain.entities;
 using mfc.infrastructure.services;
 using Ninject;
 using System;
@@ -14,13 +15,16 @@ namespace mfc.domain.services {
         private readonly object sync_obj = new object();
 
         [Inject]
-        public ISqlProvider SqlProvider { get; set; }
-
-        [Inject]
         public IIdentifierService IdService { get; set; }
 
         [Inject]
         public IOrganizationService OrgService { get; set; }
+
+        [Inject]
+        public IUnitOfWorkProvider UnitOfWorkProvider { get; set; }
+
+        [Inject]
+        public IServiceRepository Repository { get; set; }
 
         private Dictionary<Int64, Service> _cache = new Dictionary<long, Service>();
         private bool _is_cache_valid = false;
@@ -55,84 +59,42 @@ namespace mfc.domain.services {
         public long Create(string caption, Int64 organizationId) {
             Debug.Assert(!string.IsNullOrEmpty(caption));
 
-            Int64 result_id = 0;
-            Int64 new_id = IdService.GetId();
+            var service = new Service {
+                Id = IdService.GetId(),
+                Caption = caption,
+                Organization = OrgService.GetOrganizationById(organizationId),
+                IsDeleted = false
+            };
 
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
+            var work_of_unit = UnitOfWorkProvider.GetUnitOfWork();
 
-            try {
-                cmd.CommandText = @"insert into Services (id, caption, org_id) values (@id, @caption, @org_id)";
-                cmd.Parameters.Add(new SqlParameter("id", new_id));
-                cmd.Parameters.Add(new SqlParameter("caption", caption));
-                cmd.Parameters.Add(new SqlParameter("org_id", organizationId));
+            work_of_unit.BeginTransaction();
+            Repository.Create(service);
+            work_of_unit.Commit();
 
-                cmd.ExecuteNonQuery();
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                cmd.Dispose();
-                conn.Close();
-                _is_cache_valid = false;
-            }
-
-            return result_id;
+            _is_cache_valid = false;
+            
+            return 0;
         }
 
         public void Update(Service service) {
-            var conn = SqlProvider.CreateConnection(); 
-            var cmd = conn.CreateCommand();
+            var work_of_unit = UnitOfWorkProvider.GetUnitOfWork();
 
-            try {
-                cmd.CommandText = "update Services set caption = @caption, org_id = @org_id where id = @id";
-                cmd.Parameters.Add(new SqlParameter("id", service.Id));
-                cmd.Parameters.Add(new SqlParameter("caption", service.Caption));
-                cmd.Parameters.Add(new SqlParameter("org_id", DBNull.Value));
+            work_of_unit.BeginTransaction();
+            Repository.Update(service);
+            work_of_unit.Commit();
 
-                if (service.Organization != null) {
-                    cmd.Parameters["org_id"].Value = service.Organization.Id;
-                }
-
-                int count = cmd.ExecuteNonQuery();
-
-                if (count == 0) {
-                    throw new DomainException("Не удалось обновить запись в таблице Services");
-                }
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                cmd.Dispose();
-                conn.Close();
-                _is_cache_valid = false;
-            }
+            _is_cache_valid = false;
         }
 
         public void Delete(Int64 id) {
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
+            var work_of_unit = UnitOfWorkProvider.GetUnitOfWork();
 
-            try {
-                cmd.CommandText = "update Services set is_deleted = 1 where id = @id";
-                cmd.Parameters.Add(new SqlParameter("id", id));
+            work_of_unit.BeginTransaction();
+            Repository.Delete(id);
+            work_of_unit.Commit();
 
-                int count = cmd.ExecuteNonQuery();
-
-                if (count == 0) {
-                    throw new DomainException("Не удалось обновить запись в таблице Services");
-                }
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                cmd.Dispose();
-                conn.Close();
-                _is_cache_valid = false;
-            }
+            _is_cache_valid = false;
         }
 
         #region Helpers
@@ -153,36 +115,7 @@ namespace mfc.domain.services {
         }
 
         private IEnumerable<Service> GetServicesInternal() {
-            List<Service> services = new List<Service>();
-            
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
-            SqlDataReader reader = null;
-
-            try {
-                cmd.CommandText = @"
-                    select id, caption, org_id 
-                        from Services 
-                    where is_deleted = 0
-                    order by caption";
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read()) {
-                    services.Add(CreateService(reader));
-                }
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                if (reader != null) {
-                    reader.Close();
-                }
-                cmd.Dispose();
-                conn.Close();
-            }
-
-            return services;
+            return Repository.GetAll();
         }
 
         private Service CreateService(SqlDataReader reader) {

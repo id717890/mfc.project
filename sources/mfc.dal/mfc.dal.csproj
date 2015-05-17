@@ -54,10 +54,12 @@
     <Compile Include="CompositeModule.cs" />
     <Compile Include="mapping\ActionTypeMap.cs" />
     <Compile Include="mapping\FileMap.cs" />
+    <Compile Include="mapping\ServiceMap.cs" />
     <Compile Include="mapping\OrganizationMap.cs" />
     <Compile Include="mapping\OrganizationTypeMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="services\FileRepository.cs" />
+    <Compile Include="services\ServiceRepository.cs" />
     <Compile Include="services\OrganizationRepository.cs" />
     <Compile Include="services\ActionTypeRepository.cs" />
     <Compile Include="services\OrganizationTypeRepository.cs" />

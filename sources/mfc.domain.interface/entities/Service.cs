@@ -8,10 +8,9 @@ namespace mfc.domain.entities {
     /// <summary>
     /// Элемент справочника "Услуги"
     /// </summary>
-    public class Service {
-        public Int64 Id { get; set; }
-        public string Caption { get; set; }
-        public Organization Organization { get; set; }
+    public class Service : Entity {
+        public virtual string Caption { get; set; }
+        public virtual Organization Organization { get; set; }
 
         public override bool Equals(object obj) {
             if (obj == null) {
