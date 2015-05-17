@@ -19,9 +19,6 @@ namespace mfc.domain.services {
         public ISqlProvider SqlProvider { get; set; }
 
         [Inject]
-        public IIdentifierService IdService { get; set; }
-
-        [Inject]
         public IOrganizationTypeRepository TypeRepo { get; set; }
 
         [Inject]
@@ -58,7 +55,7 @@ namespace mfc.domain.services {
         public long CreateType(string caption) {
             Debug.Assert(!string.IsNullOrEmpty(caption));
 
-            OrganizationType type = new OrganizationType { Caption = caption, IsDeleted = false };
+            OrganizationType type = new OrganizationType { Caption = caption };
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
             
             unit_of_work.BeginTransaction(); 
@@ -106,7 +103,6 @@ namespace mfc.domain.services {
 
             var org = new Organization {
                 Caption = caption,
-                Id = IdService.GetId(),
                 FullCaption = fullCaption,
                 Type = _cache_types[typeId]
             };

@@ -18,9 +18,6 @@ namespace mfc.domain.services {
         public ISqlProvider SqlProvider { get; set; }
 
         [Inject]
-        public IIdentifierService IdService { get; set; }
-
-        [Inject]
         public IUserRepository Repository { get; set; }
 
         [Inject]
@@ -57,13 +54,11 @@ namespace mfc.domain.services {
 
         public void AddNew(string account, string name, bool is_admin, bool is_expert, bool is_controller) {
             var user = new User {
-                Id = IdService.GetId(),
                 Account = account,
                 Name = name,
                 IsAdmin = is_admin,
                 IsController = is_controller,
-                IsExpert = is_expert,
-                IsDeleted = false
+                IsExpert = is_expert
             };
 
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();

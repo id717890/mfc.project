@@ -15,9 +15,6 @@ namespace mfc.domain.services {
         public ISqlProvider SqlProvider { get; set; }
 
         [Inject]
-        public IIdentifierService IdService { get; set; }
-
-        [Inject]
         public IServiceService ServiceService { get; set; }
 
         [Inject]
@@ -47,14 +44,12 @@ namespace mfc.domain.services {
 
         public long Add(DateTime date, Int64 serviceId, string customer, Int64 typeId, Int64 userId, string comments) {
             var action = new ServiceAction {
-                Id = IdService.GetId(),
                 Date = date,
                 Service = ServiceService.GetServiceById(serviceId),
                 Customer = customer,
                 Type = TypeService.GetTypeById(typeId),
                 User = UserService.GetUserById(userId),
-                Comments = comments,
-                IsDeleted = false
+                Comments = comments
             };
 
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();

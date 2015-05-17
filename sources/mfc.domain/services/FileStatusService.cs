@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using mfc.domain.entities;
 using mfc.infrastructure.services;
 using Ninject;
+using mfc.dal.services;
 
 namespace mfc.domain.services {
     public class FileStatusService : IFileStatusService {
@@ -18,6 +19,12 @@ namespace mfc.domain.services {
 
         [Inject]
         public IIdentifierService IdService { get; set; }
+
+        [Inject]
+        public IUnitOfWorkProvider UnitOfWorkProvider { get; set; }
+
+        [Inject]
+        public IFileStatusRepository Repository { get; set; }
 
         private Dictionary<Int64, FileStatus> _cache = new Dictionary<long, FileStatus>();
         private bool _is_cache_valid = false;
@@ -43,78 +50,39 @@ namespace mfc.domain.services {
         public long Create(string caption) {
             Debug.Assert(!string.IsNullOrEmpty(caption));
 
-            Int64 result_id = 0;
-            Int64 new_id = IdService.GetId();
+            var status = new FileStatus {
+                Caption = caption,
+            };
 
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
-            try {
-                cmd.CommandText = @"insert into Statuses (id, caption) values (@id, @caption)";
-                cmd.Parameters.Add(new SqlParameter("id", new_id));
-                cmd.Parameters.Add(new SqlParameter("caption", caption));
+            unit_of_work.BeginTransaction();
+            Repository.Create(status);
+            unit_of_work.Commit();
 
-                cmd.ExecuteNonQuery();
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                cmd.Dispose();
-                conn.Close();
-                _is_cache_valid = false;
-            }
+            _is_cache_valid = false;
 
-            return result_id;
+            return 0;
         }
 
         public void Update(FileStatus status) {
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
-            try {
-                cmd.CommandText = "update Statuses set caption = @caption where id = @id";
-                cmd.Parameters.Add(new SqlParameter("id", status.Id));
-                cmd.Parameters.Add(new SqlParameter("caption", status.Caption));
+            unit_of_work.BeginTransaction();
+            Repository.Update(status);
+            unit_of_work.Commit();
 
-                int count = cmd.ExecuteNonQuery();
-
-                if (count == 0) {
-                    throw new DomainException("Не удалось обновить запись в таблице Statuses");
-                }
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                cmd.Dispose();
-                conn.Close();
-                _is_cache_valid = false;
-            }
+            _is_cache_valid = false;
         }
 
-        public void Delete(Int64 typeId) {
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
+        public void Delete(Int64 statusId) {
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
-            try {
-                cmd.CommandText = "update Statuses set is_deleted = 1 where id = @id";
-                cmd.Parameters.Add(new SqlParameter("id", typeId));
+            unit_of_work.BeginTransaction();
+            Repository.Delete(statusId);
+            unit_of_work.Commit();
 
-                int count = cmd.ExecuteNonQuery();
-
-                if (count == 0) {
-                    throw new DomainException("Не удалось обновить запись в таблице Statuses");
-                }
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                cmd.Dispose();
-                conn.Close();
-                _is_cache_valid = false;
-            }
+            _is_cache_valid = false;
         }
 
         #region Helpers
@@ -138,43 +106,7 @@ namespace mfc.domain.services {
         }
 
         private IEnumerable<FileStatus> GetTypesInternal() {
-            List<FileStatus> statuses = new List<FileStatus>();
-
-            var conn = SqlProvider.CreateConnection();
-            var cmd = conn.CreateCommand();
-            SqlDataReader reader = null;
-
-            try {
-                cmd.CommandText = @"
-                    select id, caption 
-                        from Statuses 
-                    where is_deleted = 0
-                    order by id";
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read()) {
-                    statuses.Add(CreateStatus(reader));
-                }
-            }
-            catch (Exception e) {
-                throw new DomainException(e);
-            }
-            finally {
-                if (reader != null) {
-                    reader.Close();
-                }
-                cmd.Dispose();
-                conn.Close();
-            }
-
-            return statuses;
-        }
-
-        private FileStatus CreateStatus(SqlDataReader reader) {
-            return new FileStatus {
-                Id = Convert.ToInt64(reader["id"]),
-                Caption = Convert.ToString(reader["caption"])
-            };
+            return Repository.GetAll();
         }
 
         #endregion

@@ -15,9 +15,6 @@ namespace mfc.domain.services {
         private readonly object sync_obj = new object();
 
         [Inject]
-        public IIdentifierService IdService { get; set; }
-
-        [Inject]
         public IOrganizationService OrgService { get; set; }
 
         [Inject]
@@ -60,10 +57,8 @@ namespace mfc.domain.services {
             Debug.Assert(!string.IsNullOrEmpty(caption));
 
             var service = new Service {
-                Id = IdService.GetId(),
                 Caption = caption,
-                Organization = OrgService.GetOrganizationById(organizationId),
-                IsDeleted = false
+                Organization = OrgService.GetOrganizationById(organizationId)
             };
 
             var work_of_unit = UnitOfWorkProvider.GetUnitOfWork();

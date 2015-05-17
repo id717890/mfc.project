@@ -18,9 +18,6 @@ namespace mfc.domain.services {
         public ISqlProvider SqlProvider { get; set; }
 
         [Inject]
-        public IIdentifierService IdService { get; set; }
-
-        [Inject]
         public IActionTypeRepository Repository { get; set; }
 
         [Inject]
@@ -52,9 +49,7 @@ namespace mfc.domain.services {
 
             var type = new ActionType {
                 Caption = caption,
-                Id = IdService.GetId(),
-                NeedMakeFile = needMakeFile,
-                IsDeleted = false
+                NeedMakeFile = needMakeFile
             };
 
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();

@@ -16,7 +16,7 @@ namespace mfc.domain.entities {
         /// <summary>
         /// Ссылка на действие по приему документов
         /// </summary>
-        public virtual Int64 ActionId { get; set; }
+        public virtual ServiceAction Action { get; set; }
         /// <summary>
         /// Номер дела
         /// </summary>
@@ -28,7 +28,7 @@ namespace mfc.domain.entities {
         /// <summary>
         /// Идентификатор эксперта, принявшего документы
         /// </summary>
-        public virtual User Excpert { get; set; }
+        public virtual User Expert { get; set; }
         /// <summary>
         /// Действиющий (последний) статус дела
         /// </summary>

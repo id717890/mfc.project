@@ -8,9 +8,8 @@ namespace mfc.domain.entities {
     /// <summary>
     /// Элемент справочника "Статусы дел"
     /// </summary>
-    public class FileStatus {
+    public class FileStatus : Entity {
         public static FileStatus All = new FileStatus { Id = -1, Caption = "Все" };
-        public Int64 Id { get; set; }
-        public string Caption { get; set; }
+        public virtual string Caption { get; set; }
     }
 }

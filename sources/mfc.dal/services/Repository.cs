@@ -31,6 +31,7 @@ namespace mfc.dal.services {
 
         public void Create(TEntity entity) {
             entity.Id = IdService.GetId();
+            entity.IsDeleted = false;
             Session.Save(entity);
         }
 
