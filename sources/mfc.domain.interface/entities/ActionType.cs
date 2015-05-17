@@ -8,12 +8,11 @@ namespace mfc.domain.entities {
     /// <summary>
     /// Элемент справочника "Виды деятельности". Предназначен для выбора вида деятельности при оказании услуги.
     /// </summary>
-    public class ActionType {
-        public Int64 Id { get; set; }
-        public string Caption { get; set; }
+    public class ActionType : Entity {
+        public virtual string Caption { get; set; }
         /// <summary>
         /// Признак необходимости создавать дела для всех приемов данного типа
         /// </summary>
-        public bool NeedMakeFile { get; set; }
+        public virtual bool NeedMakeFile { get; set; }
     }
 }

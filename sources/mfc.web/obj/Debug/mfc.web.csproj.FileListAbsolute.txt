@@ -222,3 +222,5 @@ d:\__dev\mfc-project\sources\mfc.web\bin\mfc.dal.pdb
 d:\__dev\mfc-project\sources\mfc.web\bin\FluentNHibernate.pdb
 d:\__dev\mfc-project\sources\mfc.web\bin\FluentNHibernate.xml
 d:\__dev\mfc-project\sources\mfc.web\bin\nhibernate.cfg.xml
+D:\__dev\mfc-project\sources\mfc.web\bin\log4net.dll
+D:\__dev\mfc-project\sources\mfc.web\bin\log4net.xml
