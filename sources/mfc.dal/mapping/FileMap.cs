@@ -10,7 +10,7 @@ namespace mfc.dal.mapping {
     public class FileMap : ClassMap<File>{
         public FileMap() {
             Table("Files");
-            Id(x => x.Id);
+            Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Date, "dt");
             Map(x => x.Caption, "Caption");
             Map(x => x.IsDeleted, "is_deleted");
@@ -18,7 +18,6 @@ namespace mfc.dal.mapping {
             References(x => x.Expert, "expert_id");
             References(x => x.Controller, "controller_id");
             References(x => x.Ogv, "org_id");
-            References(x => x.Service, "service_id");
             References(x => x.CurrentStatus, "status_id");
 
         }

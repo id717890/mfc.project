@@ -37,9 +37,5 @@ namespace mfc.domain.entities {
         /// Идентификатор ОГВ, куда должно быть направлено дело
         /// </summary>
         public virtual Organization Ogv { get; set; }
-        /// <summary>
-        /// Услуга
-        /// </summary>
-        public virtual Service Service { get; set; }
     }
 }

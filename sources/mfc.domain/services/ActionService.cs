@@ -29,6 +29,9 @@ namespace mfc.domain.services {
         [Inject]
         public IUnitOfWorkProvider UnitOfWorkProvider { get; set; }
 
+        [Inject]
+        public IFileService FileService { get; set; }
+
         public ServiceAction GetActionById(long Id) {
             return Repository.GetById(Id);
         }
@@ -55,7 +58,13 @@ namespace mfc.domain.services {
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
             
             unit_of_work.BeginTransaction();
+            
             Repository.Create(action);
+            
+            if (action.Type.NeedMakeFile) {
+                FileService.Add(action);
+            }
+            
             unit_of_work.Commit();
 
             return 0;

@@ -7,7 +7,7 @@ using System.Web;
 namespace mfc.web.Models {
     public class ServiceActionViewModel {
         public Int64 Id { get; set; }
-        
+
         [Required]
         [Display(Name = "ФИО заявителя/наименование ЮЛ")]
         public string Customer { get; set; }
@@ -29,7 +29,7 @@ namespace mfc.web.Models {
         [Required]
         [Display(Name = "Услуга")]
         public Int64 ServiceId { get; set; }
-        
+
         [Display(Name = "Услуга")]
         [Required]
         public string Service { get; set; }

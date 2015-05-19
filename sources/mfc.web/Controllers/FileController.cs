@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using mfc.domain;
 using mfc.domain.entities;
 using mfc.domain.services;
 using mfc.infrastructure.security;
@@ -42,7 +43,7 @@ namespace mfc.web.Controllers {
                 DateTime.TryParse(date, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDate);
             }
 
-            var model = CreateActionListModel(queryDate, user, status, org);
+            var model = CreateFileListModel(queryDate, user, status, org);
 
             return View(model);
         }
@@ -57,12 +58,86 @@ namespace mfc.web.Controllers {
             var status = status_srv.GetStatusById(selectedStatusId);
             var org = org_srv.GetOrganizationById(selectedOrgId);
 
-            var model = CreateActionListModel(date, user, status, org);
+            var model = CreateFileListModel(date, user, status, org);
 
             return View(model);
         }
 
-        private FileListViewModel CreateActionListModel(DateTime date, User selectedUser, FileStatus status, Organization org) {
+        public ActionResult Edit(Int64 id) {
+            var file_srv = CompositionRoot.Resolve<IFileService>();
+            bool has_error = false;
+            FileModel model = null;
+
+            try {
+                var file = file_srv.GetFileById(id);
+                if (file == null) {
+                    ModelState.AddModelError("", "Дело не найдено");
+                    has_error = true;
+                }
+                else {
+                    model = new FileModel {
+                        Id = file.Id,
+                        Caption = file.Caption,
+                        Expert = file.Expert.Name,
+                        Organization = file.Ogv.Caption,
+                        Service = file.Action.Service.Caption,
+                        Date = file.Date,
+                    };
+
+                    if (file.Controller != null) {
+                        model.ControllerId = file.Controller.Id;
+                        model.Controller = file.Controller.Name;
+                    }
+                }
+            }
+            catch (DomainException e) {
+                ModelState.AddModelError("", e);
+                has_error = true;
+            }
+
+            if (has_error) {
+                return RedirectToAction("Index", new { date = model.Date.ToString("dd.MM.yyyy") });
+            }
+
+            PrepareForCreate();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(FileModel model) {
+            bool has_error = false;
+            if (ModelState.IsValid) {
+                var file_srv = CompositionRoot.Resolve<IFileService>();
+                var user_srv = CompositionRoot.Resolve<IUserService>();
+
+                var file = file_srv.GetFileById(model.Id);
+
+                if (file != null) {
+                    try {
+                        file.Controller = user_srv.GetUserById(model.ControllerId);
+                        file_srv.Update(file);
+                    }
+                    catch (DomainException e) {
+                        ModelState.AddModelError("", e);
+                        has_error = true;
+                    }
+
+                    if (!has_error) {
+                        return RedirectToAction("Index", new { date = model.Date.ToString("dd.MM.yyyy") });
+                    }
+                }
+            }
+
+            PrepareForCreate();
+
+            return View(model);
+        }
+
+
+        #region Helpers
+        
+        private FileListViewModel CreateFileListModel(DateTime date, User selectedUser, FileStatus status, Organization org) {
             var user_srv = CompositionRoot.Resolve<IUserService>();
             var status_srv = CompositionRoot.Resolve<IFileStatusService>();
 
@@ -118,5 +193,27 @@ namespace mfc.web.Controllers {
 
             return model;
         }
+
+        private void PrepareForCreate() {
+            /*var service_srv = CompositionRoot.Resolve<IServiceService>();
+            var type_srv = CompositionRoot.Resolve<IActionTypeService>();
+            var usr_srv = CompositionRoot.Resolve<IUserService>();
+
+            ViewBag.Services = service_srv.GetAllServices();
+            ViewBag.ActionTypes = type_srv.GetAllTypes();
+
+            var experts = new List<User>();
+
+            if (User.IsInRole(Roles.Admin)) {
+                experts.AddRange(usr_srv.GetExperts());
+            }
+            else {
+                experts.Add(usr_srv.GetUser(User.Identity.Name));
+            }
+
+            ViewBag.Experts = experts;*/
+        }
+
+        #endregion
     }
 }

@@ -81,7 +81,7 @@ namespace mfc.web.Controllers {
                 }
 
                 //в случае успешного сохранения приема, добавляем дело
-                if (!has_error) {
+                /*if (!has_error) {
                     var action = action_srv.GetActionById(id);
                     if (action != null && action.Type.NeedMakeFile) {
                         var file_srv = CompositionRoot.Resolve<IFileService>();
@@ -93,7 +93,7 @@ namespace mfc.web.Controllers {
                             ModelState.AddModelError("save_file_error", e.Message);
                         }
                     }
-                }
+                }*/
 
                 if (!has_error) {
                     return RedirectToAction("Index", new { date = model.Date.ToString("dd.MM.yyyy"), user_id = model.ExpertId });

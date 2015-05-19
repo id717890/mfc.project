@@ -8,6 +8,7 @@ using Ninject;
 using mfc.infrastructure.services;
 using System.Data.SqlClient;
 using mfc.dal.services;
+using System.Diagnostics;
 
 namespace mfc.domain.services {
     public class FileService : IFileService {
@@ -20,6 +21,9 @@ namespace mfc.domain.services {
         [Inject]
         public IFileRepository FileRepository { get; set; }
 
+        [Inject]
+        public IUnitOfWorkProvider UnitOfWorkProvider { get; set; }
+
         public IEnumerable<File> GetFiles(User user, DateTime date) {
             return FileRepository.GetAll();
         }
@@ -29,12 +33,21 @@ namespace mfc.domain.services {
         }
 
         public long Add(ServiceAction action) {
+            Debug.Assert(action.Type.NeedMakeFile);
+
             File file = new File {
-                Caption = action.Customer
+                Caption = action.Customer,
+                Date = action.Date,
+                Expert = action.User,
+                Ogv = action.Service.Organization,
+                Action = action
             };
-
+            
+            //операторные скобки UnitOfWork.BeginTransaction() and UnitOfWork.Commit()
+            //не используем, поскольку предполагается использование этого метода
+            //в уже созданнных
             FileRepository.Create(file);
-
+            
             return file.Id;
         }
 

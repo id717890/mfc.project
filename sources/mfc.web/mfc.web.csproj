@@ -239,6 +239,7 @@
     <Compile Include="Models\AccountInfo.cs" />
     <Compile Include="Models\ActionListViewModel.cs" />
     <Compile Include="Models\FileListViewModel.cs" />
+    <Compile Include="Models\FileModel.cs" />
     <Compile Include="Models\FileStatusModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ReportModel.cs" />
@@ -368,6 +369,7 @@
     <Content Include="Views\FileStatus\Edit.cshtml" />
     <Content Include="Views\FileStatus\List.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\File\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
