@@ -9,6 +9,7 @@ using mfc.domain.entities;
 using mfc.domain.services;
 using mfc.infrastructure.security;
 using mfc.web.Models;
+using mfc.web.Helpers;
 
 namespace mfc.web.Controllers {
     public class FileController : Controller {
@@ -75,18 +76,10 @@ namespace mfc.web.Controllers {
                     has_error = true;
                 }
                 else {
-                    model = new FileModel {
-                        Id = file.Id,
-                        Caption = file.Caption,
-                        Expert = file.Expert.Name,
-                        Organization = file.Ogv.Caption,
-                        Service = file.Action.Service.Caption,
-                        Date = file.Date,
-                    };
+                    model = FileModelConverter.ToModel(file);
 
                     if (file.Controller != null) {
                         model.ControllerId = file.Controller.Id;
-                        model.Controller = file.Controller.Name;
                     }
                 }
             }
@@ -116,6 +109,8 @@ namespace mfc.web.Controllers {
                 if (file != null) {
                     try {
                         file.Controller = user_srv.GetUserById(model.ControllerId);
+                        file.Caption = model.Caption;
+
                         file_srv.Update(file);
                     }
                     catch (DomainException e) {
@@ -195,23 +190,18 @@ namespace mfc.web.Controllers {
         }
 
         private void PrepareForCreate() {
-            /*var service_srv = CompositionRoot.Resolve<IServiceService>();
-            var type_srv = CompositionRoot.Resolve<IActionTypeService>();
             var usr_srv = CompositionRoot.Resolve<IUserService>();
 
-            ViewBag.Services = service_srv.GetAllServices();
-            ViewBag.ActionTypes = type_srv.GetAllTypes();
-
-            var experts = new List<User>();
+            var users = new List<User>();
 
             if (User.IsInRole(Roles.Admin)) {
-                experts.AddRange(usr_srv.GetExperts());
+                users.AddRange(usr_srv.GetControllers());
             }
             else {
-                experts.Add(usr_srv.GetUser(User.Identity.Name));
+                users.Add(usr_srv.GetUser(User.Identity.Name));
             }
 
-            ViewBag.Experts = experts;*/
+            ViewBag.Controllers = users;
         }
 
         #endregion

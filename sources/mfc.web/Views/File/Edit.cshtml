@@ -125,43 +125,60 @@
 
 
     <fieldset>
-        <legend>ServiceActionViewModel</legend>
+        <legend>FileModel</legend>
 
         @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.ControllerId)
-
-        <input hidden="hidden" id="org_id" />
-
-       
+        @Html.HiddenFor(model => model.Date)
+        @Html.HiddenFor(model => model.OrganizationId)
+        @Html.HiddenFor(model => model.ExpertId)
+        @Html.HiddenFor(model => model.ActionId)
+        @Html.HiddenFor(model => model.Service)
+        @Html.HiddenFor(model => model.Organization)
+        @Html.HiddenFor(model => model.Expert)
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Date)
         </div>
         
         <div class="editor-field">
-            @Html.EditorFor(model => model.Date)
+            @Html.DisplayFor(model => model.Date)
             @Html.ValidationMessageFor(model => model.Date)
         </div>
 
          <div class="display-label">
             @Html.LabelFor(model => model.Expert)
         </div>
-        <div class="dislay-field">
-            @Html.LabelFor(m=>m.Expert)
+        <div class="editor-field">
+            @Html.DisplayFor(m=>m.Expert)
         </div>
 
         <div class="display-label">
             @Html.LabelFor(model => model.Organization)
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(m=>m.Organization)
+            @Html.DisplayFor(m=>m.Organization)
         </div>
 
         <div class="display-label">
             @Html.LabelFor(model => model.Service)
         </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.Service)
+        </div>
+        <hr/>
         <div class="display-label">
-            @Html.TextBoxFor(model => model.Service)
+            @Html.LabelFor(model => model.Caption)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Caption)
+        </div>
+
+        <div class="display-label">
+            @Html.LabelFor(model => model.ControllerId)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(m => m.ControllerId, new SelectList(ViewBag.Controllers, "Id", "Name"))
+            @Html.ValidationMessageFor(model => model.ControllerId)
         </div>
 
             <p>

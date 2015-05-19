@@ -7,5 +7,6 @@ using System.Threading.Tasks;
 
 namespace mfc.dal.services {
     public interface IFileRepository : IRepository<File> {
+        File GetByActionId(Int64 actionId);
     }
 }

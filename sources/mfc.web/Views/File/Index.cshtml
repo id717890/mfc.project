@@ -44,7 +44,7 @@
                 @item.Date.ToString("dd.MM.yyyy")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Date)
+                @Html.DisplayFor(modelItem => item.Caption)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Action.Service.Caption)
@@ -59,8 +59,7 @@
                 @Html.DisplayFor(modelItem => item.Controller.Name)
             </td>
             <td>
-                @Html.ActionLink("Изменить", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+                @Html.ActionLink("Изменить", "Edit", new { id = item.Id })
             </td>
         </tr>
     }

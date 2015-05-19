@@ -52,11 +52,21 @@ namespace mfc.domain.services {
         }
 
         public void Update(File file) {
-            throw new NotImplementedException();
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
+
+            unit_of_work.BeginTransaction();
+            FileRepository.Update(file);
+            unit_of_work.Commit();
         }
 
         public void Delete(long id) {
-            throw new NotImplementedException();
+            //Прямого удаления дела не предполагается, только из внешних транзакций
+            FileRepository.Delete(id);
+        }
+
+
+        public File GetFileByActionId(long actionId) {
+            return FileRepository.GetByActionId(actionId);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace mfc.domain.services {
     public interface IFileService {
         IEnumerable<File> GetFiles(User user, DateTime date);
         File GetFileById(Int64 Id);
+        File GetFileByActionId(Int64 actionId);
         Int64 Add(ServiceAction action);
         void Update(File file);
         void Delete(Int64 id);

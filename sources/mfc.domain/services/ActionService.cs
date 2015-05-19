@@ -81,8 +81,13 @@ namespace mfc.domain.services {
         public void Delete(long id) {
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
+            var file = FileService.GetFileByActionId(id);
+
             unit_of_work.BeginTransaction();
             Repository.Delete(id);
+            if (file != null) {
+                FileService.Delete(file.Id);
+            }
             unit_of_work.Commit();
         }
     }

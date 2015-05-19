@@ -232,6 +232,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ActionTypeModelConverter.cs" />
+    <Compile Include="Helpers\FileModelConverter.cs" />
     <Compile Include="Helpers\FileStatusModelConverter.cs" />
     <Compile Include="Helpers\OrganizationModelConverter.cs" />
     <Compile Include="Helpers\OrganizationTypeModelConverter.cs" />
