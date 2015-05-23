@@ -1,6 +1,10 @@
 ﻿@model mfc.web.Models.ServiceModel
 
-<h3>Удалить ОГВ?</h3>
+@section workmenu {
+    @Html.Partial("_AdminMenu", 4)
+}
+
+<h3>Удалить услугу?</h3>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)

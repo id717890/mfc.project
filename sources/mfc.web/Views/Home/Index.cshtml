@@ -4,11 +4,10 @@
 @section featured {
     <section class="featured">
         <div class="content-wrapper">
-            <hgroup class="title">
-                @ViewBag.Title
-            </hgroup>
-            <p>
-            </p>
+            <h1 class="page-header">@ViewBag.Title</h1>
         </div>
     </section>
+}
+@section workmenu {
+    @Html.Partial("_WorkMenu", -1)
 }

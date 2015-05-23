@@ -41,6 +41,8 @@
   <ItemGroup>
     <Compile Include="entities\Entity.cs" />
     <Compile Include="entities\File.cs" />
+    <Compile Include="entities\FileStage.cs" />
+    <Compile Include="entities\FileStages.cs" />
     <Compile Include="entities\FileStatus.cs" />
     <Compile Include="entities\FileStatusInfo.cs" />
     <Compile Include="entities\ServiceAction.cs" />
@@ -54,6 +56,7 @@
     <Compile Include="services\IActionTypeService.cs" />
     <Compile Include="services\IDeloService.cs" />
     <Compile Include="services\IEntityDAO.cs" />
+    <Compile Include="services\IFileStageService.cs" />
     <Compile Include="services\IFileStatusService.cs" />
     <Compile Include="services\IOrganizationService.cs" />
     <Compile Include="services\IServiceService.cs" />

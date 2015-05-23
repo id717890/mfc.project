@@ -58,6 +58,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="services\ActionService.cs" />
     <Compile Include="services\FileService.cs" />
+    <Compile Include="services\FileStageService.cs" />
     <Compile Include="services\FileStatusService.cs" />
     <Compile Include="services\ServiceService.cs" />
     <Compile Include="services\ActionTypeService.cs" />

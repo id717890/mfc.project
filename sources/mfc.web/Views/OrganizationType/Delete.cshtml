@@ -1,5 +1,9 @@
 ﻿@model mfc.web.Models.OrganizationTypeModel
 
+@section workmenu {
+    @Html.Partial("_AdminMenu", 1)
+}
+
 <h3>Удалить тип ОГВ?</h3>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()

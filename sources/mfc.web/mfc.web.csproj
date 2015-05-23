@@ -219,8 +219,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActionController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\DirectoryController.cs" />
     <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\FileStageController.cs" />
     <Compile Include="Controllers\FileStatusController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
@@ -342,13 +342,12 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\List.cshtml" />
     <Content Include="Views\Admin\Create.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\Admin\Delete.cshtml" />
     <Content Include="Views\Admin\SetPassword.cshtml" />
     <Content Include="Views\Account\Manage.cshtml" />
-    <Content Include="Views\Directory\Index.cshtml" />
     <Content Include="Views\OrganizationType\List.cshtml" />
     <Content Include="Views\OrganizationType\Delete.cshtml" />
     <Content Include="Views\OrganizationType\Edit.cshtml" />
@@ -366,15 +365,20 @@
     <Content Include="Views\Action\Delete.cshtml" />
     <Content Include="Views\Report\Make.cshtml" />
     <Content Include="Views\File\Index.cshtml" />
-    <Content Include="Views\FileStatus\Delete.cshtml" />
     <Content Include="Views\FileStatus\Edit.cshtml" />
     <Content Include="Views\FileStatus\List.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\File\Edit.cshtml" />
+    <Content Include="Views\Shared\__Layout.cshtml" />
+    <Content Include="Views\Shared\_AdminMenu.cshtml" />
+    <Content Include="Views\Shared\_WorkMenu.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\FileStatus\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Filters\" />
+    <Folder Include="Views\FileStage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

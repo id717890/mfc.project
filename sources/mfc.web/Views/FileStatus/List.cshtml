@@ -5,6 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section workmenu {
+    @Html.Partial("_AdminMenu", 5)
+}
+
 <h2>@ViewBag.Title</h2>
 
 <p>

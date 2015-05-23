@@ -1,0 +1,23 @@
+﻿@model Int32
+@{
+    var items = new List<MvcHtmlString >();
+    items.Add(Html.ActionLink("Приемы", "Index", "Action"));
+    items.Add(Html.ActionLink("Дела", "Index", "File"));
+    items.Add(Html.ActionLink("Отчеты", "Make", "Report"));
+}
+<ul class="nav nav-sidebar">
+    @{
+        for (var n_index = 0; n_index < items.Count; n_index++) {
+            var item = items[n_index];
+            
+            if (n_index == Model) {
+                <li class="active">@item</li>
+            }
+            else {
+                <li>@item</li>
+            }
+        }
+
+}
+</ul>
+

@@ -1,5 +1,9 @@
 ﻿@model mfc.web.Models.ActionTypeModel
 
+@section workmenu {
+    @Html.Partial("_AdminMenu", 3)
+}
+
 @{
     if (Model.Id > 0) {
         ViewBag.Title = "Редактирование вида деятельности";

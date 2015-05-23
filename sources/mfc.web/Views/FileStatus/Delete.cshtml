@@ -1,5 +1,9 @@
 ﻿@model mfc.web.Models.FileStatusModel
 
+@section workmenu {
+    @Html.Partial("_AdminMenu", 5)
+}
+
 <h3>Удалить статус?</h3>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()

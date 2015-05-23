@@ -1,5 +1,9 @@
 ﻿@model mfc.web.Models.ActionTypeModel
 
+@section workmenu {
+    @Html.Partial("_AdminMenu", 3)
+}
+
 <h3>Удалить тип вид деятельности?</h3>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()

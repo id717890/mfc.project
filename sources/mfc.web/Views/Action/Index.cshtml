@@ -6,8 +6,7 @@
 @section featured {
     <section class="featured">
         <div class="content-wrapper">
-            <hgroup class="title">
-            </hgroup>
+            <h1 class="page-header">@ViewBag.Title</h1>
             <p>
                @using (Html.BeginForm()) {
                 <div style="margin: 0 10px;float:left">Дата: @Html.EditorFor(m => m.Date)</div>
@@ -19,6 +18,9 @@
             </p>
         </div>
     </section>
+}
+@section workmenu {
+    @Html.Partial("_WorkMenu", 0)
 }
 <p>
     @Html.ActionLink("Новый", "Create", new { date = Model.Date.ToShortDateString(), user_id = Model.SelectedUserId })

@@ -12,6 +12,10 @@ namespace mfc.web.Controllers {
     [Authorize(Roles = Roles.Admin)]
     public class AdminController : Controller {
         public ActionResult Index() {
+            return View();
+        }
+
+        public ActionResult List() {
             var user_service = CompositionRoot.Resolve<IUserService>();
             var users = new List<AccountInfo>();
 

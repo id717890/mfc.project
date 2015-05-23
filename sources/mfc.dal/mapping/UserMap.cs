@@ -10,7 +10,7 @@ namespace mfc.dal.mapping {
     public class UserMap : ClassMap<User>{
         public UserMap() {
             Table("users");
-            Id(x => x.Id);
+            Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.IsDeleted, "is_deleted");
             Map(x => x.Name);
             Map(x => x.Account);

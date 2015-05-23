@@ -5,6 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section workmenu {
+    @Html.Partial("_AdminMenu", 0)
+}
+
 <h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm()) {
@@ -37,5 +41,5 @@
 }
 
 <div>
-    @Html.ActionLink("Вернуться к списку пользователей", "Index")
+    @Html.ActionLink("Вернуться к списку пользователей", "List")
 </div>

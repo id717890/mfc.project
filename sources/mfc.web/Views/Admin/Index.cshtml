@@ -1,40 +1,13 @@
-﻿@model IEnumerable<mfc.web.Models.AccountInfo>
-
-@{
+﻿@{
     ViewBag.Title = "Администрирование";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Список пользователей</h2>
-
-<p>
-    @Html.ActionLink("Добавить пользователя", "Create")
-</p>
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.ActionLink("Изменить", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Изменить пароль", "SetPassword", new { id = item.Id }) |
-                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-</table>
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <h1 class="page-header">@ViewBag.Title</h1>
+        </div>
+    </section>
+}
+@section workmenu {
+    @Html.Partial("_AdminMenu", -1)
+}

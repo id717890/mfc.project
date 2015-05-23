@@ -1,0 +1,54 @@
+﻿@using MfcRoles = mfc.infrastructure.security.Roles;
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - Система учета МФЦ</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/bootstrap")
+        @Scripts.Render("~/jquery")
+        @Scripts.Render("~/jqueryui")
+        @Scripts.Render("~/bootstrap")
+        <script src="~/Content/js/editor_hooksup.js"></script>
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title">@Html.ActionLink("Система учета МФЦ", "Index", "Home")</p>
+                </div>
+                <div class="float-right">
+                    <section id="login">
+                        @Html.Partial("_LoginPartial")
+                    </section>
+                    <nav>
+                        <ul id="menu">
+                            <li>@Html.ActionLink("Главная", "Index", "Home")</li>
+                            
+                            @if (User.IsInRole(MfcRoles.Admin)) {
+                             <li>@Html.ActionLink("Отчеты", "Make", "Report")</li>
+                            <li>@Html.ActionLink("Справочники", "Index", "Directory")</li>
+                            <li>@Html.ActionLink("Администрирование", "Index", "Admin")</li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - МФЦ город Урай</p>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

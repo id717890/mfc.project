@@ -7,6 +7,10 @@
     bool render_hr = false;
 }
 
+@section workmenu {
+    @Html.Partial("_AdminMenu", 4)
+}
+
 <script>
     $(function () {
         $('select#organization').bind('change', function () {

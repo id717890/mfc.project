@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<mfc.web.Models.ActionTypeModel>
 
+@section workmenu {
+    @Html.Partial("_AdminMenu", 3)
+}
+
 @{
     ViewBag.Title = "Справочник видов деятельности";
     Layout = "~/Views/Shared/_Layout.cshtml";

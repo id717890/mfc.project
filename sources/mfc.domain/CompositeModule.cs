@@ -16,6 +16,7 @@ namespace mfc.domain {
             Kernel.Bind<IActionService>().To<ActionService>().InSingletonScope();
             Kernel.Bind<IFileService>().To<FileService>().InSingletonScope();
             Kernel.Bind<IFileStatusService>().To<FileStatusService>().InSingletonScope();
+            Kernel.Bind<IFileStageService>().To<FileStageService>().InSingletonScope();
         }
     }
 }
