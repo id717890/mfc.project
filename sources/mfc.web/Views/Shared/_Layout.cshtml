@@ -28,11 +28,14 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
+                        
                         <li>@Html.ActionLink("Главная", "Index", "Home")</li>
                         @if (User.IsInRole(MfcRoles.Admin)) {
                             <li>@Html.ActionLink("Администрирование", "Index", "Admin")</li>
                         }
-                        <li><a href="#">Профиль</a></li>
+                        <li id="login">
+                            @Html.Partial("_LoginPartial")
+                        </li>
                     </ul>
                 </div>
             </div>

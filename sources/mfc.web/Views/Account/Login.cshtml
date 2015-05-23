@@ -4,30 +4,26 @@
     ViewBag.Title = "Вход в систему";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title</h1>
-</hgroup>
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <h1 class="page-header">@ViewBag.Title</h1>
+        </div>
+    </section>
+}
 
 <section id="loginForm">
-@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin" })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <fieldset>
         <legend>Log in Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-                @Html.ValidationMessageFor(m => m.UserName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-                @Html.ValidationMessageFor(m => m.Password)
-            </li>
-        </ol>
-        <input type="submit" value="Войти" />
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder="Имя пользователя", type="username" })
+            @Html.ValidationMessageFor(m => m.UserName)
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder="Пароль" })
+            @Html.ValidationMessageFor(m => m.Password)
+        <input type="submit" value="Войти" class="btn btn-lg btn-primary btn-block" />
     </fieldset>
 }
 </section>
