@@ -25,12 +25,14 @@ namespace mfc.domain.services {
             return _cache.Values.OrderBy(x => x.Order);
         }
 
-        public void UpdateStage(FileStage stage) {
+        public void UpdateStages(IEnumerable<FileStage> stages) {
             lock (sync_obj_update) {
                 var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
                 unit_of_work.BeginTransaction();
-                Repository.Update(stage);
+                foreach (var stage in stages) {
+                    Repository.Update(stage);
+                }
                 unit_of_work.Commit();
 
                 _is_cache_valid = false;
@@ -58,6 +60,13 @@ namespace mfc.domain.services {
 
                 _is_cache_valid = true;
             }
+        }
+
+
+        public FileStage GetStage(string code) {
+            PrepareCache();
+
+            return _cache[code];
         }
     }
 }

@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace mfc.domain.services {
     public interface IFileStageService {
         IEnumerable<FileStage> GetAllStages();
-        void UpdateStage(FileStage stage);
+        FileStage GetStage(string code);
+        void UpdateStages(IEnumerable<FileStage> stages);
         FileStatus GetStatusForStage(string code);
     }
 }
