@@ -17,7 +17,8 @@ namespace mfc.dal.services {
                         join fetch sa.Type 
                         join fetch sa.Service 
                         join fetch sa.User 
-                    where sa.IsDeleted = false")
+                    where sa.IsDeleted = false
+                    order by sa.Date")
                .List<ServiceAction>();
         }
 
@@ -29,8 +30,11 @@ namespace mfc.dal.services {
                         join fetch sa.Service 
                         join fetch sa.User 
                     where sa.IsDeleted = false
-                        and sa.Date =:date")
+                        and sa.Date =:date
+                        and sa.User.Id = :user_id
+                    order by sa.Date")
                 .SetParameter("date", date)
+                .SetParameter("user_id", user_id)
                 .List<ServiceAction>();
         }
 
