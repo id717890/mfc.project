@@ -1,7 +1,11 @@
 ﻿@model mfc.web.Models.ServiceActionViewModel
 
+@section workmenu {
+    @Html.Partial("_WorkMenu", 0)
+}
+
 <h3>Удалить работу?</h3>
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("Delete", "Action", FormMethod.Post, new { @class = "form" })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -49,7 +53,7 @@
         </div>
 
         <p>
-            <input type="submit" value="Удалить" />
+            <input type="submit" value="Удалить" class="btn btn-lg btn-default" />
         </p>
     </fieldset>
 }

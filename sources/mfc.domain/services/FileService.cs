@@ -24,6 +24,12 @@ namespace mfc.domain.services {
         [Inject]
         public IUnitOfWorkProvider UnitOfWorkProvider { get; set; }
 
+        [Inject]
+        public IFileStageService FileStageService { get; set; }
+
+        [Inject]
+        public IFileStatusService FileStatusService { get; set; }
+
         public IEnumerable<File> GetFiles(User user, DateTime date) {
             return FileRepository.GetAll();
         }
@@ -35,18 +41,22 @@ namespace mfc.domain.services {
         public long Add(ServiceAction action) {
             Debug.Assert(action.Type.NeedMakeFile);
 
+            var status = FileStageService.GetStatusForStage(FileStages.NewFile);
+
             File file = new File {
                 Caption = action.Customer,
                 Date = action.Date,
                 Expert = action.User,
                 Ogv = action.Service.Organization,
-                Action = action
+                Action = action,
+                CurrentStatus = status
             };
             
             //операторные скобки UnitOfWork.BeginTransaction() and UnitOfWork.Commit()
             //не используем, поскольку предполагается использование этого метода
             //в уже созданнных
             FileRepository.Create(file);
+            FileStatusService.SetStatus(file.Id, status.Id, DateTime.Now, file.Expert.Id);
             
             return file.Id;
         }

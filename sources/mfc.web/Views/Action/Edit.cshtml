@@ -14,6 +14,10 @@
     }
 }
 
+@section workmenu {
+    @Html.Partial("_WorkMenu", 0)
+}
+
 <script>
     var dialog_org, dialog_srv;
     var site_name;
@@ -120,7 +124,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm(Model.Id > 0 ? "Edit" : "Create", "Action", FormMethod.Post, new { @class = "form" })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -144,7 +148,7 @@
             @Html.LabelFor(model => model.ExpertId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(m => m.ExpertId, new SelectList(ViewBag.Experts, "Id", "Name"))
+            @Html.DropDownListFor(m => m.ExpertId, new SelectList(ViewBag.Experts, "Id", "Name"), new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.ExpertId)
         </div>
 
@@ -185,7 +189,7 @@
                 @Html.LabelFor(model => model.TypeId)
             </div>
             <div class="editor-field">
-                @Html.DropDownListFor(m => m.TypeId, new SelectList(ViewBag.ActionTypes, "Id", "Caption"))
+                @Html.DropDownListFor(m => m.TypeId, new SelectList(ViewBag.ActionTypes, "Id", "Caption"), new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.TypeId)
             </div>
 
@@ -193,12 +197,12 @@
             @Html.LabelFor(model => model.Comments)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model=>model.Comments)
+            @Html.EditorFor(model => model.Comments)
             @Html.ValidationMessageFor(model => model.Comments)
         </div>
 
             <p>
-                <input type="submit" value="Сохранить" />
+                <input type="submit" value="Сохранить" class="btn btn-lg btn-default" />
             </p>
 </fieldset>
 }

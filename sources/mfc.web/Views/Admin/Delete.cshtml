@@ -11,7 +11,7 @@
 
 <h3>Удалить Пользователя?</h3>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("Delete", "Admin", FormMethod.Post, new { @class = "form" })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -31,7 +31,7 @@
         </div>
 
         <p>
-            <input type="submit" value="Удалить" />
+            <input type="submit" value="Удалить" class="btn btn-lg btn-default" />
         </p>
     </fieldset>
 }

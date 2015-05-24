@@ -57,7 +57,7 @@ namespace mfc.web.Controllers {
                 }
 
                 if (!has_error) {
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("List", "Admin");
                 }
             }
 
@@ -70,7 +70,7 @@ namespace mfc.web.Controllers {
 
             if (user == null) {
                 ModelState.AddModelError("", "Пользователь не найден");
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("List", "Admin");
             }
 
             var account_info = UserToModelConveter.ModelFromUser(user);
@@ -104,7 +104,7 @@ namespace mfc.web.Controllers {
                 }
 
                 if (!has_error) {
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("List", "Admin");
                 }
             }
             return View();
@@ -116,7 +116,7 @@ namespace mfc.web.Controllers {
 
             if (user == null) {
                 ModelState.AddModelError("", "Пользователь не найден");
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("List", "Admin");
             }
 
             var account_info = UserToModelConveter.ModelFromUser(user);
@@ -139,7 +139,7 @@ namespace mfc.web.Controllers {
                 }
 
                 if (!has_error) {
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("List", "Admin");
                 }
             }
 
@@ -147,8 +147,12 @@ namespace mfc.web.Controllers {
         }
 
         public ActionResult SetPassword(Int64 id) {
+            var user_service = CompositionRoot.Resolve<IUserService>();
+            var user = user_service.GetUserById(id);
+
             var password = new PasswordModel {
-                UserId = id
+                UserId = id,
+                UserName = user.Account
             };
 
             return View(password);
@@ -169,10 +173,10 @@ namespace mfc.web.Controllers {
                 }
 
                 if (!has_error) {
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("List", "Admin");
                 }
             }
-            return View();
+            return View(password);
         }
 
         private static class UserToModelConveter {

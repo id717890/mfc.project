@@ -26,6 +26,9 @@ namespace mfc.domain.services {
         [Inject]
         public IFileStatusRepository Repository { get; set; }
 
+        [Inject]
+        public IUserService UserService { get; set; }
+
         private Dictionary<Int64, FileStatus> _cache = new Dictionary<long, FileStatus>();
         private bool _is_cache_valid = false;
 
@@ -114,20 +117,76 @@ namespace mfc.domain.services {
         #region FileStatusInfo
         
         public IEnumerable<FileStatusInfo> GetFileStatuses(long fileId) {
-            throw new NotImplementedException();
+            var statuses = new List<FileStatusInfo>();
+
+            var conn = SqlProvider.CreateConnection();
+            SqlCommand cmd = null;
+
+
+            try {
+                cmd = conn.CreateCommand();
+                cmd.CommandText = @"
+                      select FileStatus.file_id, FileStatus.dt, FileStatus.status_id, FileStatus.user_id, FileStatus.comments 
+	                        from FileStatus
+	                        join Files on Files.id = FileStatus.file_id
+	                        where Files.is_deleted = 0
+                        and FileStatus.action_id = @action_id
+                        order by FileStatus.dt desc";
+                cmd.Parameters.Add(new SqlParameter("action_id", fileId));
+                
+                var reader = cmd.ExecuteReader();
+                while (reader.Read()) {
+                    statuses.Add(new FileStatusInfo {
+                        FileId= fileId,
+                        Date = Convert.ToDateTime(reader["dt"]),
+                        User = UserService.GetUserById(Convert.ToInt64(reader["user_id"])),
+                        Status = GetStatusById(Convert.ToInt64(reader["status_id"]))
+                    });
+                }
+            }
+            catch (Exception e) {
+                throw new DomainException(e);
+            }
+            finally {
+                conn.Dispose();
+                conn.Close();
+                if (cmd != null) {
+                    cmd.Dispose();
+                }
+            }
+
+            return statuses;
         }
 
         public void SetStatus(long fileId, long statusId, DateTime date, long userId) {
-            throw new NotImplementedException();
+            var conn = SqlProvider.CreateConnection();
+            SqlCommand cmd = null;
+
+            try {
+                cmd = conn.CreateCommand();
+                cmd.CommandText = @"
+                      insert into FileStatus (file_id, dt, status_id, user_id, comments)
+                        values (@action_id, @dt, @status_id, @user_id, @comments)";
+                cmd.Parameters.Add(new SqlParameter("file_id", fileId));
+                cmd.Parameters.Add(new SqlParameter("dt", date));
+                cmd.Parameters.Add(new SqlParameter("user_id", userId));
+                cmd.Parameters.Add(new SqlParameter("status_id", statusId));
+                cmd.Parameters.Add(new SqlParameter("comments", string.Empty));
+
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e) {
+                throw new DomainException(e);
+            }
+            finally {
+                conn.Dispose();
+                conn.Close();
+                if (cmd != null) {
+                    cmd.Dispose();
+                }
+            }
         }
 
-        public void UpdateStatus(FileStatusInfo status) {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteStatus(long statusId) {
-            throw new NotImplementedException();
-        }
         #endregion
     }
 }

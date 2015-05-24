@@ -7,6 +7,7 @@ using System.Web;
 namespace mfc.web.Models {
     public class PasswordModel {
         public Int64 UserId { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "{0} должен быть длиной не менее {2} символов.", MinimumLength = 6)]

@@ -390,6 +390,8 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\FileStatus\Delete.cshtml" />
     <Content Include="Views\FileStage\Index.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\String.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\MultilineText.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

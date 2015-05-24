@@ -1,7 +1,9 @@
 ﻿@model mfc.web.Models.OrganizationModel
 
 @{
-    if (Model.Id > 0) { 
+    var for_edit = Model.Id > 0;
+    
+    if (for_edit) { 
         ViewBag.Title = "Редактирование ОГВ";
     }
     else {
@@ -16,7 +18,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm(for_edit ? "Edit" : "Create", "Organization", FormMethod.Post, new { @class = "form" })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -44,11 +46,11 @@
             @Html.LabelFor(model => model.TypeCaption)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(m => m.TypeId, new SelectList(ViewBag.OrganizationTypes, "Id", "Caption"))
+            @Html.DropDownListFor(m => m.TypeId, new SelectList(ViewBag.OrganizationTypes, "Id", "Caption"), new { @class = "form-control" })
         </div>
 
         <p>
-            <input type="submit" value="Сохранить" />
+            <input type="submit" value="Сохранить" class="btn btn-lg btn-default" />
         </p>
     </fieldset>
 }

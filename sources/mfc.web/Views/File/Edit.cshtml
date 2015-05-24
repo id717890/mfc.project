@@ -9,6 +9,9 @@
     }
 }
 
+@section workmenu {
+    @Html.Partial("_WorkMenu", 1)
+}
 <script>
     var dialog_org, dialog_srv;
     var site_name;
@@ -115,7 +118,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("Edit", "File", FormMethod.Post, new { @class = "form" })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -149,14 +152,14 @@
             @Html.LabelFor(model => model.Expert)
         </div>
         <div class="editor-field">
-            @Html.DisplayFor(m=>m.Expert)
+            @Html.DisplayFor(m => m.Expert)
         </div>
 
         <div class="display-label">
             @Html.LabelFor(model => model.Organization)
         </div>
         <div class="editor-field">
-            @Html.DisplayFor(m=>m.Organization)
+            @Html.DisplayFor(m => m.Organization)
         </div>
 
         <div class="display-label">
@@ -177,12 +180,12 @@
             @Html.LabelFor(model => model.ControllerId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(m => m.ControllerId, new SelectList(ViewBag.Controllers, "Id", "Name"))
+            @Html.DropDownListFor(m => m.ControllerId, new SelectList(ViewBag.Controllers, "Id", "Name"), new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.ControllerId)
         </div>
 
             <p>
-                <input type="submit" value="Сохранить" />
+                <input type="submit" value="Сохранить" class="btn btn-lg btn-default" />
             </p>
 </fieldset>
 }

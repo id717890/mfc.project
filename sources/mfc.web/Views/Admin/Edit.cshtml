@@ -10,7 +10,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { @class = "form" })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -47,7 +47,7 @@
         </div>
 
         <p>
-            <input type="submit" value="Сохранить" />
+            <input type="submit" value="Сохранить" class="btn btn-lg btn-default" />
         </p>
     </fieldset>
 }

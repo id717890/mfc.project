@@ -5,7 +5,7 @@
 }
 
 <h3>Удалить тип ОГВ?</h3>
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("Delete", "OrganizationType", FormMethod.Post, new { @class = "form" })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 <fieldset>
@@ -20,7 +20,7 @@
 
     
     <p>
-        <input type="submit" value="Удалить" />
+        <input type="submit" value="Удалить" class="btn btn-lg btn-default" />
     </p>
 }
 

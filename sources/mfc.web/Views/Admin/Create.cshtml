@@ -11,7 +11,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("Create", "Admin", FormMethod.Post, new { @class = "form" })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -35,7 +35,7 @@
         </div>
 
         <p>
-            <input type="submit" value="Добавить" />
+            <input type="submit" value="Добавить" class="btn btn-lg btn-default" />
         </p>
     </fieldset>
 }

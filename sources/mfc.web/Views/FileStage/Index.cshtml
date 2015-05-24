@@ -4,8 +4,7 @@
     @Html.Partial("_AdminMenu", 6)
 }
 
-@using (Html.BeginForm())
-{
+@using (Html.BeginForm("Index", "FileStage", FormMethod.Post, new { @class = "form" })) {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
@@ -15,14 +14,14 @@
         <div class="form-group">
             <table style="margin-left : 15px">
                 @{
-                    for (int index = 0; index < Model.Stages.Count; index++) {
+    for (int index = 0; index < Model.Stages.Count; index++) {
                         <tr>
                             @Html.HiddenFor(modelItem => Model.Stages[index].Code)
                             @Html.HiddenFor(modelItem => Model.Stages[index].Caption)
                             <td>@Html.DisplayFor(modelItem => Model.Stages[index].Caption)</td>
-                            <td>@Html.DropDownListFor(modelItem => Model.Stages[index].StatusId, new SelectList(Model.Statuses, "Id", "Caption", Model.Stages[index].StatusId))</td>
+                            <td>@Html.DropDownListFor(modelItem => Model.Stages[index].StatusId, new SelectList(Model.Statuses, "Id", "Caption", Model.Stages[index].StatusId), new { @class = "form-control" })</td>
                         </tr>
-                    }
+    }
                 }
             </table>
             <div class="col-md-offset-2 col-md-10">

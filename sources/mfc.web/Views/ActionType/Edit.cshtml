@@ -5,7 +5,9 @@
 }
 
 @{
-    if (Model.Id > 0) {
+    var for_edit = Model.Id > 0;
+    
+    if (for_edit) {
         ViewBag.Title = "Редактирование вида деятельности";
     }
     else {
@@ -16,7 +18,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm(for_edit ? "Edit" : "Create", "ActionType", FormMethod.Post, new { @class = "form" })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -32,13 +34,15 @@
             @Html.EditorFor(model => model.Caption)
             @Html.ValidationMessageFor(model => model.Caption)
         </div>
-
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NeedMakeFile)
+        </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.NeedMakeFile)
             @Html.ValidationMessageFor(model => model.NeedMakeFile)
          </div>
         <p>
-            <input type="submit" value="Сохранить" />
+            <input type="submit" value="Сохранить" class="btn btn-lg btn-default" />
         </p>
 </fieldset>
 }

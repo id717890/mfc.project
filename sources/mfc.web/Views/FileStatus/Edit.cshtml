@@ -1,7 +1,9 @@
 ﻿@model mfc.web.Models.FileStatusModel
 
 @{
-    if (Model.Id > 0) {
+    var for_edit = Model.Id > 0;
+    
+    if (for_edit) {
         ViewBag.Title = "Редактирование статуса";
     }
     else {
@@ -16,7 +18,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm(for_edit ? "Edit" : "Create", "FileStatus", FormMethod.Post, new { @class = "form" })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -34,7 +36,7 @@
         </div>
 
         <p>
-            <input type="submit" value="Сохранить" />
+            <input type="submit" value="Сохранить" class="btn btn-lg btn-default" />
         </p>
     </fieldset>
 }

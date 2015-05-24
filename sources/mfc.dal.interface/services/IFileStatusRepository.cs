@@ -6,6 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace mfc.dal.services {
-    public interface IFileStatusRepository : IRepository<FileStatus>{
+    public interface IFileStatusRepository : IRepository<FileStatus> {
     }
 }

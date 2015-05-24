@@ -1,11 +1,13 @@
 ﻿@model mfc.web.Models.OrganizationTypeModel
 
 @{
-    if (Model.Id > 0) {
-        ViewBag.Title = "Редактирование типа ОГВ";
+    var is_new = Model.Id <= 0;
+    
+    if (is_new) {
+        ViewBag.Title = "Добавление типа ОГВ"; 
     }
     else {
-        ViewBag.Title = "Добавление типа ОГВ";
+        ViewBag.Title = "Редактирование типа ОГВ";
     }
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -16,7 +18,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm(is_new ? "Create" : "Edit", "OrganizationType", FormMethod.Post, new { @class = "form" })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -34,7 +36,7 @@
         </div>
 
         <p>
-            <input type="submit" value="Сохранить" />
+            <input type="submit" value="Сохранить" class="btn btn-lg btn-default" />
         </p>
     </fieldset>
 }
