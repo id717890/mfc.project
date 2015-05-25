@@ -12,7 +12,8 @@ namespace mfc.dal.services {
 
 
         public File GetByActionId(long actionId) {
-            return Session.Query<File>().Where(f => f.Action.Id == actionId).First<File>();
+            var files = Session.Query<File>().Where(f => f.Action.Id == actionId).ToList();
+            return files.Count > 0 ? files[0] : null;
         }
     }
 }
