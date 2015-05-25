@@ -77,7 +77,7 @@ namespace mfc.web.Controllers {
                 }
                 catch (Exception e) {
                     has_error = true;
-                    ModelState.AddModelError("", e.Message);
+                    ModelState.AddModelError("", string.Format("{0} \r\n {1}", e.Message, e.StackTrace));
                 }
 
                 if (!has_error) {

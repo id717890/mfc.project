@@ -166,7 +166,7 @@ namespace mfc.domain.services {
                 cmd = conn.CreateCommand();
                 cmd.CommandText = @"
                       insert into FileStatus (file_id, dt, status_id, user_id, comments)
-                        values (@action_id, @dt, @status_id, @user_id, @comments)";
+                        values (@file_id, @dt, @status_id, @user_id, @comments)";
                 cmd.Parameters.Add(new SqlParameter("file_id", fileId));
                 cmd.Parameters.Add(new SqlParameter("dt", date));
                 cmd.Parameters.Add(new SqlParameter("user_id", userId));
@@ -176,7 +176,7 @@ namespace mfc.domain.services {
                 cmd.ExecuteNonQuery();
             }
             catch (Exception e) {
-                throw new DomainException(e);
+                throw e;
             }
             finally {
                 conn.Dispose();
