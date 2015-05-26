@@ -86,13 +86,12 @@
             org_id = $('input#OrganizationId').attr('value');
 
             var list_div;
-            list_div = $('#select-srv-form');
+            list_div = $('#select-srv-list');
             list_div.html('');
 
             $.get(site_name + '/Service/ListData/' + org_id, null, function (data, textStatus) {
                 data.forEach(function (item, i, arr) {
-                    list_div.append('<div><a href="#" onclick="selectSrv(' + item.Id + ', \'' + item.Caption + '\')">' + item.Caption + '</a></div>');
-                    list_div.append('<hr/>')
+                    list_div.append('<div><a href="#" onclick="selectSrv(' + item.Id + ', \'' + item.Caption + '\')">' + item.Caption + '</a><hr/></div>');
                 });
             });
         }
@@ -107,8 +106,7 @@
 
             $.get(site_name + '/Service/ChildListData/' + srv_id, null, function (data, textStatus) {
                 data.forEach(function (item, i, arr) {
-                    list_div.append('<div><a href="#" onclick="selectSrvChild(' + item.Id + ', \'' + item.Caption + '\')">' + item.Caption + '</a></div>');
-                    list_div.append('<hr/>')
+                    list_div.append('<div><a href="#" onclick="selectSrvChild(' + item.Id + ', \'' + item.Caption + '\')">' + item.Caption + '</a><hr/></div>');
                 });
             });
         }
@@ -135,6 +133,13 @@
                 return;
             }
             dialog_srv_child.dialog('open');
+        });
+        $('#search').keyup(function () {
+            var valThis = $(this).val();
+            $('#select-srv-list>div').each(function () {
+                var text = $(this).text().toLowerCase();
+                (text.indexOf(valThis) >= 0) ? $(this).show() : $(this).hide();
+            });
         });
     });
 
@@ -166,7 +171,9 @@
 </div>
 
 <div id="select-srv-form" title="Выбор услуги">
-
+    <input id="search" class="form-control" />
+    <hr/>
+    <div id="select-srv-list"></div>
 </div>
 
 <div id="select-srv-child-form" title="Выбор услуги">
