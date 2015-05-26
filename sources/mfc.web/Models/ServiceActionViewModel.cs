@@ -34,6 +34,14 @@ namespace mfc.web.Models {
         [Required]
         public string Service { get; set; }
 
+        [Required]
+        [Display(Name = "Подуслуга")]
+        public Int64 ServiceChildId { get; set; }
+
+        [Display(Name = "Подуслуга")]
+        [Required]
+        public string ServiceChild { get; set; }
+
         [Display(Name = "ОГВ")]
         public Int64 OrganizationId { get; set; }
 

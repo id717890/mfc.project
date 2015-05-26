@@ -37,7 +37,7 @@ namespace mfc.domain.services {
 
             return 
                 _cache.Values
-                    .Where(item => item.Organization.Id == orgId)
+                    .Where(item => item.Organization.Id == orgId && item.Parent == null)
                     .OrderBy(m => m.Caption);
         }
 

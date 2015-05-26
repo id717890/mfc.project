@@ -45,10 +45,11 @@ namespace mfc.domain.services {
             return Repository.GetActions(dateBegin, dateEnd).OrderBy(x=>x.Date);
         }
 
-        public long Add(DateTime date, Int64 serviceId, string customer, Int64 typeId, Int64 userId, string comments) {
+        public long Add(DateTime date, Int64 serviceId, string customer, Int64 typeId, Int64 userId, Int64 serviceChildId, string comments) {
             var action = new ServiceAction {
                 Date = date,
                 Service = ServiceService.GetServiceById(serviceId),
+                ServiceChild = ServiceService.GetServiceById(serviceChildId),
                 Customer = customer,
                 Type = TypeService.GetTypeById(typeId),
                 User = UserService.GetUserById(userId),

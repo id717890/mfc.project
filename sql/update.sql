@@ -25,3 +25,8 @@ insert into FileStages values ('new', 'Новое дело', null, 1);
 insert into FileStages values ('control', 'Отправлено для контроля', null, 2);
 insert into FileStages values ('fix', 'Возвращено для устранения замечаний', null, 3);
 insert into FileStages values ('send', 'Отправлено в ОГВ', null, 4);
+
+-- Подуслуги
+alter table Services add parent_id bigint;
+
+alter table Actions

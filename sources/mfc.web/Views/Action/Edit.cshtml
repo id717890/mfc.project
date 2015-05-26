@@ -33,10 +33,16 @@
 
         var srv_caption;
         srv_caption = $('#Service').attr('value');
-
         if (srv_caption != '') {
             $('#selected-service').html(srv_caption);
         }
+
+        var srv_child_caption;
+        srv_child_caption = $('#ServiceChild').attr('value');
+        if (srv_child_caption != '') {
+            $('#selected-service-child').html(srv_child_caption);
+        }
+        
 
         //создаем диалоги
         dialog_org = $("#select-org-form").dialog({
@@ -53,6 +59,14 @@
             width: 500,
             modal: true,
             open: fillSrvList
+        });
+
+        dialog_srv_child = $("#select-srv-child-form").dialog({
+            autoOpen: false,
+            height: 500,
+            width: 500,
+            modal: true,
+            open: fillSrvChildList
         });
 
         function fillOrgList() {
@@ -83,6 +97,22 @@
             });
         }
 
+        function fillSrvChildList() {
+            var srv_id;
+            srv_id = $('input#ServiceId').attr('value');
+
+            var list_div;
+            list_div = $('#select-srv-child-form');
+            list_div.html('');
+
+            $.get(site_name + '/Service/ChildListData/' + srv_id, null, function (data, textStatus) {
+                data.forEach(function (item, i, arr) {
+                    list_div.append('<div><a href="#" onclick="selectSrvChild(' + item.Id + ', \'' + item.Caption + '\')">' + item.Caption + '</a></div>');
+                    list_div.append('<hr/>')
+                });
+            });
+        }
+
         $("#select-org").button().on("click", function () {
             dialog_org.dialog('open');
         });
@@ -95,6 +125,16 @@
                 return;
             }
             dialog_srv.dialog('open');
+        });
+
+        $("#select-service-child").button().on("click", function () {
+            var org_id;
+            srv_id = $('#ServiceId').attr('value');
+            if (srv_id == undefined || srv_id == null || srv_id == '') {
+                alert("Не выбрана Услуга");
+                return;
+            }
+            dialog_srv_child.dialog('open');
         });
     });
 
@@ -112,6 +152,13 @@
         $('input#Service').attr('value', caption);
         dialog_srv.dialog('close');
     }
+
+    function selectSrvChild(id, caption) {
+        $('#selected-service-child').html(caption);
+        $('input#ServiceChildId').attr('value', id);
+        $('input#ServiceChild').attr('value', caption);
+        dialog_srv_child.dialog('close');
+    }
 </script>
 
 <div id="select-org-form" title="Выбор ОГВ">
@@ -119,6 +166,10 @@
 </div>
 
 <div id="select-srv-form" title="Выбор услуги">
+
+</div>
+
+<div id="select-srv-child-form" title="Выбор услуги">
 
 </div>
 
@@ -138,9 +189,11 @@
 
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.ServiceId)
+        @Html.HiddenFor(model => model.ServiceChildId)
         @Html.HiddenFor(model => model.OrganizationId)
         @Html.HiddenFor(model => model.Organization)
         @Html.HiddenFor(model => model.Service)
+        @Html.HiddenFor(model => model.ServiceChild)
 
         <input hidden="hidden" id="org_id" />
 
@@ -182,6 +235,15 @@
         <div class="editor-field">
             <div id="selected-service" class="float-left" style="margin-right:10px">Не выбрана</div><button id="select-service" type="button" style="float:left">...</button>
             <div>@Html.ValidationMessageFor(model => model.Service)</div>
+            <div style="clear:both" />
+        </div>
+
+        <div class="editor-label">
+        @Html.LabelFor(model => model.ServiceChildId)
+        </div>
+        <div class="editor-field">
+            <div id="selected-service-child" class="float-left" style="margin-right:10px">Не выбрана</div><button id="select-service-child" type="button" style="float:left">...</button>
+            <div>@Html.ValidationMessageFor(model => model.ServiceChild)</div>
             <div style="clear:both" />
         </div>
 

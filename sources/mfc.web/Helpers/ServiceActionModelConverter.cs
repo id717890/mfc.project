@@ -22,7 +22,8 @@ namespace mfc.web.Helpers {
                 Service = _service_srv.GetServiceById(model.ServiceId),
                 Date = model.Date,
                 Type = _action_type_srv.GetTypeById(model.TypeId),
-                Comments = model.Comments
+                Comments = model.Comments,
+                ServiceChild = _service_srv.GetServiceById(model.ServiceChildId)
             };
         }
 
@@ -43,6 +44,11 @@ namespace mfc.web.Helpers {
                 item.Service = entity.Service.Caption;
                 item.OrganizationId = entity.Service.Organization.Id;
                 item.Organization = entity.Service.Organization.Caption;
+            }
+
+            if (entity.ServiceChild != null) {
+                item.ServiceChildId = entity.ServiceChild.Id;
+                item.ServiceChild = entity.ServiceChild.Caption;
             }
 
             return item;

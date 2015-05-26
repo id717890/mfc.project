@@ -73,7 +73,7 @@ namespace mfc.web.Controllers {
                 Int64 id = -1;
 
                 try {
-                    id = action_srv.Add(model.Date, model.ServiceId, model.Customer, model.TypeId, model.ExpertId, model.Comments);
+                    id = action_srv.Add(model.Date, model.ServiceId, model.Customer, model.TypeId, model.ExpertId, model.ServiceChildId, model.Comments);
                 }
                 catch (Exception e) {
                     has_error = true;

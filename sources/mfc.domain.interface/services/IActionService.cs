@@ -13,7 +13,7 @@ namespace mfc.domain.services {
         IEnumerable<ServiceAction> GetActions(User user, DateTime date);
         IEnumerable<ServiceAction> GetActions(DateTime dateBegin, DateTime dateEnd);
         ServiceAction GetActionById(Int64 Id);
-        Int64 Add(DateTime date, Int64 serviceId, string curtomer, Int64 typeId, Int64 userId, string comments);
+        Int64 Add(DateTime date, Int64 serviceId, string curtomer, Int64 typeId, Int64 userId, Int64 serviceChildId, string comments);
         void Update(ServiceAction action);
         void Delete(Int64 id);
     }

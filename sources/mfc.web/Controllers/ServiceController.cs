@@ -41,6 +41,18 @@ namespace mfc.web.Controllers {
             return Json(items, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult ChildListData(int id) {
+            var srv = CompositionRoot.Resolve<IServiceService>();
+
+            List<ServiceModel> items = new List<ServiceModel>();
+
+            foreach (var entity in srv.GetChildServices(id)) {
+                items.Add(ModelConverter.ToModel(entity));
+            }
+
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
         //
         // GET: /Organization/Create
 

@@ -16,9 +16,10 @@ namespace mfc.dal.mapping {
             Map(x => x.Comments);
             Map(x => x.IsDeleted, "is_deleted");
             Map(x => x.Customer);
-            References(x => x.Type, "type_id").LazyLoad(Laziness.NoProxy);
-            References(x => x.Service, "service_id").LazyLoad(Laziness.NoProxy);
-            References(x => x.User, "user_id").LazyLoad(Laziness.NoProxy);
+            References(x => x.Type, "type_id");
+            References(x => x.Service, "service_id");
+            References(x => x.ServiceChild, "service_child_id");
+            References(x => x.User, "user_id");
         }
     }
 }
