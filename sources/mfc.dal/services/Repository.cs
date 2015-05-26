@@ -39,7 +39,7 @@ namespace mfc.dal.services {
             Session.Update(entity);
         }
 
-        public void Delete(Int64 id) {
+        public virtual void Delete(Int64 id) {
             var entity = Session.Load<TEntity>(id);
             entity.IsDeleted = true;
             Session.Update(entity);

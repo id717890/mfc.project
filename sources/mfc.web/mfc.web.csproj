@@ -223,6 +223,7 @@
     <Compile Include="Controllers\FileStageController.cs" />
     <Compile Include="Controllers\FileStatusController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\ServiceChildController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\ActionTypeController.cs" />
@@ -392,6 +393,9 @@
     <Content Include="Views\FileStage\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\String.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\MultilineText.cshtml" />
+    <Content Include="Views\ServiceChild\Index.cshtml" />
+    <Content Include="Views\ServiceChild\Edit.cshtml" />
+    <Content Include="Views\ServiceChild\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,55 @@
+﻿@model mfc.web.Models.ServiceListViewModel
+
+@{
+    ViewBag.Title = string.Format("Подуслуги: {0}", Model.Parent.Caption);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Int64 last_org = -1; 
+    bool render_hr = false;
+}
+
+@section workmenu {
+    @Html.Partial("_AdminMenu", 4)
+}
+
+<script>
+    $(function () {
+        $('select#organization').bind('change', function () {
+            var val = $(this).val();
+        });
+    });
+</script>
+
+@section featured {
+    <section class="featured">
+        <h1>@ViewBag.Title</h1>
+    </section>
+}
+<p>
+    @Html.ActionLink("Новый", "Create", new { parentId = Model.Parent.Id })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Название
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Services) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Caption)
+            </td>
+            <td>
+                @Html.ActionLink("Изменить", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+
+    }
+
+</table>
+
+<div>
+    @Html.ActionLink("К списку услуг", "List", "Service")
+</div>

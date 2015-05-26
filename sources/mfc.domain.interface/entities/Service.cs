@@ -9,6 +9,7 @@ namespace mfc.domain.entities {
     /// Элемент справочника "Услуги"
     /// </summary>
     public class Service : Entity {
+        public virtual Service Parent { get; set; }
         public virtual string Caption { get; set; }
         public virtual Organization Organization { get; set; }
 

@@ -11,7 +11,10 @@ namespace mfc.domain.services {
         IEnumerable<Service> GetOrganizationServices(Int64 orgId);
         Service GetServiceById(Int64 Id);
         Int64 Create(string caption, Int64 organizationId);
+        Int64 Create(string caption, Int64 organizationId, Int64 parentId);
         void Update(Service service);
         void Delete(Int64 id);
+
+        IEnumerable<Service> GetChildServices(Int64 parentId);
     }
 }

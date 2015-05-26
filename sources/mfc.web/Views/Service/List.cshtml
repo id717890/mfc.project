@@ -58,7 +58,8 @@
             </td>
             <td>
                 @Html.ActionLink("Изменить", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id }) |
+                @Html.ActionLink("Подуслуги", "Index", "ServiceChild", new { parentId = item.Id }, new { }) 
             </td>
         </tr>
 

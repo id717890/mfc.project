@@ -18,5 +18,11 @@ namespace mfc.web.Models {
 
         [Display(Name = "ОГВ")]
         public String OrgCaption { get; set; }
+
+        [Display(Name = "Услуга")]
+        public string ParentCaption { get; set; }
+
+        [Display(Name = "Услуга")]
+        public Int64 ParentId { get; set; }
     }
 }

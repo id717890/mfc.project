@@ -1,0 +1,28 @@
+﻿@model mfc.web.Models.ServiceModel
+
+@section workmenu {
+    @Html.Partial("_AdminMenu", 4)
+}
+
+<h3>Удалить услугу?</h3>
+@using (Html.BeginForm("Delete", "ServiceChild", FormMethod.Post, new { @class = "form" })) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+<fieldset>
+    <legend>OrganizationModel</legend>
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Caption)
+    @Html.HiddenFor(model => model.ParentId)
+
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Caption)
+    </div>
+</fieldset>
+
+    
+    <p>
+        <input type="submit" value="Удалить" class="btn btn-lg btn-default" />
+    </p>
+}
+
+<p>@Html.ActionLink("К списку подуслуг", "Index", new { parentId = Model.ParentId })</p>

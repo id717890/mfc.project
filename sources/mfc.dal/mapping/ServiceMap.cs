@@ -13,6 +13,7 @@ namespace mfc.dal.mapping {
             Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Caption);
             References(x => x.Organization, "org_id");
+            References(x => x.Parent, "parent_id");
             Map(x => x.IsDeleted, "is_deleted");
         }
     }

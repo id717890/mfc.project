@@ -197,18 +197,23 @@ namespace mfc.web.Controllers {
                     Id = entity.Id,
                     Caption = entity.Caption,
                     OrgId = entity.Organization != null ? entity.Organization.Id : -1,
-                    OrgCaption = entity.Organization != null ? entity.Organization.Caption : string.Empty
+                    OrgCaption = entity.Organization != null ? entity.Organization.Caption : string.Empty,
+                    ParentId = entity.Parent != null ? entity.Parent.Id : 0,
+                    ParentCaption = entity.Parent != null ? entity.Parent.Caption : string.Empty
                 };
             }
 
             public static Service FromModel(ServiceModel model) {
-                var srv = CompositionRoot.Resolve<IOrganizationService>();
-                var org = srv.GetOrganizationById(model.OrgId);
+                var org_srv = CompositionRoot.Resolve<IOrganizationService>();
+                var srv = CompositionRoot.Resolve<IServiceService>();
+                var org = org_srv.GetOrganizationById(model.OrgId);
+                var parent = srv.GetServiceById(model.ParentId);
 
                 return new Service {
                     Id = model.Id,
                     Caption = model.Caption,
-                    Organization = org
+                    Organization = org,
+                    Parent = parent
                 };
             }
         }

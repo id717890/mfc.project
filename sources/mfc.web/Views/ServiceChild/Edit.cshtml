@@ -18,7 +18,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm(for_edit ? "Edit" : "Create", "Service", FormMethod.Post, new { @class = "form" })) {
+@using (Html.BeginForm(for_edit ? "Edit" : "Create", "ServiceChild", FormMethod.Post, new { @class = "form" })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -26,6 +26,17 @@
         <legend>OrganizationModel</legend>
 
         @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.ParentId)
+        @Html.HiddenFor(model => model.OrgId)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OrgCaption) @Model.OrgCaption
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ParentCaption) @Model.ParentCaption
+        </div>
+
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Caption)
@@ -35,13 +46,6 @@
             @Html.ValidationMessageFor(model => model.Caption)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.OrgCaption)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(m => m.OrgId, new SelectList(ViewBag.Organizations, "Id", "Caption"), new { @class = "form-control" })
-        </div>
-
         <p>
             <input type="submit" value="Сохранить" class="btn btn-lg btn-default" />
         </p>
@@ -49,6 +53,5 @@
 }
 <hr/>
 <div>
-    <p>@Html.ActionLink("Подуслуги", "Index", "ServiceChild", new { parentId = Model.Id }, new { })</p>
-    <p>@Html.ActionLink("К списку улуг", "List")</p>
+    <p>@Html.ActionLink("К списку подулуг", "Index", new { parentId = Model.ParentId })</p>
 </div>

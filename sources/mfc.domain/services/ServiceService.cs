@@ -29,7 +29,7 @@ namespace mfc.domain.services {
         public IEnumerable<Service> GetAllServices() {
             PrepareCache();
 
-            return _cache.Values.OrderBy(m=>m.Caption).OrderBy(m => m.Organization.Caption);
+            return _cache.Values.Where(m => m.Parent == null).OrderBy(m => m.Caption).OrderBy(m => m.Organization.Caption);
         }
 
         public IEnumerable<Service> GetOrganizationServices(Int64 orgId) {
@@ -54,11 +54,16 @@ namespace mfc.domain.services {
         }
 
         public long Create(string caption, Int64 organizationId) {
+            return Create(caption, organizationId, 0);
+        }
+
+        public long Create(string caption, Int64 organizationId, long parentId) {
             Debug.Assert(!string.IsNullOrEmpty(caption));
 
             var service = new Service {
                 Caption = caption,
-                Organization = OrgService.GetOrganizationById(organizationId)
+                Organization = OrgService.GetOrganizationById(organizationId),
+                Parent = GetServiceById(parentId)
             };
 
             var work_of_unit = UnitOfWorkProvider.GetUnitOfWork();
@@ -68,9 +73,10 @@ namespace mfc.domain.services {
             work_of_unit.Commit();
 
             _is_cache_valid = false;
-            
+
             return 0;
         }
+
 
         public void Update(Service service) {
             var work_of_unit = UnitOfWorkProvider.GetUnitOfWork();
@@ -91,6 +97,14 @@ namespace mfc.domain.services {
 
             _is_cache_valid = false;
         }
+
+        #region Subservices
+        public IEnumerable<Service> GetChildServices(Int64 parentId) {
+            PrepareCache();
+
+            return _cache.Values.Where(m => m.Parent!= null && m.Parent.Id == parentId).OrderBy(m => m.Caption).OrderBy(m => m.Organization.Caption);
+        }
+        #endregion
 
         #region Helpers
 
