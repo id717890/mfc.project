@@ -87,7 +87,7 @@ namespace mfc.web.Controllers {
 
             ViewBag.OrganizationTypes = types;
 
-            return View("Edit");
+            return View("Edit", model);
         }
 
         //
@@ -118,10 +118,10 @@ namespace mfc.web.Controllers {
 
         [HttpPost]
         public ActionResult Edit(OrganizationModel model) {
+            var organization_service = CompositionRoot.Resolve<IOrganizationService>();
+
             if (ModelState.IsValid) {
                 bool has_error = false;
-
-                var organization_service = CompositionRoot.Resolve<IOrganizationService>();
 
                 try {
                     var org = OrganizationModelConverter.FromModel(model);
@@ -136,7 +136,15 @@ namespace mfc.web.Controllers {
                     return RedirectToAction("List");
                 }
             }
-            return View();
+            var types = new List<OrganizationTypeModel>();
+
+            foreach (var type in organization_service.GetAllTypes()) {
+                types.Add(OrganizationTypeModelConverter.ToModel(type));
+            }
+
+            ViewBag.OrganizationTypes = types;
+
+            return View(model);
         }
 
         //
