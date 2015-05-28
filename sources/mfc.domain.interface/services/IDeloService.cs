@@ -16,5 +16,8 @@ namespace mfc.domain.services {
         Int64 Add(ServiceAction action);
         void Update(File file);
         void Delete(Int64 id);
+
+        void SendForControl(Int64 fileId, Int64 controllerId, string comments);
+        void Return(Int64 fileId, Int64 expertId, string comments);
     }
 }

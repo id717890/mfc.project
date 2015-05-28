@@ -77,10 +77,6 @@ namespace mfc.web.Controllers {
                 }
                 else {
                     model = FileModelConverter.ToModel(file);
-
-                    if (file.Controller != null) {
-                        model.ControllerId = file.Controller.Id;
-                    }
                 }
             }
             catch (DomainException e) {
@@ -108,9 +104,7 @@ namespace mfc.web.Controllers {
 
                 if (file != null) {
                     try {
-                        file.Controller = user_srv.GetUserById(model.ControllerId);
                         file.Caption = model.Caption;
-
                         file_srv.Update(file);
                     }
                     catch (DomainException e) {
@@ -129,9 +123,81 @@ namespace mfc.web.Controllers {
             return View(model);
         }
 
+        public ActionResult Control(Int64 fileId) {
+            var file_srv = CompositionRoot.Resolve<IFileService>();
+            bool has_error = false;
+            FileControlModel model = new FileControlModel();
+
+            model.FileId = fileId;
+
+            PrepareForCreate();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Control(FileControlModel model) {
+            bool has_error = false;
+            if (ModelState.IsValid) {
+                var file_srv = CompositionRoot.Resolve<IFileService>();
+
+                try {
+                    file_srv.SendForControl(model.FileId, model.ControllerId, model.Comments);
+                }
+                catch (DomainException e) {
+                    ModelState.AddModelError("", e);
+                    has_error = true;
+                }
+
+                if (!has_error) {
+                    return RedirectToAction("Edit", new { id = model.FileId });
+                }
+            }
+
+            PrepareForCreate();
+
+            return View(model);
+        }
+
+        public ActionResult Return(Int64 fileId) {
+            var file_srv = CompositionRoot.Resolve<IFileService>();
+            bool has_error = false;
+            FileReturnModel model = new FileReturnModel();
+
+            model.FileId = fileId;
+
+            PrepareForCreate();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Return(FileReturnModel model) {
+            bool has_error = false;
+            if (ModelState.IsValid) {
+                var file_srv = CompositionRoot.Resolve<IFileService>();
+
+                try {
+                    file_srv.Return(model.FileId, model.ExpertId, model.Comments);
+                }
+                catch (DomainException e) {
+                    ModelState.AddModelError("", e);
+                    has_error = true;
+                }
+
+                if (!has_error) {
+                    return RedirectToAction("Edit", new { id = model.FileId });
+                }
+            }
+
+            PrepareForCreate();
+
+            return View(model);
+        }
+
 
         #region Helpers
-        
+
         private FileListViewModel CreateFileListModel(DateTime date, User selectedUser, FileStatus status, Organization org) {
             var user_srv = CompositionRoot.Resolve<IUserService>();
             var status_srv = CompositionRoot.Resolve<IFileStatusService>();
@@ -182,7 +248,7 @@ namespace mfc.web.Controllers {
 
             model.Organizations.Add(Organization.All);
 
-            foreach (var item in orgs.OrderBy(m => m.Caption)){
+            foreach (var item in orgs.OrderBy(m => m.Caption)) {
                 model.Organizations.Add(item);
             }
 
@@ -191,17 +257,8 @@ namespace mfc.web.Controllers {
 
         private void PrepareForCreate() {
             var usr_srv = CompositionRoot.Resolve<IUserService>();
-
-            var users = new List<User>();
-
-            if (User.IsInRole(Roles.Admin)) {
-                users.AddRange(usr_srv.GetControllers());
-            }
-            else {
-                users.Add(usr_srv.GetUser(User.Identity.Name));
-            }
-
-            ViewBag.Controllers = users;
+            ViewBag.Controllers = new List<User>(usr_srv.GetControllers());
+            ViewBag.Experts = new List<User>(usr_srv.GetExperts()); ;
         }
 
         #endregion

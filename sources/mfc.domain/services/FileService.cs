@@ -30,6 +30,9 @@ namespace mfc.domain.services {
         [Inject]
         public IFileStatusService FileStatusService { get; set; }
 
+        [Inject]
+        public IUserService UserService { get; set; }
+
         public IEnumerable<File> GetFiles(User user, DateTime date) {
             return FileRepository.GetAll();
         }
@@ -77,6 +80,61 @@ namespace mfc.domain.services {
 
         public File GetFileByActionId(long actionId) {
             return FileRepository.GetByActionId(actionId);
+        }
+
+
+        public void SendForControl(long fileId, long controllerId, string comments) {
+            var file = GetFileById(fileId);
+            if (file == null) {
+                throw new ArgumentException(string.Format("Дело с идентификатором {0} не найдено", fileId));
+            }
+            
+            var user = UserService.GetUserById(controllerId);
+            if (user == null) {
+                throw new ArgumentException(string.Format("Пользователь с идентификатором {0} не найден", controllerId));
+            }
+
+            var status = FileStageService.GetStatusForStage(FileStages.SendForControl);
+
+            if (status == null) {
+                throw new ArgumentException(string.Format("Не определен статус для дел, переданных на проверку"));
+            }
+
+            file.Controller = user;
+            file.CurrentStatus = status;
+
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
+            
+            unit_of_work.BeginTransaction();
+            FileRepository.Update(file);
+            unit_of_work.Commit();
+        }
+
+        public void Return(long fileId, long expertId, string comments) {
+            var file = GetFileById(fileId);
+            if (file == null) {
+                throw new ArgumentException(string.Format("Дело с идентификатором {0} не найдено", fileId));
+            }
+
+            var user = UserService.GetUserById(expertId);
+            if (user == null) {
+                throw new ArgumentException(string.Format("Пользователь с идентификатором {0} не найден", expertId));
+            }
+
+            var status = FileStageService.GetStatusForStage(FileStages.ReturnForFix);
+
+            if (status == null) {
+                throw new ArgumentException(string.Format("Не определен статус для дел, переданных на проверку"));
+            }
+
+            file.Expert = user;
+            file.CurrentStatus = status;
+
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
+
+            unit_of_work.BeginTransaction();
+            FileRepository.Update(file);
+            unit_of_work.Commit();
         }
     }
 }

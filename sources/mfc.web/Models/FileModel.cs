@@ -8,8 +8,6 @@ namespace mfc.web.Models {
     public class FileModel {
         public Int64 Id { get; set; }
 
-        public Int64 ActionId { get; set; }
-
         [Required]
         [Display(Name = "Номер дела")]
         public string Caption { get; set; }
@@ -17,11 +15,8 @@ namespace mfc.web.Models {
         [Display(Name = "Эксперт")]
         public String Expert { get; set; }
 
-        public Int64 ExpertId { get; set; }
-
         [Display(Name = "Контролер")]
-        [Required]
-        public Int64 ControllerId { get; set; }
+        public string Controller { get; set; }
 
         [Display(Name = "Услуга")]
         public string Service { get; set; }
@@ -29,9 +24,9 @@ namespace mfc.web.Models {
         [Display(Name = "ОГВ")]
         public string Organization { get; set; }
 
-        public Int64 OrganizationId { get; set; }
+        [Display(Name = "Статус")]
+        public string Status { get; set; }
 
-        [Required]
         [Display(Name = "Дата")]
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }

@@ -396,6 +396,7 @@
     <Content Include="Views\ServiceChild\Index.cshtml" />
     <Content Include="Views\ServiceChild\Edit.cshtml" />
     <Content Include="Views\ServiceChild\Delete.cshtml" />
+    <Content Include="Views\File\_ActionMenuView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

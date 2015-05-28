@@ -10,15 +10,13 @@ namespace mfc.web.Helpers {
         public static FileModel ToModel(File file) {
             return new FileModel {
                 Id = file.Id,
-                ActionId = file.Action.Id,
                 Caption = file.Caption,
                 Expert = file.Expert.Name,
-                ExpertId = file.Expert.Id,
                 Organization = file.Ogv.Caption,
-                OrganizationId = file.Ogv.Id,
                 Service = file.Action.Service.Caption,
                 Date = file.Date,
-                ControllerId = file.Controller != null ? file.Controller.Id : 0
+                Controller = file.Controller != null ? file.Controller.Name : string.Empty,
+                Status = file.CurrentStatus != null ? file.CurrentStatus.Caption : string.Empty
             };
         }
     }

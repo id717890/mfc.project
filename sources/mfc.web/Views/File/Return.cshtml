@@ -1,0 +1,56 @@
+﻿@model mfc.web.Models.FileReturnModel
+
+@{
+    ViewBag.Title = "Возвратить для исправления";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section workmenu {
+    @Html.Partial("_WorkMenu", 1)
+}
+
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-md-8 col-sd-8">
+        @using (Html.BeginForm("Return", "File", FormMethod.Post, new { @class = "form" })) {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            if (ViewBag.ErrorMessage != null) { 
+            <h3 class="validation-summary-errors">*@ViewBag.ErrorMessage</h3>
+            }
+
+
+            <fieldset>
+                <legend>FileModel</legend>
+
+                @Html.HiddenFor(model => model.FileId)
+                @Html.HiddenFor(model => model.Expert)
+
+                <div class="display-label">
+                    @Html.LabelFor(model => model.ExpertId)
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.ExpertId, new SelectList(ViewBag.Experts, "Id", "Name"), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ExpertId)
+                </div>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Comments)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Comments)
+                    @Html.ValidationMessageFor(model => model.Comments)
+                </div>
+
+                <p>
+                    <input type="submit" value="Отправить" class="btn btn-lg btn-default" />
+                </p>
+            </fieldset>
+        }
+        <div>
+            @Html.ActionLink("Возврат к делу", "Edit", new { id = Model.FileId })
+        </div>
+    </div>
+</div>
