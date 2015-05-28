@@ -17,8 +17,8 @@
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
 
-            if (ViewBag.ErrorMessage != null) { 
-            <h3 class="validation-summary-errors">*@ViewBag.ErrorMessage</h3>
+            if (ViewBag.ErrorMessage != null) {
+                <h3 class="validation-summary-errors">*@ViewBag.ErrorMessage</h3>
             }
 
 
@@ -40,7 +40,7 @@
                     @Html.LabelFor(model => model.Comments)
                 </div>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.Comments)
+                    @Html.TextAreaFor(model => model.Comments, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Comments)
                 </div>
 
