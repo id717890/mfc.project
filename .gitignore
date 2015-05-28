@@ -5,5 +5,4 @@
 /**/bin/Debug/**
 /**/obj/**
 /**/obj/Debug/**
-/**/packages/
 **.dll
