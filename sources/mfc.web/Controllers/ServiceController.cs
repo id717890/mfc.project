@@ -11,10 +11,7 @@ using System.Web.Mvc;
 
 namespace mfc.web.Controllers {
     public class ServiceController : Controller {
-        //
-        // GET: /Organization/
-
-        public ActionResult List() {
+        public ActionResult List(Int64 id = 0) {
             var srv = CompositionRoot.Resolve<IServiceService>();
             var org_srv = CompositionRoot.Resolve<IOrganizationService>();
 
@@ -22,9 +19,15 @@ namespace mfc.web.Controllers {
 
             model.Organizations = new List<Organization>(org_srv.GetAllOrganizations());
             model.Organizations.Insert(0, new Organization { Id = -1, Caption = "<Все>" });
-
-            model.OrganizationId = model.Organizations[0].Id;
-            model.Services = new List<Service>(srv.GetAllServices());
+            
+            if (id > 0) {
+                model.OrganizationId = id;
+                model.Services = new List<Service>(srv.GetOrganizationServices(id));
+            }
+            else {
+                model.OrganizationId = model.Organizations[0].Id;
+                model.Services = new List<Service>(srv.GetAllServices());
+            }
 
             return View(model);
         }
