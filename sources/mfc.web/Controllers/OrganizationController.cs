@@ -13,7 +13,7 @@ namespace mfc.web.Controllers {
     public class OrganizationController : Controller {
         //
         // GET: /Organization/
-
+        [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
         public ActionResult List() {
             var org_service = CompositionRoot.Resolve<IOrganizationService>();
 
@@ -40,7 +40,7 @@ namespace mfc.web.Controllers {
 
         //
         // GET: /Organization/Create
-
+        [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
         public ActionResult Create() {
             var org_service = CompositionRoot.Resolve<IOrganizationService>();
 
@@ -59,6 +59,7 @@ namespace mfc.web.Controllers {
         // POST: /Organization/Create
 
         [HttpPost]
+        [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
         public ActionResult Create(OrganizationModel model) {
             var org_service = CompositionRoot.Resolve<IOrganizationService>();
 
@@ -92,7 +93,7 @@ namespace mfc.web.Controllers {
 
         //
         // GET: /Organization/Edit/5
-
+        [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
         public ActionResult Edit(int id) {
             var org_service = CompositionRoot.Resolve<IOrganizationService>();
             var org = org_service.GetOrganizationById(id);
@@ -117,6 +118,7 @@ namespace mfc.web.Controllers {
         // POST: /Organization/Edit/5
 
         [HttpPost]
+        [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
         public ActionResult Edit(OrganizationModel model) {
             var organization_service = CompositionRoot.Resolve<IOrganizationService>();
 
@@ -149,7 +151,7 @@ namespace mfc.web.Controllers {
 
         //
         // GET: /Organization/Delete/5
-
+        [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
         public ActionResult Delete(int id) {
             var organization_service = CompositionRoot.Resolve<IOrganizationService>();
 
@@ -169,6 +171,7 @@ namespace mfc.web.Controllers {
         // POST: /Organization/Delete/5
 
         [HttpPost]
+        [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
         public ActionResult Delete(Int64 id, FormCollection collection) {
             bool has_error = false;
 

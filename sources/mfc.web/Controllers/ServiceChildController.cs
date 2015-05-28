@@ -13,7 +13,6 @@ using System.Web.Mvc;
 namespace mfc.web.Controllers {
     [Authorize(Roles = Roles.Admin)]
     public class ServiceChildController : Controller {
-        // GET: ServiceChild
         public ActionResult Index(Int64 parentId) {
             var srv = CompositionRoot.Resolve<IServiceService>();
 
@@ -24,7 +23,7 @@ namespace mfc.web.Controllers {
 
             return View(model);
         }
-
+        
         public ActionResult Create(Int64 parentId) {
             var srv = CompositionRoot.Resolve<IServiceService>();
 
@@ -71,7 +70,7 @@ namespace mfc.web.Controllers {
 
             return View("Edit", model);
         }
-
+        
         public ActionResult Edit(int id) {
             var srv = CompositionRoot.Resolve<IServiceService>();
             var service = srv.GetServiceById(id);
@@ -109,7 +108,6 @@ namespace mfc.web.Controllers {
 
         //
         // GET: /Organization/Delete/5
-
         public ActionResult Delete(int id) {
             var srv = CompositionRoot.Resolve<IServiceService>();
 

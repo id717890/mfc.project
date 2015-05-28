@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace mfc.web.Controllers {
     public class ServiceController : Controller {
+        [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
         public ActionResult List(Int64 id = 0) {
             var srv = CompositionRoot.Resolve<IServiceService>();
             var org_srv = CompositionRoot.Resolve<IOrganizationService>();
@@ -31,7 +32,7 @@ namespace mfc.web.Controllers {
 
             return View(model);
         }
-
+        
         public ActionResult ListData(int id) {
             var srv = CompositionRoot.Resolve<IServiceService>();
 
@@ -58,7 +59,7 @@ namespace mfc.web.Controllers {
 
         //
         // GET: /Organization/Create
-
+        [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
         public ActionResult Create() {
             var srv = CompositionRoot.Resolve<IServiceService>();
             var org_srv = CompositionRoot.Resolve<IOrganizationService>();
@@ -78,6 +79,7 @@ namespace mfc.web.Controllers {
         // POST: /Organization/Create
 
         [HttpPost]
+        [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
         public ActionResult Create(ServiceModel model) {
             var srv = CompositionRoot.Resolve<IServiceService>();
 
@@ -113,7 +115,7 @@ namespace mfc.web.Controllers {
 
         //
         // GET: /Organization/Edit/5
-
+        [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
         public ActionResult Edit(int id) {
             var srv = CompositionRoot.Resolve<IServiceService>();
             var service = srv.GetServiceById(id);
@@ -140,6 +142,7 @@ namespace mfc.web.Controllers {
         // POST: /Organization/Edit/5
 
         [HttpPost]
+        [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
         public ActionResult Edit(ServiceModel model) {
             if (ModelState.IsValid) {
                 bool has_error = false;
@@ -164,7 +167,7 @@ namespace mfc.web.Controllers {
 
         //
         // GET: /Organization/Delete/5
-
+        [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
         public ActionResult Delete(int id) {
             var srv = CompositionRoot.Resolve<IServiceService>();
 
@@ -184,6 +187,7 @@ namespace mfc.web.Controllers {
         // POST: /Organization/Delete/5
 
         [HttpPost]
+        [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
         public ActionResult Delete(Int64 id, FormCollection collection) {
             bool has_error = false;
 

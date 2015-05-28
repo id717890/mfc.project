@@ -1,8 +1,9 @@
 ﻿@using mfc.web.Constants;
+@using MfcRoles = mfc.infrastructure.security.Roles;
 @model string
 @{
     var items = new Dictionary<string, MvcHtmlString>();
-    if (User.IsInRole(mfc.infrastructure.security.Roles.Expert)) { 
+    if (User.IsInRole(MfcRoles.Expert) || User.IsInRole(MfcRoles.Admin)) { 
         items.Add(WorkMenuItems.Services, Html.ActionLink("Приемы", "Index", "Action"));
     }
     items.Add(WorkMenuItems.Files, Html.ActionLink("Дела", "Index", "File"));

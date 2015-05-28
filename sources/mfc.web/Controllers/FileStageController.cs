@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace mfc.web.Controllers {
+    [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
     public class FileStageController : Controller {
         // GET: FileStage
         public ActionResult Index() {
