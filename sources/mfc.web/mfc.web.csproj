@@ -401,6 +401,7 @@
     <Content Include="Views\File\_ActionMenuView.cshtml" />
     <Content Include="Views\File\Control.cshtml" />
     <Content Include="Views\File\Return.cshtml" />
+    <Content Include="Views\File\Check.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -136,5 +136,27 @@ namespace mfc.domain.services {
             FileRepository.Update(file);
             unit_of_work.Commit();
         }
+
+
+        public void Checked(long fileId, string comments) {
+            var file = GetFileById(fileId);
+            if (file == null) {
+                throw new ArgumentException(string.Format("Дело с идентификатором {0} не найдено", fileId));
+            }
+
+            var status = FileStageService.GetStatusForStage(FileStages.Checked);
+
+            if (status == null) {
+                throw new ArgumentException(string.Format("Не определен статус для дел, переданных на проверку"));
+            }
+
+            file.CurrentStatus = status;
+
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
+
+            unit_of_work.BeginTransaction();
+            FileRepository.Update(file);
+            unit_of_work.Commit();
+        }
     }
 }

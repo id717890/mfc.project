@@ -19,5 +19,6 @@ namespace mfc.domain.services {
 
         void SendForControl(Int64 fileId, Int64 controllerId, string comments);
         void Return(Int64 fileId, Int64 expertId, string comments);
+        void Checked(Int64 fileId, string comments);
     }
 }
