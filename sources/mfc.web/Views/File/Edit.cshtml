@@ -12,6 +12,10 @@
 @section workmenu {
     @Html.Partial("_WorkMenu", 1)
 }
+
+@section actionmenu {
+    @Html.Partial("_ActionMenuView", Model.Id)
+}
 <script>
     var dialog_org, dialog_srv;
     var site_name;

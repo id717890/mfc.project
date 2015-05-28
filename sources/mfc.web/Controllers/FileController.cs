@@ -129,6 +129,41 @@ namespace mfc.web.Controllers {
             return View(model);
         }
 
+        public ActionResult Send(Int64 fileId) {
+            var file_srv = CompositionRoot.Resolve<IFileService>();
+            bool has_error = false;
+            FileModel model = null;
+
+            try {
+                var file = file_srv.GetFileById(fileId);
+                if (file == null) {
+                    ModelState.AddModelError("", "Дело не найдено");
+                    has_error = true;
+                }
+                else {
+                    model = FileModelConverter.ToModel(file);
+
+                    if (file.Controller != null) {
+                        model.ControllerId = file.Controller.Id;
+                    }
+                }
+            }
+            catch (DomainException e) {
+                ModelState.AddModelError("", e);
+                has_error = true;
+            }
+
+            if (has_error) {
+                return RedirectToAction("Index", new { date = model.Date.ToString("dd.MM.yyyy") });
+            }
+
+            PrepareForCreate();
+
+            return View(model);
+
+            return View();
+        }
+
 
         #region Helpers
         
@@ -191,17 +226,7 @@ namespace mfc.web.Controllers {
 
         private void PrepareForCreate() {
             var usr_srv = CompositionRoot.Resolve<IUserService>();
-
-            var users = new List<User>();
-
-            if (User.IsInRole(Roles.Admin)) {
-                users.AddRange(usr_srv.GetControllers());
-            }
-            else {
-                users.Add(usr_srv.GetUser(User.Identity.Name));
-            }
-
-            ViewBag.Controllers = users;
+            ViewBag.Controllers = new List<User>(usr_srv.GetControllers()); ;
         }
 
         #endregion
