@@ -15,51 +15,16 @@ namespace mfc.web.Controllers {
     public class FileController : Controller {
         //
         // GET: /File/
-
-        public ActionResult Index(string date = null, Int64 user_id = -1, Int64 status_id = -1, Int64 org_id = -1) {
-            var user_srv = CompositionRoot.Resolve<IUserService>();
-            var status_srv = CompositionRoot.Resolve<IFileStatusService>();
-            var org_srv = CompositionRoot.Resolve<IOrganizationService>();
-
-            User user = null;
-            FileStatus status = null;
-
-            bool is_admin = User.IsInRole(Roles.Admin);
-
-            //Если текущий пользователь не администратор, то тогда
-            //устанавливаем его текущим
-            if (!is_admin && user_id == -1) {
-                user = user_srv.GetUser(User.Identity.Name);
-            }
-            else {
-                user = user_srv.GetUserById(user_id);
-            }
-
-            status = status_srv.GetStatusById(status_id);
-            var org = org_srv.GetOrganizationById(org_id);
-
-            var queryDate = DateTime.Today;
-
-            if (!string.IsNullOrEmpty(date)) {
-                DateTime.TryParse(date, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDate);
-            }
-
-            var model = CreateFileListModel(queryDate, user, status, org);
-
-            return View(model);
+        public ActionResult Index(Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1) {
+            return View(CreateModel(controllerId, expertId, statusId, orgId));
         }
 
         [HttpPost]
-        public ActionResult Index(DateTime date, Int64 selectedUserId = -1, Int64 selectedStatusId = -1, Int64 selectedOrgId = -1) {
-            var user_srv = CompositionRoot.Resolve<IUserService>();
-            var status_srv = CompositionRoot.Resolve<IFileStatusService>();
-            var org_srv = CompositionRoot.Resolve<IOrganizationService>();
-
-            var user = user_srv.GetUserById(selectedUserId);
-            var status = status_srv.GetStatusById(selectedStatusId);
-            var org = org_srv.GetOrganizationById(selectedOrgId);
-
-            var model = CreateFileListModel(date, user, status, org);
+        public ActionResult Index(FileListViewModel model) {
+            var new_model = model;
+            if (ModelState.IsValid) {
+                model = CreateModel(model.SelectedControllerId, model.SelectedExpertId, model.SelectedStatusId, model.SelectedOgvId);
+            }
 
             return View(model);
         }
@@ -272,23 +237,65 @@ namespace mfc.web.Controllers {
 
         #region Helpers
 
-        private FileListViewModel CreateFileListModel(DateTime date, User selectedUser, FileStatus status, Organization org) {
+        private FileListViewModel CreateModel(Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1) {
             var user_srv = CompositionRoot.Resolve<IUserService>();
             var status_srv = CompositionRoot.Resolve<IFileStatusService>();
-
+            var org_srv = CompositionRoot.Resolve<IOrganizationService>();
+            var file_srv = CompositionRoot.Resolve<IFileService>();
 
             FileListViewModel model = new FileListViewModel();
-            model.Date = date;
 
-            //Для администратора заполняем список всеми экспертами
-            //Для эксперта - только им.
+            model.SelectedOgvId = orgId == -1 ? Organization.All.Id : orgId;
+            model.SelectedControllerId = controllerId == -1 ? mfc.domain.entities.User.All.Id : controllerId;
+            model.SelectedExpertId = expertId == -1 ? mfc.domain.entities.User.All.Id : expertId;
+            model.SelectedStatusId = statusId == -1 ? FileStatus.All.Id : statusId;
+
             if (User.IsInRole(Roles.Admin)) {
+                //Для администратора заполняем список всеми экспертами и контролерами
                 foreach (var user in user_srv.GetControllers()) {
                     model.Controllers.Add(user);
                 }
+                model.Controllers.Insert(0, mfc.domain.entities.User.All);
+
+                foreach (var user in user_srv.GetExperts()) {
+                    model.Experts.Add(user);
+                }
+                model.Experts.Insert(0, mfc.domain.entities.User.All);
             }
-            else {
-                model.Controllers.Add(selectedUser);
+            else if (User.IsInRole(Roles.Controller) && User.IsInRole(Roles.Expert)) {
+                //Если пользователь и контролер и эксперт одновремено, то вносим в список только его
+                var user = user_srv.GetCurrentUser();
+
+                model.Controllers.Add(user);
+                model.Experts.Add(user);
+
+                model.SelectedExpertId = model.SelectedControllerId = user.Id;
+            }
+            else if (User.IsInRole(Roles.Controller)) {
+                //если только контролер, то полный список экспертов и один контролер
+                var user = user_srv.GetCurrentUser();
+
+                model.Controllers.Add(user_srv.GetCurrentUser());
+
+                model.Experts.Add(mfc.domain.entities.User.All);
+                foreach (var expert in user_srv.GetExperts()) {
+                    model.Experts.Add(expert);
+                }
+
+                model.SelectedControllerId = user.Id;
+            }
+            else if (User.IsInRole(Roles.Expert)) {
+                //если только эксперт, то полный список экспертов и один контролер
+                var user = user_srv.GetCurrentUser();
+
+                model.Experts.Add(user_srv.GetCurrentUser());
+
+                model.Controllers.Add(mfc.domain.entities.User.All);
+                foreach (var controller in user_srv.GetControllers()) {
+                    model.Controllers.Add(controller);
+                }
+
+                model.SelectedExpertId = user.Id;
             }
 
             model.Statuses.Add(FileStatus.All);
@@ -297,33 +304,17 @@ namespace mfc.web.Controllers {
                 model.Statuses.Add(item);
             }
 
-            var file_srv = CompositionRoot.Resolve<IFileService>();
-            var orgs = new List<Organization>();
-
-            //Пользователь, для данными которого заполняется список оказанных услуг
-            //Если он не задан, то берем первого в списке
-            User queryUser = selectedUser;
-
-            if (queryUser == null && model.Controllers.Count > 0) {
-                queryUser = model.Controllers[0];
-            }
-
-            if (queryUser != null) {
-                model.SelectedUserId = queryUser.Id;
-
-                foreach (var file in file_srv.GetFiles(queryUser, date)) {
-                    model.Files.Add(file);
-
-                    if (!orgs.Contains(file.Ogv)) {
-                        orgs.Add(file.Ogv);
-                    }
-                }
-            }
-
             model.Organizations.Add(Organization.All);
 
-            foreach (var item in orgs.OrderBy(m => m.Caption)) {
+            foreach (var item in org_srv.GetAllOrganizations()) {
                 model.Organizations.Add(item);
+            }
+
+            
+
+
+            foreach (var file in file_srv.GetFiles(model.SelectedControllerId, model.SelectedExpertId, model.SelectedStatusId, model.SelectedOgvId)) {
+                model.Files.Add(file);
             }
 
             return model;

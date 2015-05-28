@@ -9,7 +9,6 @@
             <h1 class="page-header">@ViewBag.Title</h1>
             <p>
                @using (Html.BeginForm()) {
-                <div style="margin: 0 10px;float:left">Дата: @Html.EditorFor(m => m.Date)</div>
                 <div style="margin: 0 10px;float:left">
                     Статус: @Html.DropDownListFor(m => m.SelectedStatusId, new SelectList(Model.Statuses, "Id", "Caption"), new { @class = "form-control" })
                 </div>
@@ -17,7 +16,10 @@
                     ОГВ: @Html.DropDownListFor(m => m.SelectedOgvId, new SelectList(Model.Organizations, "Id", "Caption"), new { @class = "form-control" })
                 </div>
                 <div style="margin: 0 10px;float:left">
-                    Контроллер: @Html.DropDownListFor(m => m.SelectedUserId, new SelectList(Model.Controllers, "Id", "Name"), new { @class = "form-control" })
+                    Контролер: @Html.DropDownListFor(m => m.SelectedControllerId, new SelectList(Model.Controllers, "Id", "Name"), new { @class = "form-control" })
+                </div>
+                <div style="margin: 0 10px;float:left">
+                    Эксперт: @Html.DropDownListFor(m => m.SelectedExpertId, new SelectList(Model.Experts, "Id", "Name"), new { @class = "form-control" })
                 </div>
                 <input type="submit" value="Обновить" class="btn btn-lg btn-default" />
                 <div style="clear:both" />

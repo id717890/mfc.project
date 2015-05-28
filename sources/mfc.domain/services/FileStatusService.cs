@@ -177,7 +177,7 @@ namespace mfc.domain.services {
                 cmd.Parameters.Add(new SqlParameter("dt", date));
                 cmd.Parameters.Add(new SqlParameter("user_id", user.Id));
                 cmd.Parameters.Add(new SqlParameter("status_id", statusId));
-                cmd.Parameters.Add(new SqlParameter("comments", comments));
+                cmd.Parameters.Add(new SqlParameter("comments", string.IsNullOrEmpty(comments) ? string.Empty : comments));
 
                 cmd.ExecuteNonQuery();
             }

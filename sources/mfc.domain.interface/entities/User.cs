@@ -9,6 +9,7 @@ namespace mfc.domain.entities {
     /// Класс с данными пользователя
     /// </summary>
     public class User : Entity {
+        public static User All = new User { Id = -1, Name = "Все" };
         public virtual String Account { get; set; }
         public virtual String Name { get; set; }
         public virtual bool IsAdmin { get; set; }

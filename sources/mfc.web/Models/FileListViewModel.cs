@@ -8,23 +8,29 @@ using System.Web;
 namespace mfc.web.Models {
     public class FileListViewModel {
         #region Fields
-        
-        private readonly List<User> _users = new List<User>();
+
+        private readonly List<User> _controllers = new List<User>();
+        private readonly List<User> _experts = new List<User>();
         private readonly List<File> _files = new List<File>();
         private readonly List<FileStatus> _statuses = new List<FileStatus>();
         private readonly List<Organization> _ogvs = new List<Organization>();
         
         #endregion
 
-        [DataType(DataType.Date)]
-        public DateTime Date { get; set; }
-        public Int64 SelectedUserId { get; set; }
+        public Int64 SelectedControllerId { get; set; }
         public Int64 SelectedStatusId { get; set; }
         public Int64 SelectedOgvId { get; set; }
+        public Int64 SelectedExpertId { get; set; }
 
         public IList<User> Controllers {
             get {
-                return _users;
+                return _controllers;
+            }
+        }
+
+        public IList<User> Experts {
+            get {
+                return _experts;
             }
         }
 

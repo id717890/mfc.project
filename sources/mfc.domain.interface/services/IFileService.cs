@@ -10,7 +10,7 @@ namespace mfc.domain.services {
     /// Интерфейс для работы с делами
     /// </summary>
     public interface IFileService {
-        IEnumerable<File> GetFiles(User user, DateTime date);
+        IEnumerable<File> GetFiles(Int64 controllerId, Int64 expertId, Int64 statusId, Int64 orgId);
         File GetFileById(Int64 Id);
         File GetFileByActionId(Int64 actionId);
         Int64 Add(ServiceAction action);
