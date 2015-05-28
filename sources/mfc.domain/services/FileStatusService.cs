@@ -158,9 +158,14 @@ namespace mfc.domain.services {
             return statuses;
         }
 
-        public void SetStatus(long fileId, long statusId, DateTime date, long userId) {
+        public void SetStatus(long fileId, long statusId, DateTime date) {
             var conn = SqlProvider.CreateConnection();
             SqlCommand cmd = null;
+
+            var user = UserService.GetCurrentUser();
+            if (user == null) {
+                throw new DomainException("Для текущего контекста не определен пользователь. Метод IUserService.GetCurrentUser вернул пустое значение");
+            }
 
             try {
                 cmd = conn.CreateCommand();
@@ -169,7 +174,7 @@ namespace mfc.domain.services {
                         values (@file_id, @dt, @status_id, @user_id, @comments)";
                 cmd.Parameters.Add(new SqlParameter("file_id", fileId));
                 cmd.Parameters.Add(new SqlParameter("dt", date));
-                cmd.Parameters.Add(new SqlParameter("user_id", userId));
+                cmd.Parameters.Add(new SqlParameter("user_id", user.Id));
                 cmd.Parameters.Add(new SqlParameter("status_id", statusId));
                 cmd.Parameters.Add(new SqlParameter("comments", string.Empty));
 

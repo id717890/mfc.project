@@ -195,6 +195,64 @@ namespace mfc.web.Controllers {
             return View(model);
         }
 
+        public ActionResult Check(Int64 fileId) {
+            var file_srv = CompositionRoot.Resolve<IFileService>();
+            bool has_error = false;
+            FileModel model = null;
+
+            try {
+                var file = file_srv.GetFileById(fileId);
+                if (file == null) {
+                    ModelState.AddModelError("", "Дело не найдено");
+                    has_error = true;
+                }
+                else {
+                    model = FileModelConverter.ToModel(file);
+                }
+            }
+            catch (DomainException e) {
+                ModelState.AddModelError("", e);
+                has_error = true;
+            }
+
+            if (has_error) {
+                return RedirectToAction("Edit", new { id = fileId });
+            }
+
+            PrepareForCreate();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Check(FileModel model) {
+            bool has_error = false;
+            if (ModelState.IsValid) {
+                var file_srv = CompositionRoot.Resolve<IFileService>();
+                var user_srv = CompositionRoot.Resolve<IUserService>();
+
+                var file = file_srv.GetFileById(model.Id);
+
+                if (file != null) {
+                    try {
+                        file_srv.Checked(model.Id, string.Empty);
+                    }
+                    catch (DomainException e) {
+                        ModelState.AddModelError("", e);
+                        has_error = true;
+                    }
+
+                    if (!has_error) {
+                        return RedirectToAction("Edit", new { id = model.Id});
+                    }
+                }
+            }
+
+            PrepareForCreate();
+
+            return View(model);
+        }
+
 
         #region Helpers
 

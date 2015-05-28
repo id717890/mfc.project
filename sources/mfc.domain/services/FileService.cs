@@ -1,4 +1,4 @@
-﻿using System;
+﻿	using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,6 +45,9 @@ namespace mfc.domain.services {
             Debug.Assert(action.Type.NeedMakeFile);
 
             var status = FileStageService.GetStatusForStage(FileStages.NewFile);
+            if (status == null) {
+                throw new DomainException(string.Format("Не определен статус для новых дел"));
+            }
 
             File file = new File {
                 Caption = action.Customer,
@@ -59,7 +62,7 @@ namespace mfc.domain.services {
             //не используем, поскольку предполагается использование этого метода
             //в уже созданнных
             FileRepository.Create(file);
-            FileStatusService.SetStatus(file.Id, status.Id, DateTime.Now, file.Expert.Id);
+            FileStatusService.SetStatus(file.Id, status.Id, DateTime.Now);
             
             return file.Id;
         }
@@ -107,6 +110,7 @@ namespace mfc.domain.services {
             
             unit_of_work.BeginTransaction();
             FileRepository.Update(file);
+            FileStatusService.SetStatus(fileId, status.Id, DateTime.Now);
             unit_of_work.Commit();
         }
 
@@ -128,6 +132,28 @@ namespace mfc.domain.services {
             }
 
             file.Expert = user;
+            file.CurrentStatus = status;
+
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
+
+            unit_of_work.BeginTransaction();
+            FileRepository.Update(file);
+            unit_of_work.Commit();
+        }
+
+
+        public void Checked(long fileId, string comments) {
+            var file = GetFileById(fileId);
+            if (file == null) {
+                throw new ArgumentException(string.Format("Дело с идентификатором {0} не найдено", fileId));
+            }
+
+            var status = FileStageService.GetStatusForStage(FileStages.Checked);
+
+            if (status == null) {
+                throw new ArgumentException(string.Format("Не определен статус для дел, переданных на проверку"));
+            }
+
             file.CurrentStatus = status;
 
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();

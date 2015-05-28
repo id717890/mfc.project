@@ -1,0 +1,96 @@
+﻿@model mfc.web.Models.FileModel
+
+@{
+    ViewBag.Title = "Подтверждение проверки дела";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+@section workmenu {
+    @Html.Partial("_WorkMenu", 1)
+}
+
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-md-8 col-sd-8">
+        @using (Html.BeginForm("Check", "File", FormMethod.Post, new { @class = "form" })) {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            if (ViewBag.ErrorMessage != null) { 
+                <h3 class="validation-summary-errors">*@ViewBag.ErrorMessage</h3>
+            }
+
+
+            <fieldset>
+                <legend>FileModel</legend>
+
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.Date)
+                @Html.HiddenFor(model => model.Organization)
+                @Html.HiddenFor(model => model.Expert)
+                @Html.HiddenFor(model => model.Service)
+                @Html.HiddenFor(model => model.Status)
+                @Html.HiddenFor(model => model.Caption)
+
+                <div class="display-label">
+                    @Html.LabelFor(model => model.Caption)
+                </div>
+                <div class="editor-field">
+                    @Html.DisplayFor(model => model.Caption)
+                </div>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Date)
+                </div>
+        
+                <div class="editor-field">
+                    @Html.DisplayFor(model => model.Date)
+                    @Html.ValidationMessageFor(model => model.Date)
+                </div>
+
+                 <div class="display-label">
+                    @Html.LabelFor(model => model.Expert)
+                </div>
+                <div class="editor-field">
+                    @Html.DisplayFor(m => m.Expert)
+                </div>
+
+                <div class="display-label">
+                    @Html.LabelFor(model => model.Organization)
+                </div>
+                <div class="editor-field">
+                    @Html.DisplayFor(m => m.Organization)
+                </div>
+
+                <div class="display-label">
+                    @Html.LabelFor(model => model.Service)
+                </div>
+                <div class="editor-field">
+                    @Html.DisplayFor(model => model.Service)
+                </div>
+                <div class="display-label">
+                    @Html.LabelFor(model => model.Controller)
+                </div>
+                <div class="editor-field">
+                    @Html.DisplayFor(model => model.Controller)
+                </div>
+                <div class="display-label">
+                    @Html.LabelFor(model => model.Status)
+                </div>
+                <div class="editor-field">
+                    @Html.DisplayFor(model => model.Status)
+                </div>
+                
+
+                    <p>
+                        <input type="submit" value="Подтвердить" class="btn btn-lg btn-default" />
+                    </p>
+        </fieldset>
+        }
+        <div>
+            @Html.ActionLink("Возврат к делу", "Edit", new { id = Model.Id})
+        </div>
+    </div>
+</div>

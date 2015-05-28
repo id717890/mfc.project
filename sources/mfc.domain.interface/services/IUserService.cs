@@ -17,5 +17,6 @@ namespace mfc.domain.services {
         IEnumerable<User> GetControllers();
         void AddNew(string account, string name, bool is_admin, bool is_expert, bool is_controller);
         void SetPassword(Int64 userId, string password);
+        User GetCurrentUser();
     }
 }

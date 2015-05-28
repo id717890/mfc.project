@@ -144,7 +144,10 @@ namespace mfc.domain.services {
             return _name_cache.Values.Where(m => m.IsController).OrderBy(m => m.Name);
         }
 
-
+        public User GetCurrentUser() {
+            var name = System.Threading.Thread.CurrentPrincipal.Identity.Name;
+            return GetUser(name);
+        }
 
         #region Helpers
 

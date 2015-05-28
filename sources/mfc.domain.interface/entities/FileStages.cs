@@ -9,6 +9,7 @@ namespace mfc.domain.entities {
         public const string NewFile = "new";
         public const string SendForControl = "control";
         public const string ReturnForFix = "fix";
+        public const string Checked = "check";
         public const string Sended = "send";
     }
 }
