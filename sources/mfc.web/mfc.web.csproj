@@ -240,8 +240,10 @@
     <Compile Include="Helpers\ServiceActionModelConverter.cs" />
     <Compile Include="Models\AccountInfo.cs" />
     <Compile Include="Models\ActionListViewModel.cs" />
+    <Compile Include="Models\FileReturnModel.cs" />
     <Compile Include="Models\FileListViewModel.cs" />
     <Compile Include="Models\FileModel.cs" />
+    <Compile Include="Models\FileControlModel.cs" />
     <Compile Include="Models\FileStageModel.cs" />
     <Compile Include="Models\FileStagesModel.cs" />
     <Compile Include="Models\FileStatusModel.cs" />
@@ -397,6 +399,8 @@
     <Content Include="Views\ServiceChild\Edit.cshtml" />
     <Content Include="Views\ServiceChild\Delete.cshtml" />
     <Content Include="Views\File\_ActionMenuView.cshtml" />
+    <Content Include="Views\File\Control.cshtml" />
+    <Content Include="Views\File\Return.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
