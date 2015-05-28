@@ -20,7 +20,7 @@
     </section>
 }
 @section workmenu {
-    @Html.Partial("_WorkMenu", 0)
+    @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Services)
 }
 <p>
     @Html.ActionLink("Новый", "Create", new { date = Model.Date.ToShortDateString(), user_id = Model.SelectedUserId })

@@ -13,7 +13,7 @@
         </section>
     }
 @section workmenu {
-    @Html.Partial("_WorkMenu", 2)
+    @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Reports)
 }
 @using (Html.BeginForm("Make", "Report", FormMethod.Post, new { @class = "form" })) {
     <p>

@@ -1,20 +1,22 @@
-﻿@model Int32
+﻿@using mfc.web.Constants;
+@model string
 @{
-    var items = new List<MvcHtmlString >();
-    items.Add(Html.ActionLink("Приемы", "Index", "Action"));
-    items.Add(Html.ActionLink("Дела", "Index", "File"));
-    items.Add(Html.ActionLink("Отчеты", "Make", "Report"));
+    var items = new Dictionary<string, MvcHtmlString>();
+    if (User.IsInRole(mfc.infrastructure.security.Roles.Expert)) { 
+        items.Add(WorkMenuItems.Services, Html.ActionLink("Приемы", "Index", "Action"));
+    }
+    items.Add(WorkMenuItems.Files, Html.ActionLink("Дела", "Index", "File"));
+    items.Add(WorkMenuItems.Reports, Html.ActionLink("Отчеты", "Make", "Report"));
 }
 <ul class="nav nav-sidebar">
     @{
-        for (var n_index = 0; n_index < items.Count; n_index++) {
-            var item = items[n_index];
-            
-            if (n_index == Model) {
-                <li class="active">@item</li>
+        foreach (var pair in items) { 
+           
+            if (pair.Key == Model) {
+                <li class="active">@pair.Value</li>
             }
             else {
-                <li>@item</li>
+                <li>@pair.Value</li>
             }
         }
 
