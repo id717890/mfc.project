@@ -29,4 +29,7 @@ insert into FileStages values ('send', 'Отправлено в ОГВ', null, 4);
 -- Подуслуги
 alter table Services add parent_id bigint;
 
-alter table Actions
+alter table Actions add service_child_id bigint;
+
+-- Коды 
+alter table SErvices add code varchar(50)

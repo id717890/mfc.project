@@ -44,13 +44,24 @@ namespace mfc.web.Controllers {
                 
                 var user = user_service.GetUser(model.UserName);
                 if (user != null) {
+                    string roles = string.Empty;
+                    if (user.IsAdmin) {
+                        roles += mfc.infrastructure.security.Roles.Admin + ";";
+                    }
+                    if (user.IsExpert) {
+                        roles += mfc.infrastructure.security.Roles.Expert + ";";
+                    }
+                    if (user.IsController) {
+                        roles += mfc.infrastructure.security.Roles.Controller + ";";
+                    }
+
                     var authTicket = new FormsAuthenticationTicket(
                         1,                             // version
                         model.UserName,                      // user name
                         DateTime.Now,                  // created
                         DateTime.MaxValue,   // expires
                         true,                    // persistent?
-                        user.IsAdmin ? mfc.infrastructure.security.Roles.Admin : mfc.infrastructure.security.Roles.Expert
+                        roles
                         );
 
                     string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
