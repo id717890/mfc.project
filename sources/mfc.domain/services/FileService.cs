@@ -62,7 +62,7 @@ namespace mfc.domain.services {
             //не используем, поскольку предполагается использование этого метода
             //в уже созданнных
             FileRepository.Create(file);
-            FileStatusService.SetStatus(file.Id, status.Id, DateTime.Now);
+            FileStatusService.SetStatus(file.Id, status.Id, DateTime.Now, string.Empty);
             
             return file.Id;
         }
@@ -110,7 +110,7 @@ namespace mfc.domain.services {
             
             unit_of_work.BeginTransaction();
             FileRepository.Update(file);
-            FileStatusService.SetStatus(fileId, status.Id, DateTime.Now);
+            FileStatusService.SetStatus(fileId, status.Id, DateTime.Now, comments);
             unit_of_work.Commit();
         }
 
@@ -138,6 +138,7 @@ namespace mfc.domain.services {
 
             unit_of_work.BeginTransaction();
             FileRepository.Update(file);
+            FileStatusService.SetStatus(fileId, status.Id, DateTime.Now, comments);
             unit_of_work.Commit();
         }
 
@@ -160,6 +161,7 @@ namespace mfc.domain.services {
 
             unit_of_work.BeginTransaction();
             FileRepository.Update(file);
+            FileStatusService.SetStatus(fileId, status.Id, DateTime.Now, comments);
             unit_of_work.Commit();
         }
     }

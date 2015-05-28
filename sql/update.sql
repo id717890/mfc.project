@@ -8,7 +8,7 @@ update Users set is_controller = 0
 
 create table Files (Id bigint, dt date, caption varchar(250), action_id bigint, user_id bigint, controller_id bigint, status_id bigint, orv_id bigint, is_deleted bit default 0)
 
-create table FileStatus (file_id bigint, dt date, status_id bigint, user_id bigint, comments varchar(250))
+create table FileStatus (file_id bigint, dt datetime, status_id bigint, user_id bigint, comments varchar(250))
 
 
 create table Statuses (id bigint, caption varchar(250), is_deleted bit default 0)
@@ -34,3 +34,7 @@ alter table Actions add service_child_id bigint;
 
 -- Коды 
 alter table SErvices add code varchar(50)
+
+alter table Actions alter column dt datetime;
+alter table Files alter column dt datetime;
+alter table FileStatus alter column dt datetime;

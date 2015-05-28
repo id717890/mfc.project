@@ -13,6 +13,50 @@
     @Html.Partial("_WorkMenu", 1)
 }
 
+<script>
+    var dialog_org, dialog_srv;
+    var site_name;
+    site_name = "";
+
+    $(function () {
+        //создаем диалог для истории статусов
+        dialog_statuses = $("#show-statuses-form").dialog({
+            autoOpen: false,
+            height: 450,
+            width: 800,
+            modal: true,
+            open: fillStatuses
+        });
+
+        function fillStatuses() {
+            var file_id;
+            file_id = $('input#Id').attr('value');
+
+            var list_div;
+            list_div = $('#show-statuses-form');
+            list_div.html('');
+            list_div.append('<div class="row">');
+
+            list_div.append('<b><div class="col-sm-2 col-md-2">Дата</div><div class="col-sm-3 col-md-3">Статус</div><div class="col-sm-3 col-md-3">Пользователь</div><div class="col-sm-3 col-md-3">Комментарий</div><div class="clearfix"/></b><hr/>');
+            $.get(site_name + '/File/FileStatuses/' + file_id, null, function (data, textStatus) {
+                data.forEach(function (item, i, arr) {
+                    list_div.append('<div class="col-sm-2 col-md-2">' + item.Date + '</div><div class="col-sm-3 col-md-3">' + item.Status + '</div><div class="col-sm-3 col-md-3">' + item.User + '</div><div class="col-sm-3 col-md-3">' + item.Comments + '</div><div class="clearfix"/><hr/>');
+                });
+            });
+            list_div.append('</div>');
+        }
+        
+        $("#show-statuses").on("click", function () {
+            dialog_statuses.dialog('open');
+        });
+    });
+
+</script>
+
+<div id="show-statuses-form" title="История">
+
+</div>
+
 
 <h2>@ViewBag.Title</h2>
 <div class="row">
@@ -95,7 +139,13 @@
         </div>
     </div>
     <div class="col-md-4 col-sd-4">
-        @Html.Partial("_ActionMenuView", Model.Id)
+        <div class="action-menu">
+            <p>@Html.ActionLink("Отправить на контроль", "Control", new { fileId = Model.Id })</p>
+            <p>@Html.ActionLink("Вернуть для исправления", "Return", new { fileId = Model.Id })</p>
+            <p>@Html.ActionLink("Проверено", "Check", new { fileId = Model.Id })</p>
+            <hr/>
+            <a href="javascript:void(0)" id="show-statuses">Показать историю</a>
+        </div>
 
     </div>
 </div>

@@ -130,9 +130,9 @@ namespace mfc.domain.services {
 	                        from FileStatus
 	                        join Files on Files.id = FileStatus.file_id
 	                        where Files.is_deleted = 0
-                        and FileStatus.action_id = @action_id
+                        and FileStatus.file_id = @file_id
                         order by FileStatus.dt desc";
-                cmd.Parameters.Add(new SqlParameter("action_id", fileId));
+                cmd.Parameters.Add(new SqlParameter("file_id", fileId));
                 
                 var reader = cmd.ExecuteReader();
                 while (reader.Read()) {
@@ -140,7 +140,8 @@ namespace mfc.domain.services {
                         FileId= fileId,
                         Date = Convert.ToDateTime(reader["dt"]),
                         User = UserService.GetUserById(Convert.ToInt64(reader["user_id"])),
-                        Status = GetStatusById(Convert.ToInt64(reader["status_id"]))
+                        Status = GetStatusById(Convert.ToInt64(reader["status_id"])),
+                        Comments = Convert.ToString(reader["comments"])
                     });
                 }
             }
@@ -158,7 +159,7 @@ namespace mfc.domain.services {
             return statuses;
         }
 
-        public void SetStatus(long fileId, long statusId, DateTime date) {
+        public void SetStatus(long fileId, long statusId, DateTime date, string comments) {
             var conn = SqlProvider.CreateConnection();
             SqlCommand cmd = null;
 
@@ -176,7 +177,7 @@ namespace mfc.domain.services {
                 cmd.Parameters.Add(new SqlParameter("dt", date));
                 cmd.Parameters.Add(new SqlParameter("user_id", user.Id));
                 cmd.Parameters.Add(new SqlParameter("status_id", statusId));
-                cmd.Parameters.Add(new SqlParameter("comments", string.Empty));
+                cmd.Parameters.Add(new SqlParameter("comments", comments));
 
                 cmd.ExecuteNonQuery();
             }

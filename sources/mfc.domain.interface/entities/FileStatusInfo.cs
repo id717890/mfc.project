@@ -13,5 +13,6 @@ namespace mfc.domain.entities {
         public DateTime Date { get; set; }
         public User User { get; set; }
         public FileStatus Status { get; set; }
+        public string Comments { get; set; }
     }
 }

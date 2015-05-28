@@ -246,6 +246,7 @@
     <Compile Include="Models\FileControlModel.cs" />
     <Compile Include="Models\FileStageModel.cs" />
     <Compile Include="Models\FileStagesModel.cs" />
+    <Compile Include="Models\FileStatusInfoModel.cs" />
     <Compile Include="Models\FileStatusModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ReportModel.cs" />
@@ -398,7 +399,6 @@
     <Content Include="Views\ServiceChild\Index.cshtml" />
     <Content Include="Views\ServiceChild\Edit.cshtml" />
     <Content Include="Views\ServiceChild\Delete.cshtml" />
-    <Content Include="Views\File\_ActionMenuView.cshtml" />
     <Content Include="Views\File\Control.cshtml" />
     <Content Include="Views\File\Return.cshtml" />
     <Content Include="Views\File\Check.cshtml" />

@@ -6,3 +6,6 @@
 /**/obj/**
 /**/obj/Debug/**
 **.dll
+**.suo
+**.user
+/**/bin

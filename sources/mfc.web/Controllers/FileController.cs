@@ -253,6 +253,22 @@ namespace mfc.web.Controllers {
             return View(model);
         }
 
+        public ActionResult FileStatuses(Int64 id) {
+            var srv = CompositionRoot.Resolve<IFileStatusService>();
+            
+            var items = new List<FileStatusInfoModel>();
+            foreach (var item in srv.GetFileStatuses(id)) {
+                items.Add(new FileStatusInfoModel {
+                    Date = item.Date.ToString("dd.MM.yyyy HH:mm:ss"),
+                    User = item.User.Name,
+                    Status = item.Status.Caption,
+                    Comments = item.Comments
+                });
+            }
+
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
 
         #region Helpers
 
