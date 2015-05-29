@@ -34,7 +34,7 @@ namespace mfc.domain.services {
         public IUserService UserService { get; set; }
 
         public IEnumerable<File> GetFiles(Int64 controllerId, Int64 expertId, Int64 statusId, Int64 orgId) {
-            return FileRepository.GetFiles(controllerId, expertId, statusId, orgId);
+            return FileRepository.GetFiles(controllerId, expertId, statusId, orgId).OrderByDescending(x=>x.Date).ThenByDescending(x=>x.Id);
         }
 
         public File GetFileById(long Id) {

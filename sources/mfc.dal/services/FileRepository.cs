@@ -47,7 +47,7 @@ namespace mfc.dal.services {
                 query = query.Where(f => f.CurrentStatus.Id != _end_file_status_id || f.CurrentStatus == null);
             }
 
-            return query.Where(f=>!f.IsDeleted).ToList();
+            return query.Where(f=>!f.IsDeleted).OrderByDescending(m=>m.Date).ThenByDescending(m=>m.Id).ToList();
         }
     }
 }
