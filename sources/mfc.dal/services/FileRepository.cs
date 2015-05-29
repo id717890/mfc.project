@@ -28,7 +28,7 @@ namespace mfc.dal.services {
         public IEnumerable<File> GetFiles(Int64 controllerId, Int64 expertId, Int64 statusId, Int64 orgId) {
             var query = Session.Query<File>();
             if (controllerId != User.All.Id) {
-                query = query.Where(f => f.Controller.Id == controllerId);
+                query = query.Where(f => f.Controller.Id == controllerId || f.Controller == null);
             }
 
             if (expertId != User.All.Id) {
