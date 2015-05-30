@@ -18,11 +18,14 @@ namespace mfc.dal.services {
                         join fetch sa.Service 
                         join fetch sa.User 
                     where sa.IsDeleted = false
-                    order by sa.Date")
+                    order by sa.Date desc, sa.Id desc")
                .List<ServiceAction>();
         }
 
         public IEnumerable<ServiceAction> GetActions(long user_id, DateTime date) {
+            var date1 = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0);
+            var date2 = new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
+
             return Session
                 .CreateQuery(@"
                     from ServiceAction sa 
@@ -30,15 +33,19 @@ namespace mfc.dal.services {
                         join fetch sa.Service 
                         join fetch sa.User 
                     where sa.IsDeleted = false
-                        and sa.Date =:date
+                        and sa.Date between :date1 and :date2
                         and sa.User.Id = :user_id
-                    order by sa.Date")
-                .SetParameter("date", date)
+                    order by sa.Date desc, sa.Id desc")
+                .SetParameter("date1", date1)
+                .SetParameter("date2", date2)
                 .SetParameter("user_id", user_id)
                 .List<ServiceAction>();
         }
 
         public IEnumerable<ServiceAction> GetActions(DateTime dateBegin, DateTime dateEnd) {
+            var date1 = new DateTime(dateBegin.Year, dateBegin.Month, dateBegin.Day, 0, 0, 0);
+            var date2 = new DateTime(dateEnd.Year, dateEnd.Month, dateEnd.Day, 23, 59, 59);
+
             return Session
                 .CreateQuery(@"
                     from ServiceAction sa 
@@ -46,9 +53,10 @@ namespace mfc.dal.services {
                         join fetch sa.Service 
                         join fetch sa.User 
                     where sa.IsDeleted = false
-                        and sa.Date between :dateBegin and :dateEnd")
-                .SetParameter("dateBegin", dateBegin)
-                .SetParameter("dateEnd", dateEnd)
+                        and sa.Date between :date1 and :date2
+                    order by sa.Date desc, sa.Id desc")
+                .SetParameter("dateBegin", date1)
+                .SetParameter("dateEnd", date2)
                 .List<ServiceAction>();
         }
     }

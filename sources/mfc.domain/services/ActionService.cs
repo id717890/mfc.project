@@ -38,11 +38,11 @@ namespace mfc.domain.services {
 
 
         public IEnumerable<ServiceAction> GetActions(User user, DateTime date) {
-            return Repository.GetActions(user.Id, date).OrderBy(x=>x.Date);
+            return Repository.GetActions(user.Id, date).OrderByDescending(x=>x.Date).ThenByDescending(x=>x.Id);
         }
 
         public IEnumerable<ServiceAction> GetActions(DateTime dateBegin, DateTime dateEnd) {
-            return Repository.GetActions(dateBegin, dateEnd).OrderBy(x=>x.Date);
+            return Repository.GetActions(dateBegin, dateEnd).OrderByDescending(x=>x.Date).ThenByDescending(x=>x.Id);
         }
 
         public long Add(DateTime date, Int64 serviceId, string customer, Int64 typeId, Int64 userId, Int64 serviceChildId, string comments) {
@@ -55,6 +55,13 @@ namespace mfc.domain.services {
                 User = UserService.GetUserById(userId),
                 Comments = comments
             };
+
+            if (date == DateTime.Today) {
+                action.Date = DateTime.Now;
+            }
+            else {
+                action.Date = new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
+            }
 
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
             
