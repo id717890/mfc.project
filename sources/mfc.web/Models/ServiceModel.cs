@@ -10,7 +10,7 @@ namespace mfc.web.Models {
 
         [Required]
         [Display(Name = "Наименование")]
-        [StringLength(250, ErrorMessage = "{0} должно быть длиной не более {1} символов.")]
+        [StringLength(1024, ErrorMessage = "{0} должно быть длиной не более {1} символов.")]
         public string Caption { get; set; }
 
         [Required]
