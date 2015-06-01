@@ -55,8 +55,8 @@ namespace mfc.dal.services {
                     where sa.IsDeleted = false
                         and sa.Date between :date1 and :date2
                     order by sa.Date desc, sa.Id desc")
-                .SetParameter("dateBegin", date1)
-                .SetParameter("dateEnd", date2)
+                .SetParameter("date1", date1)
+                .SetParameter("date2", date2)
                 .List<ServiceAction>();
         }
     }

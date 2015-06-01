@@ -8,7 +8,6 @@ namespace mfc.web.Models {
     public class ServiceActionViewModel {
         public Int64 Id { get; set; }
 
-        [Required]
         [Display(Name = "ФИО заявителя/наименование ЮЛ")]
         public string Customer { get; set; }
 
