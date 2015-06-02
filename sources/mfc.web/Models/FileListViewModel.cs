@@ -11,7 +11,7 @@ namespace mfc.web.Models {
 
         private readonly List<User> _controllers = new List<User>();
         private readonly List<User> _experts = new List<User>();
-        private readonly List<File> _files = new List<File>();
+        private readonly List<FileModelItem> _files = new List<FileModelItem>();
         private readonly List<FileStatus> _statuses = new List<FileStatus>();
         private readonly List<Organization> _ogvs = new List<Organization>();
         
@@ -46,7 +46,7 @@ namespace mfc.web.Models {
             }
         }
 
-        public IList<File> Files {
+        public IList<FileModelItem> Files {
             get {
                 return _files;
             }

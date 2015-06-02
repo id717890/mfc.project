@@ -1,0 +1,21 @@
+﻿@model mfc.web.Models.AcceptForControlModel
+
+<p>приняты</p>
+@foreach (var file in Model.AcceptedFiles) {
+    <div>
+        @file.Id <br />
+        @file.Expert.Name <br />
+        @file.Caption <br />
+        @file.Date <br/>
+    </div>
+}
+
+<p>Отклонены</p>
+@foreach (var file in Model.RejectedFiles) {
+    <div>
+        @file.Id <br />
+        @file.Expert.Name <br />
+        @file.Caption <br />
+        @file.Date <br />
+    </div>
+}

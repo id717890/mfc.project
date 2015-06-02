@@ -18,6 +18,7 @@ namespace mfc.domain.services {
         void Delete(Int64 id);
 
         void SendForControl(Int64 fileId, Int64 controllerId, string comments);
+        IEnumerable<Int64> AcceptForControl(IEnumerable<Int64> file_ids);
         void Return(Int64 fileId, Int64 expertId, string comments);
         void Checked(Int64 fileId, string comments);
     }

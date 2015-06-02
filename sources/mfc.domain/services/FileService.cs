@@ -164,5 +164,10 @@ namespace mfc.domain.services {
             FileStatusService.SetStatus(fileId, status.Id, DateTime.Now, comments);
             unit_of_work.Commit();
         }
+
+
+        public IEnumerable<long> AcceptForControl(IEnumerable<long> file_ids) {
+            return file_ids;
+        }
     }
 }

@@ -33,9 +33,12 @@
     @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Files)
 }
 
+@using (Html.BeginForm("ControlList", "File")) {
+    <input type="submit" value="Принять" class="btn btn-lg btn-default" />
 
 <table class="table">
     <tr>
+        <th></th>
         <th>Дата</th>
         <th>Номер</th>
         <th>Услуга</th>
@@ -49,25 +52,29 @@
     @foreach (var item in Model.Files) {
         <tr>
             <td>
+                @Html.CheckBoxFor(m=> item.IsChecked)
+                @Html.HiddenFor(m=>item.Id)
+            </td>
+            <td>
                 @item.Date.ToString("dd.MM.yyyy")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Caption)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Action.Service.Caption)
+                @Html.DisplayFor(modelItem => item.Service)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Ogv.Caption)
+                @Html.DisplayFor(modelItem => item.Organization)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Expert.Name)
+                @Html.DisplayFor(modelItem => item.Expert)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Controller.Name)
+                @Html.DisplayFor(modelItem => item.Controller)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CurrentStatus.Caption)
+                @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
                 @Html.ActionLink("Изменить", "Edit", new { id = item.Id })
@@ -76,3 +83,4 @@
     }
 
 </table>
+}

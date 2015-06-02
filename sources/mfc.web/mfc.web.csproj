@@ -239,6 +239,7 @@
     <Compile Include="Helpers\OrganizationModelConverter.cs" />
     <Compile Include="Helpers\OrganizationTypeModelConverter.cs" />
     <Compile Include="Helpers\ServiceActionModelConverter.cs" />
+    <Compile Include="Models\AcceptForControlModel.cs" />
     <Compile Include="Models\AccountInfo.cs" />
     <Compile Include="Models\ActionListViewModel.cs" />
     <Compile Include="Models\FileReturnModel.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="Models\FileStatusModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ReportModel.cs" />
+    <Compile Include="Models\FileModelItem.cs" />
     <Compile Include="Models\ServiceActionViewModel.cs" />
     <Compile Include="Models\ServiceListViewModel.cs" />
     <Compile Include="Models\ServiceModel.cs" />
@@ -403,6 +405,7 @@
     <Content Include="Views\File\Control.cshtml" />
     <Content Include="Views\File\Return.cshtml" />
     <Content Include="Views\File\Check.cshtml" />
+    <Content Include="Views\File\ControlList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

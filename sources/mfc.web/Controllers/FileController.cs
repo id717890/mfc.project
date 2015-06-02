@@ -90,7 +90,6 @@ namespace mfc.web.Controllers {
 
         public ActionResult Control(Int64 fileId) {
             var file_srv = CompositionRoot.Resolve<IFileService>();
-            bool has_error = false;
             FileControlModel model = new FileControlModel();
 
             model.FileId = fileId;
@@ -98,6 +97,39 @@ namespace mfc.web.Controllers {
             PrepareForCreate();
 
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ControlList(FormCollection form) {
+            var checked_values = (string[])form.GetValue("item.IsChecked").RawValue;
+            var ids_values = (string[])form.GetValue("item.Id").RawValue;
+
+            var checked_id = new List<Int64>();
+
+            for (int index = 0; index < checked_values.Length; index++) {
+                if (checked_values[index] == "true") {
+                    checked_id.Add(Int64.Parse(ids_values[index]));
+                }
+            }
+
+            var file_srv = CompositionRoot.Resolve<IFileService>();
+
+            var result = new List<Int64>(file_srv.AcceptForControl(checked_id));
+
+            var accept_model = new AcceptForControlModel();
+            foreach (var id in result) {
+                accept_model.AcceptedFiles.Add(file_srv.GetFileById(id));
+            }
+
+            foreach (var id in checked_id) {
+                if (result.Contains(id)) {
+                    continue;
+                }
+                accept_model.RejectedFiles.Add(file_srv.GetFileById(id));
+            }
+            
+
+            return View(accept_model);
         }
 
         [HttpPost]
@@ -126,7 +158,6 @@ namespace mfc.web.Controllers {
 
         public ActionResult Return(Int64 fileId) {
             var file_srv = CompositionRoot.Resolve<IFileService>();
-            bool has_error = false;
             FileReturnModel model = new FileReturnModel();
 
             model.FileId = fileId;
@@ -310,11 +341,16 @@ namespace mfc.web.Controllers {
                 model.Organizations.Add(item);
             }
 
-            
-
-
             foreach (var file in file_srv.GetFiles(model.SelectedControllerId, model.SelectedExpertId, model.SelectedStatusId, model.SelectedOgvId)) {
-                model.Files.Add(file);
+                model.Files.Add(new FileModelItem {
+                    Id = file.Id,
+                    Date = file.Date,
+                    Service = file.Action.Service.Caption,
+                    Expert = file.Expert.Name,
+                    Controller = file.Controller != null ? file.Controller.Name : string.Empty,
+                    Organization = file.Ogv.Caption,
+                    Status = file.CurrentStatus != null ? file.CurrentStatus.Caption : string.Empty
+                });
             }
 
             return model;
