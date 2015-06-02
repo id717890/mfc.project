@@ -38,3 +38,5 @@ alter table SErvices add code varchar(50)
 alter table Actions alter column dt datetime;
 alter table Files alter column dt datetime;
 alter table FileStatus alter column dt datetime;
+
+alter table Actions add is_nonresident bit default 0;

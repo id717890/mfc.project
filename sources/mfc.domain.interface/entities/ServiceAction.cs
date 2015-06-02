@@ -16,5 +16,6 @@ namespace mfc.domain.entities {
         public virtual ActionType Type { get; set; }
         public virtual User User { get; set; }
         public virtual string Comments { get; set; }
+        public virtual bool IsNonresident { get; set; }
     }
 }

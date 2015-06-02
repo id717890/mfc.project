@@ -228,6 +228,9 @@
             @Html.EditorFor(model => model.Customer)
             @Html.ValidationMessageFor(model => model.Customer)
         </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IsNonresident) @Html.EditorFor(model => model.IsNonresident)
+        </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.OrganizationId)

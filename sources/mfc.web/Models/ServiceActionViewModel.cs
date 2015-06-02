@@ -53,5 +53,8 @@ namespace mfc.web.Models {
         [Display(Name = "Дата")]
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
+
+        [Display(Name = "Иногородний")]
+        public bool IsNonresident { get; set; }
     }
 }

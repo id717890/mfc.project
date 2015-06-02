@@ -23,7 +23,8 @@ namespace mfc.web.Helpers {
                 Date = model.Date,
                 Type = _action_type_srv.GetTypeById(model.TypeId),
                 Comments = model.Comments,
-                ServiceChild = _service_srv.GetServiceById(model.ServiceChildId)
+                ServiceChild = _service_srv.GetServiceById(model.ServiceChildId),
+                IsNonresident = model.IsNonresident
             };
         }
 
@@ -36,7 +37,8 @@ namespace mfc.web.Helpers {
                 Type = entity.Type.Caption,
                 Date = entity.Date,
                 Customer = entity.Customer,
-                Comments = entity.Comments
+                Comments = entity.Comments,
+                IsNonresident = entity.IsNonresident
             };
 
             if (entity.Service != null) {
