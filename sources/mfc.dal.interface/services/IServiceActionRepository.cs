@@ -9,5 +9,6 @@ namespace mfc.dal.services {
     public interface IServiceActionRepository : IRepository<ServiceAction> {
         IEnumerable<ServiceAction> GetActions(long user_id, DateTime date);
         IEnumerable<ServiceAction> GetActions(DateTime dateBegin, DateTime dateEnd);
+        IEnumerable<ServiceAction> GetActions(Int64 user_id, DateTime dateBegin, DateTime dateEnd);
     }
 }

@@ -45,6 +45,10 @@ namespace mfc.domain.services {
             return Repository.GetActions(dateBegin, dateEnd).OrderByDescending(x=>x.Date).ThenByDescending(x=>x.Id);
         }
 
+        public IEnumerable<ServiceAction> GetActions(User user, DateTime dateBegin, DateTime dateEnd) {
+            return Repository.GetActions(user.Id, dateBegin, dateEnd).OrderByDescending(x => x.Date).ThenByDescending(x => x.Id);
+        }
+
         public long Add(DateTime date, Int64 serviceId, string customer, Int64 typeId, Int64 userId, Int64 serviceChildId, string comments) {
             var action = new ServiceAction {
                 Date = date,

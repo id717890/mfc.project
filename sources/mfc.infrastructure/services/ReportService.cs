@@ -23,6 +23,9 @@ namespace mfc.infrastructure.services {
         [Inject]
         public IActionService ActionService { get; set; }
 
+        [Inject]
+        public IUserService UserService { get; set; }
+
         public void MakeReportSum(DateTime dateBegin, DateTime dateEnd, Stream stream) {
             int last_column = 5;
             int first_row = 3;
@@ -84,7 +87,18 @@ namespace mfc.infrastructure.services {
             Int32 row_index = first_row;
             Int32 num = 0;
 
-            foreach (var action in ActionService.GetActions(dateBegin, dateEnd)) {
+            IEnumerable<ServiceAction> actions = null;
+
+            var user = UserService.GetCurrentUser();
+
+            if (user.IsAdmin) {
+                actions = ActionService.GetActions(dateBegin, dateEnd);
+            }
+            else {
+                actions = ActionService.GetActions(user, dateBegin, dateEnd);
+            }
+
+            foreach (var action in actions) {
                 if (action.Service == null || action.Service.Organization == null || action.User == null || action.Type == null) {
                     continue;
                 }

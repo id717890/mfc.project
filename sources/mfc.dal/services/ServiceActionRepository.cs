@@ -59,5 +59,25 @@ namespace mfc.dal.services {
                 .SetParameter("date2", date2)
                 .List<ServiceAction>();
         }
+
+        public IEnumerable<ServiceAction> GetActions(Int64 user_id, DateTime dateBegin, DateTime dateEnd) {
+            var date1 = new DateTime(dateBegin.Year, dateBegin.Month, dateBegin.Day, 0, 0, 0);
+            var date2 = new DateTime(dateEnd.Year, dateEnd.Month, dateEnd.Day, 23, 59, 59);
+
+            return Session
+                .CreateQuery(@"
+                    from ServiceAction sa 
+                        join fetch sa.Type 
+                        join fetch sa.Service 
+                        join fetch sa.User 
+                    where sa.IsDeleted = false
+                        and sa.Date between :date1 and :date2
+                        and sa.User.Id = :user_id
+                    order by sa.Date desc, sa.Id desc")
+                .SetParameter("date1", date1)
+                .SetParameter("date2", date2)
+                .SetParameter("user_id", user_id)
+                .List<ServiceAction>();
+        }
     }
 }
