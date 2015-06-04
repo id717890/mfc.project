@@ -406,6 +406,7 @@
     <Content Include="Views\File\Return.cshtml" />
     <Content Include="Views\File\Check.cshtml" />
     <Content Include="Views\File\ControlList.cshtml" />
+    <Content Include="Views\File\_FileList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

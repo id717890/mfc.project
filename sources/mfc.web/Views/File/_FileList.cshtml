@@ -1,0 +1,61 @@
+﻿@model List<mfc.web.Models.FileModelItem>
+
+@using (Html.BeginForm("ControlList", "File", FormMethod.Post)) {
+<input type="submit" value="Принять" class="btn btn-lg btn-default" />
+
+<table class="table">
+    <tr>
+        <th></th>
+        <th>Дата</th>
+        <th>Номер</th>
+        <th>Услуга</th>
+        <th>ОГВ</th>
+        <th>Эксперт</th>
+        <th>Контролёр</th>
+        <th>Статус</th>
+        <th></th>
+    </tr>
+
+    @for (int index = 0; index < Model.Count; index++) {
+        @Html.HiddenFor(m => Model[index].Id)
+        @Html.HiddenFor(m => Model[index].Caption)
+        @Html.HiddenFor(m => Model[index].Controller)
+        @Html.HiddenFor(m => Model[index].Date)
+        @Html.HiddenFor(m => Model[index].Expert)
+        @Html.HiddenFor(m => Model[index].Organization)
+        @Html.HiddenFor(m => Model[index].Service)
+        @Html.HiddenFor(m => Model[index].Status)
+
+        <tr>
+            <td>
+                @Html.CheckBoxFor(m => Model[index].IsChecked)
+            </td>
+            <td>
+                @Model[index].Date.ToString("dd.MM.yyyy")
+            </td>
+            <td>
+                @Html.DisplayFor(m => Model[index].Caption)
+            </td>
+            <td>
+                @Html.DisplayFor(m => Model[index].Service)
+            </td>
+            <td>
+                @Html.DisplayFor(m => Model[index].Organization)
+            </td>
+            <td>
+                @Html.DisplayFor(m => Model[index].Expert)
+            </td>
+            <td>
+                @Html.DisplayFor(m => Model[index].Controller)
+            </td>
+            <td>
+                @Html.DisplayFor(m => Model[index].Status)
+            </td>
+            <td>
+                @Html.ActionLink("Изменить", "Edit", "File", new { id = Model[index].Id })
+            </td>
+        </tr>
+    }
+
+</table>
+}

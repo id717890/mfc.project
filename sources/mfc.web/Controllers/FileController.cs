@@ -100,35 +100,18 @@ namespace mfc.web.Controllers {
         }
 
         [HttpPost]
-        public ActionResult ControlList(FormCollection form) {
-            var checked_values = (string[])form.GetValue("item.IsChecked").RawValue;
-            var ids_values = (string[])form.GetValue("item.Id").RawValue;
-
-            var checked_id = new List<Int64>();
-
-            for (int index = 0; index < checked_values.Length; index++) {
-                if (checked_values[index] == "true") {
-                    checked_id.Add(Int64.Parse(ids_values[index]));
-                }
-            }
-
-            var file_srv = CompositionRoot.Resolve<IFileService>();
-
-            var result = new List<Int64>(file_srv.AcceptForControl(checked_id));
-
+        public ActionResult ControlList(List<FileModelItem> model) {
             var accept_model = new AcceptForControlModel();
-            foreach (var id in result) {
-                accept_model.AcceptedFiles.Add(file_srv.GetFileById(id));
-            }
-
-            foreach (var id in checked_id) {
-                if (result.Contains(id)) {
-                    continue;
+            var file_srv = CompositionRoot.Resolve<IFileService>();
+            foreach (var item in model) {
+                if (item.IsChecked) {
+                    accept_model.AcceptedFiles.Add(file_srv.GetFileById(item.Id));
                 }
-                accept_model.RejectedFiles.Add(file_srv.GetFileById(id));
+                else {
+                    accept_model.RejectedFiles.Add(file_srv.GetFileById(item.Id));
+                }
             }
-            
-
+           
             return View(accept_model);
         }
 

@@ -27,60 +27,18 @@
             </p>
         </div>
     </section>
-}
 
+    }
 @section workmenu {
     @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Files)
 }
-
-@using (Html.BeginForm("ControlList", "File")) {
-    <input type="submit" value="Принять" class="btn btn-lg btn-default" />
-
-<table class="table">
-    <tr>
-        <th></th>
-        <th>Дата</th>
-        <th>Номер</th>
-        <th>Услуга</th>
-        <th>ОГВ</th>
-        <th>Эксперт</th>
-        <th>Контролёр</th>
-        <th>Статус</th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model.Files) {
-        <tr>
-            <td>
-                @Html.CheckBoxFor(m=> item.IsChecked)
-                @Html.HiddenFor(m=>item.Id)
-            </td>
-            <td>
-                @item.Date.ToString("dd.MM.yyyy")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Caption)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Service)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Organization)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Expert)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Controller)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.ActionLink("Изменить", "Edit", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-</table>
+<hr/>
+@{
+    /*var files = new mfc.web.Models.FileListModel();
+    files.Items.AddRange(Model.Files);
+    */
+    var files = new List<mfc.web.Models.FileModelItem>();
+    files.AddRange(Model.Files);
 }
+
+ @Html.Partial("_FileList", files)
