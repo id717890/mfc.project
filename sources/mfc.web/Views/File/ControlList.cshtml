@@ -1,21 +1,83 @@
 ﻿@model mfc.web.Models.AcceptForControlModel
 
-<p>приняты</p>
-@foreach (var file in Model.AcceptedFiles) {
-    <div>
-        @file.Id <br />
-        @file.Expert.Name <br />
-        @file.Caption <br />
-        @file.Date <br/>
-    </div>
-}
+<p style="color:green;font-weight:bold">Приняты на контрол</p>
+<table class="table">
+    <tr>
+        <th>Дата</th>
+        <th>Номер</th>
+        <th>Услуга</th>
+        <th>ОГВ</th>
+        <th>Эксперт</th>
+        <th>Контролёр</th>
+        <th>Статус</th>
+    </tr>
 
-<p>Отклонены</p>
-@foreach (var file in Model.RejectedFiles) {
-    <div>
-        @file.Id <br />
-        @file.Expert.Name <br />
-        @file.Caption <br />
-        @file.Date <br />
-    </div>
-}
+    @foreach (var file in Model.AcceptedFiles) {
+
+              <tr>
+                <td>
+                    @file.Date.ToString("dd.MM.yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(m => file.Caption)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => file.Action.Service.Caption)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => file.Ogv.Caption)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => file.Expert.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => file.Controller.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => file.CurrentStatus.Caption)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+<p style="color:red;font-weight:bold">Передача на контроль отклонена</p>
+<table class="table">
+    <tr>
+        <th>Дата</th>
+        <th>Номер</th>
+        <th>Услуга</th>
+        <th>ОГВ</th>
+        <th>Эксперт</th>
+        <th>Контролёр</th>
+        <th>Статус</th>
+    </tr>
+
+    @foreach (var file in Model.RejectedFiles) {
+
+        <tr>
+            <td>
+                @file.Date.ToString("dd.MM.yyyy")
+            </td>
+            <td>
+                @Html.DisplayFor(m => file.Caption)
+            </td>
+            <td>
+                @Html.DisplayFor(m => file.Action.Service.Caption)
+            </td>
+            <td>
+                @Html.DisplayFor(m => file.Ogv.Caption)
+            </td>
+            <td>
+                @Html.DisplayFor(m => file.Expert.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(m => file.Controller.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(m => file.CurrentStatus.Caption)
+            </td>
+        </tr>
+    }
+
+</table>

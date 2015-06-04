@@ -101,14 +101,29 @@ namespace mfc.web.Controllers {
 
         [HttpPost]
         public ActionResult ControlList(List<FileModelItem> model) {
-            var accept_model = new AcceptForControlModel();
             var file_srv = CompositionRoot.Resolve<IFileService>();
+            List<Int64> checked_file_ids = new List<long>();
+            
             foreach (var item in model) {
                 if (item.IsChecked) {
-                    accept_model.AcceptedFiles.Add(file_srv.GetFileById(item.Id));
+                    checked_file_ids.Add(item.Id);
                 }
-                else {
-                    accept_model.RejectedFiles.Add(file_srv.GetFileById(item.Id));
+            }
+
+            if (checked_file_ids.Count == 0){
+                return RedirectToAction("Index");
+            }
+
+            var accepted_ids = new List<Int64>(file_srv.AcceptForControl(checked_file_ids));
+
+            var accept_model = new AcceptForControlModel();
+            foreach (var id in accepted_ids) {
+                accept_model.AcceptedFiles.Add(file_srv.GetFileById(id));
+            }
+
+            foreach (var id in checked_file_ids) {
+                if (!accepted_ids.Contains(id)) {
+                    accept_model.RejectedFiles.Add(file_srv.GetFileById(id));
                 }
             }
            

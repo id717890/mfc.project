@@ -167,7 +167,52 @@ namespace mfc.domain.services {
 
 
         public IEnumerable<long> AcceptForControl(IEnumerable<long> file_ids) {
-            return file_ids;
+            //1. Проверяем право текущего пользователя принимать дела
+            //2. Проверяем наличие статуса для дел, переданных на контроль
+            //3. Формируем список дел (из переданных), которые еще не заняты другими контролерами
+            //4. В одной транзакции принимает дел на контроль
+
+            //1.
+            var user = UserService.GetCurrentUser();
+
+            if (!user.IsController) {
+                throw new DomainException("Текущий пользователь не имеет прав для приема дел");
+            }
+
+            //2.
+            var status = FileStageService.GetStatusForStage(FileStages.SendForControl);
+
+            if (status == null) {
+                throw new ArgumentException(string.Format("Не определен статус для дел, переданных на проверку"));
+            }
+
+            //3. 
+            List<File> free_files = new List<File>();
+            List<Int64> free_file_ids = new List<Int64>();
+            foreach (var id in file_ids) {
+                var file = GetFileById(id);
+
+                if (file.Controller == null) {
+                    free_files.Add(file);
+                    free_file_ids.Add(id);
+                }
+            }
+
+            //4. 
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
+            
+            unit_of_work.BeginTransaction();
+
+            foreach (var file in free_files) {
+                file.Controller = user;
+                file.CurrentStatus = status;
+                FileRepository.Update(file);
+                FileStatusService.SetStatus(file.Id, status.Id, DateTime.Now, string.Empty);
+            }
+                        
+            unit_of_work.Commit();
+
+            return free_file_ids;
         }
     }
 }
