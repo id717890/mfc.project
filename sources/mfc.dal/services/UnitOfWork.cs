@@ -47,9 +47,10 @@ namespace mfc.dal.services {
                 _transaction.Rollback();
                 throw;
             }
-            finally {
-                Session.Close();
-            }
+        }
+
+        public void Rollback() {
+            _transaction.Rollback();
         }
     }
 }

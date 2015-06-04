@@ -8,5 +8,6 @@ namespace mfc.dal.services {
     public interface IUnitOfWork {
         void BeginTransaction();
         void Commit();
+        void Rollback();
     }
 }
