@@ -160,8 +160,10 @@ namespace mfc.domain.services {
             _name_cache.Clear();
 
             foreach (var user in GetAllUsersInternal()) {
-                _id_cache.Add(user.Id, user);
-                _name_cache.Add(user.Account.ToLower(), user);
+                if (!_id_cache.ContainsKey(user.Id)) {
+                    _id_cache.Add(user.Id, user);
+                    _name_cache.Add(user.Account.ToLower(), user);
+                }
             }
 
             _is_cached_valid = true;
