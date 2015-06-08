@@ -13,10 +13,11 @@ using Ninject;
 using mfc.domain.services;
 using mfc.domain;
 using System.Web.Security;
+using mfc.web.Abstracts;
 
 namespace mfc.web.Controllers {
     [Authorize]
-    public class AccountController : Controller {
+    public class AccountController : BaseController {
         //
         // GET: /Account/Login
 

@@ -10,9 +10,10 @@ using mfc.domain.services;
 using mfc.infrastructure.security;
 using mfc.web.Helpers;
 using mfc.web.Models;
+using mfc.web.Abstracts;
 
 namespace mfc.web.Controllers {
-    public class ActionController : Controller {
+    public class ActionController : BaseController {
 
         public ActionResult Index(string date = null, Int64 user_id = -1) {
             var user_srv = CompositionRoot.Resolve<IUserService>();

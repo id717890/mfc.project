@@ -10,9 +10,10 @@ using mfc.domain.services;
 using mfc.infrastructure.security;
 using mfc.web.Models;
 using mfc.web.Helpers;
+using mfc.web.Abstracts;
 
 namespace mfc.web.Controllers {
-    public class FileController : Controller {
+    public class FileController : BaseController {
         //
         // GET: /File/
         public ActionResult Index(Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1) {

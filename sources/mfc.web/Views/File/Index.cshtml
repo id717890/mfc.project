@@ -10,16 +10,16 @@
             <p>
                @using (Html.BeginForm()) {
                 <div style="margin: 0 10px;float:left">
-                    Статус: @Html.DropDownListFor(m => m.SelectedStatusId, new SelectList(Model.Statuses, "Id", "Caption"), new { @class = "form-control" })
+                    @Html.LabelFor(m=>m.SelectedStatusId): @Html.DropDownListFor(m => m.SelectedStatusId, new SelectList(Model.Statuses, "Id", "Caption"), new { @class = "form-control" })
                 </div>
                 <div style="margin: 0 10px;float:left">
-                    ОГВ: @Html.DropDownListFor(m => m.SelectedOgvId, new SelectList(Model.Organizations, "Id", "Caption"), new { @class = "form-control" })
+                    @Html.LabelFor(m => m.SelectedOgvId): @Html.DropDownListFor(m => m.SelectedOgvId, new SelectList(Model.Organizations, "Id", "Caption"), new { @class = "form-control" })
                 </div>
                 <div style="margin: 0 10px;float:left">
-                    Контролер: @Html.DropDownListFor(m => m.SelectedControllerId, new SelectList(Model.Controllers, "Id", "Name"), new { @class = "form-control" })
+                    @Html.LabelFor(m => m.SelectedControllerId): @Html.DropDownListFor(m => m.SelectedControllerId, new SelectList(Model.Controllers, "Id", "Name"), new { @class = "form-control" })
                 </div>
                 <div style="margin: 0 10px;float:left">
-                    Эксперт: @Html.DropDownListFor(m => m.SelectedExpertId, new SelectList(Model.Experts, "Id", "Name"), new { @class = "form-control" })
+                    @Html.LabelFor(m => m.SelectedExpertId) : @Html.DropDownListFor(m => m.SelectedExpertId, new SelectList(Model.Experts, "Id", "Name"), new { @class = "form-control" })
                 </div>
                 <input type="submit" value="Обновить" class="btn btn-lg btn-default" />
                 <div style="clear:both" />

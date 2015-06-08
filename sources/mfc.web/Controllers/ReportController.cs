@@ -1,5 +1,6 @@
 ﻿using mfc.infrastructure.security;
 using mfc.infrastructure.services;
+using mfc.web.Abstracts;
 using mfc.web.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace mfc.web.Controllers {
-    public class ReportController : Controller {
+    public class ReportController : BaseController {
         public ActionResult Index() {
             return Make();
         }

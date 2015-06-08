@@ -1,10 +1,21 @@
 ﻿@model System.Web.Mvc.HandleErrorInfo
 
 @{
-    ViewBag.Title = "Error";
+    ViewBag.Title = "Во время обработки запроса произошла ошибка";
 }
 
-<hgroup class="title">
-    <h1 class="error">Error.</h1>
-    <h2 class="error">An error occurred while processing your request.</h2>
-</hgroup>
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <h1 class="page-header">@ViewBag.Title</h1>
+        </div>
+    </section>
+}
+
+<div>
+    <p class="validation-summary-errors">@Model.Exception.Message</p>
+    Подробнее:
+    <div style="width:100%; overflow:scroll; height:300px">
+        @Model.Exception.StackTrace
+    </div>
+</div>

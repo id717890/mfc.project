@@ -1,6 +1,7 @@
 ﻿using mfc.domain;
 using mfc.domain.services;
 using mfc.infrastructure.security;
+using mfc.web.Abstracts;
 using mfc.web.Models;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Web.Mvc;
 
 namespace mfc.web.Controllers {
     [Authorize(Roles = Roles.Admin)]
-    public class AdminController : Controller {
+    public class AdminController : BaseController {
         public ActionResult Index() {
             return View();
         }

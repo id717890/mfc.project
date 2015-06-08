@@ -2,6 +2,7 @@
 using mfc.domain.entities;
 using mfc.domain.services;
 using mfc.infrastructure.security;
+using mfc.web.Abstracts;
 using mfc.web.Helpers;
 using mfc.web.Models;
 using System;
@@ -12,7 +13,7 @@ using System.Web.Mvc;
 
 namespace mfc.web.Controllers {
     [Authorize(Roles = Roles.Admin)]
-    public class ServiceChildController : Controller {
+    public class ServiceChildController : BaseController {
         public ActionResult Index(Int64 parentId) {
             var srv = CompositionRoot.Resolve<IServiceService>();
 

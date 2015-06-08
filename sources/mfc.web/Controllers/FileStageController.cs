@@ -1,6 +1,7 @@
 ﻿using mfc.dal.services;
 using mfc.domain.entities;
 using mfc.domain.services;
+using mfc.web.Abstracts;
 using mfc.web.Models;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Web.Mvc;
 
 namespace mfc.web.Controllers {
     [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
-    public class FileStageController : Controller {
+    public class FileStageController : BaseController {
         // GET: FileStage
         public ActionResult Index() {
             var file_stage_srv = CompositionRoot.Resolve<IFileStageService>();
