@@ -19,15 +19,22 @@ namespace mfc.web.Models {
 
         [Display(Name = "Контролер")]
         public Int64 SelectedControllerId { get; set; }
+        
         [Display(Name = "Статус")]
         public Int64 SelectedStatusId { get; set; }
+        
         [Display(Name = "ОГВ")]
         public Int64 SelectedOgvId { get; set; }
+        
         [Display(Name = "Эксперт")]        
         public Int64 SelectedExpertId { get; set; }
+        
         [Display(Name="От")]
+        [DataType(DataType.Date)]
         public DateTime BeginDate { get; set; }
+        
         [Display(Name = "До")]
+        [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
 
         public IList<User> Controllers {

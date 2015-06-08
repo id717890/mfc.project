@@ -14,17 +14,106 @@ using mfc.web.Abstracts;
 
 namespace mfc.web.Controllers {
     public class FileController : BaseController {
+        private const string FileControllerIndexKey = "FileControllerIndexKey";
+        private const string ControllerKey = "Controller";
+        private const string ExpertKey = "Expert";
+        private const string OrgKey = "Org";
+        private const string StatusKey = "Status";
+        private const string DateBeginKey = "DateBegin";
+        private const string DateEndKey = "DateEnd";
         //
         // GET: /File/
-        public ActionResult Index(Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1) {
-            return View(CreateModel(controllerId, expertId, statusId, orgId));
+        public ActionResult Index(string beginDate = null, string endDate = null, Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1) {
+            DateTime queryDateBegin = DateTime.Today;
+            queryDateBegin = new DateTime(queryDateBegin.Year, queryDateBegin.Month, 1);
+
+            if (!string.IsNullOrEmpty(beginDate)) {
+                DateTime.TryParse(beginDate, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDateBegin);
+            }
+
+            DateTime queryDateEnd = queryDateBegin.AddMonths(1).AddSeconds(-1);
+
+            if (!string.IsNullOrEmpty(endDate)) {
+                DateTime.TryParse(endDate, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDateEnd);
+            }
+            //загружаем настройки фильтра
+            var settings = Session[FileControllerIndexKey] as IDictionary<string, object>;
+                
+            if (settings != null) {
+                if (settings.ContainsKey(DateBeginKey)) {
+                    queryDateBegin = (DateTime)settings[DateBeginKey];
+                }
+
+                if (settings.ContainsKey(DateEndKey)) {
+                    queryDateEnd = (DateTime)settings[DateEndKey];
+                }
+                if (settings.ContainsKey(ControllerKey)) {
+                    controllerId = (Int64)settings[ControllerKey];
+                }
+                if (settings.ContainsKey(ExpertKey)) {
+                    expertId = (Int64)settings[ExpertKey];
+                }
+                if (settings.ContainsKey(OrgKey)) {
+                    orgId = (Int64)settings[OrgKey];
+                }
+                if (settings.ContainsKey(StatusKey)) {
+                    statusId = (Int64)settings[StatusKey];
+                }
+            }
+            
+            return View(CreateModel(queryDateBegin, queryDateEnd, controllerId, expertId, statusId, orgId));
         }
 
         [HttpPost]
         public ActionResult Index(FileListViewModel model) {
             var new_model = model;
             if (ModelState.IsValid) {
-                model = CreateModel(model.SelectedControllerId, model.SelectedExpertId, model.SelectedStatusId, model.SelectedOgvId);
+                //сохраняем настройки фильтра
+                Session[FileControllerIndexKey] = new Dictionary<string, object>();
+                var settings = Session[FileControllerIndexKey] as IDictionary<string, object>;
+                if (!settings.ContainsKey(DateBeginKey)) {
+                    settings.Add(DateBeginKey, model.BeginDate);
+                }
+                else {
+                    settings[DateBeginKey] = model.BeginDate;
+                }
+
+                if (!settings.ContainsKey(DateEndKey)) {
+                    settings.Add(DateEndKey, model.EndDate);
+                }
+                else {
+                    settings[DateEndKey] = model.EndDate;
+                }
+
+                if (!settings.ContainsKey(ControllerKey)) {
+                    settings.Add(ControllerKey, model.SelectedControllerId);
+                }
+                else {
+                    settings[ControllerKey] = model.SelectedControllerId;
+                }
+
+                if (!settings.ContainsKey(ExpertKey)) {
+                    settings.Add(ExpertKey, model.SelectedExpertId);
+                }
+                else {
+                    settings[ExpertKey] = model.SelectedExpertId;
+                }
+
+                if (!settings.ContainsKey(OrgKey)) {
+                    settings.Add(OrgKey, model.SelectedOgvId);
+                }
+                else {
+                    settings[OrgKey] = model.SelectedOgvId;
+                }
+
+                if (!settings.ContainsKey(StatusKey)) {
+                    settings.Add(StatusKey, model.SelectedStatusId);
+                }
+                else {
+                    settings[StatusKey] = model.SelectedStatusId;
+                }
+
+                model = CreateModel(model.BeginDate, model.EndDate, model.SelectedControllerId, model.SelectedExpertId, model.SelectedStatusId, model.SelectedOgvId);
             }
 
             return View(model);
@@ -267,7 +356,7 @@ namespace mfc.web.Controllers {
 
         #region Helpers
 
-        private FileListViewModel CreateModel(Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1) {
+        private FileListViewModel CreateModel(DateTime beginDate, DateTime endDate, Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1) {
             var user_srv = CompositionRoot.Resolve<IUserService>();
             var status_srv = CompositionRoot.Resolve<IFileStatusService>();
             var org_srv = CompositionRoot.Resolve<IOrganizationService>();
@@ -279,6 +368,8 @@ namespace mfc.web.Controllers {
             model.SelectedControllerId = controllerId == -1 ? mfc.domain.entities.User.All.Id : controllerId;
             model.SelectedExpertId = expertId == -1 ? mfc.domain.entities.User.All.Id : expertId;
             model.SelectedStatusId = statusId == -1 ? FileStatus.All.Id : statusId;
+            model.BeginDate = beginDate;
+            model.EndDate = endDate;
 
             if (User.IsInRole(Roles.Admin)) {
                 //Для администратора заполняем список всеми экспертами и контролерами
@@ -340,7 +431,7 @@ namespace mfc.web.Controllers {
                 model.Organizations.Add(item);
             }
 
-            foreach (var file in file_srv.GetFiles(model.SelectedControllerId, model.SelectedExpertId, model.SelectedStatusId, model.SelectedOgvId)) {
+            foreach (var file in file_srv.GetFiles(model.BeginDate, model.EndDate, model.SelectedControllerId, model.SelectedExpertId, model.SelectedStatusId, model.SelectedOgvId)) {
                 model.Files.Add(new FileModelItem {
                     Id = file.Id,
                     Date = file.Date,

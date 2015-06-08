@@ -10,6 +10,12 @@
             <p>
                @using (Html.BeginForm()) {
                 <div style="margin: 0 10px;float:left">
+                    @Html.LabelFor(m => m.BeginDate): @Html.EditorFor(m => m.BeginDate)
+                </div>
+                <div style="margin: 0 10px;float:left">
+                    @Html.LabelFor(m => m.EndDate): @Html.EditorFor(m => m.EndDate)
+                </div>
+                <div style="margin: 0 10px;float:left">
                     @Html.LabelFor(m=>m.SelectedStatusId): @Html.DropDownListFor(m => m.SelectedStatusId, new SelectList(Model.Statuses, "Id", "Caption"), new { @class = "form-control" })
                 </div>
                 <div style="margin: 0 10px;float:left">
