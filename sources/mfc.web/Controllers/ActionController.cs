@@ -14,6 +14,9 @@ using mfc.web.Abstracts;
 
 namespace mfc.web.Controllers {
     public class ActionController : BaseController {
+        private const string ActionControllerFilerKey = "ActionControllerFilerKey";
+        private const string DateKey = "DateKey";
+        private const string UserKey = "UserKey";
 
         public ActionResult Index(string date = null, Int64 user_id = -1) {
             var user_srv = CompositionRoot.Resolve<IUserService>();
@@ -34,6 +37,19 @@ namespace mfc.web.Controllers {
                 DateTime.TryParse(date, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDate);
             }
 
+            //Загружаем настройки
+            var settings = Session[ActionControllerFilerKey] as IDictionary<string, object>;
+
+            if (settings != null) {
+                if (settings.ContainsKey(DateKey)) {
+                    queryDate = (DateTime)settings[DateKey];
+                }
+
+                if (settings.ContainsKey(UserKey)) {
+                    user = user_srv.GetUserById((Int64)settings[UserKey]);
+                }
+            }
+
             var model = CreateActionListModel(queryDate, user);
 
             return View(model);
@@ -41,6 +57,23 @@ namespace mfc.web.Controllers {
 
         [HttpPost]
         public ActionResult Index(DateTime date, Int64 selectedUserId = -1) {
+            //сохраняем настройки фильтра
+            Session[ActionControllerFilerKey] = new Dictionary<string, object>();
+            var settings = Session[ActionControllerFilerKey] as IDictionary<string, object>;
+            if (!settings.ContainsKey(DateKey)) {
+                settings.Add(DateKey, date);
+            }
+            else {
+                settings[DateKey] = date;
+            }
+
+            if (!settings.ContainsKey(UserKey)) {
+                settings.Add(UserKey, selectedUserId);
+            }
+            else {
+                settings[UserKey] = selectedUserId;
+            }
+
             var user_srv = CompositionRoot.Resolve<IUserService>();
             var user = user_srv.GetUserById(selectedUserId);
 
