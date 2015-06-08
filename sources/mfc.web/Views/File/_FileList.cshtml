@@ -17,6 +17,8 @@
     </tr>
 
     @for (int index = 0; index < Model.Count; index++) {
+        Int64 item_id = Model[index].Id;
+        
         @Html.HiddenFor(m => Model[index].Id)
         @Html.HiddenFor(m => Model[index].Caption)
         @Html.HiddenFor(m => Model[index].Controller)
@@ -52,7 +54,7 @@
                 @Html.DisplayFor(m => Model[index].Status)
             </td>
             <td>
-                @Html.ActionLink("Изменить", "Edit", "File", new { id = Model[index].Id })
+                @Html.ActionLink("Изменить", "Edit", "File", new { id = item_id }, new { })
             </td>
         </tr>
     }

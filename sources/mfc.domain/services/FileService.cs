@@ -44,12 +44,23 @@ namespace mfc.domain.services {
         public long Add(ServiceAction action) {
             Debug.Assert(action.Type.NeedMakeFile);
 
+            //Возраждение удаленного дела
+            File file = FileRepository.GetByActionId(action.Id);
+
+            if (file != null && file.IsDeleted) {
+                file.IsDeleted = false;
+                FileRepository.Update(file);
+
+                return file.Id;
+            }
+
+            //Создание нового дела
             var status = FileStageService.GetStatusForStage(FileStages.NewFile);
             if (status == null) {
                 throw new DomainException(string.Format("Не определен статус для новых дел"));
             }
 
-            File file = new File {
+            file = new File {
                 Caption = action.Customer,
                 Date = action.Date,
                 Expert = action.User,

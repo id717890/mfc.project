@@ -72,7 +72,7 @@ namespace mfc.domain.services {
             unit_of_work.BeginTransaction();
             
             Repository.Create(action);
-            
+            //Если тип услуги предполагает создание дела, то создаем дело
             if (action.Type.NeedMakeFile) {
                 FileService.Add(action);
             }
@@ -83,10 +83,22 @@ namespace mfc.domain.services {
         }
 
         public void Update(ServiceAction action) {
+            var file = FileService.GetFileByActionId(action.Id);
+
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
             unit_of_work.BeginTransaction();
             Repository.Update(action);
+            
+            //Если в результате смены типа приема требуется создание дела, тогда создаем
+            if (action.Type.NeedMakeFile) {
+                FileService.Add(action);
+            }
+            //Если услуга не требует дела, то удаляем существующее
+            if (!action.Type.NeedMakeFile && file != null) {
+                FileService.Delete(file.Id);
+            }
+            
             unit_of_work.Commit();
         }
 
