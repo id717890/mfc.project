@@ -193,7 +193,11 @@ namespace mfc.web.Controllers {
         public ActionResult ControlList(List<FileModelItem> model) {
             var file_srv = CompositionRoot.Resolve<IFileService>();
             List<Int64> checked_file_ids = new List<long>();
-            
+
+            if (!ModelState.IsValid || model == null) {
+                return RedirectToAction("Index");
+            }
+
             foreach (var item in model) {
                 if (item.IsChecked) {
                     checked_file_ids.Add(item.Id);

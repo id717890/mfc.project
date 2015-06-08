@@ -1,6 +1,16 @@
 ﻿@model mfc.web.Models.AcceptForControlModel
 
-<p style="color:green;font-weight:bold">Приняты на контрол</p>
+@section workmenu {
+    @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Files)
+}
+
+
+@{
+    ViewBag.Title = "Отправка на проверку";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@ViewBag.Title</h2>
+<p style="color:green;font-weight:bold">Приняты на контроль</p>
 <table class="table">
     <tr>
         <th>Дата</th>
