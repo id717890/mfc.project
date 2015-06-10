@@ -143,6 +143,8 @@
             <p>@Html.ActionLink("Отправить на контроль", "Control", new { fileId = Model.Id })</p>
             <p>@Html.ActionLink("Вернуть для исправления", "Return", new { fileId = Model.Id })</p>
             <p>@Html.ActionLink("Проверено", "Check", new { fileId = Model.Id })</p>
+            <hr />
+            <p>@Html.ActionLink("Перейти к приему", "Edit", "Action", new { id = Model.ActionId }, new { })</p>
             <hr/>
             <a href="javascript:void(0)" id="show-statuses">Показать историю</a>
         </div>

@@ -7,6 +7,7 @@ using System.Web;
 namespace mfc.web.Models {
     public class FileModel {
         public Int64 Id { get; set; }
+        public Int64 ActionId { get; set; }
 
         [Required]
         [Display(Name = "Номер дела")]

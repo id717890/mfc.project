@@ -10,6 +10,7 @@ namespace mfc.web.Helpers {
         public static FileModel ToModel(File file) {
             return new FileModel {
                 Id = file.Id,
+                ActionId = file.Action.Id,
                 Caption = file.Caption,
                 Expert = file.Expert.Name,
                 Organization = file.Ogv.Caption,

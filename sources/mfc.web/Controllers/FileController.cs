@@ -439,6 +439,7 @@ namespace mfc.web.Controllers {
                 model.Files.Add(new FileModelItem {
                     Id = file.Id,
                     Date = file.Date,
+                    Caption = file.Caption,
                     Service = file.Action.Service.Caption,
                     Expert = file.Expert.Name,
                     Controller = file.Controller != null ? file.Controller.Name : string.Empty,
