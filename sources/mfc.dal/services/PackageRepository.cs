@@ -12,12 +12,18 @@ namespace mfc.dal.services {
     public class PackageRepository : Repository<Package>, IPackageRepository {
         public PackageRepository(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider) { }
 
-        public IEnumerable<Package> GetPackages(DateTime dateBegin, DateTime dateEnd) {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<Package> GetPackages(DateTime dateBegin, DateTime dateEnd, User controller = null, Organization organization = null) {
+            var query = Session.Query<Package>();
+            if (controller != null) {
+                query = query.Where(f => f.Controller.Id == controller.Id);
+            }
 
-        public IEnumerable<Package> GetPackages(DateTime dateBegin, DateTime dateEnd, long controllerId) {
-            throw new NotImplementedException();
+            if (organization != null) {
+                query = query.Where(f => f.Organization.Id == organization.Id);
+            }
+
+
+            return query.Where(f => !f.IsDeleted && f.Date >= dateBegin && f.Date <= dateEnd).OrderByDescending(m => m.Date).ThenByDescending(m => m.Id).ToList();
         }
     }
 }

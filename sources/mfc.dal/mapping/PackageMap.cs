@@ -14,6 +14,7 @@ namespace mfc.dal.mapping {
             Map(x => x.Date, "dt");
             Map(x => x.IsDeleted, "is_deleted");
             References(x => x.Organization, "org_id");
+            References(x => x.Controller, "user_id");
         }
     }
 }

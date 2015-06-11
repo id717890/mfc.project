@@ -12,12 +12,17 @@ namespace mfc.domain.services {
         [Inject]
         public IPackageRepository PackageRepository { get; set; }
 
-        public IEnumerable<Package> GetPackages(DateTime dateBegin, DateTime dateEnd) {
-            throw new NotImplementedException();
-        }
+        [Inject]
+        public UserService UserService { get; set; }
 
-        public IEnumerable<Package> GetPackages(DateTime dateBegin, DateTime dateEnd, entities.User controller) {
-            throw new NotImplementedException();
+        [Inject]
+        public OrganizationService OrganizationService { get; set; }
+
+        public IEnumerable<Package> GetPackages(DateTime dateBegin, DateTime dateEnd, Int64 controllerId, Int64 orgId) {
+            var organization = OrganizationService.GetOrganizationById(orgId);
+            var controller = UserService.GetUserById(controllerId);
+            
+            return PackageRepository.GetPackages(dateBegin, dateEnd, controller, organization);
         }
 
         public long CreatePackage(User controller, DateTime date, Organization organization, IEnumerable<long> files) {

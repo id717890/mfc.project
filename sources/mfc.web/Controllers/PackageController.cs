@@ -107,7 +107,7 @@ namespace mfc.web.Controllers {
             var user_srv = CompositionRoot.Resolve<IUserService>();
             var status_srv = CompositionRoot.Resolve<IFileStatusService>();
             var org_srv = CompositionRoot.Resolve<IOrganizationService>();
-            var file_srv = CompositionRoot.Resolve<IFileService>();
+            var package_srv = CompositionRoot.Resolve<IPackageService>();
 
             var model = new PackageListViewModel();
 
@@ -138,18 +138,9 @@ namespace mfc.web.Controllers {
                 model.Organizations.Add(item);
             }
 
-            /*foreach (var file in file_srv.GetFiles(model.BeginDate, model.EndDate, model.SelectedControllerId, model.SelectedExpertId, model.SelectedStatusId, model.SelectedOgvId)) {
-                model.Files.Add(new FileModelItem {
-                    Id = file.Id,
-                    Date = file.Date,
-                    Caption = file.Caption,
-                    Service = file.Action.Service.Caption,
-                    Expert = file.Expert.Name,
-                    Controller = file.Controller != null ? file.Controller.Name : string.Empty,
-                    Organization = file.Ogv.Caption,
-                    Status = file.CurrentStatus != null ? file.CurrentStatus.Caption : string.Empty
-                });
-            }*/
+            foreach (var package in package_srv.GetPackages(model.BeginDate, model.EndDate, model.SelectedControllerId, model.SelectedOgvId)) {
+                model.Packages.Add(package);
+            }
 
             return model;
         }

@@ -10,7 +10,7 @@ namespace mfc.web.Models {
         #region Fields
 
         private readonly List<User> _controllers = new List<User>();
-        private readonly List<File> _files = new List<File>();
+        private readonly List<Package> _packages = new List<Package>();
         private readonly List<Organization> _ogvs = new List<Organization>();
         
         #endregion
@@ -41,9 +41,9 @@ namespace mfc.web.Models {
             }
         }
 
-        public IList<File> Files {
+        public IList<Package> Packages {
             get {
-                return _files;
+                return _packages;
             }
         }
     }

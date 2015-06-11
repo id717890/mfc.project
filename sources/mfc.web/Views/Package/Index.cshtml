@@ -32,4 +32,33 @@
 @section workmenu {
     @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Packages)
 }
-<hr />
+
+<table class="table">
+    <tr>
+        <th></th>
+        <th>Дата</th>
+        <th>ОГВ</th>
+        <th>Контролёр</th>
+        <th></th>
+    </tr>
+
+    @foreach (var package in Model.Packages) {
+
+        <tr>>
+            <td>
+                @package.Date.ToString("dd.MM.yyyy")
+            </td>
+            <td>
+                @Html.DisplayFor(m => package.Organization.Caption)
+            </td>
+            <td>
+                @Html.DisplayFor(m => package.Controller.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Изменить", "Edit", "Package", new { id = package.Id}, new { })
+                @Html.ActionLink("Удалить", "Delete", "Package", new { id = package.Id }, new { })
+            </td>
+        </tr>
+    }
+
+</table>
