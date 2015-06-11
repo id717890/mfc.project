@@ -20,6 +20,7 @@ namespace mfc.dal {
             Kernel.Bind<IFileStatusRepository>().To<FileStatusRepository>();
             Kernel.Bind<IServiceActionRepository>().To<ServiceActionRepository>();
             Kernel.Bind<IServiceRepository>().To<ServiceRepository>();
+            Kernel.Bind<IPackageRepository>().To<PackageRepository>();
             Kernel.Bind<IUnitOfWorkProvider>().ToConstant(new UnitOfWorkProvider(Kernel)).InSingletonScope();
         }
     }

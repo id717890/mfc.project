@@ -60,6 +60,7 @@
     <Compile Include="services\FileService.cs" />
     <Compile Include="services\FileStageService.cs" />
     <Compile Include="services\FileStatusService.cs" />
+    <Compile Include="services\PackageService.cs" />
     <Compile Include="services\ServiceService.cs" />
     <Compile Include="services\ActionTypeService.cs" />
     <Compile Include="services\OrganizationService.cs" />

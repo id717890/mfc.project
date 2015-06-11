@@ -60,6 +60,7 @@
     <Compile Include="services\IFileStageService.cs" />
     <Compile Include="services\IFileStatusService.cs" />
     <Compile Include="services\IOrganizationService.cs" />
+    <Compile Include="services\IPackageService.cs" />
     <Compile Include="services\IServiceService.cs" />
     <Compile Include="services\IUserService.cs" />
   </ItemGroup>

@@ -63,6 +63,7 @@
     <Compile Include="mapping\OrganizationTypeMap.cs" />
     <Compile Include="mapping\UserMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="services\PackageRepository.cs" />
     <Compile Include="services\FileRepository.cs" />
     <Compile Include="services\FileStageRepository.cs" />
     <Compile Include="services\FileStatusRepository.cs" />
