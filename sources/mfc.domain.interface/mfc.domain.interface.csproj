@@ -45,6 +45,7 @@
     <Compile Include="entities\FileStages.cs" />
     <Compile Include="entities\FileStatus.cs" />
     <Compile Include="entities\FileStatusInfo.cs" />
+    <Compile Include="entities\Package.cs" />
     <Compile Include="entities\ServiceAction.cs" />
     <Compile Include="entities\ActionType.cs" />
     <Compile Include="entities\Organization.cs" />

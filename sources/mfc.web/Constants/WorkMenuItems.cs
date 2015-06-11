@@ -8,5 +8,6 @@ namespace mfc.web.Constants {
         public const string Services = "Services";
         public const string Files = "Files";
         public const string Reports = "Reports";
+        public const string Packages = "Packages";
     }
 }

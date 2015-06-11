@@ -40,3 +40,9 @@ alter table Files alter column dt datetime;
 alter table FileStatus alter column dt datetime;
 
 alter table Actions add is_nonresident bit default 0;
+
+
+-- Пакеты
+create table Packages (id bigint, dt date, org_id bigint, is_deleted bit);
+
+create table PackageItems (package_id bigint, file_id bigint);

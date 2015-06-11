@@ -1,0 +1,35 @@
+﻿@model mfc.web.Models.PackageListViewModel
+
+@{
+    ViewBag.Title = "Пакеты";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <h1 class="page-header">@ViewBag.Title</h1>
+            <p>
+                @using (Html.BeginForm()) {
+                    <div style="margin: 0 10px;float:left">
+                        @Html.LabelFor(m => m.BeginDate): @Html.EditorFor(m => m.BeginDate)
+                    </div>
+                    <div style="margin: 0 10px;float:left">
+                        @Html.LabelFor(m => m.EndDate): @Html.EditorFor(m => m.EndDate)
+                    </div>
+                    <div style="margin: 0 10px;float:left">
+                        @Html.LabelFor(m => m.SelectedOgvId): @Html.DropDownListFor(m => m.SelectedOgvId, new SelectList(Model.Organizations, "Id", "Caption"), new { @class = "form-control" })
+                    </div>
+                    <div style="margin: 0 10px;float:left">
+                        @Html.LabelFor(m => m.SelectedControllerId): @Html.DropDownListFor(m => m.SelectedControllerId, new SelectList(Model.Controllers, "Id", "Name"), new { @class = "form-control" })
+                    </div>
+                    <input type="submit" value="Обновить" class="btn btn-lg btn-default" />
+                    <div style="clear:both" />
+                }
+            </p>
+        </div>
+    </section>
+
+}
+@section workmenu {
+    @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Packages)
+}
+<hr />

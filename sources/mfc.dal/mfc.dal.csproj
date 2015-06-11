@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="CompositeModule.cs" />
     <Compile Include="mapping\ActionTypeMap.cs" />
+    <Compile Include="mapping\PackageMap.cs" />
     <Compile Include="mapping\FileStageMap.cs" />
     <Compile Include="mapping\FileStatusMap.cs" />
     <Compile Include="mapping\ServiceActionMap.cs" />
