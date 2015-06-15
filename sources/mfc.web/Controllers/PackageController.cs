@@ -1,7 +1,9 @@
-﻿using mfc.domain.entities;
+﻿using mfc.domain;
+using mfc.domain.entities;
 using mfc.domain.services;
 using mfc.infrastructure.security;
 using mfc.web.Abstracts;
+using mfc.web.Helpers;
 using mfc.web.Models;
 using System;
 using System.Collections.Generic;
@@ -103,6 +105,47 @@ namespace mfc.web.Controllers {
 
             return View(model);
         }
+
+        public ActionResult Edit(Int64 id) {
+            var package_srv = CompositionRoot.Resolve<IPackageService>();
+
+            var package = package_srv.GetPackageById(id);
+            if (package == null){
+                throw new Exception(string.Format("Не найден пакет с идентификатором {0}", id));
+            }
+
+            PackageModel model = PackageHelper.CreateModel(package);
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(PackageModel model) {
+            bool has_error = false;
+
+            var package_srv = CompositionRoot.Resolve<IPackageService>();
+            
+            if (ModelState.IsValid) {
+                var package = PackageHelper.CreatePackage(model);
+            
+                try {
+                    package_srv.Update(package);
+                }
+                catch (DomainException e) {
+                    has_error = true;
+                    ModelState.AddModelError("", e.Message);
+                }
+            }
+
+            if (has_error) {
+                PackageHelper.PrepareModel(model);
+
+                return View(model);
+            }
+
+            return RedirectToAction("Index");
+
+        }
+
         private PackageListViewModel CreateModel(DateTime beginDate, DateTime endDate, Int64 controllerId = -1, Int64 orgId = -1) {
             var user_srv = CompositionRoot.Resolve<IUserService>();
             var status_srv = CompositionRoot.Resolve<IFileStatusService>();

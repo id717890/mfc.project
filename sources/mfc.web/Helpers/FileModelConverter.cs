@@ -20,5 +20,18 @@ namespace mfc.web.Helpers {
                 Status = file.CurrentStatus != null ? file.CurrentStatus.Caption : string.Empty
             };
         }
+
+        public static FileModelItem ToModelItem(File file) {
+            return new FileModelItem {
+                Id = file.Id,
+                Date = file.Date,
+                Caption = file.Caption,
+                Service = file.Action.Service.Caption,
+                Expert = file.Expert.Name,
+                Controller = file.Controller != null ? file.Controller.Name : string.Empty,
+                Organization = file.Ogv.Caption,
+                Status = file.CurrentStatus != null ? file.CurrentStatus.Caption : string.Empty
+            };
+        }
     }
 }

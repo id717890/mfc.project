@@ -1,4 +1,6 @@
-﻿using mfc.domain.services;
+﻿using mfc.domain;
+using mfc.domain.entities;
+using mfc.domain.services;
 using mfc.web.Abstracts;
 using mfc.web.Helpers;
 using mfc.web.Models;
@@ -66,20 +68,35 @@ namespace mfc.web.Controllers {
                 return RedirectToAction("Index", "File");
             }
 
-            var accepted_ids = new List<Int64>(file_srv.AcceptForControl(checked_file_ids));
+            return View(PackageHelper.CreateModel(checked_file_ids));
+        }
 
-            var accept_model = new AcceptForControlModel();
-            foreach (var id in accepted_ids) {
-                accept_model.AcceptedFiles.Add(file_srv.GetFileById(id));
-            }
+        [HttpPost]
+        public ActionResult SavePackage(PackageModel model) {
+            if (ModelState.IsValid) {
+                var package_srv = CompositionRoot.Resolve<IPackageService>();
+                var user_srv = CompositionRoot.Resolve<IUserService>();
+                var org_srv = CompositionRoot.Resolve<IOrganizationService>();
 
-            foreach (var id in checked_file_ids) {
-                if (!accepted_ids.Contains(id)) {
-                    accept_model.RejectedFiles.Add(file_srv.GetFileById(id));
+                var file_ids = new List<Int64>();
+
+                foreach (var item in model.Files){
+                    file_ids.Add(item.Id);
+                }
+
+                try {
+                    var id = package_srv.CreatePackage(user_srv.GetCurrentUser(), model.Date, org_srv.GetOrganizationById(model.OrganizationId), file_ids);
+
+                    return RedirectToAction("Edit", "Package", new { id = id });
+                }
+                catch (DomainException e) {
+                    ModelState.AddModelError("", e.Message);
                 }
             }
 
-            return View(accept_model);
+            PackageHelper.PrepareModel(model);
+
+            return View("CreatePackage", model);
         }
     }
 }

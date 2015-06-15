@@ -13,10 +13,16 @@ namespace mfc.domain.services {
         public IPackageRepository PackageRepository { get; set; }
 
         [Inject]
-        public UserService UserService { get; set; }
+        public IUserService UserService { get; set; }
 
         [Inject]
-        public OrganizationService OrganizationService { get; set; }
+        public IOrganizationService OrganizationService { get; set; }
+
+        [Inject]
+        public IUnitOfWorkProvider UnitOfWorkProvider { get; set; }
+
+        [Inject]
+        public IFileService FileService { get; set; }
 
         public IEnumerable<Package> GetPackages(DateTime dateBegin, DateTime dateEnd, Int64 controllerId, Int64 orgId) {
             var organization = OrganizationService.GetOrganizationById(orgId);
@@ -26,15 +32,48 @@ namespace mfc.domain.services {
         }
 
         public long CreatePackage(User controller, DateTime date, Organization organization, IEnumerable<long> files) {
-            throw new NotImplementedException();
+            Package package = new Package();
+            package.Date = date;
+            package.Controller = controller;
+            package.Organization = organization;
+
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
+            unit_of_work.BeginTransaction();
+            PackageRepository.Create(package);
+
+            unit_of_work.Commit();
+
+            UpdatePackageFiles(package.Id, files);
+
+            return package.Id;
         }
 
         public Package GetPackageById(long packageId) {
-            throw new NotImplementedException();
+            return PackageRepository.GetById(packageId);
         }
 
         public IEnumerable<File> GetPackageFiles(long packageId) {
-            throw new NotImplementedException();
+            List<File> files = new List<File>();
+
+            foreach (var id in PackageRepository.GetPackageFileIds(packageId)) {
+                files.Add(FileService.GetFileById(id));
+            }
+
+            return files;
+        }
+
+        public void UpdatePackageFiles(Int64 package_id, IEnumerable<Int64> file_ids) {
+            PackageRepository.UpdateFiles(package_id, file_ids);
+        }
+
+
+        public void Update(Package package) {
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
+            unit_of_work.BeginTransaction();
+
+            PackageRepository.Update(package);
+
+            unit_of_work.Commit();
         }
     }
 }

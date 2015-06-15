@@ -26,5 +26,7 @@ namespace mfc.domain.services {
         /// Формирует список файлов пакета
         /// </summary>
         IEnumerable<File> GetPackageFiles(Int64 packageId);
+
+        void Update(Package package);
     }
 }

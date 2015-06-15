@@ -245,6 +245,7 @@
     <Compile Include="Helpers\MultipleButtonAttribute.cs" />
     <Compile Include="Helpers\OrganizationModelConverter.cs" />
     <Compile Include="Helpers\OrganizationTypeModelConverter.cs" />
+    <Compile Include="Helpers\PackageHelper.cs" />
     <Compile Include="Helpers\ServiceActionModelConverter.cs" />
     <Compile Include="Models\AcceptForControlModel.cs" />
     <Compile Include="Models\AccountInfo.cs" />
@@ -259,6 +260,7 @@
     <Compile Include="Models\FileStatusInfoModel.cs" />
     <Compile Include="Models\FileStatusModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\PackageModel.cs" />
     <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\FileModelItem.cs" />
     <Compile Include="Models\ServiceActionViewModel.cs" />
@@ -416,6 +418,8 @@
     <Content Include="Views\FileList\ControlList.cshtml" />
     <Content Include="Views\File\_FileList.cshtml" />
     <Content Include="Views\Package\Index.cshtml" />
+    <Content Include="Views\Package\Edit.cshtml" />
+    <Content Include="Views\FileList\CreatePackage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
