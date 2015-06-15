@@ -144,17 +144,29 @@
     });
 
     function selectOrg(id, caption) {
+        var is_changed = $('input#OrganizationId').attr('value') != id;
+
         $('#selected-org').html(caption);
         $('input#OrganizationId').attr('value', id);
         $('input#Organization').attr('value', caption);
+
+        if (is_changed) {
+            selectSrv(-1, '');
+        }
         dialog_org.dialog('close');
 
     }
 
     function selectSrv(id, caption) {
+        var is_changed = $('input#ServiceId').attr('value') != id;
+
         $('#selected-service').html(caption);
         $('input#ServiceId').attr('value', id);
         $('input#Service').attr('value', caption);
+
+        if (is_changed) {
+            selectSrvChild(-1, '');
+        }
         dialog_srv.dialog('close');
     }
 
