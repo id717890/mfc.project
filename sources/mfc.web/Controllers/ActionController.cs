@@ -207,7 +207,7 @@ namespace mfc.web.Controllers {
                 try {
                     var action = ServiceActionModelConverter.FromModel(model);
                     
-                    if (action.ServiceChild != null && action.ServiceChild.Parent != action.Service) {
+                    if (action.ServiceChild != null && !action.Service.Equals(action.ServiceChild.Parent)) {
                         throw new DomainException("Подуслуга не связана с услугой");
                     }
 
