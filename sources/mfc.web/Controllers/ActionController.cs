@@ -206,10 +206,15 @@ namespace mfc.web.Controllers {
                 var action_srv = CompositionRoot.Resolve<IActionService>();
                 try {
                     var action = ServiceActionModelConverter.FromModel(model);
+                    
+                    if (action.ServiceChild != null && action.ServiceChild.Parent != action.Service) {
+                        throw new DomainException("Подуслуга не связана с услугой");
+                    }
+
                     action_srv.Update(action);
                 }
                 catch (DomainException e) {
-                    ModelState.AddModelError("", e);
+                    ModelState.AddModelError("", e.Message);
                     has_error = true;
                 }
 
