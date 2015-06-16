@@ -30,5 +30,7 @@ namespace mfc.domain.services {
         void Update(Package package);
 
         void Delete(Int64 id);
+
+        void UpdatePackageFiles(Int64 package_id, IEnumerable<Int64> file_ids);
     }
 }

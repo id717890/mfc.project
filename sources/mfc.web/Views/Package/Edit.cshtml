@@ -116,16 +116,16 @@
             </tr>
 
             @for (int index = 0; index < Model.Files.Count; index++) {
-                @Html.HiddenFor(m => Model.Files[index].Id)
-                @Html.HiddenFor(m => Model.Files[index].Caption)
-                @Html.HiddenFor(m => Model.Files[index].Controller)
-                @Html.HiddenFor(m => Model.Files[index].Date)
-                @Html.HiddenFor(m => Model.Files[index].Expert)
-                @Html.HiddenFor(m => Model.Files[index].Organization)
-                @Html.HiddenFor(m => Model.Files[index].Service)
-                @Html.HiddenFor(m => Model.Files[index].Status)
-
                 <tr>
+                    @Html.HiddenFor(m => Model.Files[index].Id)
+                    @Html.HiddenFor(m => Model.Files[index].Caption)
+                    @Html.HiddenFor(m => Model.Files[index].Controller)
+                    @Html.HiddenFor(m => Model.Files[index].Date)
+                    @Html.HiddenFor(m => Model.Files[index].Expert)
+                    @Html.HiddenFor(m => Model.Files[index].Organization)
+                    @Html.HiddenFor(m => Model.Files[index].Service)
+                    @Html.HiddenFor(m => Model.Files[index].Status)
+
                     <td>
                         @Model.Files[index].Date.ToString("dd.MM.yyyy")
                     </td>
@@ -148,7 +148,7 @@
                         @Html.DisplayFor(m => Model.Files[index].Status)
                     </td>
                     <td>
-                        <div><a href="javascript:void(0)" onclick="deleteFile(@Model.Files[index].Id)">Удалить</a></div>
+                        <a href="javascript:void(0)" class="delete-link">Удалить</a>
                     </td>
                 </tr>
             }
@@ -156,3 +156,50 @@
         </table>
     </div>
 }
+
+<!--//
+    Query dialig section
+-->
+<div id="query-dialog" title="Исключение дела">
+    Исключить дело?
+</div>
+
+<div class="waiting"></div>
+
+<script type="text/javascript">
+    var wait_dialog;
+
+    $(function () {
+        $("#query-dialog").dialog({
+            autoOpen: false,
+            modal: true
+        });
+        wait_dialog = $(".waiting");
+    });
+
+
+
+    $(".delete-link").click(function (e) {
+        e.preventDefault();
+
+        var row = $(this).parent().parent();
+
+        $("#query-dialog").dialog({
+            buttons: {
+                "Удалить": function () {
+                    $(this).dialog('close');
+
+                    wait_dialog.show();
+                    row.remove();
+                    wait_dialog.hide();
+
+                },
+                "Отмена": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $("#query-dialog").dialog("open");
+    });
+</script>
