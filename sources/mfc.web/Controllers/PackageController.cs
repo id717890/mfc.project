@@ -146,6 +146,30 @@ namespace mfc.web.Controllers {
 
         }
 
+        /// <summary>
+        /// Get-query for deleting package
+        /// </summary>
+        /// 
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Delete(Int64 id) {
+            var result = false;
+
+            var package_srv = CompositionRoot.Resolve<IPackageService>();
+            var package = package_srv.GetPackageById(id);
+
+            if (package != null) {
+                try {
+                    package_srv.Delete(id);
+                    result = true;
+                }
+                catch (Exception e) {
+                    Logger.Error(e);
+                }
+            }
+
+            return Content(result ? Boolean.TrueString : Boolean.FalseString);
+        }
+
         private PackageListViewModel CreateModel(DateTime beginDate, DateTime endDate, Int64 controllerId = -1, Int64 orgId = -1) {
             var user_srv = CompositionRoot.Resolve<IUserService>();
             var status_srv = CompositionRoot.Resolve<IFileStatusService>();

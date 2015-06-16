@@ -55,9 +55,63 @@
             </td>
             <td>
                 @Html.ActionLink("Изменить", "Edit", "Package", new { id = package.Id}, new { })
-                @Html.ActionLink("Удалить", "Delete", "Package", new { id = package.Id }, new { })
+                @Html.ActionLink("Удалить", "Delete", "Package", new { id = package.Id }, new { @class = "delete-link" })
             </td>
         </tr>
     }
 
 </table>
+<!--//
+    Query dialig section
+-->
+<div id="query-dialog" title="Удаление пакета">
+    Удалить пакет?
+</div>
+
+<div class="waiting"></div>
+
+<script type="text/javascript">
+    var wait_dialog;
+
+    $(function() {
+        $("#query-dialog").dialog({
+            autoOpen: false,
+            modal: true
+        });
+        wait_dialog = $(".waiting");
+    });
+  
+  
+
+    $(".delete-link").click(function(e) {
+        e.preventDefault();
+        var targetUrl = $(this).attr("href");
+        var row = $(this).parent().parent();
+
+        $("#query-dialog").dialog({
+            buttons : {
+                "Удалить": function () {
+                    $(this).dialog('close');
+                    wait_dialog.show();
+
+                    $.post(targetUrl, function (data) {
+                        if (data == '@Boolean.TrueString') {
+                            row.remove();
+                        }
+                        else {
+                            alert('Не удалось удалить пакет');
+                        }
+
+                        wait_dialog.hide();
+                    });
+                    
+                },
+                "Отмена" : function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $("#query-dialog").dialog("open");
+    });
+</script>

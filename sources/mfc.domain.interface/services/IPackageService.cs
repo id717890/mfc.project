@@ -28,5 +28,7 @@ namespace mfc.domain.services {
         IEnumerable<File> GetPackageFiles(Int64 packageId);
 
         void Update(Package package);
+
+        void Delete(Int64 id);
     }
 }

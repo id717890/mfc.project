@@ -75,5 +75,15 @@ namespace mfc.domain.services {
 
             unit_of_work.Commit();
         }
+
+
+        public void Delete(long id) {
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
+            unit_of_work.BeginTransaction();
+
+            PackageRepository.Delete(id);
+
+            unit_of_work.Commit();
+        }
     }
 }
