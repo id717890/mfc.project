@@ -15,7 +15,97 @@
     @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Packages)
 }
 
-<script>
+@using (Html.BeginForm("SavePackage", "FileList", FormMethod.Post, new { @class = "form" })) {
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.OrganizationId)
+    @Html.HiddenFor(model => model.Organization)
+
+    <input type="submit" value="Сохранить" class="btn btn-default" />
+
+    <hr/>
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OrganizationId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="row">
+                    <div id="selected-org" class="col-md-10 col-sm-6" style="margin-right:10px">Не выбрана</div><button id="select-org" type="button" class="btn">...</button>
+                    @Html.ValidationMessageFor(model => model.OrganizationId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        
+
+        <table class="table">
+            <tr>
+                <th>Дата</th>
+                <th>Номер</th>
+                <th>Услуга</th>
+                <th>ОГВ</th>
+                <th>Эксперт</th>
+                <th>Контролёр</th>
+                <th>Статус</th>
+            </tr>
+
+            @for (int index = 0; index < Model.Files.Length; index++) {
+                @Html.HiddenFor(m => Model.Files[index].Id)
+                @Html.HiddenFor(m => Model.Files[index].Caption)
+                @Html.HiddenFor(m => Model.Files[index].Controller)
+                @Html.HiddenFor(m => Model.Files[index].Date)
+                @Html.HiddenFor(m => Model.Files[index].Expert)
+                @Html.HiddenFor(m => Model.Files[index].Organization)
+                @Html.HiddenFor(m => Model.Files[index].Service)
+                @Html.HiddenFor(m => Model.Files[index].Status)
+
+                <tr>
+                    <td>
+                        @Model.Files[index].Date.ToString("dd.MM.yyyy")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => Model.Files[index].Caption)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => Model.Files[index].Service)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => Model.Files[index].Organization)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => Model.Files[index].Expert)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => Model.Files[index].Controller)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => Model.Files[index].Status)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+}
+
+<!--
+    Блок диалога выбора ОГВ
+-->
+<div id="select-org-form" title="Выбор ОГВ">
+
+</div>
+
+
+<script type="text/javascript">
     var dialog_org, dialog_srv;
     var site_name;
     site_name = "";
@@ -61,93 +151,4 @@
 
         dialog_org.dialog('close');
     }
-
 </script>
-
-<div id="select-org-form" title="Выбор ОГВ">
-
-</div>
-
-
-@using (Html.BeginForm("SavePackage", "FileList", FormMethod.Post, new { @class = "form" })) {
-    @Html.AntiForgeryToken()
-
-    @Html.HiddenFor(model => model.OrganizationId)
-    @Html.HiddenFor(model => model.Organization)
-
-    <input type="submit" value="Сохранить" class="btn btn-default" />
-
-    <hr/>
-
-    <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.OrganizationId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="row">
-                    <div id="selected-org" class="col-md-10 col-sm-6" style="margin-right:10px">Не выбрана</div><button id="select-org" type="button" class="btn">...</button>
-                    @Html.ValidationMessageFor(model => model.OrganizationId, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        
-
-        <table class="table">
-            <tr>
-                <th>Дата</th>
-                <th>Номер</th>
-                <th>Услуга</th>
-                <th>ОГВ</th>
-                <th>Эксперт</th>
-                <th>Контролёр</th>
-                <th>Статус</th>
-                <th></th>
-            </tr>
-
-            @for (int index = 0; index < Model.Files.Length; index++) {
-                @Html.HiddenFor(m => Model.Files[index].Id)
-                @Html.HiddenFor(m => Model.Files[index].Caption)
-                @Html.HiddenFor(m => Model.Files[index].Controller)
-                @Html.HiddenFor(m => Model.Files[index].Date)
-                @Html.HiddenFor(m => Model.Files[index].Expert)
-                @Html.HiddenFor(m => Model.Files[index].Organization)
-                @Html.HiddenFor(m => Model.Files[index].Service)
-                @Html.HiddenFor(m => Model.Files[index].Status)
-
-                <tr>
-                    <td>
-                        @Model.Files[index].Date.ToString("dd.MM.yyyy")
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.Files[index].Caption)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.Files[index].Service)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.Files[index].Organization)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.Files[index].Expert)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.Files[index].Controller)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.Files[index].Status)
-                    </td>
-                </tr>
-            }
-
-        </table>
-    </div>
-}
