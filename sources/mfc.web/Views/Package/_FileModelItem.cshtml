@@ -1,0 +1,38 @@
+﻿@model mfc.web.Models.FileModelItem
+
+<tr>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.Caption)
+        @Html.HiddenFor(m => m.Controller)
+        @Html.HiddenFor(m => m.Date)
+        @Html.HiddenFor(m => m.Expert)
+        @Html.HiddenFor(m => m.Organization)
+        @Html.HiddenFor(m => m.Service)
+        @Html.HiddenFor(m => m.Status)
+
+    <td>
+        @Model.Date.ToString("dd.MM.yyyy")
+    </td>
+    <td>
+        @Html.DisplayFor(m => m.Caption)
+    </td>
+    <td>
+        @Html.DisplayFor(m => m.Service)
+    </td>
+    <td>
+        @Html.DisplayFor(m => m.Organization)
+    </td>
+    <td>
+        @Html.DisplayFor(m => m.Expert)
+    </td>
+    <td>
+        @Html.DisplayFor(m => m.Controller)
+    </td>
+    <td>
+        @Html.DisplayFor(m => m.Status)
+    </td>
+    <td>
+        <a href="javascript:void(0)" class="delete-link">Удалить</a>
+    </td>
+</tr>
+

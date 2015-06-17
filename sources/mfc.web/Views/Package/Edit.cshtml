@@ -1,4 +1,5 @@
-﻿@model mfc.web.Models.PackageModel
+﻿@using HtmlHelpers.BeginCollectionItem
+@model mfc.web.Models.PackageModel
 
 @{
     ViewBag.Title = "Редактирование пакета";
@@ -115,42 +116,10 @@
                 <th></th>
             </tr>
 
-            @for (int index = 0; index < Model.Files.Count; index++) {
-                <tr>
-                    @Html.HiddenFor(m => Model.Files[index].Id)
-                    @Html.HiddenFor(m => Model.Files[index].Caption)
-                    @Html.HiddenFor(m => Model.Files[index].Controller)
-                    @Html.HiddenFor(m => Model.Files[index].Date)
-                    @Html.HiddenFor(m => Model.Files[index].Expert)
-                    @Html.HiddenFor(m => Model.Files[index].Organization)
-                    @Html.HiddenFor(m => Model.Files[index].Service)
-                    @Html.HiddenFor(m => Model.Files[index].Status)
-
-                    <td>
-                        @Model.Files[index].Date.ToString("dd.MM.yyyy")
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.Files[index].Caption)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.Files[index].Service)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.Files[index].Organization)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.Files[index].Expert)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.Files[index].Controller)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.Files[index].Status)
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" class="delete-link">Удалить</a>
-                    </td>
-                </tr>
+            @foreach(var file in Model.Files) {
+                using (Html.BeginCollectionItem("Files")) {
+                    Html.RenderPartial("_FileModelItem", file);
+                }
             }
 
         </table>

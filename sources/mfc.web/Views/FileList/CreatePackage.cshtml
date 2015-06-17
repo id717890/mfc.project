@@ -113,7 +113,7 @@
                 <th></th>
             </tr>
 
-            @for (int index = 0; index < Model.Files.Count; index++) {
+            @for (int index = 0; index < Model.Files.Length; index++) {
                 @Html.HiddenFor(m => Model.Files[index].Id)
                 @Html.HiddenFor(m => Model.Files[index].Caption)
                 @Html.HiddenFor(m => Model.Files[index].Controller)
@@ -144,9 +144,6 @@
                     </td>
                     <td>
                         @Html.DisplayFor(m => Model.Files[index].Status)
-                    </td>
-                    <td>
-                        <div><a href="javascript:void(0)" onclick="deleteFile(@Model.Files[index].Id)">Удалить</a></div>
                     </td>
                 </tr>
             }

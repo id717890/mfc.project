@@ -15,7 +15,7 @@ namespace mfc.web.Helpers {
             PackageModel model = new PackageModel();
             model.Date = DateTime.Today;
 
-            model.Files = new List<FileModelItem>();
+            var files = new List<FileModelItem>();
 
             foreach (var id in fileIds) {
                 var file = file_srv.GetFileById(id);
@@ -25,9 +25,11 @@ namespace mfc.web.Helpers {
                         model.Organization = file.Ogv.Caption;
                         model.OrganizationId = file.Ogv.Id;
                     }
-                    model.Files.Add(FileModelConverter.ToModelItem(file));
+                    files.Add(FileModelConverter.ToModelItem(file));
                 }
             }
+
+            model.Files = files.ToArray();
 
             PrepareModel(model);
 
@@ -45,11 +47,13 @@ namespace mfc.web.Helpers {
             model.OrganizationId = package.Organization.Id;
             model.ControllerId = package.Controller.Id;
 
-            model.Files = new List<FileModelItem>();
+            var files = new List<FileModelItem>();
 
             foreach (var file in package_srv.GetPackageFiles(package.Id)) {
-                model.Files.Add(FileModelConverter.ToModelItem(file));
+                files.Add(FileModelConverter.ToModelItem(file));
             }
+
+            model.Files = files.ToArray();
 
             PrepareModel(model);
 

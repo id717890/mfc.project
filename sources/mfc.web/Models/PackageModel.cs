@@ -28,7 +28,7 @@ namespace mfc.web.Models {
 
         public String Organization { get; set; }
 
-        public List<FileModelItem> Files { get; set; }
+        public FileModelItem[] Files { get; set; }
 
         public List<Organization> Organizations { get { return _orgs; } }
     }
