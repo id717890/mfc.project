@@ -193,6 +193,75 @@ namespace mfc.domain.services {
             }
         }
 
+        public void DeleteStatus(Int64 fileId, Int64 statusId) {
+            var conn = SqlProvider.CreateConnection();
+            SqlCommand cmd = null;
+
+            try {
+                cmd = conn.CreateCommand();
+                cmd.CommandText = @"
+                      delete from FileStatus 
+                        where file_id = @file_id and status_id = @status_id";
+                cmd.Parameters.Add(new SqlParameter("file_id", fileId));
+                cmd.Parameters.Add(new SqlParameter("status_id", statusId));
+
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e) {
+                throw e;
+            }
+            finally {
+                conn.Dispose();
+                conn.Close();
+                if (cmd != null) {
+                    cmd.Dispose();
+                }
+            }
+        }
+
+        public FileStatusInfo GetLastStatuses(Int64 fileId) {
+            FileStatusInfo status = null;
+
+            var conn = SqlProvider.CreateConnection();
+            SqlCommand cmd = null;
+
+
+            try {
+                cmd = conn.CreateCommand();
+                cmd.CommandText = @"
+                      select FileStatus.file_id, FileStatus.dt, FileStatus.status_id, FileStatus.user_id, FileStatus.comments 
+	                        from FileStatus
+	                        join Files on Files.id = FileStatus.file_id
+	                        where Files.is_deleted = 0
+                        and FileStatus.file_id = @file_id
+                        order by FileStatus.dt desc";
+                cmd.Parameters.Add(new SqlParameter("file_id", fileId));
+
+                var reader = cmd.ExecuteReader();
+                if (reader.Read()) {
+                    status = new FileStatusInfo {
+                        FileId = fileId,
+                        Date = Convert.ToDateTime(reader["dt"]),
+                        User = UserService.GetUserById(Convert.ToInt64(reader["user_id"])),
+                        Status = GetStatusById(Convert.ToInt64(reader["status_id"])),
+                        Comments = Convert.ToString(reader["comments"])
+                    };
+                }
+            }
+            catch (Exception e) {
+                throw new DomainException(e);
+            }
+            finally {
+                conn.Dispose();
+                conn.Close();
+                if (cmd != null) {
+                    cmd.Dispose();
+                }
+            }
+
+            return status;
+        }
+
         #endregion
     }
 }

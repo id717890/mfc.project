@@ -129,7 +129,7 @@ namespace mfc.web.Controllers {
             
                 try {
                     package_srv.Update(package);
-                    package_srv.UpdatePackageFiles(package.Id, model.Files.Select(f => f.Id));
+                    package_srv.UpdatePackageFiles(package.Id, model.Files != null ? model.Files.Select(f => f.Id) : new List<Int64>());
                 }
                 catch (DomainException e) {
                     has_error = true;
