@@ -2,6 +2,7 @@
 using mfc.domain.entities;
 using mfc.domain.services;
 using mfc.infrastructure.security;
+using mfc.infrastructure.services;
 using mfc.web.Abstracts;
 using mfc.web.Helpers;
 using mfc.web.Models;
@@ -169,6 +170,20 @@ namespace mfc.web.Controllers {
             }
 
             return Content(result ? Boolean.TrueString : Boolean.FalseString);
+        }
+
+        [HttpGet]
+        public ActionResult Report(Int64 id) {
+            var report_srv = CompositionRoot.Resolve<IReportService>();
+            Response.Clear();
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition",
+                               string.Format("attachment; filename={0}.xls", "rep"));
+            report_srv.MakeReestr(id, Response.OutputStream);
+
+            Response.End();
+
+            return RedirectToAction("Edit", new {id = id});
         }
 
         private PackageListViewModel CreateModel(DateTime beginDate, DateTime endDate, Int64 controllerId = -1, Int64 orgId = -1) {

@@ -26,6 +26,9 @@ namespace mfc.infrastructure.services {
         [Inject]
         public IUserService UserService { get; set; }
 
+        [Inject]
+        public IPackageService PackageService { get; set; }
+
         public void MakeReportSum(DateTime dateBegin, DateTime dateEnd, Stream stream) {
             int last_column = 5;
             int first_row = 3;
@@ -76,7 +79,6 @@ namespace mfc.infrastructure.services {
             int last_column = 7;
             int first_row = 2;
 
-
             IWorkbook book = Factory.GetWorkbook();
 
             var sheet = book.Worksheets[0];
@@ -123,6 +125,46 @@ namespace mfc.infrastructure.services {
 
             book.SaveToStream(stream, FileFormat.Excel8);
         }
+
+        public void MakeReestr(long packageId, Stream stream) {
+            var package = PackageService.GetPackageById(packageId);
+
+            if (package == null) {
+                throw new Exception(string.Format("Пакет с кодом {0} не найден", packageId));
+            }
+            
+            int last_column = 3;
+            int first_row = 2;
+
+            IWorkbook book = Factory.GetWorkbook();
+
+            var sheet = book.Worksheets[0];
+
+            PrepareTemplateReestr(sheet, package.Organization != null ? package.Organization.FullCaption : "Не определена", package.Date);
+
+            Int32 row_index = first_row;
+            Int32 num = 0;
+
+            foreach (var file in PackageService.GetPackageFiles(packageId)) {
+                var action = file.Action;
+
+                sheet.Cells[row_index, 0].Value = ++num;
+                sheet.Cells[row_index, 1].Value = file.Date.ToString("dd.MM.yyyy");
+                sheet.Cells[row_index, 2].Value = file.Caption;
+                sheet.Cells[row_index, 3].Value =  action.Service != null ? action.Service.Caption : "не определена";
+
+                row_index++;
+            }
+
+            sheet.Cells[first_row - 2, 0, row_index, last_column].Borders.LineStyle = LineStyle.Continuous;
+
+            sheet.PageSetup.Orientation = PageOrientation.Portrait;
+            sheet.PageSetup.FitToPagesTall = 999;
+
+
+            book.SaveToStream(stream, FileFormat.Excel8);
+        }
+
 
         private void RenderType(OrganizationType type, IWorksheet sheet, ref Int32 row_index) {
             Int32 first_row = row_index;
@@ -274,6 +316,36 @@ namespace mfc.infrastructure.services {
             sheet.Cells[1, 7].Value = "Эксперт";
 
             range = sheet.Range[1, 0, 1, 7];
+            range.HorizontalAlignment = HAlign.Center;
+            range.VerticalAlignment = VAlign.Center;
+            range.Font.Bold = true;
+
+        }
+
+        private void PrepareTemplateReestr(IWorksheet sheet, string caption, DateTime date) {
+            sheet.Cells[0, 0, 0, 3].Merge();
+
+
+            //Заголовок
+            var range = sheet.Cells[0, 0];
+            range.Value = string.Format("Реестр дел '{0}' {1:dd.MM.yyyy}", caption, date);
+            range.HorizontalAlignment = HAlign.Center;
+            range.Font.Size = 16;
+            range.Font.Bold = true;
+
+            //Ширины колонок
+            sheet.Cells[0, 0].ColumnWidth = 5;
+            sheet.Cells[0, 1].ColumnWidth = 14;
+            sheet.Cells[0, 2].ColumnWidth = 50;
+            sheet.Cells[0, 3].ColumnWidth = 50;
+
+            //Заловок таблицы
+            sheet.Cells[1, 0].Value = "№";
+            sheet.Cells[1, 1].Value = "Дата";
+            sheet.Cells[1, 2].Value = "Номер";
+            sheet.Cells[1, 3].Value = "Услуга";
+
+            range = sheet.Range[1, 0, 1, 3];
             range.HorizontalAlignment = HAlign.Center;
             range.VerticalAlignment = VAlign.Center;
             range.Font.Bold = true;
