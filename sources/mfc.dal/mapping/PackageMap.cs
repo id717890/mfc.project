@@ -13,6 +13,7 @@ namespace mfc.dal.mapping {
             Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Date, "dt");
             Map(x => x.IsDeleted, "is_deleted");
+            Map(x => x.Comment, "comment");
             References(x => x.Organization, "org_id");
             References(x => x.Controller, "user_id");
         }

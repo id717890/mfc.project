@@ -16,6 +16,121 @@
     @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Packages)
 }
 
+@using (Html.BeginForm("Edit", "Package", FormMethod.Post, new { @class = "form" })) {
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.OrganizationId)
+    @Html.HiddenFor(model => model.Organization)
+    @Html.HiddenFor(model => model.ControllerId)
+    @Html.HiddenFor(model => model.Id)
+
+    <input type="submit" value="Сохранить" class="btn btn-default" />
+
+    <hr />
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OrganizationId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="row">
+                    <div id="selected-org" class="col-md-10 col-sm-6" style="margin-right:10px">Не выбрана</div><button id="select-org" type="button" class="btn">...</button>
+                    @Html.ValidationMessageFor(model => model.OrganizationId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Comment, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-8">
+                <div class="row">
+                    @Html.EditorFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+
+
+        <table class="table">
+            <tr>
+                <th>Дата</th>
+                <th>Номер</th>
+                <th>Услуга</th>
+                <th>ОГВ</th>
+                <th>Эксперт</th>
+                <th>Контролёр</th>
+                <th>Статус</th>
+                <th></th>
+            </tr>
+
+            @foreach(var file in Model.Files) {
+                using (Html.BeginCollectionItem("Files")) {
+                    Html.RenderPartial("_FileModelItem", file);
+                }
+            }
+
+        </table>
+    </div>
+}
+
+<!--//
+    Query dialog section
+-->
+<div id="query-dialog" title="Исключение дела">
+    Исключить дело?
+</div>
+
+<div class="waiting"></div>
+
+<script type="text/javascript">
+    var wait_dialog;
+
+    $(function () {
+        $("#query-dialog").dialog({
+            autoOpen: false,
+            modal: true
+        });
+        wait_dialog = $(".waiting");
+    });
+
+
+
+    $(".delete-link").click(function (e) {
+        e.preventDefault();
+
+        var row = $(this).parent().parent();
+
+        $("#query-dialog").dialog({
+            buttons: {
+                "Удалить": function () {
+                    $(this).dialog('close');
+
+                    wait_dialog.show();
+                    row.remove();
+                    wait_dialog.hide();
+
+                },
+                "Отмена": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $("#query-dialog").dialog("open");
+    });
+</script>
+<!--
+    organization dialog section
+-->
 <script>
     var dialog_org, dialog_srv;
     var site_name;
@@ -68,107 +183,3 @@
 <div id="select-org-form" title="Выбор ОГВ">
 
 </div>
-
-
-@using (Html.BeginForm("Edit", "Package", FormMethod.Post, new { @class = "form" })) {
-    @Html.AntiForgeryToken()
-
-    @Html.HiddenFor(model => model.OrganizationId)
-    @Html.HiddenFor(model => model.Organization)
-    @Html.HiddenFor(model => model.ControllerId)
-    @Html.HiddenFor(model => model.Id)
-
-    <input type="submit" value="Сохранить" class="btn btn-default" />
-
-    <hr />
-
-    <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.OrganizationId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="row">
-                    <div id="selected-org" class="col-md-10 col-sm-6" style="margin-right:10px">Не выбрана</div><button id="select-org" type="button" class="btn">...</button>
-                    @Html.ValidationMessageFor(model => model.OrganizationId, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-
-
-        <table class="table">
-            <tr>
-                <th>Дата</th>
-                <th>Номер</th>
-                <th>Услуга</th>
-                <th>ОГВ</th>
-                <th>Эксперт</th>
-                <th>Контролёр</th>
-                <th>Статус</th>
-                <th></th>
-            </tr>
-
-            @foreach(var file in Model.Files) {
-                using (Html.BeginCollectionItem("Files")) {
-                    Html.RenderPartial("_FileModelItem", file);
-                }
-            }
-
-        </table>
-    </div>
-}
-
-<!--//
-    Query dialig section
--->
-<div id="query-dialog" title="Исключение дела">
-    Исключить дело?
-</div>
-
-<div class="waiting"></div>
-
-<script type="text/javascript">
-    var wait_dialog;
-
-    $(function () {
-        $("#query-dialog").dialog({
-            autoOpen: false,
-            modal: true
-        });
-        wait_dialog = $(".waiting");
-    });
-
-
-
-    $(".delete-link").click(function (e) {
-        e.preventDefault();
-
-        var row = $(this).parent().parent();
-
-        $("#query-dialog").dialog({
-            buttons: {
-                "Удалить": function () {
-                    $(this).dialog('close');
-
-                    wait_dialog.show();
-                    row.remove();
-                    wait_dialog.hide();
-
-                },
-                "Отмена": function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
-
-        $("#query-dialog").dialog("open");
-    });
-</script>

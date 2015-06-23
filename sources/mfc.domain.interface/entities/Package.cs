@@ -12,5 +12,6 @@ namespace mfc.domain.entities {
         public virtual Organization Organization { get; set; }
         public virtual DateTime Date { get; set; }
         public virtual User Controller { get; set; }
+        public virtual string Comment { get; set; }
     }
 }

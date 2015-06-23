@@ -46,6 +46,7 @@ namespace mfc.web.Helpers {
             model.Organization = package.Organization.Caption;
             model.OrganizationId = package.Organization.Id;
             model.ControllerId = package.Controller.Id;
+            model.Comment = package.Comment;
 
             var files = new List<FileModelItem>();
 
@@ -68,7 +69,8 @@ namespace mfc.web.Helpers {
                 Id = model.Id,
                 Date = model.Date,
                 Organization = org_srv.GetOrganizationById(model.OrganizationId),
-                Controller = user_srv.GetUserById(model.ControllerId)
+                Controller = user_srv.GetUserById(model.ControllerId),
+                Comment = model.Comment
             };
 
             return package;

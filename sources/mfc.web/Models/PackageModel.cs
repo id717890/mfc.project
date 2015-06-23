@@ -26,6 +26,9 @@ namespace mfc.web.Models {
         [Required]
         public Int64 ControllerId { get; set; }
 
+        [Display(Name = "Описание")]
+        public string Comment { get; set; }
+
         public String Organization { get; set; }
 
         public FileModelItem[] Files { get; set; }
