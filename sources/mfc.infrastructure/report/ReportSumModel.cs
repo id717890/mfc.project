@@ -84,7 +84,7 @@ namespace mfc.infrastructure.report {
 
 
         public IEnumerable<ReportSumRow> GetRows(OrganizationType type) {
-            return _data[type].Values.OrderBy(r => r.Service.Caption);
+            return _data[type].Values.OrderBy(r => r.Service.Organization.FullCaption).ThenBy(r=>r.Service.Caption);
         }
     }
 }
