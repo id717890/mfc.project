@@ -27,10 +27,22 @@ namespace mfc.infrastructure.report {
         [Inject]
         public IActionTypeService ActionTypes { get; set; }
 
+        [Inject]
+        public IUserService UserService { get; set; }
+
         public void Refresh(DateTime dateBegin, DateTime dateEnd) {
             _data.Clear();
 
-            var actions = ActionService.GetActions(dateBegin, dateEnd);
+            IEnumerable<ServiceAction> actions;
+
+            var user = UserService.GetCurrentUser();
+
+            if (user.IsAdmin) {
+                actions = ActionService.GetActions(dateBegin, dateEnd);
+            }
+            else {
+                actions = ActionService.GetActions(user, dateBegin, dateEnd);
+            }
 
             foreach (var action in actions) {
                 if (action.Service == null || action.Type == null || action.Service.Organization == null || action.User == null || action.Service.Organization.Type == null) {
