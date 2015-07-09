@@ -46,3 +46,6 @@ alter table Actions add is_nonresident bit default 0;
 create table Packages (id bigint, dt date, org_id bigint, user_id bigint, is_deleted bit, comment varchar(512));
 
 create table PackageItems (package_id bigint, file_id bigint);
+
+-- бесплатный выезд
+alter table Actions add tree_visit bit default 0

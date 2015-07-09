@@ -56,5 +56,8 @@ namespace mfc.web.Models {
 
         [Display(Name = "Иногородний")]
         public bool IsNonresident { get; set; }
+
+        [Display(Name = "Бесплатный выезд")]
+        public bool FreeVisit { get; set; }
     }
 }

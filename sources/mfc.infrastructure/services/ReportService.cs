@@ -76,7 +76,7 @@ namespace mfc.infrastructure.services {
         }
 
         public void MakeReportOper(DateTime dateBegin, DateTime dateEnd, Stream stream) {
-            int last_column = 7;
+            int last_column = 8;
             int first_row = 2;
 
             IWorkbook book = Factory.GetWorkbook();
@@ -109,10 +109,11 @@ namespace mfc.infrastructure.services {
                 sheet.Cells[row_index, 1].Value = action.Date.ToString("dd.MM.yyyy");
                 sheet.Cells[row_index, 2].Value = action.Customer;
                 sheet.Cells[row_index, 3].Value = action.IsNonresident ? "Да" : "Нет";
-                sheet.Cells[row_index, 4].Value = action.Service.Caption;
-                sheet.Cells[row_index, 5].Value = action.Service.Organization.Caption;
-                sheet.Cells[row_index, 6].Value = action.Type.Caption;
-                sheet.Cells[row_index, 7].Value = action.User.Name;
+                sheet.Cells[row_index, 4].Value = action.FreeVisit ? "Да" : "Нет";
+                sheet.Cells[row_index, 5].Value = action.Service.Caption;
+                sheet.Cells[row_index, 6].Value = action.Service.Organization.Caption;
+                sheet.Cells[row_index, 7].Value = action.Type.Caption;
+                sheet.Cells[row_index, 8].Value = action.User.Name;
 
                 row_index++;
             }
@@ -285,7 +286,7 @@ namespace mfc.infrastructure.services {
         }
 
         private void PrepareTemplateOper(IWorksheet sheet, DateTime dateBegin, DateTime dateEnd) {
-            sheet.Cells[0, 0, 0, 7].Merge();
+            sheet.Cells[0, 0, 0, 8].Merge();
 
 
             //Заголовок
@@ -300,22 +301,24 @@ namespace mfc.infrastructure.services {
             sheet.Cells[0, 1].ColumnWidth = 14;
             sheet.Cells[0, 2].ColumnWidth = 14;
             sheet.Cells[0, 3].ColumnWidth = 14;
-            sheet.Cells[0, 4].ColumnWidth = 90;
-            sheet.Cells[0, 5].ColumnWidth = 14;
-            sheet.Cells[0, 6].ColumnWidth = 20;
+            sheet.Cells[0, 4].ColumnWidth = 14;
+            sheet.Cells[0, 5].ColumnWidth = 90;
+            sheet.Cells[0, 6].ColumnWidth = 14;
             sheet.Cells[0, 7].ColumnWidth = 20;
+            sheet.Cells[0, 8].ColumnWidth = 20;
 
             //Заловок таблицы
             sheet.Cells[1, 0].Value = "№";
             sheet.Cells[1, 1].Value = "Дата";
             sheet.Cells[1, 2].Value = "Заявитель";
             sheet.Cells[1, 3].Value = "Иногородний";
-            sheet.Cells[1, 4].Value = "Услуга";
-            sheet.Cells[1, 5].Value = "ОГВ";
-            sheet.Cells[1, 6].Value = "Тип услуги";
-            sheet.Cells[1, 7].Value = "Эксперт";
+            sheet.Cells[1, 4].Value = string.Format("Бесплатный{0}выезд", Environment.NewLine);
+            sheet.Cells[1, 5].Value = "Услуга";
+            sheet.Cells[1, 6].Value = "ОГВ";
+            sheet.Cells[1, 7].Value = "Тип услуги";
+            sheet.Cells[1, 8].Value = "Эксперт";
 
-            range = sheet.Range[1, 0, 1, 7];
+            range = sheet.Range[1, 0, 1, 8];
             range.HorizontalAlignment = HAlign.Center;
             range.VerticalAlignment = VAlign.Center;
             range.Font.Bold = true;

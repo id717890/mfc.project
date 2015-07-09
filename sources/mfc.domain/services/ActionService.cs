@@ -49,7 +49,7 @@ namespace mfc.domain.services {
             return Repository.GetActions(user.Id, dateBegin, dateEnd).OrderByDescending(x => x.Date).ThenByDescending(x => x.Id);
         }
 
-        public long Add(DateTime date, Int64 serviceId, string customer, Int64 typeId, Int64 userId, Int64 serviceChildId, string comments) {
+        public long Add(DateTime date, Int64 serviceId, string customer, Int64 typeId, Int64 userId, Int64 serviceChildId, bool is_nonresident, bool free_visit, string comments) {
             var action = new ServiceAction {
                 Date = date,
                 Service = ServiceService.GetServiceById(serviceId),
@@ -57,6 +57,8 @@ namespace mfc.domain.services {
                 Customer = customer,
                 Type = TypeService.GetTypeById(typeId),
                 User = UserService.GetUserById(userId),
+                FreeVisit = free_visit,
+                IsNonresident = is_nonresident,
                 Comments = comments
             };
 

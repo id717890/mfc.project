@@ -17,6 +17,7 @@ namespace mfc.dal.mapping {
             Map(x => x.IsDeleted, "is_deleted");
             Map(x => x.Customer);
             Map(x => x.IsNonresident, "is_nonresident");
+            Map(x => x.FreeVisit, "tree_visit");
             References(x => x.Type, "type_id");
             References(x => x.Service, "service_id");
             References(x => x.ServiceChild, "service_child_id");

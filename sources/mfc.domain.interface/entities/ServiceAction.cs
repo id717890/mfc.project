@@ -17,5 +17,9 @@ namespace mfc.domain.entities {
         public virtual User User { get; set; }
         public virtual string Comments { get; set; }
         public virtual bool IsNonresident { get; set; }
+        /// <summary>
+        /// бесплатный выезд специалиста
+        /// </summary>
+        public virtual bool FreeVisit { get; set; }
     }
 }
