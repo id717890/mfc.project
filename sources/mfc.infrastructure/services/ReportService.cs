@@ -55,7 +55,11 @@ namespace mfc.infrastructure.services {
             }
 
             if (!string.IsNullOrEmpty(formula)) {
-                sheet.Cells[row_index, 2].FormulaR1C1 = string.Format("=SUM({0})", formula.TrimEnd('+'));
+                formula = string.Format("=SUM({0})", formula.TrimEnd('+'));
+                sheet.Cells[row_index, 2].FormulaR1C1 = formula;
+                sheet.Cells[row_index, 3].FormulaR1C1 = formula;
+                sheet.Cells[row_index, 4].FormulaR1C1 = formula;
+                sheet.Cells[row_index, 5].FormulaR1C1 = formula;
             }
             
             var range =sheet.Cells[row_index, 0]; 
