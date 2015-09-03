@@ -196,7 +196,7 @@ namespace mfc.web.Controllers {
                 var file_srv = CompositionRoot.Resolve<IFileService>();
 
                 try {
-                    file_srv.SendForControl(model.FileId, model.ControllerId, model.Comments);
+                    file_srv.SendForControl(model.FileId, model.Comments);
                 }
                 catch (DomainException e) {
                     ModelState.AddModelError("", e);
@@ -231,7 +231,7 @@ namespace mfc.web.Controllers {
                 var file_srv = CompositionRoot.Resolve<IFileService>();
 
                 try {
-                    file_srv.Return(model.FileId, model.ExpertId, model.Comments);
+                    file_srv.Return(model.FileId, model.Comments);
                 }
                 catch (DomainException e) {
                     ModelState.AddModelError("", e);

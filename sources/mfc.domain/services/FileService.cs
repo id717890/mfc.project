@@ -97,24 +97,18 @@ namespace mfc.domain.services {
         }
 
 
-        public void SendForControl(long fileId, long controllerId, string comments) {
+        public void SendForControl(long fileId, string comments) {
             var file = GetFileById(fileId);
             if (file == null) {
                 throw new ArgumentException(string.Format("Дело с идентификатором {0} не найдено", fileId));
             }
             
-            var user = UserService.GetUserById(controllerId);
-            if (user == null) {
-                throw new ArgumentException(string.Format("Пользователь с идентификатором {0} не найден", controllerId));
-            }
-
             var status = FileStageService.GetStatusForStage(FileStages.SendForControl);
 
             if (status == null) {
                 throw new ArgumentException(string.Format("Не определен статус для дел, переданных на проверку"));
             }
 
-            file.Controller = user;
             file.CurrentStatus = status;
 
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
@@ -125,15 +119,10 @@ namespace mfc.domain.services {
             unit_of_work.Commit();
         }
 
-        public void Return(long fileId, long expertId, string comments) {
+        public void Return(long fileId, string comments) {
             var file = GetFileById(fileId);
             if (file == null) {
                 throw new ArgumentException(string.Format("Дело с идентификатором {0} не найдено", fileId));
-            }
-
-            var user = UserService.GetUserById(expertId);
-            if (user == null) {
-                throw new ArgumentException(string.Format("Пользователь с идентификатором {0} не найден", expertId));
             }
 
             var status = FileStageService.GetStatusForStage(FileStages.ReturnForFix);
@@ -142,7 +131,6 @@ namespace mfc.domain.services {
                 throw new ArgumentException(string.Format("Не определен статус для дел, переданных на проверку"));
             }
 
-            file.Expert = user;
             file.CurrentStatus = status;
 
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
