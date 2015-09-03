@@ -340,8 +340,8 @@ namespace mfc.web.Controllers {
             model.BeginDate = beginDate;
             model.EndDate = endDate;
 
-            if (User.IsInRole(Roles.Admin)) {
-                //Для администратора заполняем список всеми экспертами и контролерами
+            if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Controller)) {
+                //Для администратора и контролера заполняем список всеми экспертами и контролерами
                 foreach (var user in user_srv.GetControllers()) {
                     model.Controllers.Add(user);
                 }
@@ -352,30 +352,8 @@ namespace mfc.web.Controllers {
                 }
                 model.Experts.Insert(0, mfc.domain.entities.User.All);
             }
-            else if (User.IsInRole(Roles.Controller) && User.IsInRole(Roles.Expert)) {
-                //Если пользователь и контролер и эксперт одновремено, то вносим в список только его
-                var user = user_srv.GetCurrentUser();
-
-                model.Controllers.Add(user);
-                model.Experts.Add(user);
-
-                model.SelectedExpertId = model.SelectedControllerId = user.Id;
-            }
-            else if (User.IsInRole(Roles.Controller)) {
-                //если только контролер, то полный список экспертов и один контролер
-                var user = user_srv.GetCurrentUser();
-
-                model.Controllers.Add(user_srv.GetCurrentUser());
-
-                model.Experts.Add(mfc.domain.entities.User.All);
-                foreach (var expert in user_srv.GetExperts()) {
-                    model.Experts.Add(expert);
-                }
-
-                model.SelectedControllerId = user.Id;
-            }
             else if (User.IsInRole(Roles.Expert)) {
-                //если только эксперт, то полный список экспертов и один контролер
+                //если только эксперт, то полный список контроллеров и один эксперт
                 var user = user_srv.GetCurrentUser();
 
                 model.Experts.Add(user_srv.GetCurrentUser());
