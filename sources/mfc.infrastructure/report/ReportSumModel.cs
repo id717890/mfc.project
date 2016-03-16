@@ -30,7 +30,7 @@ namespace mfc.infrastructure.report {
         [Inject]
         public IUserService UserService { get; set; }
 
-        public void Refresh(DateTime dateBegin, DateTime dateEnd) {
+        public void Refresh(DateTime dateBegin, DateTime dateEnd, CustomerType customerType) {
             _data.Clear();
 
             IEnumerable<ServiceAction> actions;
@@ -38,10 +38,10 @@ namespace mfc.infrastructure.report {
             var user = UserService.GetCurrentUser();
 
             if (user.IsAdmin) {
-                actions = ActionService.GetActions(dateBegin, dateEnd);
+                actions = ActionService.GetActions(dateBegin, dateEnd, customerType);
             }
             else {
-                actions = ActionService.GetActions(user, dateBegin, dateEnd);
+                actions = ActionService.GetActions(user, dateBegin, dateEnd, customerType);
             }
 
             foreach (var action in actions) {

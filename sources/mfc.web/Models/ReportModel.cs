@@ -17,6 +17,10 @@ namespace mfc.web.Models {
         [DataType(DataType.Date)]
         public DateTime DateEnd { get; set; }
 
+        [Required]
+        [Display(Name = "Категория заявителя")]
+        public Int64 CustomerTypeId { get; set; }
+
         public Int32 Report { get; set; }
 
         public SelectList Reports { get; private set; }

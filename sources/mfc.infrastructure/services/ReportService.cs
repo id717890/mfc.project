@@ -29,16 +29,24 @@ namespace mfc.infrastructure.services {
         [Inject]
         public IPackageService PackageService { get; set; }
 
-        public void MakeReportSum(DateTime dateBegin, DateTime dateEnd, Stream stream) {
+        [Inject]
+        public ICustomerTypeService CustomerTypeService { get; set; }
+
+        public void MakeReportSum(DateTime dateBegin, DateTime dateEnd, Int64 customerTypeId, Stream stream) {
             int last_column = 5;
             int first_row = 3;
 
             IWorkbook book = Factory.GetWorkbook();
 
             var sheet = book.Worksheets[0];
+            var customerType = CustomerTypeService.GetTypeById(customerTypeId);
 
-            PrepareTemplateSum(sheet, dateBegin, dateEnd);
-            ReportSumModel.Refresh(dateBegin, dateEnd);
+            if (customerType == CustomerType.Empty) {
+                customerType = null;
+            }
+
+            PrepareTemplateSum(sheet, dateBegin, dateEnd, customerType);
+            ReportSumModel.Refresh(dateBegin, dateEnd, customerType);
 
             Int32 row_index = first_row;
 
@@ -79,7 +87,7 @@ namespace mfc.infrastructure.services {
             book.SaveToStream(stream, FileFormat.Excel8);
         }
 
-        public void MakeReportOper(DateTime dateBegin, DateTime dateEnd, Stream stream) {
+        public void MakeReportOper(DateTime dateBegin, DateTime dateEnd, Int64 customerTypeId, Stream stream) {
             int last_column = 8;
             int first_row = 2;
 
@@ -87,8 +95,14 @@ namespace mfc.infrastructure.services {
 
             var sheet = book.Worksheets[0];
 
-            PrepareTemplateOper(sheet, dateBegin, dateEnd);
-            ReportSumModel.Refresh(dateBegin, dateEnd);
+            var customerType = CustomerTypeService.GetTypeById(customerTypeId);
+
+            if (customerType == CustomerType.Empty) {
+                customerType = null;
+            }
+
+            PrepareTemplateOper(sheet, dateBegin, dateEnd, customerType);
+            ReportSumModel.Refresh(dateBegin, dateEnd, customerType);
 
             Int32 row_index = first_row;
             Int32 num = 0;
@@ -98,10 +112,10 @@ namespace mfc.infrastructure.services {
             var user = UserService.GetCurrentUser();
 
             if (user.IsAdmin) {
-                actions = ActionService.GetActions(dateBegin, dateEnd);
+                actions = ActionService.GetActions(dateBegin, dateEnd, customerType);
             }
             else {
-                actions = ActionService.GetActions(user, dateBegin, dateEnd);
+                actions = ActionService.GetActions(user, dateBegin, dateEnd, customerType);
             }
 
             foreach (var action in actions) {
@@ -236,13 +250,17 @@ namespace mfc.infrastructure.services {
             }
         }
 
-        private void PrepareTemplateSum(IWorksheet sheet, DateTime dateBegin, DateTime dateEnd) {
+        private void PrepareTemplateSum(IWorksheet sheet, DateTime dateBegin, DateTime dateEnd, CustomerType customerType) {
             sheet.Cells[0, 0, 0, 5].Merge();
 
 
             //Заголовок
             var range = sheet.Cells[0, 0];
             range.Value = string.Format("МАУ МФЦ с {0:dd.MM.yyyy} по {1:dd.MM.yyyy}", dateBegin, dateEnd);
+
+            if (customerType != null) {
+                range.Value = range.Value.ToString() + string.Format(" ({0})", customerType.Caption);
+            }
             range.HorizontalAlignment = HAlign.Center;
             range.Font.Size = 16;
             range.Font.Bold = true;
@@ -289,13 +307,18 @@ namespace mfc.infrastructure.services {
 
         }
 
-        private void PrepareTemplateOper(IWorksheet sheet, DateTime dateBegin, DateTime dateEnd) {
+        private void PrepareTemplateOper(IWorksheet sheet, DateTime dateBegin, DateTime dateEnd, CustomerType customerType) {
             sheet.Cells[0, 0, 0, 8].Merge();
 
 
             //Заголовок
             var range = sheet.Cells[0, 0];
             range.Value = string.Format("МАУ МФЦ с {0:dd.MM.yyyy} по {1:dd.MM.yyyy}", dateBegin, dateEnd);
+
+            if (customerType != null) {
+                range.Value = range.Value.ToString() + string.Format(" ({0})", customerType.Caption);
+            }
+
             range.HorizontalAlignment = HAlign.Center;
             range.Font.Size = 16;
             range.Font.Bold = true;

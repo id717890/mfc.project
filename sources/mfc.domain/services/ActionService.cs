@@ -44,12 +44,51 @@ namespace mfc.domain.services {
             return Repository.GetActions(user.Id, date).OrderByDescending(x=>x.Date).ThenByDescending(x=>x.Id);
         }
 
-        public IEnumerable<ServiceAction> GetActions(DateTime dateBegin, DateTime dateEnd) {
-            return Repository.GetActions(dateBegin, dateEnd).OrderByDescending(x=>x.Date).ThenByDescending(x=>x.Id);
+        public IEnumerable<ServiceAction> GetActions(DateTime dateBegin, DateTime dateEnd, CustomerType customerType) {
+            IEnumerable<ServiceAction> actions = null;
+
+            if (customerType != null) {
+                actions =
+
+                    Repository.GetActions(dateBegin, dateEnd).Where(x => {
+                        if (x.CustomerType == null) {
+                            return false;
+                        }
+                        return x.CustomerType.Id == customerType.Id;
+                    }).OrderByDescending(x => x.Date).ThenByDescending(x => x.Id);
+            }
+
+            else {
+                actions =
+                    Repository.GetActions(dateBegin, dateEnd).OrderByDescending(x => x.Date).ThenByDescending(x => x.Id);
+            }
+
+            return actions;
         }
 
-        public IEnumerable<ServiceAction> GetActions(User user, DateTime dateBegin, DateTime dateEnd) {
-            return Repository.GetActions(user.Id, dateBegin, dateEnd).OrderByDescending(x => x.Date).ThenByDescending(x => x.Id);
+        public IEnumerable<ServiceAction> GetActions(User user, DateTime dateBegin, DateTime dateEnd, CustomerType customerType) {
+            IEnumerable<ServiceAction> actions = null;
+
+            if (customerType != null) {
+                actions =
+                    Repository.GetActions(user.Id, dateBegin, dateEnd)
+                        .Where(x => {
+                            if (x.CustomerType == null) {
+                                return false;
+                            }
+                            return x.CustomerType.Id == customerType.Id;
+                        })
+                        .OrderByDescending(x => x.Date)
+                        .ThenByDescending(x => x.Id);
+            }
+
+            else {
+                actions =
+                    Repository.GetActions(user.Id, dateBegin, dateEnd)
+                        .OrderByDescending(x => x.Date)
+                        .ThenByDescending(x => x.Id);
+            }
+            return actions;
         }
 
         public long Add(DateTime date, Int64 serviceId, string customer, Int64 typeId, Int64 customerTypeId, Int64 userId, Int64 serviceChildId, bool is_nonresident, bool free_visit, string comments) {
