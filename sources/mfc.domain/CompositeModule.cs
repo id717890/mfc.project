@@ -12,6 +12,7 @@ namespace mfc.domain {
             Kernel.Bind<IUserService>().To<UserService>().InSingletonScope();
             Kernel.Bind<IOrganizationService>().To<OrganizationService>().InSingletonScope();
             Kernel.Bind<IActionTypeService>().To<ActionTypeService>().InSingletonScope();
+            Kernel.Bind<ICustomerTypeService>().To<CustomerTypeService>().InSingletonScope();
             Kernel.Bind<IServiceService>().To<ServiceService>().InSingletonScope();
             Kernel.Bind<IActionService>().To<ActionService>().InSingletonScope();
             Kernel.Bind<IFileService>().To<FileService>().InSingletonScope();

@@ -113,6 +113,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Ninject.Web.Common.3.2.3.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ninject.MVC4.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\..\packages\NLog.3.2.1\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -227,6 +231,7 @@
     <Compile Include="Constants\WorkMenuItems.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActionController.cs" />
+    <Compile Include="Controllers\CustomerTypeController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\FileListController.cs" />
@@ -243,6 +248,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CustomerTypeModelConverter.cs" />
     <Compile Include="Helpers\ActionTypeModelConverter.cs" />
     <Compile Include="Helpers\FileModelConverter.cs" />
     <Compile Include="Helpers\FileStatusModelConverter.cs" />
@@ -254,6 +260,7 @@
     <Compile Include="Models\AcceptForControlModel.cs" />
     <Compile Include="Models\AccountInfo.cs" />
     <Compile Include="Models\ActionListViewModel.cs" />
+    <Compile Include="Models\CustomerTypeModel.cs" />
     <Compile Include="Models\PackageListViewModel.cs" />
     <Compile Include="Models\FileReturnModel.cs" />
     <Compile Include="Models\FileListViewModel.cs" />
@@ -425,6 +432,9 @@
     <Content Include="Views\FileList\CreatePackage.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
     <Content Include="Views\Package\_FileModelItem.cshtml" />
+    <Content Include="Views\CustomerType\Delete.cshtml" />
+    <Content Include="Views\CustomerType\Edit.cshtml" />
+    <Content Include="Views\CustomerType\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

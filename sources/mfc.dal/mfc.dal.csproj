@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="CompositeModule.cs" />
     <Compile Include="mapping\ActionTypeMap.cs" />
+    <Compile Include="mapping\CustomerTypeMap.cs" />
     <Compile Include="mapping\PackageMap.cs" />
     <Compile Include="mapping\FileStageMap.cs" />
     <Compile Include="mapping\FileStatusMap.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="mapping\OrganizationTypeMap.cs" />
     <Compile Include="mapping\UserMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="services\CustomerTypeRepository.cs" />
     <Compile Include="services\PackageRepository.cs" />
     <Compile Include="services\FileRepository.cs" />
     <Compile Include="services\FileStageRepository.cs" />
