@@ -11,12 +11,17 @@ using mfc.infrastructure.security;
 using mfc.web.Helpers;
 using mfc.web.Models;
 using mfc.web.Abstracts;
+using Ninject;
 
 namespace mfc.web.Controllers {
     public class ActionController : BaseController {
         private const string ActionControllerFilerKey = "ActionControllerFilerKey";
         private const string DateKey = "DateKey";
         private const string UserKey = "UserKey";
+
+
+        [Inject]
+        public ICustomerTypeService CustomerTypeService { get; set; }
 
         public ActionResult Index(string date = null, Int64 user_id = -1) {
             var user_srv = CompositionRoot.Resolve<IUserService>();
@@ -107,7 +112,7 @@ namespace mfc.web.Controllers {
                 Int64 id = -1;
 
                 try {
-                    id = action_srv.Add(model.Date, model.ServiceId, model.Customer, model.TypeId, model.ExpertId, model.ServiceChildId, model.IsNonresident, model.FreeVisit, model.Comments);
+                    id = action_srv.Add(model.Date, model.ServiceId, model.Customer, model.TypeId, model.CustomerTypeId, model.ExpertId, model.ServiceChildId, model.IsNonresident, model.FreeVisit, model.Comments);
                 }
                 catch (Exception e) {
                     has_error = true;
@@ -235,6 +240,7 @@ namespace mfc.web.Controllers {
 
             ViewBag.Services = service_srv.GetAllServices();
             ViewBag.ActionTypes = type_srv.GetAllTypes();
+            ViewBag.CustomerTypes = CustomerTypeService.GetAllTypes();
 
             var experts = new List<User>();
 
