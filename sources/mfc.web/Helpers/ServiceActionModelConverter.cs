@@ -27,7 +27,7 @@ namespace mfc.web.Helpers {
                 ServiceChild = _service_srv.GetServiceById(model.ServiceChildId),
                 IsNonresident = model.IsNonresident,
                 FreeVisit = model.FreeVisit,
-                CustomerType = _customer_service.GetTypeById(model.CustomerTypeId)
+                CustomerType = model.CustomerTypeId == CustomerType.Empty.Id ? null : _customer_service.GetTypeById(model.CustomerTypeId)
             };
         }
 

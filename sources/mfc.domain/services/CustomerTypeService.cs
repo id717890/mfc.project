@@ -101,7 +101,11 @@ namespace mfc.domain.services {
         }
 
         private IEnumerable<CustomerType> GetTypesInternal() {
-            return Repository.GetAll();
+            var types = new List<CustomerType>((Repository.GetAll()));
+
+            types.Insert(0, CustomerType.Empty);
+
+            return types;
         }
 
         #endregion

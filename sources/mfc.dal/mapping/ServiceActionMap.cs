@@ -20,7 +20,7 @@ namespace mfc.dal.mapping {
             Map(x => x.FreeVisit, "free_visit");
             References(x => x.Type, "type_id");
             References(x => x.Service, "service_id");
-            References(x => x.CustomerType, "customer_type_id");
+            References(x => x.CustomerType, "customer_type_id").Nullable().NotFound.Ignore();
             References(x => x.ServiceChild, "service_child_id");
             References(x => x.User, "user_id");
         }
