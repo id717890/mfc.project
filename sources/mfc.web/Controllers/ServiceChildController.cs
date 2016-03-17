@@ -38,7 +38,7 @@ namespace mfc.web.Controllers {
                 model.OrgId = parent.Organization.Id;
             }
             else {
-                RedirectToAction("List", new { parentId = parentId });
+                RedirectToAction("Index", new { parentId = parentId });
             }
 
 
