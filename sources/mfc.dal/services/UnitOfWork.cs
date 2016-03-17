@@ -15,6 +15,7 @@ namespace mfc.dal.services {
     public class UnitOfWork : IUnitOfWork {
         private static readonly ISessionFactory _sessionFactory;
         private ITransaction _transaction;
+        private Int32 _transactionCount = 0;
 
         public ISession Session { get; private set; }
 
@@ -36,21 +37,37 @@ namespace mfc.dal.services {
         }
 
         public void BeginTransaction() {
-            _transaction = Session.BeginTransaction();
+            if (_transaction == null) {
+                _transaction = Session.BeginTransaction();
+            }
+            _transactionCount++;
         }
 
         public void Commit() {
+            _transactionCount--;
+            if (_transactionCount > 0) {
+                return;
+            }
+
             try {
-                _transaction.Commit();
+                 _transaction.Commit();
             }
             catch {
                 _transaction.Rollback();
                 throw;
             }
+            finally {
+                _transaction = null;
+                _transactionCount = 0;
+            }
         }
 
         public void Rollback() {
-            _transaction.Rollback();
+            if (_transaction != null) {
+                _transaction.Rollback();
+                _transaction = null;
+                _transactionCount = 0;
+            }
         }
     }
 }
