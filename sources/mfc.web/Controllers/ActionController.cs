@@ -23,6 +23,9 @@ namespace mfc.web.Controllers {
         [Inject]
         public ICustomerTypeService CustomerTypeService { get; set; }
 
+        [Inject]
+        public IActionService ActionService { get; set; }
+
         public ActionResult Index(string date = null, Int64 user_id = -1) {
             var user_srv = CompositionRoot.Resolve<IUserService>();
             User user = null;
@@ -189,6 +192,7 @@ namespace mfc.web.Controllers {
                 }
 
                 model = ServiceActionModelConverter.ToModel(action);
+                model.IsItInDialog = false;
             }
             catch (DomainException e) {
                 ModelState.AddModelError("", e);
@@ -202,6 +206,34 @@ namespace mfc.web.Controllers {
             PrepareForCreate();
 
             return View(model);
+        }
+
+        public ActionResult EditPartial(Int64 id) {
+            bool has_error = false;
+            ServiceActionViewModel model = null;
+
+            try {
+                var action = ActionService.GetActionById(id);
+                if (action == null) {
+                    ModelState.AddModelError("", "Работа не найдена");
+                    has_error = true;
+                }
+
+                model = ServiceActionModelConverter.ToModel(action);
+                model.IsItInDialog = true;
+            }
+            catch (DomainException e) {
+                ModelState.AddModelError("", e);
+                has_error = true;
+            }
+
+            if (has_error) {
+                return RedirectToAction("Index", new { date = model.Date.ToString("dd.MM.yyyy"), user_id = model.ExpertId });
+            }
+
+            PrepareForCreate();
+
+            return PartialView("_Edit", model);
         }
 
         [HttpPost]
@@ -223,11 +255,19 @@ namespace mfc.web.Controllers {
                     has_error = true;
                 }
 
-                if (!has_error) {
+                if (!has_error && !model.IsItInDialog) {
                     return RedirectToAction("Index", new { date = model.Date.ToString("dd.MM.yyyy"), user_id = model.ExpertId });
                 }
             }
             PrepareForCreate();
+
+            if (model.IsItInDialog) {
+                if (!has_error) {
+                    return Json(true);
+                }
+                return PartialView("_Edit", model);
+            }
+
             return View(model);
         }
 

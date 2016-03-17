@@ -66,5 +66,10 @@ namespace mfc.web.Models {
 
         [Display(Name = "Бесплатный выезд")]
         public bool FreeVisit { get; set; }
+
+        /// <summary>
+        /// Признак того, что модель передается в PartialView
+        /// </summary>
+        public bool IsItInDialog { get; set; }
     }
 }
