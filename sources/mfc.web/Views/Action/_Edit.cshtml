@@ -166,12 +166,12 @@
         });
 
         function fillOrgList() {
-            $.get(site_name + '/Organization/ListData', null, function (data, textStatus) {
+            $.get(site_name + '/Organization/ListData', null, function (data) {
                 var list_div;
                 list_div = $('#select-org-form');
-                list_div.html('');
+                list_div.html('asdfasdf');
 
-                data.forEach(function (item, i, arr) {
+                data.forEach(function (item) {
                     list_div.append('<div><a href="javascript:void(0)" onclick="selectOrg(' + item.Id + ', \'' + item.Caption + '\')">' + item.Caption + '</a></div>');
                 });
             });

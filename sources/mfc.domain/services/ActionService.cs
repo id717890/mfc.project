@@ -128,20 +128,31 @@ namespace mfc.domain.services {
         }
 
         public void Update(ServiceAction action) {
-            var file = FileService.GetFileByActionId(action.Id);
-
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
             unit_of_work.BeginTransaction();
             Repository.Update(action);
-            
-            //Если в результате смены типа приема требуется создание дела, тогда создаем
-            if (action.Type.NeedMakeFile) {
-                FileService.Add(action);
-            }
+
+            //Обрабатываем дело
             //Если услуга не требует дела, то удаляем существующее
-            if (!action.Type.NeedMakeFile && file != null) {
+            //Если в результате смены типа приема требуется создание дела, тогда создаем
+            var file = FileService.GetFileByActionId(action.Id);
+
+            if (action.Type.NeedMakeFile && file == null) {
+                FileService.Add(action);
+                file = FileService.GetFileByActionId(action.Id);
+            }
+            else if (!action.Type.NeedMakeFile && file != null) {
                 FileService.Delete(file.Id);
+            }
+
+            //Синхронизируем данные дела и приема
+            if (action.Type.NeedMakeFile && file != null) {
+                file.Expert = action.User;
+                file.Ogv = action.Service.Organization;
+                file.Date = action.Date;
+
+                FileService.Update(file);
             }
             
             unit_of_work.Commit();
@@ -161,3 +172,4 @@ namespace mfc.domain.services {
         }
     }
 }
+

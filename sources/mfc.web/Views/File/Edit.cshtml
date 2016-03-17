@@ -28,15 +28,6 @@
             open: fillStatuses
         });
 
-        //диалог для редактирования приема
-        dialog_action = $("#edit-action-dialog").dialog({
-            autoOpen: false,
-            height: 600,
-            width: 600,
-            modal: true,
-            open: getAction
-        });
-
         //заполнение диалгола истрии статусов
         function fillStatuses() {
             var file_id;
@@ -56,60 +47,88 @@
             list_div.append('</div>');
         }
 
-        function getAction() {
-            var action_id;
-            action_id = $('input#ActionId').attr('value');
-
-            var list_div;
-            list_div = $('#edit-action-dialog');
-            list_div.html('');
-            $.get(site_name + '/Action/EditPartial/' + action_id, null, function (data, textStatus) {
-                list_div.html(data);
-
-                //обработка нажатия кнопки сохранить
-                $(document).on('submit', 'form#edit-action-form', function (e) {
-                    var is_in_dialog = $('input#IsItInDialog').attr('value');
-
-                    if (is_in_dialog == 'True') {
-                        e.preventDefault();
-                        var form = $(this);
-
-                        $.ajax({
-                            url: form.attr('action'),
-                            type: "POST",
-                            data: form.serialize(),
-                            success: function (result) {
-                                if (result == true) {
-                                    dialog_action.dialog('close');
-                                }
-                                else {
-                                    list_div.html(result);
-                                }
-                            }
-                        });
-                    }
-                });
-
-
-            });
-        }
         
+        //Обработка события нажатия на кнопку "История" - отображение списка истрии изменения статуса дела
         $("#show-statuses").on("click", function () {
             dialog_statuses.dialog('open');
         });
+
+
+        //Обработка события нажатия на кнопку "Прием" - отображение диалога редактирования данных приема
         $("#edit-action").on("click", function () {
+            $('body').append('<div id="edit-action-dialog" style="z-index: -9999" title="Редактирование приема"></div>');
+            //диалог для редактирования приема
+            dialog_action = $("#edit-action-dialog").dialog({
+                autoOpen: false,
+                height: 600,
+                width: 600,
+                modal: true,
+                open: getAction,
+                close: function () {
+                    $(this).dialog('destroy').remove();
+                }
+            });
+
             dialog_action.dialog('open');
         });
     });
+
+    //перегрузить данные приема
+    function reload_action(action_id) {
+        $.get(site_name + '/Action/GetById/' + action_id, null, function (data) {
+            if (data != 'false') {
+                $('#action-date').html(jsonDateToString(data.Date));
+                $('#action-expert').html(data.Expert);
+                $('#action-organization').html(data.Organization);
+                $('#action-service').html(data.Service);
+                $('#action-service-child').html(data.ServiceChild);
+            }
+        });
+    }
+
+    function getAction() {
+        var action_id;
+        action_id = $('input#ActionId').attr('value');
+
+        var list_div;
+        list_div = $('#edit-action-dialog');
+        list_div.html('');
+        $.get(site_name + '/Action/EditPartial/' + action_id, null, function (data, textStatus) {
+            list_div.html(data);
+
+            //обработка нажатия кнопки сохранить
+            $(document).on('submit', 'form#edit-action-form', function (e) {
+                var is_in_dialog = $('input#IsItInDialog').attr('value');
+
+                if (is_in_dialog == 'True') {
+                    e.preventDefault();
+                    var form = $(this);
+
+                    $.ajax({
+                        url: form.attr('action'),
+                        type: "POST",
+                        data: form.serialize(),
+                        success: function (result) {
+                            if (result == true) {
+                                reload_action(action_id);
+                                dialog_action.dialog('close');
+                            }
+                            else {
+                                list_div.html('<p style="color:red;font-weight:bold">' + result.message + '</p>');
+                            }
+                        }
+                    });
+                }
+            });
+
+
+        });
+    }
 
 </script>
 
 <div id="show-statuses-form" title="История">
 
-</div>
-
-<div id="edit-action-dialog" style="z-index: -9999" title="Редактирование приема">
-    
 </div>
 
 
@@ -141,29 +160,28 @@
                     @Html.LabelFor(model => model.Date)
                 </div>
         
-                <div class="editor-field">
+                <div class="editor-field" id="action-date">
                     @Html.DisplayFor(model => model.Date)
-                    @Html.ValidationMessageFor(model => model.Date)
                 </div>
 
                  <div class="display-label">
                     @Html.LabelFor(model => model.Expert)
                 </div>
-                <div class="editor-field">
+                <div class="editor-field" id="action-expert">
                     @Html.DisplayFor(m => m.Expert)
                 </div>
 
                 <div class="display-label">
                     @Html.LabelFor(model => model.Organization)
                 </div>
-                <div class="editor-field">
+                <div class="editor-field" id="action-organization">
                     @Html.DisplayFor(m => m.Organization)
                 </div>
 
                 <div class="display-label">
                     @Html.LabelFor(model => model.Service)
                 </div>
-                <div class="editor-field">
+                <div class="editor-field" id="action-service">
                     @Html.DisplayFor(model => model.Service)
                 </div>
                 <div class="display-label">
@@ -201,9 +219,8 @@
             <p>@Html.ActionLink("Вернуть для исправления", "Return", new { fileId = Model.Id })</p>
             <p>@Html.ActionLink("Проверено", "Check", new { fileId = Model.Id })</p>
             <hr/>
-            <a href="javascript:void(0)" id="edit-action">Прием</a>
-            <hr/>
-            <a href="javascript:void(0)" id="show-statuses">Показать историю</a>
+            <p><a href="javascript:void(0)" id="edit-action">Прием</a> </p>
+            <p><a href="javascript:void(0)" id="show-statuses">Показать историю</a></p>
         </div>
 
     </div>

@@ -293,6 +293,7 @@
     <Content Include="Content\js\datepicker-ru.js" />
     <Content Include="Content\js\editor_hooksup.js" />
     <None Include="Content\js\jquery-2.1.3.intellisense.js" />
+    <Content Include="Content\js\helpers.js" />
     <Content Include="Content\js\jquery-2.1.3.js" />
     <Content Include="Content\js\jquery-2.1.3.min.js" />
     <Content Include="Content\js\jquery-ui-1.11.4.js" />

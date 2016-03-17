@@ -12,6 +12,7 @@ using mfc.web.Helpers;
 using mfc.web.Models;
 using mfc.web.Abstracts;
 using Ninject;
+using Service = System.Web.Services.Description.Service;
 
 namespace mfc.web.Controllers {
     public class ActionController : BaseController {
@@ -239,19 +240,29 @@ namespace mfc.web.Controllers {
         [HttpPost]
         public ActionResult Edit(ServiceActionViewModel model) {
             bool has_error = false;
+            string errorMessage = string.Empty;
+
             if (ModelState.IsValid) {
-                var action_srv = CompositionRoot.Resolve<IActionService>();
                 try {
                     var action = ServiceActionModelConverter.FromModel(model);
-                    
+
                     if (action.ServiceChild != null && !action.Service.Equals(action.ServiceChild.Parent)) {
                         throw new DomainException("Подуслуга не связана с услугой");
                     }
 
-                    action_srv.Update(action);
+                    ActionService.Update(action);
                 }
                 catch (DomainException e) {
                     ModelState.AddModelError("", e.Message);
+                    errorMessage = e.Message;
+                    has_error = true;
+                }
+                catch (Exception e) {
+                    if (!model.IsItInDialog) {
+                        throw e;
+                    }
+                    Logger.Error(e);
+                    errorMessage = $"Ошибка при сохранении данныхъ {e.Message}";
                     has_error = true;
                 }
 
@@ -259,16 +270,27 @@ namespace mfc.web.Controllers {
                     return RedirectToAction("Index", new { date = model.Date.ToString("dd.MM.yyyy"), user_id = model.ExpertId });
                 }
             }
+
+
             PrepareForCreate();
 
             if (model.IsItInDialog) {
                 if (!has_error) {
                     return Json(true);
                 }
-                return PartialView("_Edit", model);
+                return Json(new {message = errorMessage});
             }
 
             return View(model);
+        }
+
+        public ActionResult GetById(Int64 id) {
+            var action = ActionService.GetActionById(id);
+            if (action == null) {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            
+            return Json(ServiceActionModelConverter.ToModel(action), JsonRequestBehavior.AllowGet);
         }
 
         #region Helpers
