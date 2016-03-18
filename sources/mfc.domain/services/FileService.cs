@@ -87,8 +87,11 @@ namespace mfc.domain.services {
         }
 
         public void Delete(long id) {
-            //Прямого удаления дела не предполагается, только из внешних транзакций
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
+
+            unit_of_work.BeginTransaction();
             FileRepository.Delete(id);
+            unit_of_work.Commit();
         }
 
 

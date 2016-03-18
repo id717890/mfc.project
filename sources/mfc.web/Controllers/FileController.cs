@@ -11,6 +11,7 @@ using mfc.infrastructure.security;
 using mfc.web.Models;
 using mfc.web.Helpers;
 using mfc.web.Abstracts;
+using Ninject;
 
 namespace mfc.web.Controllers {
     public class FileController : BaseController {
@@ -21,6 +22,13 @@ namespace mfc.web.Controllers {
         private const string StatusKey = "Status";
         private const string DateBeginKey = "DateBegin";
         private const string DateEndKey = "DateEnd";
+
+        [Inject]
+        public IFileService FileService { get; set; }
+
+        [Inject]
+        public IActionService ActionService { get; set; }
+
         //
         // GET: /File/
         public ActionResult Index(string beginDate = null, string endDate = null, Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1) {
@@ -176,6 +184,29 @@ namespace mfc.web.Controllers {
             PrepareForCreate();
 
             return View(model);
+        }
+
+        /// <summary>
+        /// Get-query for deleting package
+        /// </summary>
+        /// 
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Delete(Int64 id) {
+            var result = false;
+
+            var file = FileService.GetFileById(id);
+
+            if (file != null) {
+                try {
+                    ActionService.Delete(file.Action.Id);
+                    result = true;
+                }
+                catch (Exception e) {
+                    Logger.Error(e);
+                }
+            }
+
+            return Content(result ? Boolean.TrueString : Boolean.FalseString);
         }
 
         public ActionResult Control(Int64 fileId) {
