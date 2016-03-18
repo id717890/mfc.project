@@ -26,6 +26,13 @@ namespace mfc.web.Models {
         public string Type { get; set; }
 
         [Required]
+        [Display(Name = "Категория заявителя/посетителя")]
+        public Int64 CustomerTypeId { get; set; }
+
+        [Display(Name = "Категория заявителя/посетителя")]
+        public string CustomerType { get; set; }
+
+        [Required]
         [Display(Name = "Услуга")]
         public Int64 ServiceId { get; set; }
 
@@ -59,5 +66,10 @@ namespace mfc.web.Models {
 
         [Display(Name = "Бесплатный выезд")]
         public bool FreeVisit { get; set; }
+
+        /// <summary>
+        /// Признак того, что модель передается в PartialView
+        /// </summary>
+        public bool IsItInDialog { get; set; }
     }
 }

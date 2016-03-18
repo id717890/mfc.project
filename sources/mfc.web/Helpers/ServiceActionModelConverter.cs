@@ -12,6 +12,7 @@ namespace mfc.web.Helpers {
         private static IUserService _usr_service = CompositionRoot.Resolve<IUserService>();
         private static IActionTypeService _action_type_srv = CompositionRoot.Resolve<IActionTypeService>();
         private static IServiceService _service_srv = CompositionRoot.Resolve<IServiceService>();
+        private static ICustomerTypeService _customer_service = CompositionRoot.Resolve<ICustomerTypeService>();
         #endregion
 
         public static ServiceAction FromModel(ServiceActionViewModel model) {
@@ -25,7 +26,8 @@ namespace mfc.web.Helpers {
                 Comments = model.Comments,
                 ServiceChild = _service_srv.GetServiceById(model.ServiceChildId),
                 IsNonresident = model.IsNonresident,
-                FreeVisit = model.FreeVisit
+                FreeVisit = model.FreeVisit,
+                CustomerType = model.CustomerTypeId == CustomerType.Empty.Id ? null : _customer_service.GetTypeById(model.CustomerTypeId)
             };
         }
 
@@ -53,6 +55,11 @@ namespace mfc.web.Helpers {
             if (entity.ServiceChild != null) {
                 item.ServiceChildId = entity.ServiceChild.Id;
                 item.ServiceChild = entity.ServiceChild.Caption;
+            }
+
+            if (entity.CustomerType != null) {
+                item.CustomerTypeId = entity.CustomerType.Id;
+                item.CustomerType = entity.CustomerType.Caption;
             }
 
             return item;

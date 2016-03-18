@@ -26,15 +26,6 @@
                 <legend>FileModel</legend>
 
                 @Html.HiddenFor(model => model.FileId)
-                @Html.HiddenFor(model => model.Expert)
-
-                <div class="display-label">
-                    @Html.LabelFor(model => model.ExpertId)
-                </div>
-                <div class="editor-field">
-                    @Html.DropDownListFor(m => m.ExpertId, new SelectList(ViewBag.Experts, "Id", "Name"), new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.ExpertId)
-                </div>
 
                 <div class="editor-label">
                     @Html.LabelFor(model => model.Comments)

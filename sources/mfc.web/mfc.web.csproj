@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <NuGetPackageImportStamp>27fed3dd</NuGetPackageImportStamp>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -111,6 +112,10 @@
     <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Ninject.Web.Common.3.2.3.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ninject.MVC4.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\..\packages\NLog.3.2.1\lib\net45\NLog.dll</HintPath>
@@ -226,6 +231,7 @@
     <Compile Include="Constants\WorkMenuItems.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActionController.cs" />
+    <Compile Include="Controllers\CustomerTypeController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\FileListController.cs" />
@@ -242,6 +248,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CustomerTypeModelConverter.cs" />
     <Compile Include="Helpers\ActionTypeModelConverter.cs" />
     <Compile Include="Helpers\FileModelConverter.cs" />
     <Compile Include="Helpers\FileStatusModelConverter.cs" />
@@ -253,6 +260,7 @@
     <Compile Include="Models\AcceptForControlModel.cs" />
     <Compile Include="Models\AccountInfo.cs" />
     <Compile Include="Models\ActionListViewModel.cs" />
+    <Compile Include="Models\CustomerTypeModel.cs" />
     <Compile Include="Models\PackageListViewModel.cs" />
     <Compile Include="Models\FileReturnModel.cs" />
     <Compile Include="Models\FileListViewModel.cs" />
@@ -279,13 +287,13 @@
     <Content Include="Content\css\bootstrap-theme.min.css" />
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\site.css" />
-    <Content Include="Content\css\__site.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\js\bootstrap.js" />
     <Content Include="Content\js\bootstrap.min.js" />
     <Content Include="Content\js\datepicker-ru.js" />
     <Content Include="Content\js\editor_hooksup.js" />
     <None Include="Content\js\jquery-2.1.3.intellisense.js" />
+    <Content Include="Content\js\helpers.js" />
     <Content Include="Content\js\jquery-2.1.3.js" />
     <Content Include="Content\js\jquery-2.1.3.min.js" />
     <Content Include="Content\js\jquery-ui-1.11.4.js" />
@@ -404,7 +412,6 @@
     <Content Include="Views\FileStatus\List.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\File\Edit.cshtml" />
-    <Content Include="Views\Shared\__Layout.cshtml" />
     <Content Include="Views\Shared\_AdminMenu.cshtml" />
     <Content Include="Views\Shared\_WorkMenu.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
@@ -425,6 +432,10 @@
     <Content Include="Views\FileList\CreatePackage.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
     <Content Include="Views\Package\_FileModelItem.cshtml" />
+    <Content Include="Views\CustomerType\Delete.cshtml" />
+    <Content Include="Views\CustomerType\Edit.cshtml" />
+    <Content Include="Views\CustomerType\List.cshtml" />
+    <Content Include="Views\Action\_Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

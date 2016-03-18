@@ -18,13 +18,21 @@
 @using (Html.BeginForm("Make", "Report", FormMethod.Post, new { @class = "form" })) {
     <p>
 
-        <div style="margin: 0 10px;float:left">
-            <div style="margin: 0 10px;float:left">Дата начала: @Html.EditorFor(m => m.DateBegin)</div>
-            <div style="margin: 0 10px;float:left">Дата окончания: @Html.EditorFor(m => m.DateEnd)</div>
+        <div style="margin: 0 10px; float: left">
+            <div style="margin: 0 10px; float: left">Дата начала: @Html.EditorFor(m => m.DateBegin)</div>
+            <div style="margin: 0 10px; float: left">Дата окончания: @Html.EditorFor(m => m.DateEnd)</div>
         </div>
-        <div style="clear:both" />
+        <div style="clear: both"/>
 
     </p>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.CustomerTypeId)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(m => m.CustomerTypeId, new SelectList(ViewBag.CustomerTypes, "Id", "Caption"), new {@class = "form-control"})
+        @Html.ValidationMessageFor(model => model.CustomerTypeId)
+    </div>
+
     <ul style="list-style: none">
         @foreach (var radioitem in Model.Reports) {
 

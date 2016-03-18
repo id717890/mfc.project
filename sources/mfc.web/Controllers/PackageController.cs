@@ -199,22 +199,13 @@ namespace mfc.web.Controllers {
             model.BeginDate = beginDate;
             model.EndDate = endDate;
 
-            if (User.IsInRole(Roles.Admin)) {
-                //Для администратора заполняем список всеми экспертами и контролерами
-                foreach (var user in user_srv.GetControllers()) {
-                    model.Controllers.Add(user);
-                }
-                model.Controllers.Insert(0, mfc.domain.entities.User.All);
+            //заполняем список всеми контролерами
+            foreach (var user in user_srv.GetControllers()) {
+                model.Controllers.Add(user);
             }
-            else if (User.IsInRole(Roles.Controller)) {
-                //если только контролер, то полный список экспертов и один контролер
-                var user = user_srv.GetCurrentUser();
+            model.Controllers.Insert(0, mfc.domain.entities.User.All);
 
-                model.Controllers.Add(user_srv.GetCurrentUser());
-
-                model.SelectedControllerId = user.Id;
-            }
-
+            //заполняем список всеми организациями
             model.Organizations.Add(Organization.All);
 
             foreach (var item in org_srv.GetAllOrganizations()) {
