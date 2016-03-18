@@ -14,5 +14,6 @@ namespace mfc.web.Models {
         public string Controller { get; set; }
         public string Status { get; set; }
         public bool IsChecked { get; set; }
+        public Int64 ActionId { get; set; }
     }
 }
