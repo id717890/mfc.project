@@ -1,0 +1,45 @@
+﻿@model mfc.web.Models.CustomerTypeModel
+
+@section workmenu {
+    @Html.Partial("_AdminMenu", 6)
+}
+
+@{
+    var for_edit = Model.Id > 0;
+    
+    if (for_edit) {
+        ViewBag.Title = "Редактирование категории посетителя/заявителя";
+    }
+    else {
+        ViewBag.Title = "Добавление категории посетителя/заявителя";
+    }
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm(for_edit ? "Edit" : "Create", "CustomerType", FormMethod.Post, new { @class = "form" })) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>ActionTypeModel</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Caption)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Caption)
+            @Html.ValidationMessageFor(model => model.Caption)
+        </div>
+        <p>
+            <input type="submit" value="Сохранить" class="btn btn-lg btn-default" />
+        </p>
+</fieldset>
+}
+
+<div>
+    @Html.ActionLink("Вернуться к списку", "List")
+</div>

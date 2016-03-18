@@ -11,12 +11,21 @@ using mfc.infrastructure.security;
 using mfc.web.Helpers;
 using mfc.web.Models;
 using mfc.web.Abstracts;
+using Ninject;
+using Service = System.Web.Services.Description.Service;
 
 namespace mfc.web.Controllers {
     public class ActionController : BaseController {
         private const string ActionControllerFilerKey = "ActionControllerFilerKey";
         private const string DateKey = "DateKey";
         private const string UserKey = "UserKey";
+
+
+        [Inject]
+        public ICustomerTypeService CustomerTypeService { get; set; }
+
+        [Inject]
+        public IActionService ActionService { get; set; }
 
         public ActionResult Index(string date = null, Int64 user_id = -1) {
             var user_srv = CompositionRoot.Resolve<IUserService>();
@@ -107,7 +116,7 @@ namespace mfc.web.Controllers {
                 Int64 id = -1;
 
                 try {
-                    id = action_srv.Add(model.Date, model.ServiceId, model.Customer, model.TypeId, model.ExpertId, model.ServiceChildId, model.IsNonresident, model.FreeVisit, model.Comments);
+                    id = action_srv.Add(model.Date, model.ServiceId, model.Customer, model.TypeId, model.CustomerTypeId, model.ExpertId, model.ServiceChildId, model.IsNonresident, model.FreeVisit, model.Comments);
                 }
                 catch (Exception e) {
                     has_error = true;
@@ -184,6 +193,7 @@ namespace mfc.web.Controllers {
                 }
 
                 model = ServiceActionModelConverter.ToModel(action);
+                model.IsItInDialog = false;
             }
             catch (DomainException e) {
                 ModelState.AddModelError("", e);
@@ -199,31 +209,88 @@ namespace mfc.web.Controllers {
             return View(model);
         }
 
+        public ActionResult EditPartial(Int64 id) {
+            bool has_error = false;
+            ServiceActionViewModel model = null;
+
+            try {
+                var action = ActionService.GetActionById(id);
+                if (action == null) {
+                    ModelState.AddModelError("", "Работа не найдена");
+                    has_error = true;
+                }
+
+                model = ServiceActionModelConverter.ToModel(action);
+                model.IsItInDialog = true;
+            }
+            catch (DomainException e) {
+                ModelState.AddModelError("", e);
+                has_error = true;
+            }
+
+            if (has_error) {
+                return RedirectToAction("Index", new { date = model.Date.ToString("dd.MM.yyyy"), user_id = model.ExpertId });
+            }
+
+            PrepareForCreate();
+
+            return PartialView("_Edit", model);
+        }
+
         [HttpPost]
         public ActionResult Edit(ServiceActionViewModel model) {
             bool has_error = false;
+            string errorMessage = string.Empty;
+
             if (ModelState.IsValid) {
-                var action_srv = CompositionRoot.Resolve<IActionService>();
                 try {
                     var action = ServiceActionModelConverter.FromModel(model);
-                    
+
                     if (action.ServiceChild != null && !action.Service.Equals(action.ServiceChild.Parent)) {
                         throw new DomainException("Подуслуга не связана с услугой");
                     }
 
-                    action_srv.Update(action);
+                    ActionService.Update(action);
                 }
                 catch (DomainException e) {
                     ModelState.AddModelError("", e.Message);
+                    errorMessage = e.Message;
+                    has_error = true;
+                }
+                catch (Exception e) {
+                    if (!model.IsItInDialog) {
+                        throw e;
+                    }
+                    Logger.Error(e);
+                    errorMessage = $"Ошибка при сохранении данныхъ {e.Message}";
                     has_error = true;
                 }
 
-                if (!has_error) {
+                if (!has_error && !model.IsItInDialog) {
                     return RedirectToAction("Index", new { date = model.Date.ToString("dd.MM.yyyy"), user_id = model.ExpertId });
                 }
             }
+
+
             PrepareForCreate();
+
+            if (model.IsItInDialog) {
+                if (!has_error) {
+                    return Json(true);
+                }
+                return Json(new {message = errorMessage});
+            }
+
             return View(model);
+        }
+
+        public ActionResult GetById(Int64 id) {
+            var action = ActionService.GetActionById(id);
+            if (action == null) {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            
+            return Json(ServiceActionModelConverter.ToModel(action), JsonRequestBehavior.AllowGet);
         }
 
         #region Helpers
@@ -235,6 +302,7 @@ namespace mfc.web.Controllers {
 
             ViewBag.Services = service_srv.GetAllServices();
             ViewBag.ActionTypes = type_srv.GetAllTypes();
+            ViewBag.CustomerTypes = CustomerTypeService.GetAllTypes();
 
             var experts = new List<User>();
 

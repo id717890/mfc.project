@@ -1,0 +1,27 @@
+﻿@model mfc.web.Models.CustomerTypeModel
+
+@section workmenu {
+    @Html.Partial("_AdminMenu", 6)
+}
+
+<h3>Удалить категорию посетителя/заявителя?</h3>
+@using (Html.BeginForm("Delete", "CustomerType", FormMethod.Post, new { @class = "form" })) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+<fieldset>
+    <legend>ActionTypeModel</legend>
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Caption)
+
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Caption)
+    </div>
+</fieldset>
+
+    
+    <p>
+        <input type="submit" value="Удалить" class="btn btn-lg btn-default" />
+    </p>
+}
+
+<p>@Html.ActionLink("Вернуться к списку", "List")</p>

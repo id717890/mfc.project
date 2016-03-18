@@ -13,6 +13,7 @@ namespace mfc.domain.entities {
         public virtual string Customer { get; set; }
         public virtual Service Service { get; set; }
         public virtual Service ServiceChild { get; set; }
+        public virtual CustomerType CustomerType { get; set; }
         public virtual ActionType Type { get; set; }
         public virtual User User { get; set; }
         public virtual string Comments { get; set; }
