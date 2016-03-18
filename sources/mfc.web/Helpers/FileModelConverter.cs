@@ -30,7 +30,8 @@ namespace mfc.web.Helpers {
                 Expert = file.Expert.Name,
                 Controller = file.Controller != null ? file.Controller.Name : string.Empty,
                 Organization = file.Ogv.Caption,
-                Status = file.CurrentStatus != null ? file.CurrentStatus.Caption : string.Empty
+                Status = file.CurrentStatus != null ? file.CurrentStatus.Caption : string.Empty,
+                ActionId = file.Action.Id
             };
         }
     }

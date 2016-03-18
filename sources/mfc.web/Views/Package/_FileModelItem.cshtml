@@ -9,6 +9,7 @@
         @Html.HiddenFor(m => m.Organization)
         @Html.HiddenFor(m => m.Service)
         @Html.HiddenFor(m => m.Status)
+        @Html.HiddenFor(m => m.ActionId)
 
     <td>
         @Model.Date.ToString("dd.MM.yyyy")
@@ -32,6 +33,7 @@
         @Html.DisplayFor(m => m.Status)
     </td>
     <td>
+        <a href="javascript:void(0)" class="edit-action-link">Изменить</a>
         <a href="javascript:void(0)" class="delete-link">Удалить</a>
     </td>
 </tr>

@@ -13,120 +13,6 @@
     @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Files)
 }
 
-<script>
-    var dialog_statuses, dialog_action;
-    var site_name;
-    site_name = "";
-
-    $(function () {
-        //диалог для истории статусов
-        dialog_statuses = $("#show-statuses-form").dialog({
-            autoOpen: false,
-            height: 450,
-            width: 800,
-            modal: true,
-            open: fillStatuses
-        });
-
-        //заполнение диалгола истрии статусов
-        function fillStatuses() {
-            var file_id;
-            file_id = $('input#Id').attr('value');
-
-            var list_div;
-            list_div = $('#show-statuses-form');
-            list_div.html('');
-            list_div.append('<div class="row">');
-
-            list_div.append('<b><div class="col-sm-2 col-md-2">Дата</div><div class="col-sm-3 col-md-3">Статус</div><div class="col-sm-3 col-md-3">Пользователь</div><div class="col-sm-3 col-md-3">Комментарий</div><div class="clearfix"/></b><hr/>');
-            $.get(site_name + '/File/FileStatuses/' + file_id, null, function (data, textStatus) {
-                data.forEach(function (item, i, arr) {
-                    list_div.append('<div class="col-sm-2 col-md-2">' + item.Date + '</div><div class="col-sm-3 col-md-3">' + item.Status + '</div><div class="col-sm-3 col-md-3">' + item.User + '</div><div class="col-sm-3 col-md-3">' + item.Comments + '</div><div class="clearfix"/><hr/>');
-                });
-            });
-            list_div.append('</div>');
-        }
-
-        
-        //Обработка события нажатия на кнопку "История" - отображение списка истрии изменения статуса дела
-        $("#show-statuses").on("click", function () {
-            dialog_statuses.dialog('open');
-        });
-
-
-        //Обработка события нажатия на кнопку "Прием" - отображение диалога редактирования данных приема
-        $("#edit-action").on("click", function () {
-            $('body').append('<div id="edit-action-dialog" style="z-index: -9999" title="Редактирование приема"></div>');
-            //диалог для редактирования приема
-            dialog_action = $("#edit-action-dialog").dialog({
-                autoOpen: false,
-                height: 600,
-                width: 600,
-                modal: true,
-                open: getAction,
-                close: function () {
-                    $(this).dialog('destroy').remove();
-                }
-            });
-
-            dialog_action.dialog('open');
-        });
-    });
-
-    //перегрузить данные приема
-    function reload_action(action_id) {
-        $.get(site_name + '/Action/GetById/' + action_id, null, function (data) {
-            if (data != 'false') {
-                $('#action-date').html(jsonDateToString(data.Date));
-                $('#action-expert').html(data.Expert);
-                $('#action-organization').html(data.Organization);
-                $('#action-service').html(data.Service);
-                $('#action-service-child').html(data.ServiceChild);
-            }
-        });
-    }
-
-    function getAction() {
-        var action_id;
-        action_id = $('input#ActionId').attr('value');
-
-        var list_div;
-        list_div = $('#edit-action-dialog');
-        list_div.html('');
-        $.get(site_name + '/Action/EditPartial/' + action_id, null, function (data, textStatus) {
-            list_div.html(data);
-
-            //обработка нажатия кнопки сохранить
-            $(document).on('submit', 'form#edit-action-form', function (e) {
-                var is_in_dialog = $('input#IsItInDialog').attr('value');
-
-                if (is_in_dialog == 'True') {
-                    e.preventDefault();
-                    var form = $(this);
-
-                    $.ajax({
-                        url: form.attr('action'),
-                        type: "POST",
-                        data: form.serialize(),
-                        success: function (result) {
-                            if (result == true) {
-                                reload_action(action_id);
-                                dialog_action.dialog('close');
-                            }
-                            else {
-                                list_div.html('<p style="color:red;font-weight:bold">' + result.message + '</p>');
-                            }
-                        }
-                    });
-                }
-            });
-
-
-        });
-    }
-
-</script>
-
 <div id="show-statuses-form" title="История">
 
 </div>
@@ -225,3 +111,118 @@
 
     </div>
 </div>
+
+
+<script>
+    var dialog_statuses, dialog_action;
+    var site_name;
+    site_name = "";
+
+    $(function () {
+        //диалог для истории статусов
+        dialog_statuses = $("#show-statuses-form").dialog({
+            autoOpen: false,
+            height: 450,
+            width: 800,
+            modal: true,
+            open: fillStatuses
+        });
+
+        //заполнение диалгола истрии статусов
+        function fillStatuses() {
+            var file_id;
+            file_id = $('input#Id').attr('value');
+
+            var list_div;
+            list_div = $('#show-statuses-form');
+            list_div.html('');
+            list_div.append('<div class="row">');
+
+            list_div.append('<b><div class="col-sm-2 col-md-2">Дата</div><div class="col-sm-3 col-md-3">Статус</div><div class="col-sm-3 col-md-3">Пользователь</div><div class="col-sm-3 col-md-3">Комментарий</div><div class="clearfix"/></b><hr/>');
+            $.get(site_name + '/File/FileStatuses/' + file_id, null, function (data, textStatus) {
+                data.forEach(function (item, i, arr) {
+                    list_div.append('<div class="col-sm-2 col-md-2">' + item.Date + '</div><div class="col-sm-3 col-md-3">' + item.Status + '</div><div class="col-sm-3 col-md-3">' + item.User + '</div><div class="col-sm-3 col-md-3">' + item.Comments + '</div><div class="clearfix"/><hr/>');
+                });
+            });
+            list_div.append('</div>');
+        }
+
+
+        //Обработка события нажатия на кнопку "История" - отображение списка истрии изменения статуса дела
+        $("#show-statuses").on("click", function () {
+            dialog_statuses.dialog('open');
+        });
+
+
+        //Обработка события нажатия на кнопку "Прием" - отображение диалога редактирования данных приема
+        $("#edit-action").on("click", function () {
+            $('body').append('<div id="edit-action-dialog" style="z-index: -9999" title="Редактирование приема"></div>');
+            //диалог для редактирования приема
+            dialog_action = $("#edit-action-dialog").dialog({
+                autoOpen: false,
+                height: 600,
+                width: 600,
+                modal: true,
+                open: getAction,
+                close: function () {
+                    $(this).dialog('destroy').remove();
+                }
+            });
+
+            dialog_action.dialog('open');
+        });
+    });
+
+    //перегрузить данные приема
+    function reload_action(action_id) {
+        $.get(site_name + '/Action/GetById/' + action_id, null, function (data) {
+            if (data != 'false') {
+                $('#action-date').html(jsonDateToString(data.Date));
+                $('#action-expert').html(data.Expert);
+                $('#action-organization').html(data.Organization);
+                $('#action-service').html(data.Service);
+                $('#action-service-child').html(data.ServiceChild);
+            }
+        });
+    }
+
+    function getAction() {
+        var action_id;
+        action_id = $('input#ActionId').attr('value');
+
+        var list_div;
+        list_div = $('#edit-action-dialog');
+        list_div.html('');
+        $.get(site_name + '/Action/EditPartial/' + action_id, null, function (data, textStatus) {
+            list_div.html(data);
+
+            //обработка нажатия кнопки сохранить
+            $(document).on('submit', 'form#edit-action-form', function (e) {
+                var is_in_dialog = $('input#IsItInDialog').attr('value');
+
+                if (is_in_dialog == 'True') {
+                    e.preventDefault();
+                    var form = $(this);
+
+                    $.ajax({
+                        url: form.attr('action'),
+                        type: "POST",
+                        data: form.serialize(),
+                        success: function (result) {
+                            if (result == true) {
+                                reload_action(action_id);
+                                dialog_action.dialog('close');
+                            }
+                            else {
+                                list_div.html('<p style="color:red;font-weight:bold">' + result.message + '</p>');
+                            }
+                        }
+                    });
+                }
+            });
+
+
+        });
+    }
+
+</script>

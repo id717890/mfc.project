@@ -19,8 +19,8 @@
 @using (Html.BeginForm("Edit", "Package", FormMethod.Post, new { @class = "form" })) {
     @Html.AntiForgeryToken()
 
-    @Html.HiddenFor(model => model.OrganizationId)
-    @Html.HiddenFor(model => model.Organization)
+    @Html.HiddenFor(model => model.OrganizationId, new { id = "package-organization-id" })
+    @Html.HiddenFor(model => model.Organization, new { id = "package-organization" })
     @Html.HiddenFor(model => model.ControllerId)
     @Html.HiddenFor(model => model.Id)
 
@@ -39,10 +39,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.OrganizationId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.OrganizationId, htmlAttributes: new { @class = "control-label col-md-2", id = "package-organization-id" })
             <div class="col-md-10">
                 <div class="row">
-                    <div id="selected-org" class="col-md-10 col-sm-6" style="margin-right:10px">Не выбрана</div><button id="select-org" type="button" class="btn">...</button>
+                    <div id="package-selected-org" class="col-md-10 col-sm-6" style="margin-right:10px">Не выбрана</div><button id="package-select-org" type="button" class="btn">...</button>
                     @Html.ValidationMessageFor(model => model.OrganizationId, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -93,6 +93,7 @@
 
 <script type="text/javascript">
     var wait_dialog;
+    var dialog_action;
 
     $(function () {
         $("#query-dialog").dialog({
@@ -100,6 +101,24 @@
             modal: true
         });
         wait_dialog = $(".waiting");
+
+        //Обработка события нажатия на кнопку "Прием" - отображение диалога редактирования данных приема
+        $(".edit-action-link").on("click", function () {
+            $('body').append('<div id="edit-action-dialog" style="z-index: -9999" title="Редактирование приема"></div>');
+            //диалог для редактирования приема
+            dialog_action = $("#edit-action-dialog").dialog({
+                autoOpen: false,
+                height: 600,
+                width: 600,
+                modal: true,
+                open: getAction($(this).parent().parent()),
+                close: function () {
+                    $(this).dialog('destroy').remove();
+                }
+            });
+
+            dialog_action.dialog('open');
+        });
     });
 
 
@@ -127,6 +146,58 @@
 
         $("#query-dialog").dialog("open");
     });
+
+    
+
+    function getAction(row) {
+        var action_id = row.find('input[type="hidden"]:last').attr('value');
+
+        var list_div;
+        list_div = $('#edit-action-dialog');
+        list_div.html('');
+        $.get(site_name + '/Action/EditPartial/' + action_id, null, function (data) {
+            list_div.html(data);
+
+            //обработка нажатия кнопки сохранить
+            $(document).on('submit', 'form#edit-action-form', function (e) {
+                var is_in_dialog = $('input#IsItInDialog').attr('value');
+
+                if (is_in_dialog == 'True') {
+                    e.preventDefault();
+                    var form = $(this);
+
+                    $.ajax({
+                        url: form.attr('action'),
+                        type: "POST",
+                        data: form.serialize(),
+                        success: function (result) {
+                            if (result == true) {
+                                reload_action(row, action_id);
+                                dialog_action.dialog('close');
+                            }
+                            else {
+                                list_div.html('<p style="color:red;font-weight:bold">' + result.message + '</p>');
+                            }
+                        }
+                    });
+                }
+            });
+
+
+        });
+    }
+
+    //перегрузить данные приема
+    function reload_action(row, action_id) {
+        $.get(site_name + '/Action/GetById/' + action_id, null, function (data) {
+            if (data != 'false') {
+                row.find("td").eq(0).html(jsonDateToString(data.Date));
+                row.find("td").eq(2).html(data.Service);
+                row.find("td").eq(3).html(data.Organization);
+                row.find("td").eq(4).html(data.Expert);
+            }
+        });
+    }
 </script>
 <!--
     organization dialog section
@@ -139,9 +210,9 @@
     $(function () {
         //инициализируем заголовки для ОГВ и услуги
         var org_caption;
-        org_caption = $('#Organization').attr('value');
+        org_caption = $('#package-organization').attr('value');
         if (org_caption != '') {
-            $('#selected-org').html(org_caption);
+            $('#package-selected-org').html(org_caption);
         }
 
         //создаем диалоги
@@ -154,7 +225,7 @@
         });
 
         function fillOrgList() {
-            $.get(site_name + '/Organization/ListData', null, function (data, textStatus) {
+            $.get(site_name + '/Organization/ListData', null, function (data) {
                 var list_div;
                 list_div = $('#select-org-form');
                 list_div.html('');
@@ -165,15 +236,15 @@
             });
         }
 
-        $("#select-org").button().on("click", function () {
+        $("#package-select-org").button().on("click", function () {
             dialog_org.dialog('open');
         });
     });
 
     function selectOrg(id, caption) {
-        $('#selected-org').html(caption);
-        $('input#OrganizationId').attr('value', id);
-        $('input#Organization').attr('value', caption);
+        $('#package-selected-org').html(caption);
+        $('input#package-organization-id').attr('value', id);
+        $('input#package-organization').attr('value', caption);
 
         dialog_org.dialog('close');
     }
