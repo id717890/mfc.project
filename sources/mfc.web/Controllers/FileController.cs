@@ -22,6 +22,8 @@ namespace mfc.web.Controllers {
         private const string StatusKey = "Status";
         private const string DateBeginKey = "DateBegin";
         private const string DateEndKey = "DateEnd";
+        private const string ServiceKey = "ServiceEnd";
+        private const string PageKey = "Page";
 
         [Inject]
         public IFileService FileService { get; set; }
@@ -29,9 +31,12 @@ namespace mfc.web.Controllers {
         [Inject]
         public IActionService ActionService { get; set; }
 
+        [Inject]
+        public IServiceService ServiceService { get; set; }
+
         //
         // GET: /File/
-        public ActionResult Index(string beginDate = null, string endDate = null, Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1, Int32 page = 1) {
+        public ActionResult Index(string beginDate = null, string endDate = null, Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1, Int64 serviceId = -1, Int32 page = 1) {
             DateTime queryDateBegin = DateTime.Today;
             queryDateBegin = new DateTime(queryDateBegin.Year, queryDateBegin.Month, 1);
 
@@ -67,15 +72,23 @@ namespace mfc.web.Controllers {
                 if (settings.ContainsKey(StatusKey)) {
                     statusId = (Int64)settings[StatusKey];
                 }
+                if (settings.ContainsKey(ServiceKey)) {
+                    serviceId = (Int64)settings[ServiceKey];
+                }
             }
             
-            return View(CreateModel(queryDateBegin, queryDateEnd, controllerId, expertId, statusId, orgId, page));
+            return View(CreateModel(queryDateBegin, queryDateEnd, controllerId, expertId, statusId, orgId, serviceId, page));
         }
 
         [HttpPost]
         public ActionResult Index(FileListViewModel model) {
             var new_model = model;
             if (ModelState.IsValid) {
+                //обрабатываем ситуацию очистки фильтра по услугам: в этом случае SelectedServiceId != -1, но SelectedService == null
+                if (string.IsNullOrEmpty(model.SelectedService)) {
+                    model.SelectedServiceId = Service.All.Id;
+                }
+
                 //сохраняем настройки фильтра
                 Session[FileControllerIndexKey] = new Dictionary<string, object>();
                 var settings = Session[FileControllerIndexKey] as IDictionary<string, object>;
@@ -121,7 +134,16 @@ namespace mfc.web.Controllers {
                     settings[StatusKey] = model.SelectedStatusId;
                 }
 
-                model = CreateModel(model.BeginDate, model.EndDate, model.SelectedControllerId, model.SelectedExpertId, model.SelectedStatusId, model.SelectedOgvId);
+                if (!settings.ContainsKey(ServiceKey)) {
+                    settings.Add(ServiceKey, model.SelectedServiceId);
+                }
+                else {
+                    settings[ServiceKey] = model.SelectedServiceId;
+                }
+
+                model.Page = 1;
+
+                model = CreateModel(model.BeginDate, model.EndDate, model.SelectedControllerId, model.SelectedExpertId, model.SelectedStatusId, model.SelectedOgvId, model.SelectedServiceId, model.Page);
             }
 
             return View(model);
@@ -356,7 +378,7 @@ namespace mfc.web.Controllers {
 
         #region Helpers
 
-        private FileListViewModel CreateModel(DateTime beginDate, DateTime endDate, Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1, Int32 page = 1) {
+        private FileListViewModel CreateModel(DateTime beginDate, DateTime endDate, Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1, Int64 serviceId = -1, Int32 page = 1) {
             var user_srv = CompositionRoot.Resolve<IUserService>();
             var status_srv = CompositionRoot.Resolve<IFileStatusService>();
             var org_srv = CompositionRoot.Resolve<IOrganizationService>();
@@ -368,9 +390,21 @@ namespace mfc.web.Controllers {
             model.SelectedControllerId = controllerId == -1 ? mfc.domain.entities.User.All.Id : controllerId;
             model.SelectedExpertId = expertId == -1 ? mfc.domain.entities.User.All.Id : expertId;
             model.SelectedStatusId = statusId == -1 ? FileStatus.All.Id : statusId;
+            model.SelectedServiceId = serviceId == -1 ? Service.All.Id : serviceId;
             model.BeginDate = beginDate;
             model.EndDate = endDate;
             model.Page = page;
+
+            if (page == 0) {
+                model.Page = 1;
+            }
+
+            if (serviceId != Service.All.Id) {
+                var service = ServiceService.GetServiceById(serviceId);
+                if (service != null) {
+                    model.SelectedService = service.Caption;
+                }
+            }
 
             if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Controller)) {
                 //Для администратора и контролера заполняем список всеми экспертами и контролерами
@@ -410,7 +444,7 @@ namespace mfc.web.Controllers {
                 model.Organizations.Add(item);
             }
 
-            foreach (var file in file_srv.GetFiles(model.BeginDate, model.EndDate, model.SelectedControllerId, model.SelectedExpertId, model.SelectedStatusId, model.SelectedOgvId)) {
+            foreach (var file in file_srv.GetFiles(model.BeginDate, model.EndDate, model.SelectedControllerId, model.SelectedExpertId, model.SelectedStatusId, model.SelectedOgvId, model.SelectedServiceId)) {
                 model.Files.Add(FileModelConverter.ToModelItem(file));
             }
 

@@ -18,6 +18,10 @@ namespace mfc.dal.services {
             return Session.Query<Service>().Fetch(x => x.Organization).Where(x => !x.IsDeleted && x.Parent.Id == parentId).ToList();
         }
 
+        public IEnumerable<Service> Search(string term) {
+            return Session.Query<Service>().Fetch(x => x.Organization).Where(x => !x.IsDeleted && x.Caption.ToLower().Contains(term)).Take(20).ToList();
+        }
+
         public override void Delete(Int64 id) {
             var entity = Session.Load<Service>(id);
             entity.IsDeleted = true;

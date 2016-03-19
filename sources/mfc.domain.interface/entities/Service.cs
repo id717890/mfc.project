@@ -13,6 +13,8 @@ namespace mfc.domain.entities {
         public virtual string Caption { get; set; }
         public virtual Organization Organization { get; set; }
 
+        public static Service All = new Service { Id = -1, Caption = "Все" };
+
         public override bool Equals(object obj) {
             if (obj == null) {
                 return false;

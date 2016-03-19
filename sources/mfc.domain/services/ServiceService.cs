@@ -104,6 +104,11 @@ namespace mfc.domain.services {
 
             return _cache.Values.Where(m => m.Parent!= null && m.Parent.Id == parentId).OrderBy(m => m.Caption).OrderBy(m => m.Organization.Caption);
         }
+
+        public IEnumerable<Service> Search(string term) {
+            return Repository.Search(term);
+        }
+
         #endregion
 
         #region Helpers
