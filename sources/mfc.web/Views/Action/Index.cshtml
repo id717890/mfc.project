@@ -9,7 +9,8 @@
             <h1 class="page-header">@ViewBag.Title</h1>
             <p>
                @using (Html.BeginForm()) {
-                <div style="margin: 0 10px;float:left">Дата: @Html.EditorFor(m => m.Date)</div>
+                <div style="margin: 0 10px; float: left">@Html.LabelFor(x => x.DateBegin) @Html.EditorFor(m => m.DateBegin)</div>
+                <div style="margin: 0 10px;float:left">@Html.LabelFor(x => x.DateEnd) @Html.EditorFor(m => m.DateEnd)</div>
                 <div style="margin: 0 10px;float:left">Эксперт: @Html.DropDownListFor(m => m.SelectedUserId, new SelectList(Model.Users, "Id", "Name"), new { @class = "form-control" })
                 </div>
                 <input type="submit" value="Обновить" class="btn btn-lg btn-default" />
@@ -23,7 +24,7 @@
     @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Services)
 }
 <p>
-    @Html.ActionLink("Новый", "Create", new { date = Model.Date.ToShortDateString(), user_id = Model.SelectedUserId })
+    @Html.ActionLink("Новый", "Create", new { date = DateTime.Today.ToShortDateString(), user_id = Model.SelectedUserId })
 </p>
 <table class="table">
     <tr>

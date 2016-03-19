@@ -17,7 +17,8 @@ using Service = System.Web.Services.Description.Service;
 namespace mfc.web.Controllers {
     public class ActionController : BaseController {
         private const string ActionControllerFilerKey = "ActionControllerFilerKey";
-        private const string DateKey = "DateKey";
+        private const string DateBeginKey = "DateBeginKey";
+        private const string DateEndKey = "DateEndKey";
         private const string UserKey = "UserKey";
 
 
@@ -27,53 +28,82 @@ namespace mfc.web.Controllers {
         [Inject]
         public IActionService ActionService { get; set; }
 
-        public ActionResult Index(string date = null, Int64 user_id = -1) {
-            var user_srv = CompositionRoot.Resolve<IUserService>();
+        [Inject]
+        public IUserService UserService { get; set; }
+
+        [Inject]
+        public IServiceService ServiceService { get; set; }
+
+        [Inject]
+        public IActionTypeService ActionTypeService { get; set; }
+
+        public ActionResult Index(string dateBegin = null, string dateEnd = null, Int64 user_id = -1) {
             User user = null;
 
             //Если текущий пользователь не администратор, то тогда
             //устанавливаем его текущим
             if (!User.IsInRole(Roles.Admin) && user_id == -1) {
-                user = user_srv.GetUser(User.Identity.Name);
+                user = UserService.GetUser(User.Identity.Name);
             }
             else if (user_id > 0) {
-                user = user_srv.GetUserById(user_id);
+                user = UserService.GetUserById(user_id);
             }
 
-            var queryDate = DateTime.Today;
+            var queryDateBegin = DateTime.Today;
 
-            if (!string.IsNullOrEmpty(date)) {
-                DateTime.TryParse(date, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDate);
+            if (!string.IsNullOrEmpty(dateBegin)) {
+                DateTime.TryParse(dateBegin, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDateBegin);
+            }
+
+            var queryDateEnd = DateTime.Today;
+
+            if (!string.IsNullOrEmpty(dateEnd)) {
+                DateTime.TryParse(dateEnd, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDateEnd);
             }
 
             //Загружаем настройки
             var settings = Session[ActionControllerFilerKey] as IDictionary<string, object>;
 
             if (settings != null) {
-                if (settings.ContainsKey(DateKey)) {
-                    queryDate = (DateTime)settings[DateKey];
+                if (settings.ContainsKey(DateBeginKey)) {
+                    queryDateBegin = (DateTime)settings[DateBeginKey];
+                }
+
+                if (settings.ContainsKey(DateEndKey)) {
+                    queryDateEnd = (DateTime)settings[DateEndKey];
                 }
 
                 if (settings.ContainsKey(UserKey)) {
-                    user = user_srv.GetUserById((Int64)settings[UserKey]);
+                    user = UserService.GetUserById((Int64)settings[UserKey]);
                 }
             }
 
-            var model = CreateActionListModel(queryDate, user);
+            if (user == null) {
+                user = domain.entities.User.All;
+            }
+
+            var model = CreateActionListModel(queryDateBegin, queryDateEnd, user);
 
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Index(DateTime date, Int64 selectedUserId = -1) {
+        public ActionResult Index(DateTime dateBegin, DateTime dateEnd, Int64 selectedUserId = -1) {
             //сохраняем настройки фильтра
             Session[ActionControllerFilerKey] = new Dictionary<string, object>();
             var settings = Session[ActionControllerFilerKey] as IDictionary<string, object>;
-            if (!settings.ContainsKey(DateKey)) {
-                settings.Add(DateKey, date);
+            if (!settings.ContainsKey(DateBeginKey)) {
+                settings.Add(DateBeginKey, dateBegin);
             }
             else {
-                settings[DateKey] = date;
+                settings[DateBeginKey] = dateBegin;
+            }
+
+            if (!settings.ContainsKey(DateEndKey)) {
+                settings.Add(DateEndKey, dateEnd);
+            }
+            else {
+                settings[DateEndKey] = dateEnd;
             }
 
             if (!settings.ContainsKey(UserKey)) {
@@ -83,10 +113,13 @@ namespace mfc.web.Controllers {
                 settings[UserKey] = selectedUserId;
             }
 
-            var user_srv = CompositionRoot.Resolve<IUserService>();
-            var user = user_srv.GetUserById(selectedUserId);
+            var user = domain.entities.User.All;
 
-            var model = CreateActionListModel(date, user);
+            if (selectedUserId != domain.entities.User.All.Id) {
+                user = UserService.GetUserById(selectedUserId);
+            }
+            
+            var model = CreateActionListModel(dateBegin, dateEnd, user);
 
             return View(model);
         }
@@ -296,57 +329,46 @@ namespace mfc.web.Controllers {
         #region Helpers
 
         private void PrepareForCreate() {
-            var service_srv = CompositionRoot.Resolve<IServiceService>();
-            var type_srv = CompositionRoot.Resolve<IActionTypeService>();
-            var usr_srv = CompositionRoot.Resolve<IUserService>();
-
-            ViewBag.Services = service_srv.GetAllServices();
-            ViewBag.ActionTypes = type_srv.GetAllTypes();
+            ViewBag.Services = ServiceService.GetAllServices();
+            ViewBag.ActionTypes = ActionTypeService.GetAllTypes();
             ViewBag.CustomerTypes = CustomerTypeService.GetAllTypes();
 
             var experts = new List<User>();
 
             if (User.IsInRole(Roles.Admin)) {
-                experts.AddRange(usr_srv.GetExperts());
+                experts.AddRange(UserService.GetExperts());
             }
             else {
-                experts.Add(usr_srv.GetUser(User.Identity.Name));
+                experts.Add(UserService.GetUser(User.Identity.Name));
             }
 
             ViewBag.Experts = experts;
         }
 
-        private ActionListViewModel CreateActionListModel(DateTime date, User selectedUser) {
-            var user_srv = CompositionRoot.Resolve<IUserService>();
+        private ActionListViewModel CreateActionListModel(DateTime dateBegin, DateTime dateEnd, User selectedUser) {
 
             ActionListViewModel model = new ActionListViewModel();
-            model.Date = date;
+            model.DateBegin = dateBegin;
+            model.DateEnd = dateEnd;
 
             //Для администратора заполняем список всеми экспертами
             //Для эксперта - только им.
             if (User.IsInRole(Roles.Admin)) {
-                foreach (var user in user_srv.GetExperts()) {
+                foreach (var user in UserService.GetExperts()) {
                     model.Users.Add(user);
                 }
+                model.Users.Insert(0, mfc.domain.entities.User.All);
             }
             else {
                 model.Users.Add(selectedUser);
             }
-
-            var action_srv = CompositionRoot.Resolve<IActionService>();
-
+            
             //Пользователь, для данными которого заполняется список оказанных услуг
             //Если он не задан, то берем первого в списке
-            User queryUser = selectedUser;
+            if (selectedUser != null) {
+                model.SelectedUserId = selectedUser.Id;
 
-            if (queryUser == null && model.Users.Count > 0) {
-                queryUser = model.Users[0];
-            }
-
-            if (queryUser != null) {
-                model.SelectedUserId = queryUser.Id;
-
-                foreach (var action in action_srv.GetActions(queryUser, date)) {
+                foreach (var action in ActionService.GetActions(selectedUser, dateBegin, dateEnd)) {
                     model.Actions.Add(action);
                 }
             }
