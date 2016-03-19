@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using mfc.domain.models;
 
 namespace mfc.web.Helpers {
     public static class FileModelConverter {
@@ -32,6 +33,20 @@ namespace mfc.web.Helpers {
                 Organization = file.Ogv.Caption,
                 Status = file.CurrentStatus != null ? file.CurrentStatus.Caption : string.Empty,
                 ActionId = file.Action.Id
+            };
+        }
+
+        public static FileModelItem RecordToModelItem(FileRecord file) {
+            return new FileModelItem {
+                Id = file.Id,
+                Date = file.Date,
+                Caption = file.Caption,
+                Service = file.Service,
+                Expert = file.Expert,
+                Controller = file.Controller,
+                Organization = file.Organization,
+                Status = file.Status,
+                ActionId = file.ActionId
             };
         }
     }

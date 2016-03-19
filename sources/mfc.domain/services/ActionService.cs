@@ -49,7 +49,7 @@ namespace mfc.domain.services {
                 return GetActions(user, dateBegin, dateEnd, null);
             }
 
-            return Repository.GetActions(dateBegin, dateBegin).OrderByDescending(x => x.Date).ThenByDescending(x => x.Id);
+            return Repository.GetActions(dateBegin, dateEnd).OrderByDescending(x => x.Date).ThenByDescending(x => x.Id);
         }
 
         public IEnumerable<ServiceAction> GetActions(DateTime dateBegin, DateTime dateEnd, CustomerType customerType) {

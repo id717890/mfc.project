@@ -9,6 +9,7 @@ using mfc.infrastructure.services;
 using System.Data.SqlClient;
 using mfc.dal.services;
 using System.Diagnostics;
+    using mfc.domain.models;
 
 namespace mfc.domain.services {
     public class FileService : IFileService {
@@ -33,8 +34,8 @@ namespace mfc.domain.services {
         [Inject]
         public IUserService UserService { get; set; }
 
-        public IEnumerable<File> GetFiles(DateTime beginDate, DateTime endDate, Int64 controllerId, Int64 expertId, Int64 statusId, Int64 orgId, Int64 serviceId) {
-            return FileRepository.GetFiles(beginDate, endDate, controllerId, expertId, statusId, orgId, serviceId).OrderByDescending(x=>x.Date).ThenByDescending(x=>x.Id);
+        public IEnumerable<FileRecord> GetFiles(DateTime beginDate, DateTime endDate, Int64 controllerId, Int64 expertId, Int64 statusId, Int64 orgId, Int64 serviceId) {
+            return FileRepository.GetFileRecords(beginDate, endDate, controllerId, expertId, statusId, orgId, serviceId).OrderByDescending(x=>x.Date).ThenByDescending(x=>x.Id);
         }
 
         public File GetFileById(long Id) {

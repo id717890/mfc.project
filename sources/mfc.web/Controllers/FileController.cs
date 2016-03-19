@@ -37,6 +37,8 @@ namespace mfc.web.Controllers {
         //
         // GET: /File/
         public ActionResult Index(string beginDate = null, string endDate = null, Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1, Int64 serviceId = -1, Int32 page = 1) {
+            Logger.Debug($"FileController.Index start");
+
             DateTime queryDateBegin = DateTime.Today;
             queryDateBegin = new DateTime(queryDateBegin.Year, queryDateBegin.Month, 1);
 
@@ -76,8 +78,15 @@ namespace mfc.web.Controllers {
                     serviceId = (Int64)settings[ServiceKey];
                 }
             }
-            
-            return View(CreateModel(queryDateBegin, queryDateEnd, controllerId, expertId, statusId, orgId, serviceId, page));
+
+            Logger.Debug("FileController.Index before create view");
+
+            var view =
+                View(CreateModel(queryDateBegin, queryDateEnd, controllerId, expertId, statusId, orgId, serviceId, page));
+
+            Logger.Debug("FileController.Index after create view");
+
+            return view;
         }
 
         [HttpPost]
@@ -379,6 +388,8 @@ namespace mfc.web.Controllers {
         #region Helpers
 
         private FileListViewModel CreateModel(DateTime beginDate, DateTime endDate, Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1, Int64 serviceId = -1, Int32 page = 1) {
+            Logger.Debug($"FileController.CreateModel start ");
+
             var user_srv = CompositionRoot.Resolve<IUserService>();
             var status_srv = CompositionRoot.Resolve<IFileStatusService>();
             var org_srv = CompositionRoot.Resolve<IOrganizationService>();
@@ -445,8 +456,10 @@ namespace mfc.web.Controllers {
             }
 
             foreach (var file in file_srv.GetFiles(model.BeginDate, model.EndDate, model.SelectedControllerId, model.SelectedExpertId, model.SelectedStatusId, model.SelectedOgvId, model.SelectedServiceId)) {
-                model.Files.Add(FileModelConverter.ToModelItem(file));
+                model.Files.Add(FileModelConverter.RecordToModelItem(file));
             }
+
+            Logger.Debug($"FileController.CreateModel end ");
 
             return model;
         }
