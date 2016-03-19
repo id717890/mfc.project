@@ -20,7 +20,10 @@ namespace mfc.web.Models {
         [Display(Name = "До")]
         public DateTime DateEnd { get; set; }
 
+        [Display(Name = "Эксперт")]
         public Int64 SelectedUserId { get; set; }
+
+        public Int32 Page { get; set; }
 
         public IList<User> Users {
             get {

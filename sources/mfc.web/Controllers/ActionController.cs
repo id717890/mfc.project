@@ -37,7 +37,7 @@ namespace mfc.web.Controllers {
         [Inject]
         public IActionTypeService ActionTypeService { get; set; }
 
-        public ActionResult Index(string dateBegin = null, string dateEnd = null, Int64 user_id = -1) {
+        public ActionResult Index(string dateBegin = null, string dateEnd = null, Int64 user_id = -1, Int32 page = 1) {
             User user = null;
 
             //Если текущий пользователь не администратор, то тогда
@@ -83,12 +83,17 @@ namespace mfc.web.Controllers {
             }
 
             var model = CreateActionListModel(queryDateBegin, queryDateEnd, user);
+            if (page == 0) {
+                page = 1;
+            }
+
+            model.Page = page;
 
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Index(DateTime dateBegin, DateTime dateEnd, Int64 selectedUserId = -1) {
+        public ActionResult Index(DateTime dateBegin, DateTime dateEnd, Int64 selectedUserId = -1, Int32 page = 1) {
             //сохраняем настройки фильтра
             Session[ActionControllerFilerKey] = new Dictionary<string, object>();
             var settings = Session[ActionControllerFilerKey] as IDictionary<string, object>;
@@ -120,6 +125,11 @@ namespace mfc.web.Controllers {
             }
             
             var model = CreateActionListModel(dateBegin, dateEnd, user);
+            if (page == 0) {
+                page = 1;
+            }
+
+            model.Page = 1;
 
             return View(model);
         }
