@@ -10,7 +10,6 @@ namespace mfc.domain.services {
     /// Интерфейс для работы с оказанными услугами
     /// </summary>
     public interface IActionService {
-        IEnumerable<ServiceAction> GetActions(User user, DateTime date);
         IEnumerable<ServiceAction> GetActions(User user, DateTime dateBegin, DateTime dateEnd);
         IEnumerable<ServiceAction> GetActions(DateTime dateBegin, DateTime dateEnd, CustomerType customerType);
         IEnumerable<ServiceAction> GetActions(User user, DateTime dateBegin, DateTime dateEnd, CustomerType customerType);

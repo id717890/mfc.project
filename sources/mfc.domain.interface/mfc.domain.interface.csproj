@@ -53,6 +53,7 @@
     <Compile Include="entities\OrganizationType.cs" />
     <Compile Include="entities\Service.cs" />
     <Compile Include="entities\User.cs" />
+    <Compile Include="models\ActionRecord.cs" />
     <Compile Include="models\FileRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="services\IActionService.cs" />

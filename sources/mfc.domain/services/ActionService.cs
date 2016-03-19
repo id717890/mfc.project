@@ -39,11 +39,6 @@ namespace mfc.domain.services {
             return Repository.GetById(Id);
         }
 
-
-        public IEnumerable<ServiceAction> GetActions(User user, DateTime date) {
-            return Repository.GetActions(user.Id, date).OrderByDescending(x=>x.Date).ThenByDescending(x=>x.Id);
-        }
-
         public IEnumerable<ServiceAction> GetActions(User user, DateTime dateBegin, DateTime dateEnd) {
             if (user != User.All) {
                 return GetActions(user, dateBegin, dateEnd, null);
