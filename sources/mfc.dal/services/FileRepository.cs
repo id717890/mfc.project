@@ -25,7 +25,7 @@ namespace mfc.dal.services {
             return files.Count > 0 ? files[0] : null;
         }
 
-        public IEnumerable<File> GetFiles(DateTime beginDate, DateTime endDate, Int64 controllerId, Int64 expertId, Int64 statusId, Int64 orgId) {
+        public IEnumerable<File> GetFiles(DateTime beginDate, DateTime endDate, Int64 controllerId, Int64 expertId, Int64 statusId, Int64 orgId, Int64 serviceId) {
             var query = Session.Query<File>();
             if (controllerId != User.All.Id) {
                 query = query.Where(f => f.Controller.Id == controllerId || f.Controller == null);
@@ -37,6 +37,10 @@ namespace mfc.dal.services {
 
             if (orgId != Organization.All.Id) {
                 query = query.Where(f => f.Ogv.Id == orgId);
+            }
+
+            if (serviceId != Service.All.Id) {
+                query = query.Where(f => f.Action.Service.Id == serviceId);
             }
 
             if (statusId != FileStatus.All.Id) {

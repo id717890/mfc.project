@@ -28,9 +28,16 @@
                 <div style="margin: 0 10px;float:left">
                     @Html.LabelFor(m => m.SelectedControllerId): @Html.DropDownListFor(m => m.SelectedControllerId, new SelectList(Model.Controllers, "Id", "Name"), new { @class = "form-control" })
                 </div>
-                <div style="margin: 0 10px;float:left">
-                    @Html.LabelFor(m => m.SelectedExpertId) : @Html.DropDownListFor(m => m.SelectedExpertId, new SelectList(Model.Experts, "Id", "Name"), new { @class = "form-control" })
-                </div>
+                   <div style="margin: 0 10px; float: left">
+                       @Html.LabelFor(m => m.SelectedExpertId) : @Html.DropDownListFor(m => m.SelectedExpertId, new SelectList(Model.Experts, "Id", "Name"), new {@class = "form-control"})
+                   </div>
+                   <div style="clear: both"/>
+                   <div style="margin: 0 10px; ">
+                       @Html.LabelFor(x=>x.SelectedServiceId)
+                       @Html.TextBoxFor(x=>x.SelectedService, new {@class = "file-service-selector form-control", style= "style='width: 800px'" })
+                     
+                       @Html.HiddenFor(x=>x.SelectedServiceId)
+                   </div>
                 <input type="submit" value="Обновить" class="btn btn-lg btn-default" />
                 <div style="clear:both" />
                }
@@ -59,9 +66,10 @@
     }
 
     var files = new List<mfc.web.Models.FileModelItem>();
-
-    for (int index = firstIndex; index <= lastIndex; index++) {
-        files.Add(Model.Files[index-1]);
+    if (firstIndex > 0) {
+        for (int index = firstIndex; index <= lastIndex; index++) {
+            files.Add(Model.Files[index - 1]);
+        }
     }
 
     var pagerModel = Model.Files.ToPagedList(Model.Page, itemOnPage);
@@ -72,3 +80,18 @@
 
 
 @Html.PagedListPager(pagerModel, page => Url.Action("Index", new { page }))
+
+<script type="text/javascript">
+    $(function () {
+        var site_name = "";
+        var services = ["test", "test1"];
+        $(".file-service-selector").autocomplete({
+            source: site_name + "/Service/Search",
+            select: function (event, ui) {
+                if (ui.item != null) {
+                    $('input#SelectedServiceId').attr('value', ui.item.id);
+                }
+            }
+        });
+    });
+</script>

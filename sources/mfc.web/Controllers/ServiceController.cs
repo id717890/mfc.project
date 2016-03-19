@@ -9,9 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Ninject;
 
 namespace mfc.web.Controllers {
     public class ServiceController : BaseController {
+        [Inject]
+        public IServiceService ServiceService { get; set; }
+
         [Authorize(Roles = mfc.infrastructure.security.Roles.Admin)]
         public ActionResult List(Int64 id = 0) {
             var srv = CompositionRoot.Resolve<IServiceService>();
@@ -56,6 +60,17 @@ namespace mfc.web.Controllers {
             }
 
             return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Search(string term) {
+            var services = ServiceService.Search(term);
+            var result = services.Select(x => new {
+                id = x.Id,
+                value = x.Caption,
+                label = x.Caption
+            });
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         //

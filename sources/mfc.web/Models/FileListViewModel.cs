@@ -37,6 +37,12 @@ namespace mfc.web.Models {
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
 
+        [Display(Name = "Услуга")]
+        public Int64 SelectedServiceId { get; set; }
+
+        [Display(Name = "Услуга")]
+        public string SelectedService { get; set; }
+
         public IList<User> Controllers {
             get {
                 return _controllers;

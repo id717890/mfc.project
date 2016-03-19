@@ -33,8 +33,8 @@ namespace mfc.domain.services {
         [Inject]
         public IUserService UserService { get; set; }
 
-        public IEnumerable<File> GetFiles(DateTime beginDate, DateTime endDate, Int64 controllerId, Int64 expertId, Int64 statusId, Int64 orgId) {
-            return FileRepository.GetFiles(beginDate, endDate, controllerId, expertId, statusId, orgId).OrderByDescending(x=>x.Date).ThenByDescending(x=>x.Id);
+        public IEnumerable<File> GetFiles(DateTime beginDate, DateTime endDate, Int64 controllerId, Int64 expertId, Int64 statusId, Int64 orgId, Int64 serviceId) {
+            return FileRepository.GetFiles(beginDate, endDate, controllerId, expertId, statusId, orgId, serviceId).OrderByDescending(x=>x.Date).ThenByDescending(x=>x.Id);
         }
 
         public File GetFileById(long Id) {
