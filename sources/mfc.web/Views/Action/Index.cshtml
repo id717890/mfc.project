@@ -1,16 +1,49 @@
-﻿@model mfc.web.Models.ActionListViewModel
+﻿@using mfc.domain.entities
+@using PagedList
+@using PagedList.Mvc;
+
+
+@model mfc.web.Models.ActionListViewModel
 
 @{
     ViewBag.Title = "Список оказанных услуг";
 }
+
+@{
+    var itemOnPage = 50;
+
+    int pageCount = (int)Math.Round((decimal)Model.Actions.Count / itemOnPage, 0);
+
+    if (pageCount == 0) {
+        pageCount = 1;
+    }
+
+    var firstIndex = (Model.Page - 1) * itemOnPage + 1;
+    var lastIndex = Model.Page * itemOnPage;
+
+    if (lastIndex >= Model.Actions.Count) {
+        lastIndex = Model.Actions.Count - 1;
+    }
+
+    var actions = new List<ServiceAction>();
+    if (firstIndex > 0) {
+        for (int index = firstIndex; index <= lastIndex; index++) {
+            actions.Add(Model.Actions[index - 1]);
+        }
+    }
+
+    var pagerModel = Model.Actions.ToPagedList(Model.Page, itemOnPage);
+}
+
 @section featured {
     <section class="featured">
         <div class="content-wrapper">
             <h1 class="page-header">@ViewBag.Title</h1>
             <p>
                @using (Html.BeginForm()) {
-                <div style="margin: 0 10px;float:left">Дата: @Html.EditorFor(m => m.Date)</div>
-                <div style="margin: 0 10px;float:left">Эксперт: @Html.DropDownListFor(m => m.SelectedUserId, new SelectList(Model.Users, "Id", "Name"), new { @class = "form-control" })
+                <div style="margin: 0 10px; float: left">@Html.LabelFor(x => x.DateBegin) @Html.EditorFor(m => m.DateBegin)</div>
+                <div style="margin: 0 10px;float:left">@Html.LabelFor(x => x.DateEnd) @Html.EditorFor(m => m.DateEnd)</div>
+                <div style="margin: 0 10px;float:left">@Html.LabelFor(x=>x.SelectedUserId) @Html.DropDownListFor(m => m.SelectedUserId, new SelectList(Model.Users, "Id", "Name"), new { @class = "form-control" })
                 </div>
                 <input type="submit" value="Обновить" class="btn btn-lg btn-default" />
                 <div style="clear:both" />
@@ -23,8 +56,9 @@
     @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Services)
 }
 <p>
-    @Html.ActionLink("Новый", "Create", new { date = Model.Date.ToShortDateString(), user_id = Model.SelectedUserId })
+    @Html.ActionLink("Новый", "Create", new {date = DateTime.Today.ToShortDateString(), user_id = Model.SelectedUserId})
 </p>
+
 <table class="table">
     <tr>
         <th>Дата</th>
@@ -36,7 +70,7 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model.Actions) {
+    @foreach (var item in actions) {
         <tr>
             <td>
                 @item.Date.ToString("dd.MM.yyyy")
@@ -57,10 +91,13 @@
                 @Html.DisplayFor(modelItem => item.User.Name)
             </td>
             <td>
-                @Html.ActionLink("Изменить", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+                @Html.ActionLink("Изменить", "Edit", new {id = item.Id}) |
+                @Html.ActionLink("Удалить", "Delete", new {id = item.Id})
             </td>
         </tr>
     }
 
 </table>
+
+
+@Html.PagedListPager(pagerModel, page => Url.Action("Index", new { page }))

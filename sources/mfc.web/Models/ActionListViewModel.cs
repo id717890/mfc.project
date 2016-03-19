@@ -13,8 +13,17 @@ namespace mfc.web.Models {
         #endregion
 
         [DataType(DataType.Date)]
-        public DateTime Date { get; set; }
+        [Display(Name = "С")]
+        public DateTime DateBegin { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "До")]
+        public DateTime DateEnd { get; set; }
+
+        [Display(Name = "Эксперт")]
         public Int64 SelectedUserId { get; set; }
+
+        public Int32 Page { get; set; }
 
         public IList<User> Users {
             get {
