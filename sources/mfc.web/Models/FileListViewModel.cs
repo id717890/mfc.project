@@ -66,5 +66,7 @@ namespace mfc.web.Models {
                 return _files;
             }
         }
+
+        public Int32 Page { get; set; }
     }
 }

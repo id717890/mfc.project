@@ -1,4 +1,8 @@
-﻿@model mfc.web.Models.FileListViewModel
+﻿@using PagedList
+@using PagedList.Mvc;
+@model mfc.web.Models.FileListViewModel
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css"/>
 
 @{
     ViewBag.Title = "Список дел";
@@ -40,11 +44,31 @@
 }
 <hr/>
 @{
-    /*var files = new mfc.web.Models.FileListModel();
-    files.Items.AddRange(Model.Files);
-    */
+    var itemOnPage = 50;
+
+    int pageCount = (int)Math.Round((decimal)Model.Files.Count / itemOnPage, 0);
+    if (pageCount == 0) {
+        pageCount = 1;
+    }
+
+    var firstIndex = (Model.Page - 1)*itemOnPage + 1;
+    var lastIndex = Model.Page*itemOnPage;
+
+    if (lastIndex >= Model.Files.Count) {
+        lastIndex = Model.Files.Count - 1;
+    }
+
     var files = new List<mfc.web.Models.FileModelItem>();
-    files.AddRange(Model.Files);
+
+    for (int index = firstIndex; index <= lastIndex; index++) {
+        files.Add(Model.Files[index-1]);
+    }
+
+    var pagerModel = Model.Files.ToPagedList(Model.Page, itemOnPage);
 }
 
- @Html.Partial("_FileList", files)
+
+@Html.Partial("_FileList", files)
+
+
+@Html.PagedListPager(pagerModel, page => Url.Action("Index", new { page }))
