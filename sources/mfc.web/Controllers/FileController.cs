@@ -31,7 +31,7 @@ namespace mfc.web.Controllers {
 
         //
         // GET: /File/
-        public ActionResult Index(string beginDate = null, string endDate = null, Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1) {
+        public ActionResult Index(string beginDate = null, string endDate = null, Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1, Int32 page = 1) {
             DateTime queryDateBegin = DateTime.Today;
             queryDateBegin = new DateTime(queryDateBegin.Year, queryDateBegin.Month, 1);
 
@@ -69,7 +69,7 @@ namespace mfc.web.Controllers {
                 }
             }
             
-            return View(CreateModel(queryDateBegin, queryDateEnd, controllerId, expertId, statusId, orgId));
+            return View(CreateModel(queryDateBegin, queryDateEnd, controllerId, expertId, statusId, orgId, page));
         }
 
         [HttpPost]
@@ -356,7 +356,7 @@ namespace mfc.web.Controllers {
 
         #region Helpers
 
-        private FileListViewModel CreateModel(DateTime beginDate, DateTime endDate, Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1) {
+        private FileListViewModel CreateModel(DateTime beginDate, DateTime endDate, Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1, Int32 page = 1) {
             var user_srv = CompositionRoot.Resolve<IUserService>();
             var status_srv = CompositionRoot.Resolve<IFileStatusService>();
             var org_srv = CompositionRoot.Resolve<IOrganizationService>();
@@ -370,6 +370,7 @@ namespace mfc.web.Controllers {
             model.SelectedStatusId = statusId == -1 ? FileStatus.All.Id : statusId;
             model.BeginDate = beginDate;
             model.EndDate = endDate;
+            model.Page = page;
 
             if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Controller)) {
                 //Для администратора и контролера заполняем список всеми экспертами и контролерами
