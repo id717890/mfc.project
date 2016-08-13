@@ -123,7 +123,7 @@ namespace mfc.dal.services {
                 var queryParams = new Dictionary<string, Int64>();
 
                 if (controllerId != User.All.Id) {
-                    cmd.CommandText += " and  (f.controller_id is null or f.controller_d = @controllerId) ";
+                    cmd.CommandText += " and  (f.controller_id is null or f.controller_id = @controllerId) ";
                     queryParams.Add("controllerId", controllerId);
                 }
 
