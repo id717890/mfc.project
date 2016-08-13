@@ -4,6 +4,7 @@ using mfc.domain.services;
 using mfc.web.Abstracts;
 using mfc.web.Helpers;
 using mfc.web.Models;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,20 +15,10 @@ namespace mfc.web.Controllers {
     public class FileListController : BaseController {
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "ControlList")]
-        public ActionResult ControlList(List<FileModelItem> model) {
+        public ActionResult ControlList(FormCollection collection) {
             var file_srv = CompositionRoot.Resolve<IFileService>();
-            List<Int64> checked_file_ids = new List<long>();
-
-             if (!ModelState.IsValid || model == null) {
-                 return RedirectToAction("Index", "File");
-             }
-
-             foreach (var item in model) {
-                 if (item.IsChecked) {
-                     checked_file_ids.Add(item.Id);
-                 }
-             }
-
+            List<Int64> checked_file_ids = CreateFilesList(collection);
+            
             if (checked_file_ids.Count == 0) {
                 return RedirectToAction("Index", "File");
             }
@@ -50,27 +41,19 @@ namespace mfc.web.Controllers {
 
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "CreatePackage")]
-        public ActionResult CreatePackage(List<FileModelItem> model) {
-            var file_srv = CompositionRoot.Resolve<IFileService>();
-            List<Int64> checked_file_ids = new List<long>();
+        public ActionResult CreatePackage(FormCollection collection)
+        {
+            List<Int64> checked_file_ids = CreateFilesList(collection);
 
-            if (!ModelState.IsValid || model == null) {
-                return RedirectToAction("Index", "File");
-            }
-
-            foreach (var item in model) {
-                if (item.IsChecked) {
-                    checked_file_ids.Add(item.Id);
-                }
-            }
-
-            if (checked_file_ids.Count == 0) {
+            if (checked_file_ids.Count == 0)
+            {
                 return RedirectToAction("Index", "File");
             }
 
             return View(PackageHelper.CreateModel(checked_file_ids));
         }
 
+        
         [HttpPost]
         public ActionResult SavePackage(PackageModel model) {
             if (ModelState.IsValid) {
@@ -97,6 +80,37 @@ namespace mfc.web.Controllers {
             PackageHelper.PrepareModel(model);
 
             return View("CreatePackage", model);
+        }
+
+        private List<Int64> CreateFilesList(FormCollection collection)
+        {
+            List<Int64> checked_file_ids = new List<long>();
+
+            //проверим отработал ли код javascript, который добавляет полный список
+            //отмеченных файлов
+            if (collection["checked-files"] != null)
+            {
+                JObject json = JObject.Parse(collection["checked-files"]);
+                foreach (var prop in json.Properties().Select(p => p.Name).ToList())
+                {
+                    if (json[prop].Value<bool>())
+                    {
+                        checked_file_ids.Add(long.Parse(prop.Replace("file", "")));
+                    }
+                }
+            }
+            else
+            {
+                foreach (var file in collection.AllKeys)
+                {
+                    if (file.StartsWith("file") && collection[file] == "on")
+                    {
+                        checked_file_ids.Add(long.Parse(file.Replace("file", "")));
+                    }
+                }
+            }
+
+            return checked_file_ids;
         }
     }
 }
