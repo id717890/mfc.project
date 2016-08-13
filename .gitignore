@@ -8,8 +8,5 @@
 **.suo
 **.user
 /**/bin
-<<<<<<< HEAD
 /.vs
-=======
 .vs/**
->>>>>>> origin/task#61
