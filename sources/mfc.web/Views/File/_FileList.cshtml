@@ -1,12 +1,12 @@
 ﻿@model List<mfc.web.Models.FileModelItem>
 
-@using (Html.BeginForm("", "FileList", FormMethod.Post)) {
+@using (Html.BeginForm("", "FileList", FormMethod.Post, new { id = "file-list-form" })) {
     <input type="submit" value="Принять" class="btn btn-lg btn-default" name="action:ControlList" />
     <input type="submit" value="Создать пакет" class="btn btn-lg btn-default" name="action:CreatePackage"/>
 
-    <table class="table">
+    <table class="table" id="file-list-table">
         <tr>
-            <th></th>
+            <th><a href="javascript:void(0)" id="clear-checkboxes-button">x</a></th>
             <th>Дата</th>
             <th>Номер</th>
             <th>Услуга</th>
@@ -19,19 +19,20 @@
 
         @for (int index = 0; index < Model.Count; index++) {
             Int64 item_id = Model[index].Id;
+            String input_id = $"file{item_id}";
 
-            @Html.HiddenFor(m => Model[index].Id)
+            /*@Html.HiddenFor(m => Model[index].Id)
             @Html.HiddenFor(m => Model[index].Caption)
             @Html.HiddenFor(m => Model[index].Controller)
             @Html.HiddenFor(m => Model[index].Date)
             @Html.HiddenFor(m => Model[index].Expert)
             @Html.HiddenFor(m => Model[index].Organization)
             @Html.HiddenFor(m => Model[index].Service)
-            @Html.HiddenFor(m => Model[index].Status)
+            @Html.HiddenFor(m => Model[index].Status)*/
 
             <tr>
                 <td>
-                    @Html.CheckBoxFor(m => Model[index].IsChecked)
+                    <input id="@input_id" data-val="true"  name="@input_id" type="checkbox" value="@Model[index].IsChecked"/>
                 </td>
                 <td>
                     @Model[index].Date.ToString("dd.MM.yyyy")
@@ -75,14 +76,48 @@ Query dialig section
 <script type="text/javascript">
     var wait_dialog;
 
+    function update_checkboxes() {
+        var checkboxes = get_checked_files();
+
+        if (checkboxes != {}) {
+            $("#file-list-table :checkbox").each(function () {
+                if (checkboxes[this.id] != undefined) {
+                    this.checked = checkboxes[this.id];
+                }
+                else {
+                    this.checked = false;
+                }
+            });
+        }
+    }
+
     $(function() {
         $("#query-dialog").dialog({
             autoOpen: false,
             modal: true
         });
+
         wait_dialog = $(".waiting");
     });
 
+    $("#file-list-table :checkbox").on("change", function () {
+        if (this.checked) {
+            add_checked_file(this.id);
+        }
+        else {
+            remove_checked_file(this.id);
+        }
+    });
+
+
+    $(function () {
+        update_checkboxes();
+    });
+
+    $("#clear-checkboxes-button").click(function () {
+        clear_checked_files();
+        update_checkboxes();
+    });
 
 
     $(".delete-link").click(function(e) {
@@ -116,4 +151,15 @@ Query dialig section
 
         $("#query-dialog").dialog("open");
     });
-               </script>
+
+    $("input[name='action:CreatePackage'").click(function () {
+        var checked_files = get_checked_files();
+        if (checked_files != {}) {
+            var input = $("<input>")
+                   .attr("type", "hidden")
+                   .attr("name", "checked-files").val(JSON.stringify(checked_files));
+
+            $('#file-list-form').append($(input));
+        }
+    })
+</script>
