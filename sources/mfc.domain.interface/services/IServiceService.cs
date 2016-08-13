@@ -16,5 +16,6 @@ namespace mfc.domain.services {
         void Delete(Int64 id);
 
         IEnumerable<Service> GetChildServices(Int64 parentId);
+        IEnumerable<Service> Search(string term);
     }
 }

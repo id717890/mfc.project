@@ -310,3 +310,13 @@ input[type="checkbox"].input-validation-error {
                 50% 50% 
                 no-repeat;
 }
+
+
+.ui-autocomplete {
+    max-width: 800px;
+    list-style: none;
+}
+    .ui-autocomplete li {
+        word-break: break-all;
+        border-bottom: gray 1px solid;
+    }

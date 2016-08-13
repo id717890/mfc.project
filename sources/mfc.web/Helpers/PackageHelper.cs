@@ -43,8 +43,8 @@ namespace mfc.web.Helpers {
             PackageModel model = new PackageModel();
             model.Date = package.Date;
             model.Id = package.Id;
-            model.Organization = package.Organization.Caption;
-            model.OrganizationId = package.Organization.Id;
+            model.Organization = package.Organization!=null ? package.Organization.Caption : string.Empty;
+            model.OrganizationId = package.Organization != null ? package.Organization.Id : 0;
             model.ControllerId = package.Controller.Id;
             model.Comment = package.Comment;
 
