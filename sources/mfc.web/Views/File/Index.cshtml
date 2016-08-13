@@ -64,7 +64,7 @@
     var lastIndex = Model.Page*itemOnPage;
 
     if (lastIndex >= Model.Files.Count) {
-        lastIndex = Model.Files.Count;
+        lastIndex = Model.Files.Count - 1;
     }
 
     var files = new List<mfc.web.Models.FileModelItem>();
