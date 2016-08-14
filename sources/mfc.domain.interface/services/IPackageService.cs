@@ -15,7 +15,7 @@ namespace mfc.domain.services {
         /// <summary>
         /// Создает пакет файлов
         /// </summary>
-        Int64 CreatePackage(User controller, DateTime date, Organization organization, IEnumerable<Int64> files);
+        Int64 CreatePackage(User controller, DateTime date, Organization organization, IEnumerable<Int64> files, string comment);
 
         /// <summary>
         /// Возвращает пакет по его идентификатору

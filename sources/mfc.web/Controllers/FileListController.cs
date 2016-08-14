@@ -68,7 +68,7 @@ namespace mfc.web.Controllers {
                 }
 
                 try {
-                    var id = package_srv.CreatePackage(user_srv.GetCurrentUser(), model.Date, org_srv.GetOrganizationById(model.OrganizationId), file_ids);
+                    var id = package_srv.CreatePackage(user_srv.GetCurrentUser(), model.Date, org_srv.GetOrganizationById(model.OrganizationId), file_ids, model.Comment);
 
                     return RedirectToAction("Edit", "Package", new { id = id });
                 }

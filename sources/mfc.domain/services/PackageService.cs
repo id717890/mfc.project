@@ -37,11 +37,14 @@ namespace mfc.domain.services {
             return PackageRepository.GetPackages(dateBegin, dateEnd, controller, organization);
         }
 
-        public long CreatePackage(User controller, DateTime date, Organization organization, IEnumerable<long> files) {
-            Package package = new Package();
-            package.Date = date;
-            package.Controller = controller;
-            package.Organization = organization;
+        public long CreatePackage(User controller, DateTime date, Organization organization, IEnumerable<long> files, string comment) {
+            Package package = new Package
+            {
+                Date = date,
+                Controller = controller,
+                Organization = organization,
+                Comment = comment
+            };
 
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
             unit_of_work.BeginTransaction();
