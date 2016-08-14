@@ -146,11 +146,6 @@ namespace mfc.dal.services {
                     cmd.CommandText += " and f.status_id = @statusId";
                     queryParams.Add("statusId", statusId);
                 }
-                else {
-                    //Исключаем из списка дела со статусом этапа "Отправлено в ОГВ"
-                    cmd.CommandText += " and (f.status_id != @statusId or f.status_id is null) ";
-                    queryParams.Add("statusId", _end_file_status_id);
-                }
 
                 cmd.CommandText += " order by f.dt desc, f.Id desc";
 
