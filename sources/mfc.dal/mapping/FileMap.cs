@@ -10,8 +10,6 @@ namespace mfc.dal.mapping {
     public class FileMap : ClassMap<File>{
         public FileMap() {
             Table("Files");
-            ReadOnly();
-            Cache.ReadOnly();
             Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Date, "dt");
             Map(x => x.Caption, "Caption");

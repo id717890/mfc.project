@@ -6,33 +6,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace mfc.web.Helpers {
-    public static class ServiceActionModelConverter {
+namespace mfc.web.Helpers
+{
+    public static class ServiceActionModelConverter
+    {
         #region Fields
-        private static IUserService _usr_service = CompositionRoot.Resolve<IUserService>();
-        private static IActionTypeService _action_type_srv = CompositionRoot.Resolve<IActionTypeService>();
-        private static IServiceService _service_srv = CompositionRoot.Resolve<IServiceService>();
-        private static ICustomerTypeService _customer_service = CompositionRoot.Resolve<ICustomerTypeService>();
+        private static IUserService UserService = CompositionRoot.Resolve<IUserService>();
+        private static IActionTypeService ActionTypeService = CompositionRoot.Resolve<IActionTypeService>();
+        private static IServiceService ServiceService = CompositionRoot.Resolve<IServiceService>();
+        private static ICustomerTypeService CustomerService = CompositionRoot.Resolve<ICustomerTypeService>();
         #endregion
 
-        public static ServiceAction FromModel(ServiceActionViewModel model) {
-            return new ServiceAction {
-                Id = model.Id,
-                User = _usr_service.GetUserById(model.ExpertId),
-                Customer = model.Customer,
-                Service = _service_srv.GetServiceById(model.ServiceId),
-                Date = model.Date,
-                Type = _action_type_srv.GetTypeById(model.TypeId),
-                Comments = model.Comments,
-                ServiceChild = _service_srv.GetServiceById(model.ServiceChildId),
-                IsNonresident = model.IsNonresident,
-                FreeVisit = model.FreeVisit,
-                CustomerType = model.CustomerTypeId == CustomerType.Empty.Id ? null : _customer_service.GetTypeById(model.CustomerTypeId)
-            };
+        public static void FromModel(ServiceActionViewModel model, ServiceAction action)
+        {
+            /*action.Id = model.Id;*/
+            action.User = UserService.GetUserById(model.ExpertId);
+            action.Customer = model.Customer;
+            action.Service = ServiceService.GetServiceById(model.ServiceId);
+            action.Date = model.Date;
+            action.Type = ActionTypeService.GetTypeById(model.TypeId);
+            action.Comments = model.Comments;
+            action.ServiceChild = ServiceService.GetServiceById(model.ServiceChildId);
+            action.IsNonresident = model.IsNonresident;
+            action.FreeVisit = model.FreeVisit;
+            action.CustomerType = model.CustomerTypeId == CustomerType.Empty.Id
+                ? null
+                : CustomerService.GetTypeById(model.CustomerTypeId);
         }
 
-        public static ServiceActionViewModel ToModel(ServiceAction entity) {
-            var item = new ServiceActionViewModel {
+        public static ServiceActionViewModel ToModel(ServiceAction entity)
+        {
+            var item = new ServiceActionViewModel
+            {
                 Id = entity.Id,
                 ExpertId = entity.User.Id,
                 Expert = entity.User.Name,
@@ -45,19 +50,22 @@ namespace mfc.web.Helpers {
                 FreeVisit = entity.FreeVisit
             };
 
-            if (entity.Service != null) {
+            if (entity.Service != null)
+            {
                 item.ServiceId = entity.Service.Id;
                 item.Service = entity.Service.Caption;
                 item.OrganizationId = entity.Service.Organization.Id;
                 item.Organization = entity.Service.Organization.Caption;
             }
 
-            if (entity.ServiceChild != null) {
+            if (entity.ServiceChild != null)
+            {
                 item.ServiceChildId = entity.ServiceChild.Id;
                 item.ServiceChild = entity.ServiceChild.Caption;
             }
 
-            if (entity.CustomerType != null) {
+            if (entity.CustomerType != null)
+            {
                 item.CustomerTypeId = entity.CustomerType.Id;
                 item.CustomerType = entity.CustomerType.Caption;
             }
