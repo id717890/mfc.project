@@ -11,8 +11,6 @@ namespace mfc.dal.mapping {
     public class ServiceActionMap : ClassMap<ServiceAction> {
         public ServiceActionMap() {
             Table("Actions");
-            ReadOnly();
-            Cache.ReadOnly();
             Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Date, "dt");
             Map(x => x.Comments);

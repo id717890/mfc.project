@@ -169,7 +169,6 @@
             $.get(site_name + '/Organization/ListData', null, function (data) {
                 var list_div;
                 list_div = $('#select-org-form');
-                list_div.html('asdfasdf');
 
                 data.forEach(function (item) {
                     list_div.append('<div><a href="javascript:void(0)" onclick="selectOrg(' + item.Id + ', \'' + item.Caption + '\')">' + item.Caption + '</a></div>');
@@ -187,7 +186,7 @@
 
             $.get(site_name + '/Service/ListData/' + org_id, null, function (data, textStatus) {
                 data.forEach(function (item, i, arr) {
-                    list_div.append('<div><a href="#" onclick="selectSrv(' + item.Id + ', \'' + item.Caption + '\')">' + item.Caption + '</a><hr/></div>');
+                    list_div.append('<div><a href="javascript:void(0)" onclick="selectSrv(' + item.Id + ', \'' + item.Caption + '\')">' + item.Caption + '</a><hr/></div>');
                 });
             });
         }
@@ -202,7 +201,7 @@
 
             $.get(site_name + '/Service/ChildListData/' + srv_id, null, function (data, textStatus) {
                 data.forEach(function (item, i, arr) {
-                    list_div.append('<div><a href="#" onclick="selectSrvChild(' + item.Id + ', \'' + item.Caption + '\')">' + item.Caption + '</a><hr/></div>');
+                    list_div.append('<div><a href="javascript:void(0)" onclick="selectSrvChild(' + item.Id + ', \'' + item.Caption + '\')">' + item.Caption + '</a><hr/></div>');
                 });
             });
         }
