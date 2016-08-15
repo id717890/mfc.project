@@ -293,6 +293,8 @@ namespace mfc.web.Controllers {
                         throw new DomainException($"Прием с идентификатором {model.Id} не найден в базе данных");
                     }
 
+                    ServiceActionModelConverter.FromModel(model, action);
+
                     if (action.ServiceChild != null && !Equals(action.Service.Id, action.ServiceChild.Parent.Id))
                     {
                         throw new DomainException("Подуслуга не связана с услугой");
