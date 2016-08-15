@@ -206,9 +206,8 @@ namespace mfc.web.Controllers {
         public ActionResult Delete(ServiceActionViewModel model) {
             bool has_error = false;
 
-            var action_srv = CompositionRoot.Resolve<IActionService>();
             try {
-                action_srv.Delete(model.Id);
+                ActionService.Delete(model.Id);
             }
             catch (DomainException e) {
                 ModelState.AddModelError("", e);
@@ -287,7 +286,12 @@ namespace mfc.web.Controllers {
 
             if (ModelState.IsValid) {
                 try {
-                    var action = ServiceActionModelConverter.FromModel(model);
+                    var action = ActionService.GetActionById(model.Id);
+
+                    if (action == null)
+                    {
+                        throw new DomainException($"Прием с идентификатором {model.Id} не найден в базе данных");
+                    }
 
                     if (action.ServiceChild != null && !action.Service.Equals(action.ServiceChild.Parent)) {
                         throw new DomainException("Подуслуга не связана с услугой");

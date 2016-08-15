@@ -22,7 +22,7 @@
     var lastIndex = Model.Page * itemOnPage;
 
     if (lastIndex >= Model.Actions.Count) {
-        lastIndex = Model.Actions.Count - 1;
+        lastIndex = Model.Actions.Count;
     }
 
     var actions = new List<ServiceAction>();
