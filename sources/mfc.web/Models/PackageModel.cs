@@ -9,6 +9,7 @@ namespace mfc.web.Models {
     public class PackageModel {
         #region Fields
         private List<Organization> _orgs = new List<Organization>();
+        private List<FileStatus> _statuses = new List<FileStatus>();
         #endregion
 
         [Required]
@@ -34,5 +35,10 @@ namespace mfc.web.Models {
         public FileModelItem[] Files { get; set; }
 
         public List<Organization> Organizations { get { return _orgs; } }
+
+        [Display(Name = "Статус")]
+        public long Status { get; set; }
+
+        public List<FileStatus> Statuses { get { return _statuses; } }
     }
 }

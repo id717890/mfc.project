@@ -52,20 +52,7 @@ namespace mfc.web.Controllers {
 
             return View(PackageHelper.CreateModel(checked_file_ids));
         }
-
-        [HttpPost]
-        [MultipleButton(Name = "action", Argument = "BatchSettings")]
-        public ActionResult BatchSettings(FormCollection collection) {
-            List<long> checked_file_ids = CreateFilesList(collection);
-
-            if (checked_file_ids.Count == 0) {
-                return RedirectToAction("Index", "File");
-            }
-
-            return View(new FileBatchSettingsModel { Status = Convert.ToInt64(collection["status"]), Files = checked_file_ids });
-        }
-
-
+        
         [HttpPost]
         public ActionResult SavePackage(PackageModel model) {
             if (ModelState.IsValid) {
@@ -92,6 +79,53 @@ namespace mfc.web.Controllers {
             PackageHelper.PrepareModel(model);
 
             return View("CreatePackage", model);
+        }
+
+        [HttpPost]
+        [MultipleButton(Name = "action", Argument = "BatchSettings")]
+        public ActionResult BatchSettings(FormCollection collection)
+        {
+            List<long> checked_file_ids = CreateFilesList(collection);
+
+            if (checked_file_ids.Count == 0)
+            {
+                return RedirectToAction("Index", "File");
+            }
+
+            var file_srv = CompositionRoot.Resolve<IFileService>();
+            var file_status_srv = CompositionRoot.Resolve<IFileStatusService>();
+
+            var model = new FileBatchSettingsModel {
+                Status = Convert.ToInt64(collection["status"]),
+                Files = checked_file_ids.Select(x => FileModelConverter.ToModelItem(file_srv.GetFileById(x))).ToArray(),
+                Statuses = file_status_srv.GetAllStatuses().Select(x => FileStatusModelConverter.ToModel(x)).ToArray()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult BatchSettings(FileBatchSettingsModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var file_stage_srv = CompositionRoot.Resolve<IFileStageService>();
+                var file_srv = CompositionRoot.Resolve<IFileService>();
+                
+                try
+                {
+                    var stage = file_stage_srv.GetStageByStatus(model.Status);
+                    file_srv.SetStage(model.Files.Select(x => x.Id), stage.Code, string.Empty);
+                }
+                catch (DomainException e)
+                {
+                    ModelState.AddModelError("", e.Message);
+                    return RedirectToAction("Index", "File");
+                }
+            }
+
+            return RedirectToAction("Index", "File");
         }
 
         private List<Int64> CreateFilesList(FormCollection collection)

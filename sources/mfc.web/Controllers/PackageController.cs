@@ -123,12 +123,15 @@ namespace mfc.web.Controllers {
         public ActionResult Edit(PackageModel model) {
             bool has_error = false;
 
+            var file_srv = CompositionRoot.Resolve<IFileService>();
+            var file_stage_srv = CompositionRoot.Resolve<IFileStageService>();
             var package_srv = CompositionRoot.Resolve<IPackageService>();
             
             if (ModelState.IsValid) {
                 var package = PackageHelper.CreatePackage(model);
-            
+                                
                 try {
+                    file_srv.SetStage(model.Files.Select(x => x.Id), file_stage_srv.GetStageByStatus(model.Status).Code, string.Empty);
                     package_srv.Update(package);
                     package_srv.UpdatePackageFiles(package.Id, model.Files != null ? model.Files.Select(f => f.Id) : new List<Int64>());
                 }

@@ -1,7 +1,7 @@
 ﻿@model mfc.web.Models.FileBatchSettingsModel
 
 @{
-    ViewBag.Title = "Пакетная настройка";
+    ViewBag.Title = "Множественная обработка дел";
 }
 @section featured {
     <section class="featured">
@@ -17,7 +17,7 @@
 
 @using (Html.BeginForm("BatchSettings", "FileList", FormMethod.Post, new { @class = "form", id = "batch-settings-form" })) {
     @Html.AntiForgeryToken()
-
+    
     <input type="submit" value="Сохранить" class="btn btn-default" id="batch-settings-submit"/>
     
     <hr/>
@@ -27,15 +27,46 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Status", Model.Statuses.Select(x => new SelectListItem { Text = x.Caption, Value = x.Id.ToString() }), string.Empty, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownList("Status", Model.Statuses.Select(x => new SelectListItem { Text = x.Caption, Value = x.Id.ToString() }), string.Empty, new { htmlAttributes = new { @class = "form-control " } })
                 @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
+
+    <table class="table">
+        <tr>
+            <th>Дата</th>
+            <th>Номер</th>
+            <th>Услуга</th>
+            <th>ОГВ</th>
+            <th>Эксперт</th>
+            <th>Контролёр</th>
+            <th>Статус</th>
+        </tr>
+
+        @for (int i = 0; i < Model.Files.Length; i++)
+        {
+            @Html.HiddenFor(m => Model.Files[i].Id)
+            @Html.HiddenFor(m => Model.Files[i].Caption)
+            @Html.HiddenFor(m => Model.Files[i].Controller)
+            @Html.HiddenFor(m => Model.Files[i].Date)
+            @Html.HiddenFor(m => Model.Files[i].Expert)
+            @Html.HiddenFor(m => Model.Files[i].Organization)
+            @Html.HiddenFor(m => Model.Files[i].Service)
+            @Html.HiddenFor(m => Model.Files[i].Status)
+
+            <tr>
+                <td>@Model.Files[i].Date.ToString("dd.MM.yyyy")</td>
+                <td>@Html.DisplayFor(m => Model.Files[i].Caption)</td>
+                <td>@Html.DisplayFor(m => Model.Files[i].Service)</td>
+                <td>@Html.DisplayFor(m => Model.Files[i].Organization)</td>
+                <td>@Html.DisplayFor(m => Model.Files[i].Expert)</td>
+                <td>@Html.DisplayFor(m => Model.Files[i].Controller)</td>
+                <td>@Html.DisplayFor(m => Model.Files[i].Status)</td>
+            </tr>
+        }
+    </table>
 }
 
 <script type="text/javascript">
-    $("#create-package-submit").click(function () {
-        clear_checked_files();
-    })
 </script>

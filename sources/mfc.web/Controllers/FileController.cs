@@ -367,27 +367,6 @@ namespace mfc.web.Controllers {
 
             return View(model);
         }
-        
-        [HttpPost]
-        public ActionResult BatchSettings(FileBatchSettingsModel model) {
-            if (ModelState.IsValid) {
-                var file_srv = CompositionRoot.Resolve<IFileService>();
-                var file_stage_srv = CompositionRoot.Resolve<IFileStageService>();
-                var user_srv = CompositionRoot.Resolve<IUserService>();
-
-                var stage = file_stage_srv.GetStageByStatus(model.Status);
-                try {
-                    file_srv.SetStage(model.Files, stage.Code, string.Empty);
-                } catch (DomainException e) {
-                    ModelState.AddModelError("", e);
-                    return RedirectToAction("List", new FileListViewModel { });
-                }
-            }
-
-            PrepareForCreate();
-
-            return View(model);
-        }
 
         public ActionResult FileStatuses(Int64 id) {
             var srv = CompositionRoot.Resolve<IFileStatusService>();

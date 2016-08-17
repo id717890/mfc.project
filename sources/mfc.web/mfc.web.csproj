@@ -276,7 +276,7 @@
     <Compile Include="Models\AccountInfo.cs" />
     <Compile Include="Models\ActionListViewModel.cs" />
     <Compile Include="Models\CustomerTypeModel.cs" />
-    <Compile Include="Models\FileBatchStatusModel.cs" />
+    <Compile Include="Models\FileBatchSettingsModel.cs" />
     <Compile Include="Models\PackageListViewModel.cs" />
     <Compile Include="Models\FileReturnModel.cs" />
     <Compile Include="Models\FileListViewModel.cs" />

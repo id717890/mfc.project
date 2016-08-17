@@ -49,9 +49,9 @@ namespace mfc.web.Helpers {
             model.Comment = package.Comment;
 
             var files = new List<FileModelItem>();
-
             foreach (var file in package_srv.GetPackageFiles(package.Id)) {
                 files.Add(FileModelConverter.ToModelItem(file));
+                model.Status = file.CurrentStatus.Id;
             }
 
             model.Files = files.ToArray();
@@ -77,7 +77,10 @@ namespace mfc.web.Helpers {
         }
         public static void PrepareModel(PackageModel model) {
             var org_srv = CompositionRoot.Resolve<IOrganizationService>();
+            var file_status_srv = CompositionRoot.Resolve<IFileStatusService>();
+
             model.Organizations.AddRange(org_srv.GetAllOrganizations());
+            model.Statuses.AddRange(file_status_srv.GetAllStatuses());
         }
     }
 }

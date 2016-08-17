@@ -66,7 +66,8 @@
                 <th>Статус</th>
             </tr>
 
-            @for (int index = 0; index < Model.Files.Length; index++) {
+            @for (int index = 0; index < Model.Files.Length; index++)
+            {
                 @Html.HiddenFor(m => Model.Files[index].Id)
                 @Html.HiddenFor(m => Model.Files[index].Caption)
                 @Html.HiddenFor(m => Model.Files[index].Controller)
