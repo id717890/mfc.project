@@ -11,7 +11,10 @@ namespace mfc.domain.services {
     public class FileStageService : IFileStageService {
         private readonly object sync_obj = new object();
         private readonly object sync_obj_update = new object();
-        private Dictionary<string, FileStage> _cache = new Dictionary<string, FileStage>();
+
+        private Dictionary<string, FileStage> _cacheCode = new Dictionary<string, FileStage>();
+        private Dictionary<long, FileStage> _cacheStatus = new Dictionary<long, FileStage>();
+
         private bool _is_cache_valid = false;
 
         [Inject]
@@ -22,7 +25,7 @@ namespace mfc.domain.services {
 
         public IEnumerable<FileStage> GetAllStages() {
             PrepareCache();
-            return _cache.Values.OrderBy(x => x.Order);
+            return _cacheCode.Values.OrderBy(x => x.Order);
         }
 
         public void UpdateStages(IEnumerable<FileStage> stages) {
@@ -41,10 +44,10 @@ namespace mfc.domain.services {
 
         public FileStatus GetStatusForStage(string code) {
             PrepareCache();
-            if (!_cache.ContainsKey(code)) {
+            if (!_cacheCode.ContainsKey(code)) {
                 throw new DomainException(string.Format("Для кода {0} стадия дела неопределена"));
             }
-            return _cache[code].Status;
+            return _cacheCode[code].Status;
         }
 
         public void PrepareCache() {
@@ -53,9 +56,11 @@ namespace mfc.domain.services {
             }
 
             lock (sync_obj) {
-                _cache.Clear();
+                _cacheCode.Clear();
+                _cacheStatus.Clear();
                 foreach (var stage in Repository.GetAll()) {
-                    _cache.Add(stage.Code, stage);
+                    _cacheCode.Add(stage.Code, stage);
+                    _cacheStatus.Add(stage.Status.Id, stage);
                 }
 
                 _is_cache_valid = true;
@@ -65,8 +70,12 @@ namespace mfc.domain.services {
 
         public FileStage GetStage(string code) {
             PrepareCache();
+            return _cacheCode[code];
+        }
 
-            return _cache[code];
+        public FileStage GetStageByStatus(long status) {
+            PrepareCache();
+            return _cacheStatus[status];
         }
     }
 }

@@ -17,10 +17,11 @@ namespace mfc.domain.services {
         Int64 Add(ServiceAction action);
         void Update(File file);
         void Delete(Int64 id);
-
+        
         void SendForControl(Int64 fileId, string comments);
         IEnumerable<Int64> AcceptForControl(IEnumerable<Int64> file_ids);
         void Return(Int64 fileId, string comments);
         void Checked(Int64 fileId, string comments);
+        void SetStage(IEnumerable<long> file_ids, string stage, string comments);
     }
 }

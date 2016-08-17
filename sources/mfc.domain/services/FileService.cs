@@ -147,27 +147,30 @@ namespace mfc.domain.services {
 
 
         public void Checked(long fileId, string comments) {
-            var file = GetFileById(fileId);
-            if (file == null) {
-                throw new ArgumentException(string.Format("Дело с идентификатором {0} не найдено", fileId));
-            }
-
-            var status = FileStageService.GetStatusForStage(FileStages.Checked);
-
-            if (status == null) {
-                throw new ArgumentException(string.Format("Не определен статус для дел, переданных на проверку"));
-            }
-
-            file.CurrentStatus = status;
-
-            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
-
-            unit_of_work.BeginTransaction();
-            FileRepository.Update(file);
-            FileStatusService.SetStatus(fileId, status.Id, DateTime.Now, comments);
-            unit_of_work.Commit();
+            SetStage(new[] { fileId }, FileStages.Checked, string.Empty);
         }
 
+        public void SetStage(IEnumerable<long> file_ids, string stage, string comments) {
+            foreach (var file_id in file_ids) {
+                var file = GetFileById(file_id);
+                if (file == null) {
+                    throw new ArgumentException(string.Format("Дело с идентификатором {0} не найдено", file_id));
+                }
+
+                var status = FileStageService.GetStatusForStage(stage);
+                if (status == null) {
+                    throw new ArgumentException(string.Format("Не определен статус для дел, переданных на проверку"));
+                }
+
+                file.CurrentStatus = status;
+
+                var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
+                unit_of_work.BeginTransaction();
+                FileRepository.Update(file);
+                FileStatusService.SetStatus(file_id, status.Id, DateTime.Now, comments);
+                unit_of_work.Commit();
+            }
+        }
 
         public IEnumerable<long> AcceptForControl(IEnumerable<long> file_ids) {
             //1. Проверяем право текущего пользователя принимать дела

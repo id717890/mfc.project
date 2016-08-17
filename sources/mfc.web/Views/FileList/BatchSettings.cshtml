@@ -1,0 +1,41 @@
+﻿@model mfc.web.Models.FileBatchSettingsModel
+
+@{
+    ViewBag.Title = "Пакетная настройка";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <h1 class="page-header">@ViewBag.Title</h1>
+        </div>
+    </section>
+
+}
+@section workmenu {
+    @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Files)
+}
+
+@using (Html.BeginForm("BatchSettings", "FileList", FormMethod.Post, new { @class = "form", id = "batch-settings-form" })) {
+    @Html.AntiForgeryToken()
+
+    <input type="submit" value="Сохранить" class="btn btn-default" id="batch-settings-submit"/>
+    
+    <hr/>
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Status", Model.Statuses.Select(x => new SelectListItem { Text = x.Caption, Value = x.Id.ToString() }), string.Empty, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    $("#create-package-submit").click(function () {
+        clear_checked_files();
+    })
+</script>

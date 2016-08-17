@@ -9,6 +9,7 @@ namespace mfc.domain.services {
     public interface IFileStageService {
         IEnumerable<FileStage> GetAllStages();
         FileStage GetStage(string code);
+        FileStage GetStageByStatus(long status);
         void UpdateStages(IEnumerable<FileStage> stages);
         FileStatus GetStatusForStage(string code);
     }

@@ -53,7 +53,19 @@ namespace mfc.web.Controllers {
             return View(PackageHelper.CreateModel(checked_file_ids));
         }
 
-        
+        [HttpPost]
+        [MultipleButton(Name = "action", Argument = "BatchSettings")]
+        public ActionResult BatchSettings(FormCollection collection) {
+            List<long> checked_file_ids = CreateFilesList(collection);
+
+            if (checked_file_ids.Count == 0) {
+                return RedirectToAction("Index", "File");
+            }
+
+            return View(new FileBatchSettingsModel { Status = Convert.ToInt64(collection["status"]), Files = checked_file_ids });
+        }
+
+
         [HttpPost]
         public ActionResult SavePackage(PackageModel model) {
             if (ModelState.IsValid) {

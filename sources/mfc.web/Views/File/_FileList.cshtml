@@ -3,7 +3,7 @@
 @using (Html.BeginForm("", "FileList", FormMethod.Post, new { id = "file-list-form" })) {
     <input type="submit" value="Принять" class="btn btn-lg btn-default" name="action:ControlList" />
     <input type="submit" value="Создать пакет" class="btn btn-lg btn-default" name="action:CreatePackage"/>
-
+    <input type="submit" value="Статус" class="btn btn-lg btn-default" name="action:BatchSettings" />
     <table class="table" id="file-list-table">
         <tr>
             <th><a href="javascript:void(0)" id="clear-checkboxes-button">x</a></th>
@@ -20,7 +20,7 @@
         @for (int index = 0; index < Model.Count; index++) {
             Int64 item_id = Model[index].Id;
             String input_id = $"file{item_id}";
-
+            
             /*@Html.HiddenFor(m => Model[index].Id)
             @Html.HiddenFor(m => Model[index].Caption)
             @Html.HiddenFor(m => Model[index].Controller)
@@ -70,6 +70,10 @@ Query dialig section
 -->
 <div id="query-dialog" title="Удаление дела">
     Удалить Дело?
+</div>
+<div class="waiting"></div>
+
+<div id="query-dialog-status" title="Изменение статуса дела">
 </div>
 <div class="waiting"></div>
 
@@ -152,7 +156,7 @@ Query dialig section
         $("#query-dialog").dialog("open");
     });
 
-    $("input[name='action:CreatePackage'").click(function () {
+    function appendCheckedFiles() {
         var checked_files = get_checked_files();
         if (checked_files != {}) {
             var input = $("<input>")
@@ -161,5 +165,8 @@ Query dialig section
 
             $('#file-list-form').append($(input));
         }
-    })
+    }
+
+    $("input[name='action:CreatePackage'").click(appendCheckedFiles);
+    $("input[name='action:BatchSettings'").click(appendCheckedFiles);
 </script>
