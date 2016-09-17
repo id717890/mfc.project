@@ -10,7 +10,7 @@ namespace mfc.webapi.App_Start
 
     using Ninject;
     using Ninject.Web.Common;
-    using web;
+
     public static class NinjectWebCommon 
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
@@ -45,6 +45,9 @@ namespace mfc.webapi.App_Start
                 CompositionRoot.Init(kernel);
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
+
+                // unit of work per request
+                kernel.Bind<mfc.dal.services.IUnitOfWork>().To<mfc.dal.services.UnitOfWork>().InRequestScope();
 
                 RegisterServices(kernel);
                 return kernel;

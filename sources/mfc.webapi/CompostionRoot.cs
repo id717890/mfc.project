@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace mfc.web {
+namespace mfc.webapi {
     public class CompositionRoot {
         private static IKernel _ninjectKernel;
 

@@ -1,0 +1,29 @@
+﻿@using mfc.web.Constants;
+@using MfcRoles = mfc.infrastructure.security.Roles;
+@model string
+@{
+    var items = new Dictionary<string, MvcHtmlString>();
+    if (User.IsInRole(MfcRoles.Expert) || User.IsInRole(MfcRoles.Admin)) {
+        items.Add(WorkMenuItems.Services, Html.ActionLink("Приемы", "Index", "Action"));
+    }
+    items.Add(WorkMenuItems.Files, Html.ActionLink("Дела", "Index", "File"));
+    if (User.IsInRole(MfcRoles.Controller) || User.IsInRole(MfcRoles.Admin)) {
+        items.Add(WorkMenuItems.Packages, Html.ActionLink("Пакеты", "Index", "Package"));
+    }
+    items.Add(WorkMenuItems.Reports, Html.ActionLink("Отчеты", "Make", "Report"));
+}
+<ul class="nav nav-sidebar">
+    @{
+        foreach (var pair in items) { 
+           
+            if (pair.Key == Model) {
+                <li class="active">@pair.Value</li>
+            }
+            else {
+                <li>@pair.Value</li>
+            }
+        }
+
+}
+</ul>
+

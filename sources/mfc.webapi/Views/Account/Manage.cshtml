@@ -1,0 +1,14 @@
+﻿@model mfc.webapi.Models.PasswordModel
+@{
+    ViewBag.Title = "Настройка учетной записи";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+<p class="message-success">@ViewBag.StatusMessage</p>
+
+<p>Вы вошли как <strong>@User.Identity.Name</strong>.</p>
+
+@Html.Partial("_SetPasswordPartial")

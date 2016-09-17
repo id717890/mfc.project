@@ -1,13 +1,21 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Error</title>
-</head>
-<body>
-    <hgroup>
-        <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
-    </hgroup>
-</body>
-</html>
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Во время обработки запроса произошла ошибка";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <h1 class="page-header">@ViewBag.Title</h1>
+        </div>
+    </section>
+}
+
+<div>
+    <p class="validation-summary-errors">@Model.Exception.Message</p>
+    Подробнее:
+    <div style="width:100%; overflow:scroll; height:300px">
+        @Model.Exception.StackTrace
+    </div>
+</div>
