@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mfc.dal.interface", "source
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mfc.dal", "sources\mfc.dal\mfc.dal.csproj", "{1631C6F3-F3D5-48AD-88D8-950F884D2976}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mfc.webapi", "mfc.webapi\mfc.webapi.csproj", "{8340FD03-7EFC-4788-89C7-4611E26D9EF4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mfc.webapi", "sources\mfc.webapi\mfc.webapi.csproj", "{8340FD03-7EFC-4788-89C7-4611E26D9EF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
