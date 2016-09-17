@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 
 namespace mfc.webapi.Models {
-    [JsonObject("account_info")]
+    [JsonObject("this_info")]
     public class AccountInfo {
         public AccountInfo() { }
 
@@ -40,16 +40,16 @@ namespace mfc.webapi.Models {
         [JsonProperty("is_controller")]
         public bool IsController { get; set; }
 
-        public mfc.domain.entities.User ConvertToUser(AccountInfo account)
+        public mfc.domain.entities.User ConvertToUser()
         {
             return new mfc.domain.entities.User
             {
-                Id = account.Id,
-                Account = account.UserName,
-                Name = account.Description,
-                IsAdmin = account.IsAdmin,
-                IsExpert = account.IsExpert,
-                IsController = account.IsController
+                Id = this.Id,
+                Account = this.UserName,
+                Name = this.Description,
+                IsAdmin = this.IsAdmin,
+                IsExpert = this.IsExpert,
+                IsController = this.IsController
             };
         }
     }

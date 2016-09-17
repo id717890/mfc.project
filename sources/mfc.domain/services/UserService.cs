@@ -52,7 +52,7 @@ namespace mfc.domain.services {
             return _name_cache.Values.OrderBy(item=>item.Account.ToLower());
         }
 
-        public void AddNew(string account, string name, bool is_admin, bool is_expert, bool is_controller) {
+        public long AddNew(string account, string name, bool is_admin, bool is_expert, bool is_controller) {
             var user = new User {
                 Account = account,
                 Name = name,
@@ -68,7 +68,7 @@ namespace mfc.domain.services {
             unit_of_work.Commit();
 
             _is_cached_valid = false;
-            
+            return user.Id;
         }
 
         public bool IsUserExists(string account) {

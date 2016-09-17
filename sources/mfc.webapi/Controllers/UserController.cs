@@ -1,4 +1,5 @@
-﻿using mfc.domain.services;
+﻿using mfc.domain;
+using mfc.domain.services;
 using mfc.webapi.Models;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace mfc.webapi.Controllers
                     Description = user.Name
                 });
             }
-            
+
             return Request.CreateResponse(HttpStatusCode.OK, users);
         }
 
@@ -47,18 +48,56 @@ namespace mfc.webapi.Controllers
         }
 
         // POST: api/User
-        public void Post([FromBody]string value)
+        public HttpResponseMessage Post([FromBody]AccountInfo value)
         {
+            var user_service = CompositionRoot.Resolve<IUserService>();
+
+            var find_user = user_service.GetUser(value.UserName);
+            if (find_user != null)
+            {
+                return Request.CreateResponse(HttpStatusCode.Conflict, "Пользователь с таким именем уже существует");
+            }
+            else
+            {
+                var id = user_service.AddNew(value.UserName, value.Description, value.IsAdmin, value.IsExpert, value.IsController);
+                var msg = Request.CreateResponse(HttpStatusCode.Created);
+                msg.Headers.Location = new Uri(Request.RequestUri + id.ToString());
+                return msg;
+            }
         }
 
         // PUT: api/User/5
-        public void Put(int id, [FromBody]string value)
+        public HttpResponseMessage Put(int id, [FromBody]AccountInfo value)
         {
+            var user_service = CompositionRoot.Resolve<IUserService>();
+            var user = user_service.GetUserById(id);
+
+            if (user == null)
+            {
+                user_service.Update(value.ConvertToUser());
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
         }
 
         // DELETE: api/User/5
-        public void Delete(int id)
+        public HttpResponseMessage Delete(int id)
         {
+            var user_service = CompositionRoot.Resolve<IUserService>();
+            var user = user_service.GetUserById(id);
+
+            if (user != null)
+            {
+                user_service.Delete(id);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
         }
     }
 }
