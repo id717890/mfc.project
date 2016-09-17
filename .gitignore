@@ -10,3 +10,5 @@
 /**/bin
 /.vs
 .vs/**
+packages
+packages/**
