@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Администрирование";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section workmenu {
+    @Html.Partial("_AdminMenu", 0)
+}
+
+<h2>Список пользователей</h2>
+
+<div ng-controller="usersController">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Имя пользователя</th>
+                <th>Описание</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="user in users">
+                <td>{{user.UserName}}</td>
+                <td>{{user.Description}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

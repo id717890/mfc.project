@@ -1,6 +1,6 @@
 ﻿@using MfcRoles = mfc.infrastructure.security.Roles;
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="webapi">
     <head>
         <meta charset="utf-8" />
         <title>@ViewBag.Title - Система учета МФЦ</title>
@@ -16,59 +16,66 @@
         @Scripts.Render("~/jquery")
         @Scripts.Render("~/jqueryui")
         @Scripts.Render("~/bootstrap")
+
+        <script src="~/Content/js/angular.min.js"></script>
+        <script src="~/Content/js/angular-resource.min.js"></script>
+
+        <script src="~/Content/js/app.js"></script>
+        <script src="~/Content/js/app/controllers/usersController.js"></script>
+        <script src="~/Content/js/app/services/usersServices.js"></script>
+
         <script src="~/Content/js/editor_hooksup.js"></script>
         <script src="~/Content/js/helpers.js"></script>
         <script src="~/Content/js/checked-file-list.js"></script>
 
     </head>
-<body>
- 
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a href="~/" class="navbar-brand">АРМ МФЦ</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        
-                        <li>@Html.ActionLink("Главная", "Index", "Home")</li>
-                        @if (User.IsInRole(MfcRoles.Admin)) {
-                            <li>@Html.ActionLink("Администрирование", "Index", "Admin")</li>
-                        }
-                        <li id="login">
-                            @Html.Partial("_LoginPartial")
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
+<body ng-cloak>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-2 col-md-3 col-lg-2 sidebar">
-                    @RenderSection("workmenu", required: false)
-                </div>
-                <div class="col-sm-8 col-md-8 main">
-                    @RenderSection("featured", required: false)
-                    <section class="content-wrapper main-content clear-fix">
-                        @RenderBody()
-                    </section>
-                </div>
-                
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="~/" class="navbar-brand">АРМ МФЦ</a>
             </div>
-            
-            <footer class="navbar-bottom">
-                <hr />
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - МФЦ город Урай</p>
-                </div>
-            </footer>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                        
+                    <li>@Html.ActionLink("Главная", "Index", "Home")</li>
+                    @if (User.IsInRole(MfcRoles.Admin)) {
+                        <li>@Html.ActionLink("Администрирование", "Index", "Admin")</li>
+                    }
+                    <li id="login">
+                        @Html.Partial("_LoginPartial")
+                    </li>
+                </ul>
+            </div>
         </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2 col-md-3 col-lg-2 sidebar">
+                @RenderSection("workmenu", required: false)
+            </div>
+            <div class="col-sm-8 col-md-8 main">
+                @RenderSection("featured", required: false)
+                <section class="content-wrapper main-content clear-fix">
+                    @RenderBody()
+                </section>
+            </div>
+                
+        </div>
+            
+        <footer class="navbar-bottom">
+            <hr />
+            <div class="float-left">
+                <p>&copy; @DateTime.Now.Year - МФЦ город Урай</p>
+            </div>
+        </footer>
+    </div>
 </body>
 </html>
