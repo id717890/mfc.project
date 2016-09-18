@@ -4,7 +4,7 @@
 
     usersServices.factory('Users', ['$resource',
       function ($resource) {
-          return $resource('/api/users', {}, {
+          return $resource('/api/user', {}, {
               query: { method: 'GET', params: {}, isArray: true }
           });
       }]);

@@ -17,12 +17,12 @@
         @Scripts.Render("~/jqueryui")
         @Scripts.Render("~/bootstrap")
 
-        <script src="~/Content/js/angular.min.js"></script>
-        <script src="~/Content/js/angular-resource.min.js"></script>
+        <script src="~/Content/js/angular/angular.min.js"></script>
+        <script src="~/Content/js/angular/angular-resource.min.js"></script>
 
-        <script src="~/Content/js/app.js"></script>
-        <script src="~/Content/js/app/controllers/usersController.js"></script>
-        <script src="~/Content/js/app/services/usersServices.js"></script>
+        @RenderSection("javascripts", required: false)
+
+
 
         <script src="~/Content/js/editor_hooksup.js"></script>
         <script src="~/Content/js/helpers.js"></script>

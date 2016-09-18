@@ -19,9 +19,15 @@
         </thead>
         <tbody>
             <tr ng-repeat="user in users">
-                <td>{{user.UserName}}</td>
-                <td>{{user.Description}}</td>
+                <td>{{user.user_name}}</td>
+                <td>{{user.description}}</td>
             </tr>
         </tbody>
     </table>
 </div>
+
+@section javascripts{
+    <script src="~/Content/js/angular/modules/app.js"></script>
+    <script src="~/Content/js/angular/controllers/usersController.js"></script>
+    <script src="~/Content/js/angular/services/usersServices.js"></script>
+}
