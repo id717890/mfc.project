@@ -9,18 +9,23 @@
 
 <h2>Список пользователей</h2>
 
-<div ng-controller="usersController">
-    <table class="table table-bordered table-striped">
+<div ng-app="webapi" ng-controller="usersController" ng-cloak>
+    @Html.ActionLink("Добавить пользователя", "Create", "Admin", null, new { @class = "btn btn-primary" })
+    <table class="table table-bordered table-striped table-hover table-condensed table-responsive">
         <thead>
             <tr>
+                <th hidden>Id</th>
                 <th>Имя пользователя</th>
                 <th>Описание</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="user in users">
+                <td hidden>{{user.id}}</td>
                 <td>{{user.user_name}}</td>
                 <td>{{user.description}}</td>
+                <td><a ng-click="deleteUser($index)">Удалить</a></td>
             </tr>
         </tbody>
     </table>

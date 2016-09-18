@@ -1,35 +1,26 @@
 ﻿@using MfcRoles = mfc.infrastructure.security.Roles;
 <!DOCTYPE html>
-<html lang="en" ng-app="webapi">
-    <head>
-        <meta charset="utf-8" />
-        <title>@ViewBag.Title - Система учета МФЦ</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/bootstrap")
-        @Styles.Render("~/Content/themes/base/css")
-        @Styles.Render("~/Content/themes/base/datepicker.css")
-        @Styles.Render("~/Content/themes/base/theme.css")
-        @Styles.Render("~/Content/themes/base/core.css")
-        @Styles.Render("~/Content/themes/base/dialog.css")
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/jquery")
-        @Scripts.Render("~/jqueryui")
-        @Scripts.Render("~/bootstrap")
-
-        <script src="~/Content/js/angular/angular.min.js"></script>
-        <script src="~/Content/js/angular/angular-resource.min.js"></script>
-
-        @RenderSection("javascripts", required: false)
-
-
-
-        <script src="~/Content/js/editor_hooksup.js"></script>
-        <script src="~/Content/js/helpers.js"></script>
-        <script src="~/Content/js/checked-file-list.js"></script>
-
-    </head>
-<body ng-cloak>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Система учета МФЦ</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/Content/themes/base/datepicker.css")
+    @Styles.Render("~/Content/themes/base/theme.css")
+    @Styles.Render("~/Content/themes/base/core.css")
+    @Styles.Render("~/Content/themes/base/dialog.css")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/jquery")
+    @Scripts.Render("~/jqueryui")
+    @Scripts.Render("~/bootstrap")
+    <script src="~/Content/js/editor_hooksup.js"></script>
+    <script src="~/Content/js/helpers.js"></script>
+    <script src="~/Content/js/checked-file-list.js"></script>
+</head>
+<body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -43,9 +34,10 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                        
+
                     <li>@Html.ActionLink("Главная", "Index", "Home")</li>
-                    @if (User.IsInRole(MfcRoles.Admin)) {
+                    @if (User.IsInRole(MfcRoles.Admin))
+                    {
                         <li>@Html.ActionLink("Администрирование", "Index", "Admin")</li>
                     }
                     <li id="login">
@@ -67,9 +59,9 @@
                     @RenderBody()
                 </section>
             </div>
-                
+
         </div>
-            
+
         <footer class="navbar-bottom">
             <hr />
             <div class="float-left">
@@ -77,5 +69,8 @@
             </div>
         </footer>
     </div>
+    <script src="~/Content/js/angular/angular.min.js"></script>
+    <script src="~/Content/js/angular/angular-resource.min.js"></script>
+    @RenderSection("javascripts", required: false)
 </body>
 </html>

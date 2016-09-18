@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Добавление  нового пользователя";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section workmenu {
+    @Html.Partial("_AdminMenu", 0)
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<div ng-app="webapi" ng-controller="usersController" ng-cloak>
+    <fieldset>
+        <legend>AccountInfo</legend>
+
+        <form name="user" ng-submit="submitForm ()" novalidate>
+            <div class="form-group" ng-class="{ 'has-error' : user.Name.$invalid && !user.Name.$pristine }">
+                <input type="text" name="Name" class="form-control" ng-model="mainUser.User_Name" required placeholder="Логин пользователя">
+                <p ng-show="user.Name.$invalid && !user.Name.$pristine" class="help-block">Укажите логин пользователя</p>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error' : user.Description.$invalid && !user.Description.$pristine }">
+                <input type="text" name="Description" class="form-control" ng-model="mainUser.Description" required placeholder="Ф.И.О. пользователя">
+                <p ng-show="user.Description.$invalid && !user.Description.$pristine" class="help-block">Укажите Ф.И.О. пользователя</p>
+            </div>
+            <p><button type="submit" class="btn btn-lg btn-default" ng-disabled="user.$invalid">Добавить</button></p>
+        </form>
+
+
+    </fieldset>
+</div>
+
+<div>
+    @Html.ActionLink("Вернуться к списку пользователей", "List")
+</div>
+
+@section javascripts{
+    <script src="~/Content/js/angular/modules/app.js"></script>
+    <script src="~/Content/js/angular/controllers/usersController.js"></script>
+    <script src="~/Content/js/angular/services/usersServices.js"></script>
+}
+
+

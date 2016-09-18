@@ -4,14 +4,24 @@ using System.Web.Mvc;
 using mfc.domain.services;
 using mfc.infrastructure.security;
 
-namespace mfc.webapi.Controllers {
+namespace mfc.webapi.Controllers
+{
     [Authorize(Roles = Roles.Admin)]
-    public class AdminController : BaseController {
-        public ActionResult Index() {
+    public class AdminController : BaseController
+    {
+        public ActionResult Index()
+        {
             return View();
         }
 
-        public ActionResult List() {
+        public ActionResult List()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Create()
+        {
             return View();
         }
     }
