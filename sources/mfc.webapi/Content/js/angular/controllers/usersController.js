@@ -11,7 +11,10 @@
 
         $scope.mainUser = {
             User_Name: '',
-            Description: ''
+            Description: '',
+            is_admin: false,
+            is_expert: false,
+            is_controller: false,
         };
 
         $scope.submitForm = function () {

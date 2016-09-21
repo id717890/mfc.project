@@ -24,10 +24,21 @@
                 <input type="text" name="Description" class="form-control" ng-model="mainUser.Description" required placeholder="Ф.И.О. пользователя">
                 <p ng-show="user.Description.$invalid && !user.Description.$pristine" class="help-block">Укажите Ф.И.О. пользователя</p>
             </div>
+            <p>Роль</p>
+            <div class="form-group">
+                @Html.CheckBox("is_admin", false, new { @ng_model = "mainUser.is_admin" })
+                @Html.Label("Администратор", new { @for = "is_admin" })
+            </div>
+            <div class="form-group">
+                @Html.CheckBox("is_expert", new { @ng_model = "mainUser.is_expert" })
+                @Html.Label("Эксперт", new { @for = "is_expert" })
+            </div>
+            <div class="form-group">
+                @Html.CheckBox("is_controller", new { @ng_model = "mainUser.is_controller" })
+                @Html.Label("Контролер", new { @for = "is_controller" })
+            </div>
             <p><button type="submit" class="btn btn-lg btn-default" ng-disabled="user.$invalid">Добавить</button></p>
         </form>
-
-
     </fieldset>
 </div>
 
