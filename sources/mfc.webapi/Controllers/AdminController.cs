@@ -24,5 +24,11 @@ namespace mfc.webapi.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public ActionResult Edit(long id)
+        {
+            return View();
+        }
     }
 }

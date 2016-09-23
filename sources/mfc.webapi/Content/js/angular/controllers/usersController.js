@@ -1,48 +1,66 @@
 ﻿(function () {
     'use strict';
 
-    angular
-        .module('webapi')
-        .controller('usersController', usersController);
+    angular.module('user.ctrl', []).controller('usersController', usersController);
 
-    usersController.$inject = ['$scope', '$http', 'Users'];
-    function usersController($scope, $http, Users) {
-        $scope.users = Users.query();
+    usersController.$inject = ['$scope', '$http', '$log', 'UsersFactory', 'UserFactory'];
+    function usersController($scope, $http, $log, UsersFactory, UserFactory) {
+        $scope.users = UsersFactory.query();
 
-        $scope.mainUser = {
-            User_Name: '',
-            Description: '',
-            is_admin: false,
-            is_expert: false,
-            is_controller: false,
-        };
+        $scope.mainUser = {};
 
-        $scope.submitForm = function () {
-            $http({
-                method: 'POST',
-                url: '/api/user',
-                data: $scope.mainUser
-            }).then(function successCallback(response) {
-                if (response.status === 201) window.location.href = 'List';
-            }, function errorCallback(response) {
-                alert("Ошибка : " + response.data);
+        //Добавление пользователя
+        $scope.createUser = function () {
+            UsersFactory.create($scope.mainUser).$promise.then(function (response) {
+                $scope.users = UsersFactory.query();
+                $scope.clearForms();
+            }, function (response) {
+                if (response.status == 409) alert('Данный логин уже используется');
+                else {
+                    alert('Ошибка при добавлении пользователя');
+                }
             });
-        };
+        }
 
-        $scope.deleteUser = function (index) {
-            if (confirm('Удалить пользователя "' + $scope.users[index].user_name + ' | ' + $scope.users[index].description + '" ?')) {
-                $http({
-                    method: 'DELETE',
-                    url: '/api/user/' + $scope.users[index].id,
-                    data: $scope.users[index].id
-                }).then(function successCallback(response) {
-                    if (response.status === 200) $scope.users.splice(index, 1);
-                }, function errorCallback(response) {
-                    alert("Ошибка при удалении пользователя");
-                });
-            }
+        //Удаления пользователя
+        $scope.deleteUser = function (user_id) {
+            if (confirm('Удалить пользователя "' + $scope.users[user_id].user_name + ' | ' + $scope.users[user_id].description + '" ?')) {
+                UserFactory.delete({ id: $scope.users[user_id].id });
+                $scope.users.splice(user_id, 1);
+            };
+        }
 
+        //Обновление пользователя
+        $scope.updateUser = function () {
+            UserFactory.update({ id: $scope.mainUser.id }, $scope.mainUser).$promise.then(function (responce) {
+                $scope.users = UsersFactory.query();
+                $scope.clearForms();
+            }, function (response) {
+                if (response.status === 409) alert('Данный логин уже используется');
+                else {
+                    alert('Ошибка при добавлении пользователя');
+                    $log.log(response);
+                }
+            });
+        }
 
-        };
+        //обработчик кнопки "Редактировать пользователя"
+        $scope.editUser = function (index) {
+            UserFactory.show({ id: $scope.users[index].id }).$promise.then(function (response) {
+                $scope.mainUser = response;
+                $scope.updateUserForm.$setPristine();
+            }, function (response) {
+                $log.log(response);
+            });
+        }
+
+        //Чистка форм после успешного добавления/обновления
+        $scope.clearForms = function () {
+            $("#CreateUser").find("input[type=text], textarea").val("");
+            $("#CreateUser").modal('hide');
+            $("#UpdateUser").modal('hide');
+            $scope.mainUser = angular.copy({});
+            $scope.newUserForm.$setPristine();
+        }
     }
 })();

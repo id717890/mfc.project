@@ -13,6 +13,7 @@ namespace mfc.webapi.Controllers
     public class UserController : ApiController
     {
         // GET: api/User
+       
         public HttpResponseMessage Get()
         {
             var user_service = CompositionRoot.Resolve<IUserService>();
@@ -39,7 +40,7 @@ namespace mfc.webapi.Controllers
 
             if (user != null)
             {
-                return Request.CreateResponse(HttpStatusCode.Found, new AccountInfo(user));
+                return Request.CreateResponse(HttpStatusCode.OK, new AccountInfo(user));
             }
             else
             {
@@ -67,6 +68,7 @@ namespace mfc.webapi.Controllers
         }
 
         // PUT: api/User/5
+        [HttpPut]
         public HttpResponseMessage Put(int id, [FromBody]AccountInfo value)
         {
             var user_service = CompositionRoot.Resolve<IUserService>();
@@ -74,12 +76,12 @@ namespace mfc.webapi.Controllers
 
             if (user == null)
             {
-                user_service.Update(value.ConvertToUser());
-                return Request.CreateResponse(HttpStatusCode.OK);
+                return Request.CreateResponse(HttpStatusCode.NotFound);
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
+                user_service.Update(value.ConvertToUser());
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
         }
 

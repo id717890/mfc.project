@@ -7,10 +7,22 @@
     @Html.Partial("_AdminMenu", 0)
 }
 
+<style type="text/css">
+    .glyphicon-remove, .glyphicon-edit {
+        cursor: pointer;
+        font-size: 1.1em;
+        text-decoration: none !important;
+    }
+
+    .glyphicon-remove {
+        color: darkred;
+    }
+</style>
+
 <h2>Список пользователей</h2>
 
-<div ng-app="webapi" ng-controller="usersController" ng-cloak>
-    @Html.ActionLink("Добавить пользователя", "Create", "Admin", null, new { @class = "btn btn-primary" })
+<div ng-app="users.app" ng-controller="usersController" ng-cloak id="users-div">
+    <a data-toggle="modal" data-target="#CreateUser" class="btn btn-primary">Добавить пользователя</a>
     <table class="table table-bordered table-striped table-hover table-condensed table-responsive">
         <thead>
             <tr>
@@ -25,14 +37,26 @@
                 <td hidden>{{user.id}}</td>
                 <td>{{user.user_name}}</td>
                 <td>{{user.description}}</td>
-                <td><a ng-click="deleteUser($index)">Удалить</a></td>
+                <td>
+                    <a ng-click="editUser($index)" data-toggle="modal" data-target="#UpdateUser" class="glyphicon glyphicon-edit" title="Редактировать"></a>
+                    <a ng-click="deleteUser($index)" class="glyphicon glyphicon-remove" title="Удалить пользователя"></a>
+                </td>
             </tr>
         </tbody>
     </table>
+    @Html.Partial("Edit")
+    @Html.Partial("Create")
 </div>
 
 @section javascripts{
-    <script src="~/Content/js/angular/modules/app.js"></script>
-    <script src="~/Content/js/angular/controllers/usersController.js"></script>
+    <script src="~/Content/js/angular/modules/users.app.js"></script>
     <script src="~/Content/js/angular/services/usersServices.js"></script>
+    <script src="~/Content/js/angular/controllers/usersController.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#CreateUser').on('hidden.bs.modal', function (e) {
+                angular.element("#users-div").scope().clearForms();
+            });
+        })
+    </script>
 }
