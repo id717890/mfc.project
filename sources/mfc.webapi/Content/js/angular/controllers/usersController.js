@@ -3,11 +3,15 @@
 
     angular.module('user.ctrl', []).controller('usersController', usersController);
 
-    usersController.$inject = ['$scope', '$http', '$log', 'UsersFactory', 'UserFactory'];
-    function usersController($scope, $http, $log, UsersFactory, UserFactory) {
+    usersController.$inject = ['$scope', '$http', '$log', 'UsersFactory', 'UserFactory', 'PasswordFactory'];
+    function usersController($scope, $http, $log, UsersFactory, UserFactory, PasswordFactory) {
         $scope.users = UsersFactory.query();
 
         $scope.mainUser = {};
+        $scope.password = {
+            new_password: '',
+            confirm_password: ''
+        };
 
         //Добавление пользователя
         $scope.createUser = function () {
@@ -62,5 +66,34 @@
             $scope.mainUser = angular.copy({});
             $scope.newUserForm.$setPristine();
         }
+
+        $scope.changePassword = function () {
+
+        }
+
+        $scope.find_user = function (index) {
+            UserFactory.show({ id: $scope.users[index].id }).$promise.then(function (response) {
+                $scope.mainUser = response;
+            }, function (response) {
+                $log.log(response);
+            });
+        }
+
+        $scope.changePassword = function () {
+            $log.log($scope.password.new_password);
+            PasswordFactory.update({ id: $scope.mainUser.id }, '"'+$scope.password.new_password+'"');
+        }
+    }
+
+    angular.module('password.ctrl', []).controller('passwordController', passwordController);
+
+    passwordController.$inject = ['$scope', '$http', '$log', 'PasswordFactory'];
+    function passwordController($scope, $http, $log, PasswordFactory) {
+
+
+
+
+
+
     }
 })();
