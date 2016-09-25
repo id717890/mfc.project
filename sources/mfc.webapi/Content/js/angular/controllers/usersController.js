@@ -67,10 +67,6 @@
             $scope.newUserForm.$setPristine();
         }
 
-        $scope.changePassword = function () {
-
-        }
-
         $scope.find_user = function (index) {
             UserFactory.show({ id: $scope.users[index].id }).$promise.then(function (response) {
                 $scope.mainUser = response;
