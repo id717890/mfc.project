@@ -3,8 +3,8 @@
 
     angular.module('user.ctrl', []).controller('usersController', usersController);
 
-    usersController.$inject = ['$scope', '$http', '$log', 'UsersFactory', 'UserFactory', 'PasswordFactory'];
-    function usersController($scope, $http, $log, UsersFactory, UserFactory, PasswordFactory) {
+    usersController.$inject = ['$scope', '$http', '$log','$window', 'UsersFactory', 'UserFactory', 'PasswordFactory'];
+    function usersController($scope, $http, $log, $window, UsersFactory, UserFactory, PasswordFactory) {
         $scope.users = UsersFactory.query();
 
         $scope.mainUser = {};
@@ -74,6 +74,17 @@
             }, function (response) {
                 $scope.clearForms();
                 alert(response.data);
+            });
+        }
+
+        //изменение пароля пользователя для каждого пользователя на странице Manage
+        $scope.changePasswordManage = function () {
+            var currentUser = $('#current_user').val();
+            PasswordFactory.update({ id: currentUser }, '"' + $scope.password.new_password + '"').$promise.then(function () {
+                alert('Пароль пользователя успешно изменен');
+                $window.location.reload();
+            }, function (response) {
+                alert(response.data.replace(/\\n/g, "\n"));
             });
         }
 

@@ -62,7 +62,7 @@ namespace mfc.webapi.Controllers
                 }
 
                 //При попытке смены пароля НЕ админом у другого пользователя, выдавать ошибку 403
-                return Request.CreateResponse(HttpStatusCode.Forbidden, "Изменять пароли других пользователей могут только администраторы");
+                return Request.CreateResponse(HttpStatusCode.Forbidden, "Доступ запрещен!\\nИзменять пароли других пользователей могут только администраторы");
             }
             catch (Exception)
             {

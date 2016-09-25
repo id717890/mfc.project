@@ -87,7 +87,6 @@ namespace mfc.webapi.Controllers {
             return RedirectToAction("Index", "Home");
         }
 
-
         public ActionResult Manage() {
             bool has_error = false;
 
@@ -103,38 +102,7 @@ namespace mfc.webapi.Controllers {
                 return RedirectToAction("Index", "Home");
             }
 
-            var password = new PasswordModel {
-                UserId = user.Id
-            };
-
-            return View(password);
-            //ViewBag.ReturnUrl = Url.Action("Manage");
-            //return View();
-        }
-
-        //
-        // POST: /Account/Manage
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Manage(PasswordModel model) {
-            ViewBag.ReturnUrl = Url.Action("Manage");
-            if (ModelState.IsValid) {
-                bool has_error = false;
-
-                var user_service = CompositionRoot.Resolve<IUserService>();
-                try {
-                    user_service.SetPassword(model.UserId, model.NewPassword);
-                }
-                catch (DomainException e) {
-                    ModelState.AddModelError("", e);
-                    has_error = true;
-                }
-
-                if (!has_error) {
-                    ViewBag.StatusMessage = "Пароль успешно сменен";
-                }
-            }
+            ViewBag.UserId = user.Id.ToString();  //Передаем в представление Id текущего пользователя для angular контролера
             return View();
         }
 
