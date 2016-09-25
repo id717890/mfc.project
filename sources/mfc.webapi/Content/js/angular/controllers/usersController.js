@@ -58,15 +58,6 @@
             });
         }
 
-        //Чистка форм после успешного добавления/обновления
-        $scope.clearForms = function () {
-            $("#CreateUser").find("input[type=text], textarea").val("");
-            $("#CreateUser").modal('hide');
-            $("#UpdateUser").modal('hide');
-            $scope.mainUser = angular.copy({});
-            $scope.newUserForm.$setPristine();
-        }
-
         $scope.find_user = function (index) {
             UserFactory.show({ id: $scope.users[index].id }).$promise.then(function (response) {
                 $scope.mainUser = response;
@@ -75,9 +66,42 @@
             });
         }
 
+        //изменение пароля пользователя
         $scope.changePassword = function () {
-            $log.log($scope.password.new_password);
-            PasswordFactory.update({ id: $scope.mainUser.id }, '"'+$scope.password.new_password+'"');
+            PasswordFactory.update({ id: $scope.mainUser.id }, '"' + $scope.password.new_password + '"').$promise.then(function () {
+                alert('Пароль пользователя успешно изменен');
+                $scope.clearForms();
+            }, function (response) {
+                $scope.clearForms();
+                alert(response.data);
+            });
+        }
+
+        //Чистка форм после успешного добавления/обновления
+        $scope.clearForms = function () {
+            //Чистка формы создания пользователя
+            $("#CreateUser").find("input[type=text], textarea").val("");
+            $("#CreateUser").modal('hide');
+            $scope.mainUser = angular.copy({
+                User_Name:'',
+                Description:'',
+                is_admin: false,
+                is_expert: false,
+                is_controller: false
+            });
+            $scope.newUserForm.$setPristine();
+
+            //Чистка формы изменения пользователя
+            $("#UpdateUser").modal('hide');
+
+            //Чистка формы паролей
+            $("#ChangePassword").find("input[type=password]").val("");
+            $("#ChangePassword").modal('hide');
+            $scope.password = angular.copy({
+                new_password: '',
+                confirm_password: ''
+            });
+            $scope.newPasswordForm.$setPristine();
         }
     }
 

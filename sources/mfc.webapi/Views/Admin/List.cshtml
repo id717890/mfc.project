@@ -60,7 +60,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#CreateUser').on('hidden.bs.modal', function (e) {
+            $('#CreateUser, #ChangePassword').on('hidden.bs.modal', function (e) {
                 angular.element("#users-div").scope().clearForms();
             });
         })
