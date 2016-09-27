@@ -12,3 +12,7 @@
 .vs/**
 packages
 packages/**
+sources/mfc.webclient/app/*.js
+sources/mfc.webclient/app/*.js.map
+sources/mfc.webclient/app/node_modules/**
+sources/mfc.webclient/app/typings/**
