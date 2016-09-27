@@ -12,3 +12,19 @@
 <p>Вы вошли как <strong>@User.Identity.Name</strong>.</p>
 
 @Html.Partial("_SetPasswordPartial")
+
+@section javascripts{
+    <script src="~/Content/js/angular/modules/app.js"></script>
+    <script src="~/Content/js/angular/services/usersServices.js"></script>
+    <script src="~/Content/js/angular/controllers/usersController.js"></script>
+    <script src="~/Content/js/angular/directives/password.js"></script>
+    <script src="~/Content/js/angular/services/passwordsService.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#CreateUser, #ChangePassword').on('hidden.bs.modal', function (e) {
+                angular.element("#users-div").scope().clearForms();
+            });
+        })
+    </script>
+}

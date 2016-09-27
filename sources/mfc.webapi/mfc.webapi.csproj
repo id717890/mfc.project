@@ -292,6 +292,8 @@
     <Content Include="Content\js\angular\angular-resource.min.js" />
     <Content Include="Content\js\angular\angular.min.js" />
     <Content Include="Content\js\angular\controllers\organizationTypeController.js" />
+    <Content Include="Content\js\angular\directives\password.js" />
+    <Content Include="Content\js\angular\modules\app.js" />
     <Content Include="Content\js\angular\modules\organizationType.app.js" />
     <Content Include="Content\js\angular\modules\users.app.js" />
     <Content Include="Content\js\angular\services\organizationTypeServices.js" />
