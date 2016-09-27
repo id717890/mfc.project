@@ -14,7 +14,7 @@ packages
 packages/**
 sources/mfc.webclient/app/*.js
 sources/mfc.webclient/app/*.js.map
-sources/mfc.webclient/app/node_modules/**
-sources/mfc.webclient/app/node_modules
-sources/mfc.webclient/app/typings/**
-sources/mfc.webclient/app/typings
+sources/mfc.webclient/node_modules/**
+sources/mfc.webclient/node_modules
+sources/mfc.webclient/typings/**
+sources/mfc.webclient/typings
