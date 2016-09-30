@@ -13,24 +13,10 @@
     </div>
 </nav>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-2 col-md-3 col-lg-2 sidebar">
-            <!--@RenderSection("workmenu", required: false)-->
-        </div>
-        <div class="col-sm-8 col-md-8 main">
-            <!--@RenderSection("featured", required: false)-->
-            <section class="content-wrapper main-content clear-fix">
-                <!--@RenderBody()-->
-            </section>
-        </div>
-
+<mfc-workplace></mfc-workplace> 
+<footer class="navbar-bottom">
+    <hr />
+    <div class="float-left">
+        <p>&copy; {{date.getFullYear()}} - МФЦ город Урай</p>
     </div>
-
-    <footer class="navbar-bottom">
-        <hr />
-        <div class="float-left">
-            <p>&copy; {{date.getFullYear()}} - МФЦ город Урай</p>
-        </div>
-    </footer>
-</div>
+</footer>
