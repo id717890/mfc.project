@@ -5,7 +5,7 @@ import { AdminModule }   from './admin/admin.module';
 import { AppComponent }   from './app.component';
 import { WorkComponent }   from './work/work.component';
 import { MenuComponent }   from './menu/menu.component';
-import { UserComponent} from './user/user.component';
+import { UserComponent } from './user/user.component';
 
 import { routing, appRoutingProviders} from './app.router';
 
