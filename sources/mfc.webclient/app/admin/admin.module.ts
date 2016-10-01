@@ -1,14 +1,14 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AdminComponent } from './admin.component';
-import { UsersComponent } from './users/users.component';
+import { UserListComponent } from './users/user-list.component';
 import { adminRouting } from './admin.router';
 
 @NgModule({
     imports: [BrowserModule, adminRouting],
     declarations: [
       AdminComponent,
-      UsersComponent
+      UserListComponent
     ]
 })
 
