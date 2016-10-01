@@ -1,12 +1,25 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { AdminModule }   from './admin/admin.module';
+
 import { AppComponent }   from './app.component';
+import { WorkComponent }   from './work/work.component';
 import { MenuComponent }   from './menu/menu.component';
-import { WorkspaceComponent} from './workspace/workspace.component';
+import { UserComponent} from './user/user.component';
+
+import { routing, appRoutingProviders} from './app.router';
 
 @NgModule({
-    imports: [BrowserModule],
-    declarations: [AppComponent, MenuComponent, WorkspaceComponent],
-  bootstrap:    [ AppComponent ]
+    imports: [BrowserModule, AdminModule, routing],
+    declarations: [
+      AppComponent, 
+      MenuComponent, 
+      WorkComponent,
+      UserComponent
+    ],
+    bootstrap:    [ AppComponent ],
+    providers: [
+      appRoutingProviders
+    ]
 })
 export class AppModule { }
