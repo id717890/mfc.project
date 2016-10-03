@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
+using System.Web.Http.Cors;
+using System.Configuration;
 
 namespace mfc.webapi
 {
@@ -17,6 +19,12 @@ namespace mfc.webapi
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
+            var corsTrustedInvokers = ConfigurationManager.AppSettings["CorsTrustedInvokers"];
+            if (!String.IsNullOrWhiteSpace(corsTrustedInvokers))
+            {
+                config.EnableCors(new EnableCorsAttribute(corsTrustedInvokers, "*", "*"));
+            }
+            
             // Web API routes
             config.MapHttpAttributeRoutes();
             
