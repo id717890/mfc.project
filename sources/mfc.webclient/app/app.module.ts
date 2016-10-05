@@ -1,6 +1,7 @@
 import { NgModule }      from '@angular/core';
 import { RequestOptions }      from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
+
 import { AdminModule }   from './admin/admin.module';
 
 import { AppComponent }   from './app.component';
