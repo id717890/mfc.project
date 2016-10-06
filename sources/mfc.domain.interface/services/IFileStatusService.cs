@@ -13,9 +13,9 @@ namespace mfc.domain.services {
         void Update(FileStatus status);
         void Delete(Int64 statusId);
 
-        IEnumerable<FileStatusInfo> GetFileStatuses(Int64 fileId);
+        IEnumerable<FileStatusRegistry> GetFileStatuses(Int64 fileId);
         void SetStatus(Int64 fileId, Int64 statusId, DateTime date, string comments);
         void DeleteStatus(Int64 fileId, Int64 statusId);
-        FileStatusInfo GetLastStatuses(Int64 fileId);
+        FileStatusRegistry GetLastStatuses(Int64 fileId);
     }
 }

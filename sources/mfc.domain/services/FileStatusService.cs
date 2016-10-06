@@ -54,7 +54,7 @@ namespace mfc.domain.services {
             Debug.Assert(!string.IsNullOrEmpty(caption));
 
             var status = new FileStatus {
-                Caption = caption,
+                Caption = caption
             };
 
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
@@ -65,7 +65,7 @@ namespace mfc.domain.services {
 
             _is_cache_valid = false;
 
-            return 0;
+            return status.Id;
         }
 
         public void Update(FileStatus status) {
@@ -116,8 +116,8 @@ namespace mfc.domain.services {
 
         #region FileStatusInfo
         
-        public IEnumerable<FileStatusInfo> GetFileStatuses(long fileId) {
-            var statuses = new List<FileStatusInfo>();
+        public IEnumerable<FileStatusRegistry> GetFileStatuses(long fileId) {
+            var statuses = new List<FileStatusRegistry>();
 
             var conn = SqlProvider.CreateConnection();
             SqlCommand cmd = null;
@@ -136,7 +136,7 @@ namespace mfc.domain.services {
                 
                 var reader = cmd.ExecuteReader();
                 while (reader.Read()) {
-                    statuses.Add(new FileStatusInfo {
+                    statuses.Add(new FileStatusRegistry {
                         FileId= fileId,
                         Date = Convert.ToDateTime(reader["dt"]),
                         User = UserService.GetUserById(Convert.ToInt64(reader["user_id"])),
@@ -219,8 +219,8 @@ namespace mfc.domain.services {
             }
         }
 
-        public FileStatusInfo GetLastStatuses(Int64 fileId) {
-            FileStatusInfo status = null;
+        public FileStatusRegistry GetLastStatuses(Int64 fileId) {
+            FileStatusRegistry status = null;
 
             var conn = SqlProvider.CreateConnection();
             SqlCommand cmd = null;
@@ -239,7 +239,7 @@ namespace mfc.domain.services {
 
                 var reader = cmd.ExecuteReader();
                 if (reader.Read()) {
-                    status = new FileStatusInfo {
+                    status = new FileStatusRegistry {
                         FileId = fileId,
                         Date = Convert.ToDateTime(reader["dt"]),
                         User = UserService.GetUserById(Convert.ToInt64(reader["user_id"])),
