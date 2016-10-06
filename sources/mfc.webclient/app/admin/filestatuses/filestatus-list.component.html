@@ -1,0 +1,20 @@
+<h2>Список статусов дел</h2>
+
+<button (click)="onNewClick($event)">Новый</button>
+<table class="table table-bordered table-striped table-hover table-condensed table-responsive">
+    <thead>
+        <tr>
+            <th>Описание</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let filestatus of filestatuses">
+            <td>{{filestatus.caption}}</td>
+            <td>
+                <a (click)="onEditClick($event, filestatus)" class="glyphicon glyphicon-edit" title="Редактировать"></a>
+                <a (click)="onDeleteClick($event, filestatus)" class="glyphicon glyphicon-remove" title="Удалить"></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
