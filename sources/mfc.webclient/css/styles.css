@@ -16,3 +16,9 @@ body {
 .navbar-bottom {
     margin-top: 50px;
 }
+
+.alert{
+  padding: 5px 15px !important;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

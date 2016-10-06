@@ -2,8 +2,9 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from "@angular/router";
 
 import { AdminComponent } from './admin.component';
-import { UserListComponent } from "./users/user-list.component";
 import { CustomerTypeListComponent } from "./customer-types/customer-type-list.component";
+import { UserListComponent } from "./users/user-list/user-list.component";
+
 
 const routes: Routes = [
     {

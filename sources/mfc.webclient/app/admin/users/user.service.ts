@@ -1,24 +1,69 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-
-export class User {
-    constructor(public id: number, public user_name: string, public description: string, public is_admin: boolean) { }
-}
+import 'rxjs/add/operator/catch'
+import { User } from './user.model';
+import {BaseService} from './../../infrastructure/base-service';
 
 @Injectable()
-export class UserService {
-    constructor(private http: Http) {
+export class UserService extends BaseService {
+    constructor(http: Http) {
+        super(http);
     }
 
     getUsers(): Promise<User[]> {
-        return this.http.get('http://localhost:4664/api/user') //Нужно будет адрес сервера API http://localhost:4664 прописать где-то в конфиге, а пока херачим так ))
+        return this._http.get(this.apiUrl + 'user')
             .toPromise()
-            .then(res => res.json())
+            .then(this.extractData)
             .catch(this.handlerError)
     }
 
+    createUser(user: User) {
+        let body = JSON.stringify(user);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers });
+
+        return this._http.post(this.apiUrl + 'user', body, options)
+            .toPromise()
+            .then()
+            .catch(this.handlerError)
+    }
+
+    updateUser(user: User) {
+        let body = JSON.stringify(user);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers });
+
+        let url = this.apiUrl + 'user/' + user.id;
+
+        return this._http.put(url, body, options)
+            .toPromise()
+            .then()
+            .catch(this.handlerError)
+    }
+
+    deleteUser(user: User) {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers });
+
+        let url = this.apiUrl + 'user/' + user.id;
+
+        return this._http.delete(url, options)
+            .toPromise()
+            .then()
+            .catch(this.handlerError)
+    }
+
+    private extractData(res: Response) {
+        return res.json();
+    }
+
     private handlerError(error: any) {
-        console.log(error);
+        if (error.status === 409) {
+            alert(error.json());
+        }
+        else {
+            console.log(error);
+        }
     }
 }
