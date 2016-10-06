@@ -10,12 +10,14 @@ import { UserCreateComponent } from './users/user-create/user-create.component';
 import { UserEditComponent } from './users/user-edit/user-edit.component';
 import { FileStatusEditComponent } from './filestatuses/filestatus-edit.component';
 import { FileStatusListComponent } from './filestatuses/filestatus-list.component';
+import { OrganizationTypeListComponent } from './organization-types/organization-type-list/organization-type-list.component';
 
 import { adminRouting } from './admin.router';
 
 import { UserService } from './users/user.service';
 import { CustomerTypeService } from './customer-types/customer-type.service';
 import { FileStatusService } from './filestatuses/filestatus.service';
+import { OrganizationTypeService } from './organization-types/organization-type.service';
 
 @NgModule({
     imports: [
@@ -28,12 +30,14 @@ import { FileStatusService } from './filestatuses/filestatus.service';
       AdminComponent,
       CustomerTypeListComponent,
       UserListComponent, UserCreateComponent, UserEditComponent,
-      FileStatusListComponent, FileStatusEditComponent
+      FileStatusListComponent, FileStatusEditComponent,
+      OrganizationTypeListComponent
     ],
     providers: [
       UserService,
       CustomerTypeService,
-      FileStatusService
+      FileStatusService,
+      OrganizationTypeService
     ]
 })
 

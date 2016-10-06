@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace mfc.webapi.Controllers
 {
@@ -18,8 +17,8 @@ namespace mfc.webapi.Controllers
             _customerTypeService = customerTypeService;
         }
 
-        [Route("")]
         [HttpGet]
+        [Route("")]
         public HttpResponseMessage Get()
         {
             var types = _customerTypeService.GetAllTypes().Select(type => new Models.CustomerType(type)).ToArray();
@@ -30,8 +29,8 @@ namespace mfc.webapi.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, types);
         }
 
-        [Route("{id}")]
         [HttpGet]
+        [Route("{id}")]
         public HttpResponseMessage Get(int id)
         {
             var type = _customerTypeService.GetTypeById(id);
@@ -43,17 +42,19 @@ namespace mfc.webapi.Controllers
         }
 
         [HttpPost]
+        [Route("")]
         public HttpResponseMessage Post([FromBody]Models.CustomerType value)
         {
             var id = _customerTypeService.Create(value.Caption);
 
-            var response = Request.CreateResponse(HttpStatusCode.Created);
+            var response = Request.CreateResponse(HttpStatusCode.Created, new Models.CustomerType(_customerTypeService.GetTypeById(id)));
             response.Headers.Location = new Uri(Request.RequestUri + id.ToString());
 
             return response;
         }
 
         [HttpPut]
+        [Route("")]
         public HttpResponseMessage Put(int id, [FromBody]Models.CustomerType value)
         {
             var type = _customerTypeService.GetTypeById(id);
@@ -70,8 +71,9 @@ namespace mfc.webapi.Controllers
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
         }
-
+        
         [HttpDelete]
+        [Route("{id}")]
         public HttpResponseMessage Delete(int id)
         {
             var type = _customerTypeService.GetTypeById(id);

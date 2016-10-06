@@ -2,20 +2,37 @@ import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/catch'
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
 
 import {BaseService} from './../../infrastructure/base-service';
 import {CustomerType} from './customer-type';
 
 @Injectable()
 export class CustomerTypeService extends BaseService {
+    private _apiControllerUrl: string = this.apiUrl + 'customer-types';
+
     constructor(http: Http) {
         super(http);
     }
     getCustomerTypes(): Promise<CustomerType[]> {
-        return this._http.get(this.apiUrl + 'customer-types')
+        return this._http.get(this._apiControllerUrl)
             .toPromise()
             .then(this.extractData)
+            .catch(this.handlerError);
+    }
+
+    addCustomerType(customerType: CustomerType): Promise<CustomerType> {
+        return this._http.post(this._apiControllerUrl, JSON.stringify(customerType))
+            .toPromise()
+            .then(res => res.json())
+            .catch(this.handlerError);
+    }
+
+    deleteCustomerType(customerType: CustomerType): Promise<Boolean> {
+        return this._http.delete(`${this._apiControllerUrl}/${customerType.id}`)
+            .toPromise()
+            .then(res => true)
             .catch(this.handlerError);
     }
 
