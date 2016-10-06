@@ -1,5 +1,4 @@
-<h1>ASDASSAD</h1>
-
+<h1>Справочник 'Типы ОГВ'</h1>
 
 <table class="table table-bordered table-striped table-hover table-condensed table-responsive">
     <thead>
@@ -10,9 +9,8 @@
     </thead>
     <tbody>
         <tr *ngFor="let organizationType of organizationTypes; let i = index">
+            <td hidden>{{organizationType.id}}</td>
             <td>{{organizationType.caption}}</td>
         </tr>
-
-      
     </tbody>
 </table>
