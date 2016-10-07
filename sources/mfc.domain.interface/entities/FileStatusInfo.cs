@@ -8,7 +8,7 @@ namespace mfc.domain.entities {
     /// <summary>
     /// Элемент регистра статустов дел
     /// </summary>
-    public class FileStatusInfo {
+    public class FileStatusRegistry {
         public Int64 FileId { get; set; }
         public DateTime Date { get; set; }
         public User User { get; set; }

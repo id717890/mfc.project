@@ -1,0 +1,16 @@
+<h1>Справочник 'Типы ОГВ'</h1>
+
+<table class="table table-bordered table-striped table-hover table-condensed table-responsive">
+    <thead>
+        <tr>
+            <th hidden>Id</th>
+            <th>Наименование</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let organizationType of organizationTypes; let i = index">
+            <td hidden>{{organizationType.id}}</td>
+            <td>{{organizationType.caption}}</td>
+        </tr>
+    </tbody>
+</table>

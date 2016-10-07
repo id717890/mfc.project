@@ -9,23 +9,36 @@ import { UserListComponent } from './users/user-list/user-list.component';
 import { UserCreateComponent } from './users/user-create/user-create.component';
 import { UserEditComponent } from './users/user-edit/user-edit.component';
 import { UserPasswordComponent } from './users/user-password/user-password.component';
+import { FileStatusEditComponent } from './filestatuses/filestatus-edit.component';
+import { FileStatusListComponent } from './filestatuses/filestatus-list.component';
+import { OrganizationTypeListComponent } from './organization-types/organization-type-list/organization-type-list.component';
 
 import { adminRouting } from './admin.router';
 
 import { UserService } from './users/user.service';
 import { CustomerTypeService } from './customer-types/customer-type.service';
+import { FileStatusService } from './filestatuses/filestatus.service';
+import { OrganizationTypeService } from './organization-types/organization-type.service';
 
 @NgModule({
-    imports: [BrowserModule, HttpModule, adminRouting, FormsModule],
+    imports: [
+      BrowserModule, 
+      HttpModule, 
+      adminRouting, 
+      FormsModule
+    ],
     declarations: [
       AdminComponent,
-      UserListComponent,
       CustomerTypeListComponent,
-      UserListComponent,UserCreateComponent,UserEditComponent,UserPasswordComponent
+      UserListComponent,UserCreateComponent,UserEditComponent,UserPasswordComponent,
+      FileStatusListComponent, FileStatusEditComponent,
+      OrganizationTypeListComponent
     ],
     providers: [
       UserService,
-      CustomerTypeService
+      CustomerTypeService,
+      FileStatusService,
+      OrganizationTypeService
     ]
 })
 
