@@ -1,11 +1,12 @@
 <h2>Список пользователей</h2>
 
-<a data-toggle="modal" data-target="#CreateUser" class="btn btn-primary">Добавить пользователя</a>
+<div class="form-group">
+    <a data-toggle="modal" data-target="#CreateUser" class="btn btn-primary">Добавить пользователя</a>
+</div>
 
 <table class="table table-bordered table-striped table-hover table-condensed table-responsive">
     <thead>
         <tr>
-            <th hidden>Id</th>
             <th>Имя пользователя</th>
             <th>Описание</th>
             <th></th>
@@ -17,7 +18,7 @@
             <td>{{user.description}}</td>
             <td>
                 <a data-toggle="modal" data-target="#UpdateUser" class="glyphicon glyphicon-edit" title="Редактировать" (click)="selectUser(i)"></a>
-                <a data-toggle="modal" data-target="#ChangePassword" class="glyphicon glyphicon-lock" title="Сменить пароль" ng-click="find_user($index)"></a>
+                <a data-toggle="modal" data-target="#ChangePassword" class="glyphicon glyphicon-lock" title="Сменить пароль" (click)="selectUser(i)"></a>
                 <a ng-click="deleteUser($index)" class="glyphicon glyphicon-remove" title="Удалить пользователя" (click)="deleteUser(i)"></a>
             </td>
         </tr>
@@ -26,3 +27,4 @@
 
 <mfc-user-create (created)="onUserCreated($event)"></mfc-user-create>
 <mfc-user-edit (edited)="onUserEdited($event)" [user]="selectedUser"></mfc-user-edit>
+<mfc-user-password (changedPassword)="onPasswordChanged($event)" [user]="selectedUser"></mfc-user-password>

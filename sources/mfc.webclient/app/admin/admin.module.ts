@@ -8,6 +8,7 @@ import { CustomerTypeListComponent } from './customer-types/customer-type-list.c
 import { UserListComponent } from './users/user-list/user-list.component';
 import { UserCreateComponent } from './users/user-create/user-create.component';
 import { UserEditComponent } from './users/user-edit/user-edit.component';
+import { UserPasswordComponent } from './users/user-password/user-password.component';
 
 import { adminRouting } from './admin.router';
 
@@ -20,7 +21,7 @@ import { CustomerTypeService } from './customer-types/customer-type.service';
       AdminComponent,
       UserListComponent,
       CustomerTypeListComponent,
-      UserListComponent,UserCreateComponent,UserEditComponent
+      UserListComponent,UserCreateComponent,UserEditComponent,UserPasswordComponent
     ],
     providers: [
       UserService,

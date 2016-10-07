@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/catch'
+
 import { User } from './user.model';
+import { Password } from './password.model';
 import {BaseService} from './../../infrastructure/base-service';
 
 @Injectable()
@@ -18,15 +19,47 @@ export class UserService extends BaseService {
             .catch(this.handlerError)
     }
 
-    createUser(user: User) {
+    getUser(url: string): Promise<User> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers });
+
+        return this._http.get(url, options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handlerError)
+    }
+
+    createUser(user: User): Promise<User> {
         let body = JSON.stringify(user);
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers });
 
         return this._http.post(this.apiUrl + 'user', body, options)
             .toPromise()
-            .then()
+            .then(data => {
+                let url = data.json();
+                return this.getUser(url);
+            })
             .catch(this.handlerError)
+    }
+
+    changePassword(user: User, password: Password) {
+        let body = JSON.stringify(password.password);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers });
+
+        let url = this.apiUrl + 'password/' + user.id;
+
+        this._http.put(url, body, options)
+            .toPromise()
+            .then((response) => {
+                if (response.status == 200) return true;
+                else {
+                    console.log(response);
+                    return false;
+                }
+            })
+            .catch(() => this.handlerError)
     }
 
     updateUser(user: User) {
@@ -38,7 +71,7 @@ export class UserService extends BaseService {
 
         return this._http.put(url, body, options)
             .toPromise()
-            .then()
+            .then(x => true)
             .catch(this.handlerError)
     }
 
@@ -50,7 +83,7 @@ export class UserService extends BaseService {
 
         return this._http.delete(url, options)
             .toPromise()
-            .then()
+            .then(() => true)
             .catch(this.handlerError)
     }
 

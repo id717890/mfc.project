@@ -1,9 +1,9 @@
 <!-- Modal for create user-->
-<div class="modal fade" id="CreateUser" tabindex="-1" role="dialog" aria-labelledby="CreateUserLabel">
+<div class="modal fade" id="CreateUser" tabindex="-1" role="dialog" aria-labelledby="CreateUserLabel" #test>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                <form name="newUserForm" (ngSubmit)="createNewUser()" #userForm="ngForm">
+                <form name="newUserForm" (ngSubmit)="createNewUser(userForm)" #userForm="ngForm">
                     <div class="form-group">
                         <input type="text" id="name" name="name" class="form-control" [(ngModel)]="user.user_name" required placeholder="Логин пользователя"
                             #name="ngModel">
@@ -26,9 +26,20 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-                        <button type="submit" class="btn btn-success" [disabled]="!userForm.form.valid">Добавить</button>
+                        <button id="tt" type="submit" class="btn btn-success" [disabled]="!userForm.form.valid">Добавить</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+
+    <script>
+        $(document.ready(function(){
+            $('#tt').click(function(){
+                alert('ttt');
+            })
+        }))
+
+
+    </script>
