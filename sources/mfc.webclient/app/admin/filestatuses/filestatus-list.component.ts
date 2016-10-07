@@ -34,8 +34,8 @@ export class FileStatusListComponent {
                     this.fileStatusService.create(output).then(x => {
                         this.filestatuses.push(x);
                     }).catch(x => this.handlerError(x));
-                });
-            }, () => null);
+                }, () => null);
+            });
     }
 
     dialogEdit(id: number) {
@@ -49,8 +49,8 @@ export class FileStatusListComponent {
                 return x.result.then((output) => {
                     filestatus.caption = output.caption;
                     this.fileStatusService.update(filestatus);
-                });
-            }, () => null);
+                }, () => null);
+            });
     }
 
     onNewClick(event: Event) {
@@ -74,7 +74,7 @@ export class FileStatusListComponent {
                         this.fileStatusService.delete(this.filestatuses[founded]);
                         delete this.filestatuses.splice(founded, 1);
                     }
-                })
+                }, () => null)
             });
     }
 
