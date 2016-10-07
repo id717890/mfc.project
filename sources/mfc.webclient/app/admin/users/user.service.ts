@@ -37,8 +37,8 @@ export class UserService extends BaseService {
         return this._http.post(this.apiUrl + 'user', body, options)
             .toPromise()
             .then(data => {
-                let url = data.json();
-                return this.getUser(url);
+                let location = data.headers.get('Location')
+                return this.getUser(location);
             })
             .catch(this.handlerError)
     }

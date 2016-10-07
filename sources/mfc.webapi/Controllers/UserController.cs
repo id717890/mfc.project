@@ -64,7 +64,7 @@ namespace mfc.webapi.Controllers
             else
             {
                 var id = user_service.AddNew(value.UserName, value.Description, value.IsAdmin, value.IsExpert, value.IsController);
-                var msg = Request.CreateResponse(HttpStatusCode.Created, new Uri(Request.RequestUri + "/" + id.ToString()));
+                var msg = Request.CreateResponse(HttpStatusCode.Created);
                 msg.Headers.Location = new Uri(Request.RequestUri + "/"+id.ToString());
                 return msg;
             }
