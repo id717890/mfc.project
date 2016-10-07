@@ -8,6 +8,7 @@ import { CustomerTypeListComponent } from './customer-types/customer-type-list.c
 import { UserListComponent } from './users/user-list/user-list.component';
 import { UserCreateComponent } from './users/user-create/user-create.component';
 import { UserEditComponent } from './users/user-edit/user-edit.component';
+import { UserPasswordComponent } from './users/user-password/user-password.component';
 import { FileStatusEditComponent } from './filestatuses/filestatus-edit.component';
 import { FileStatusListComponent } from './filestatuses/filestatus-list.component';
 import { OrganizationTypeListComponent } from './organization-types/organization-type-list/organization-type-list.component';
@@ -29,7 +30,7 @@ import { OrganizationTypeService } from './organization-types/organization-type.
     declarations: [
       AdminComponent,
       CustomerTypeListComponent,
-      UserListComponent, UserCreateComponent, UserEditComponent,
+      UserListComponent,UserCreateComponent,UserEditComponent,UserPasswordComponent,
       FileStatusListComponent, FileStatusEditComponent,
       OrganizationTypeListComponent
     ],

@@ -25,7 +25,10 @@ namespace mfc.webapi.Controllers
                 {
                     Id = user.Id,
                     UserName = user.Account,
-                    Description = user.Name
+                    Description = user.Name,
+                    IsAdmin = user.IsAdmin,
+                    IsExpert = user.IsExpert,
+                    IsController = user.IsController
                 });
             }
 
@@ -61,8 +64,8 @@ namespace mfc.webapi.Controllers
             else
             {
                 var id = user_service.AddNew(value.UserName, value.Description, value.IsAdmin, value.IsExpert, value.IsController);
-                var msg = Request.CreateResponse(HttpStatusCode.Created);
-                msg.Headers.Location = new Uri(Request.RequestUri + id.ToString());
+                var msg = Request.CreateResponse(HttpStatusCode.Created, new Uri(Request.RequestUri + "/" + id.ToString()));
+                msg.Headers.Location = new Uri(Request.RequestUri + "/"+id.ToString());
                 return msg;
             }
         }

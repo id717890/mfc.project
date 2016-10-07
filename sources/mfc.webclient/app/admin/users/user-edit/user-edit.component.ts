@@ -1,5 +1,5 @@
 import { Component, Output, Input, EventEmitter } from "@angular/core";
-
+import { NgForm } from "@angular/forms";
 import { User } from '../user.model';
 import { UserService } from '../user.service'
 
@@ -14,11 +14,11 @@ export class UserEditComponent {
 
     constructor(private userService: UserService) {
         this.edited = new EventEmitter<User>();
-        this.user = new User('test', 'test');
+        this.user = new User(0, 'test', 'test');
     }
 
-    editeUser() {
-        let user: User = this.user;
-        this.edited.emit(user);
+    editeUser(form: NgForm) {
+        this.edited.emit(this.user);
+        form.reset();
     }
 }

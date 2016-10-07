@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                <form name="updateUserForm" (ngSubmit)="editeUser()" #updateUserForm="ngForm">
+                <form name="updateUserForm" (ngSubmit)="editeUser(updateUserForm)" #updateUserForm="ngForm">
                     <div class="form-group">
                         <input type="text" name="name" class="form-control" [(ngModel)]="user.user_name" required placeholder="Логин пользователя"
                             #name="ngModel">
@@ -14,7 +14,15 @@
                             #description="ngModel">
                         <p [hidden]="description.valid || description.pristine" class="alert alert-danger">Укажите логин пользователя</p>
                     </div>
-                    <!--Здесь нужно вставить роли с помощью чекбоксов                   -->                   
+                    <div class="form-group">
+                        <input type="checkbox" id="is_admin2" [(ngModel)]="user.is_admin" name="is_admin"><label for="is_admin2">Администратор</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="is_expert2" [(ngModel)]="user.is_expert" name="is_expert"><label for="is_expert2">Эксперт</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="is_controller2" [(ngModel)]="user.is_controller" name="is_controller"><label for="is_controller2">Контролер</label>
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
                         <button type="submit" class="btn btn-success" [disabled]="!updateUserForm.form.valid || updateUserForm.form.pristine">Сохранить</button>
