@@ -40,11 +40,6 @@ export class FileStatusEditComponent implements CloseGuard, ModalComponent<FileS
         dialog.setCloseGuard(this);
     }
 
-    onKeyUp(value) {
-        this.caption = value;
-        this.dialog.close();
-    }
-
     beforeDismiss(): boolean {
         return false;
     }

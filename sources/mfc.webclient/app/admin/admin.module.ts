@@ -11,6 +11,8 @@ import { UserEditComponent } from './users/user-edit/user-edit.component';
 import { UserPasswordComponent } from './users/user-password/user-password.component';
 import { FileStatusEditComponent } from './filestatuses/filestatus-edit.component';
 import { FileStatusListComponent } from './filestatuses/filestatus-list.component';
+import { ActionTypeEditComponent } from './actiontypes/actiontype-edit.component';
+import { ActionTypeListComponent } from './actiontypes/actiontype-list.component';
 import { OrganizationTypeListComponent } from './organization-types/organization-type-list/organization-type-list.component';
 
 import { adminRouting } from './admin.router';
@@ -18,6 +20,7 @@ import { adminRouting } from './admin.router';
 import { UserService } from './users/user.service';
 import { CustomerTypeService } from './customer-types/customer-type.service';
 import { FileStatusService } from './filestatuses/filestatus.service';
+import { ActionTypeService } from './actiontypes/actiontype.service';
 import { OrganizationTypeService } from './organization-types/organization-type.service';
 
 @NgModule({
@@ -32,12 +35,14 @@ import { OrganizationTypeService } from './organization-types/organization-type.
       CustomerTypeListComponent,
       UserListComponent,UserCreateComponent,UserEditComponent,UserPasswordComponent,
       FileStatusListComponent, FileStatusEditComponent,
+      ActionTypeListComponent, ActionTypeEditComponent,
       OrganizationTypeListComponent
     ],
     providers: [
       UserService,
       CustomerTypeService,
       FileStatusService,
+      ActionTypeService,
       OrganizationTypeService
     ]
 })

@@ -5,7 +5,7 @@ import { DialogRef, overlayConfigFactory } from 'angular2-modal';
 
 import { FileStatus, FileStatusService } from './filestatus.service'
 
-import { FileStatusEditComponent, FileStatusEditContext } from './filestatus-edit.component'
+import { FileStatusEditComponent } from './filestatus-edit.component'
 
 @Component({
     selector: 'mfc-filestatus-list',
@@ -16,8 +16,8 @@ import { FileStatusEditComponent, FileStatusEditContext } from './filestatus-edi
 export class FileStatusListComponent {
     private filestatuses: FileStatus[];
     
-    constructor(public modal: Modal, private fileStatusService: FileStatusService) {
-        fileStatusService.get()
+    constructor(public modal: Modal, private filestatusService: FileStatusService) {
+        filestatusService.get()
             .then(x => {
                 this.filestatuses = x;
             })
@@ -28,10 +28,10 @@ export class FileStatusListComponent {
         this.modal
             .open(
                 FileStatusEditComponent,
-                overlayConfigFactory({ title: ('Новый статус'), filestatus: new FileStatus(null, '') }, BSModalContext)
+                overlayConfigFactory({ title: 'Новый статус', filestatus: new FileStatus(null, '') }, BSModalContext)
             ).then((x) => {
                 return x.result.then((output) => {
-                    this.fileStatusService.create(output).then(x => {
+                    this.filestatusService.create(output).then(x => {
                         this.filestatuses.push(x);
                     }).catch(x => this.handlerError(x));
                 }, () => null);
@@ -39,16 +39,15 @@ export class FileStatusListComponent {
     }
 
     dialogEdit(id: number) {
-        console.log('dialog(' + id + ')');
         let filestatus: FileStatus = this.filestatuses.find(x => x.id == id);
         this.modal
             .open(
                 FileStatusEditComponent,
-                overlayConfigFactory({ title: ('Изменить статус'), filestatus: new FileStatus(filestatus.id, filestatus.caption) }, BSModalContext)
+                overlayConfigFactory({ title: 'Изменить статус', filestatus: new FileStatus(filestatus.id, filestatus.caption) }, BSModalContext)
             ).then((x) => {
                 return x.result.then((output) => {
                     filestatus.caption = output.caption;
-                    this.fileStatusService.update(filestatus);
+                    this.filestatusService.update(filestatus);
                 }, () => null);
             });
     }
@@ -71,7 +70,7 @@ export class FileStatusListComponent {
                 x.result.then(x => {
                     if (x) {
                         let founded = this.filestatuses.findIndex(x => x.id == filestatus.id);
-                        this.fileStatusService.delete(this.filestatuses[founded]);
+                        this.filestatusService.delete(this.filestatuses[founded]);
                         delete this.filestatuses.splice(founded, 1);
                     }
                 }, () => null)
