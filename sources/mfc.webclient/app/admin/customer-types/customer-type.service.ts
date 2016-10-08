@@ -24,8 +24,20 @@ export class CustomerTypeService extends BaseService {
 
     addCustomerType(customerType: CustomerType): Promise<CustomerType> {
         return this._http.post(this._apiControllerUrl, JSON.stringify(customerType))
+            .flatMap((x: Response) => {
+                var location = x.headers.get('Location');
+                return this._http.get(location);
+            })
+            .map((x: Response) => x.json())
             .toPromise()
-            .then(res => res.json())
+            .then(x => x)
+            .catch(this.handlerError);
+    }
+
+    updateCustomerType(customerType: CustomerType) {
+        return this._http.put(this._apiControllerUrl + "/" + customerType.id, JSON.stringify(customerType))
+            .toPromise()
+            .then()
             .catch(this.handlerError);
     }
 

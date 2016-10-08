@@ -33,8 +33,7 @@ export class FileStatusService extends BaseService {
 
     create(filestatus: FileStatus): Promise<FileStatus> {
         let body = JSON.stringify(filestatus);
-        let options = this.optionsDefaults();
-        return this._http.post(this.apiUrl + 'filestatus/', body, options)
+        return this._http.post(this.apiUrl + 'filestatus/', body)
             .flatMap((x:Response) => {
                 var location = x.headers.get('Location');
                 return this._http.get(location);
@@ -45,16 +44,14 @@ export class FileStatusService extends BaseService {
 
     update(filestatus: FileStatus) {
         let body = JSON.stringify(filestatus);
-        let options = this.optionsDefaults();
-        return this._http.put(this.apiUrl + 'filestatus/' + filestatus.id, body, options)
+        return this._http.put(this.apiUrl + 'filestatus/' + filestatus.id, body)
             .toPromise()
             .then()
             .catch(this.handlerError);
     }
 
     delete(filestatus: FileStatus) {
-        let options = this.optionsDefaults();
-        return this._http.delete(this.apiUrl + 'filestatus/' + filestatus.id, options)
+        return this._http.delete(this.apiUrl + 'filestatus/' + filestatus.id)
             .toPromise()
             .then()
             .catch(this.handlerError);

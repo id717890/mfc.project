@@ -33,8 +33,7 @@ export class ActionTypeService extends BaseService {
 
     create(actiontype: ActionType): Promise<ActionType> {
         let body = JSON.stringify(actiontype);
-        let options = this.optionsDefaults();
-        return this._http.post(this.apiUrl + 'actiontype/', body, options)
+        return this._http.post(this.apiUrl + 'actiontype/', body)
             .flatMap((x:Response) => {
                 var location = x.headers.get('Location');
                 return this._http.get(location);
@@ -45,16 +44,14 @@ export class ActionTypeService extends BaseService {
 
     update(actiontype: ActionType) {
         let body = JSON.stringify(actiontype);
-        let options = this.optionsDefaults();
-        return this._http.put(this.apiUrl + 'actiontype/' + actiontype.id, body, options)
+        return this._http.put(this.apiUrl + 'actiontype/' + actiontype.id, body)
             .toPromise()
             .then()
             .catch(this.handlerError);
     }
 
     delete(actiontype: ActionType) {
-        let options = this.optionsDefaults();
-        return this._http.delete(this.apiUrl + 'actiontype/' + actiontype.id, options)
+        return this._http.delete(this.apiUrl + 'actiontype/' + actiontype.id)
             .toPromise()
             .then()
             .catch(this.handlerError);

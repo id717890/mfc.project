@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AdminComponent } from './admin.component';
 import { CustomerTypeListComponent } from './customer-types/customer-type-list.component';
+import { CustomerTypeEditComponent } from './customer-types/customer-type-edit.component';
 import { UserListComponent } from './users/user-list/user-list.component';
 import { UserCreateComponent } from './users/user-create/user-create.component';
 import { UserEditComponent } from './users/user-edit/user-edit.component';
@@ -32,7 +33,7 @@ import { OrganizationTypeService } from './organization-types/organization-type.
     ],
     declarations: [
       AdminComponent,
-      CustomerTypeListComponent,
+      CustomerTypeListComponent, CustomerTypeEditComponent,
       UserListComponent,UserCreateComponent,UserEditComponent,UserPasswordComponent,
       FileStatusListComponent, FileStatusEditComponent,
       ActionTypeListComponent, ActionTypeEditComponent,
