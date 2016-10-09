@@ -47,14 +47,14 @@ namespace mfc.webapi.Controllers
         {
             var id = _customerTypeService.Create(value.Caption);
 
-            var response = Request.CreateResponse(HttpStatusCode.Created, new Models.CustomerType(_customerTypeService.GetTypeById(id)));
-            response.Headers.Location = new Uri(Request.RequestUri + id.ToString());
+            var response = Request.CreateResponse(HttpStatusCode.Created);
+            response.Headers.Location = new Uri($"{Request.RequestUri}/{id}");
 
             return response;
         }
 
         [HttpPut]
-        [Route("")]
+        [Route("{id}")]
         public HttpResponseMessage Put(int id, [FromBody]Models.CustomerType value)
         {
             var type = _customerTypeService.GetTypeById(id);

@@ -1,19 +1,23 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import {OnInit} from '@angular/core';
+import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { DialogRef, overlayConfigFactory } from 'angular2-modal';
 
 import {CustomerTypeService} from './customer-type.service';
 import {CustomerType} from './customer-type';
+import {CustomerTypeEditComponent} from './customer-type-edit.component'
 
 @Component({
     selector: 'mfc-customer-type-list',
-    templateUrl: 'app/admin/customer-types/customer-type-list.component.html'
+    templateUrl: 'app/admin/customer-types/customer-type-list.component.html',
+    providers: [Modal]
 })
 
 export class CustomerTypeListComponent implements OnInit {
     customerTypes: CustomerType[];
 
-    constructor(private customerTypeService: CustomerTypeService) {
+    constructor(public modal: Modal, private customerTypeService: CustomerTypeService) {
     }
 
     ngOnInit(): void {
@@ -21,14 +25,37 @@ export class CustomerTypeListComponent implements OnInit {
     }
 
     addType() {
-        var type: CustomerType = new CustomerType();
-        type.id = 0;
-        type.caption = "Новый";
+        this.modal
+            .open(
+            CustomerTypeEditComponent,
+            overlayConfigFactory({ title: 'Новый', customerType: new CustomerType(null, '') }, BSModalContext)
+            ).then(x => {
+                x.result.then(output => {
+                    if (output != null) {
+                        this.customerTypeService.addCustomerType(output)
+                            .then(x => {
+                                this.customerTypes.push(x);
+                            }).catch(x => this.handlerError(x));
+                    }
+                }, () => null);
+            }).catch(this.handlerError);
+    }
 
-        this.customerTypeService.addCustomerType(type)
-            .then(newType => {
-                this.customerTypes.push(newType);
-            });
+    editType(type: CustomerType) {
+        this.modal
+            .open(
+            CustomerTypeEditComponent,
+            overlayConfigFactory({ title: 'Редактирование', customerType: new CustomerType(type.id, type.caption) }, BSModalContext)
+            ).then(x => {
+                x.result.then(output => {
+                    if (output != null) {
+                        this.customerTypeService.updateCustomerType(output)
+                            .then(x => {
+                                type.caption = output.caption;
+                            }).catch(x => this.handlerError(x));
+                    }
+                }, () => null);
+            }).catch(this.handlerError);
     }
 
     deleteType(type: CustomerType) {
@@ -43,5 +70,9 @@ export class CustomerTypeListComponent implements OnInit {
     private fillCustomerTypes() {
         this.customerTypeService.getCustomerTypes()
             .then(types => this.customerTypes = types);
+    }
+
+    private handlerError(error: any) {
+        console.log('CustomerTypeListComponent::error ' + error);
     }
 }

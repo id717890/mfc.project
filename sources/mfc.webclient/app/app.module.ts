@@ -10,11 +10,12 @@ import { AppComponent } from './app.component';
 import { WorkComponent } from './work/work.component';
 import { MenuComponent } from './menu/menu.component';
 import { UserComponent } from './user/user.component';
-import { DefaultRequestOptions } from './infrastructure/default-request-options';
+import { ActionTypeEditComponent } from './admin/actiontypes/actiontype-edit.component';
 import { FileStatusEditComponent } from './admin/filestatuses/filestatus-edit.component';
+import { CustomerTypeEditComponent } from './admin/customer-types/customer-type-edit.component';
 
 import { routing, appRoutingProviders} from './app.router';
-
+import { DefaultRequestOptions } from './infrastructure/default-request-options';
 
 @NgModule({
   imports: [
@@ -35,6 +36,10 @@ import { routing, appRoutingProviders} from './app.router';
     appRoutingProviders,
     { provide: RequestOptions, useClass: DefaultRequestOptions }
   ],
-  entryComponents: [ FileStatusEditComponent ]
+  entryComponents: [
+     FileStatusEditComponent,
+     ActionTypeEditComponent,
+     CustomerTypeEditComponent
+  ]
 })
 export class AppModule { }

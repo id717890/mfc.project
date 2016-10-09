@@ -20,10 +20,7 @@ export class UserService extends BaseService {
     }
 
     getUser(url: string): Promise<User> {
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers });
-
-        return this._http.get(url, options)
+        return this._http.get(url)
             .toPromise()
             .then(response => response.json())
             .catch(this.handlerError)
@@ -31,10 +28,7 @@ export class UserService extends BaseService {
 
     createUser(user: User): Promise<User> {
         let body = JSON.stringify(user);
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers });
-
-        return this._http.post(this.apiUrl + 'user', body, options)
+        return this._http.post(this.apiUrl + 'user', body)
             .toPromise()
             .then(data => {
                 let location = data.headers.get('Location')
@@ -45,12 +39,9 @@ export class UserService extends BaseService {
 
     changePassword(user: User, password: Password) {
         let body = JSON.stringify(password.password);
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers });
-
         let url = this.apiUrl + 'password/' + user.id;
 
-        this._http.put(url, body, options)
+        this._http.put(url, body)
             .toPromise()
             .then((response) => {
                 if (response.status == 200) return true;
@@ -64,24 +55,18 @@ export class UserService extends BaseService {
 
     updateUser(user: User) {
         let body = JSON.stringify(user);
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers });
-
         let url = this.apiUrl + 'user/' + user.id;
 
-        return this._http.put(url, body, options)
+        return this._http.put(url, body)
             .toPromise()
             .then(x => true)
             .catch(this.handlerError)
     }
 
     deleteUser(user: User) {
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers });
-
         let url = this.apiUrl + 'user/' + user.id;
 
-        return this._http.delete(url, options)
+        return this._http.delete(url)
             .toPromise()
             .then(() => true)
             .catch(this.handlerError)

@@ -1,4 +1,6 @@
 export class CustomerType {
-    public id: number;
-    public caption: string;
+    constructor(public id: number, public caption: string){}
+    public clone() :CustomerType {
+        return new CustomerType(this.id, this.caption);
+    }
 }

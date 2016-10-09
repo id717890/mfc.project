@@ -1,15 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace mfc.webapi.Controllers
 {
     using Models;
     using domain.services;
-    using System;
-    using System.Net.Http.Headers;
-    using System.Net.Http.Formatting;
 
     public class FileStatusController : ApiController
     {
@@ -21,7 +20,7 @@ namespace mfc.webapi.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, output);
         }
 
-        // GET: api/filestatus/5
+        // GET: api/filestatus/:id
         public HttpResponseMessage Get(int id)
         {
             var fileStatusService = CompositionRoot.Resolve<IFileStatusService>();

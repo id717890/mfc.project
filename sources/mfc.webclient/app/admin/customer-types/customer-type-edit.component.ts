@@ -3,11 +3,12 @@ import { Component, Output, Input, EventEmitter } from "@angular/core";
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
-import { FileStatus } from './filestatus.service'
+import { CustomerTypeService } from './customer-type.service'
+import { CustomerType } from './customer-type'
 
-export class FileStatusEditContext extends BSModalContext {
+export class CustomerTypeEditContext extends BSModalContext {
     public title: string;
-    public filestatus: FileStatus;
+    public customerType: CustomerType;
 }
 
 @Component({
@@ -21,21 +22,21 @@ export class FileStatusEditContext extends BSModalContext {
             margin-top: 10px;
         }
     `],
-    templateUrl: 'app/admin/filestatuses/filestatus-edit.component.html',
+    templateUrl: 'app/admin/customer-types/customer-type-edit.component.html',
     providers: [ Modal ]
 })
 
-export class FileStatusEditComponent implements CloseGuard, ModalComponent<FileStatusEditContext> {
-    context: FileStatusEditContext;
+export class CustomerTypeEditComponent implements CloseGuard, ModalComponent<CustomerTypeEditContext> {
+    context: CustomerTypeEditContext;
     is_changing: boolean;
 
     public caption: string;
 
-    constructor(public dialog: DialogRef<FileStatusEditContext>) {
+    constructor(public dialog: DialogRef<CustomerTypeEditContext>) {
         this.context = dialog.context;
 
-        this.is_changing = !dialog.context.filestatus;
-        this.caption = this.is_changing ? dialog.context.filestatus.caption : '';
+        this.is_changing = !dialog.context.customerType;
+        this.caption = this.is_changing ? dialog.context.customerType.caption : '';
         
         dialog.setCloseGuard(this);
     }
