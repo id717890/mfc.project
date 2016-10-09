@@ -1,4 +1,4 @@
-<div class="container-fluid" style="margin-top:100px;">
+<div class="container-fluid" style="min-height:calc(100% - 171px)">
     <div class="row">
         <div class="col-sm-2 col-md-3 col-lg-2 sidebar">
             <ul class="nav nav-sidebar">
@@ -9,7 +9,7 @@
                 <li><a href="/Service/List">Справочник 'Услуги'</a></li>
                 <li><a [routerLink]="['filestatuses']">Справочник 'Статусы дел'</a></li>
                 <li><a [routerLink]="['customer-types']">Справочник 'Категории посетителей/заявителей'</a></li>
-                <li><a href="/FileStage">Настройка этапов движения дела</a></li>
+                <li><a [routerLink]="['file-stages']">Настройка этапов движения дела</a></li>
             </ul>
         </div>
         <div class="col-sm-8 col-md-8 main">
