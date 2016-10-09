@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FileStage, FileStageService } from './file-stage.service';
+import { FileStageService } from './file-stage.service';
+import { FileStage } from './file-stage.model';
 import { FileStatus, FileStatusService } from '../filestatuses/filestatus.service';
 
 @Component({
