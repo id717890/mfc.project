@@ -275,6 +275,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\FileStageController.cs" />
     <Compile Include="Controllers\FileStatusController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrganizationTypeApiController.cs" />
@@ -289,6 +290,7 @@
     <Compile Include="Models\AccountInfo.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CustomerType.cs" />
+    <Compile Include="Models\FileStageInfo.cs" />
     <Compile Include="Models\FileStatusInfo.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LoginModel.cs" />

@@ -7,8 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace mfc.domain.services {
-    public class FileStageService : IFileStageService {
+namespace mfc.domain.services
+{
+    public class FileStageService : IFileStageService
+    {
         private readonly object sync_obj = new object();
         private readonly object sync_obj_update = new object();
 
@@ -23,17 +25,21 @@ namespace mfc.domain.services {
         [Inject]
         public IFileStageRepository Repository { get; set; }
 
-        public IEnumerable<FileStage> GetAllStages() {
+        public IEnumerable<FileStage> GetAllStages()
+        {
             PrepareCache();
             return _cacheCode.Values.OrderBy(x => x.Order);
         }
 
-        public void UpdateStages(IEnumerable<FileStage> stages) {
-            lock (sync_obj_update) {
+        public void UpdateStages(IEnumerable<FileStage> stages)
+        {
+            lock (sync_obj_update)
+            {
                 var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
                 unit_of_work.BeginTransaction();
-                foreach (var stage in stages) {
+                foreach (var stage in stages)
+                {
                     Repository.Update(stage);
                 }
                 unit_of_work.Commit();
@@ -42,25 +48,42 @@ namespace mfc.domain.services {
             }
         }
 
-        public FileStatus GetStatusForStage(string code) {
+        public void UpdateStage(FileStage fileStage)
+        {
+            var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
+
+            unit_of_work.BeginTransaction();
+            Repository.Update(fileStage);
+            unit_of_work.Commit();
+
+            _is_cache_valid = false;
+        }
+
+        public FileStatus GetStatusForStage(string code)
+        {
             PrepareCache();
-            if (!_cacheCode.ContainsKey(code)) {
+            if (!_cacheCode.ContainsKey(code))
+            {
                 throw new DomainException(string.Format("Для кода {0} стадия дела неопределена"));
             }
             return _cacheCode[code].Status;
         }
 
-        public void PrepareCache() {
-            if (_is_cache_valid) {
+        public void PrepareCache()
+        {
+            if (_is_cache_valid)
+            {
                 return;
             }
 
-            lock (sync_obj) {
+            lock (sync_obj)
+            {
                 _cacheCode.Clear();
                 _cacheStatus.Clear();
-                foreach (var stage in Repository.GetAll()) {
+                foreach (var stage in Repository.GetAll())
+                {
                     _cacheCode.Add(stage.Code, stage);
-                    _cacheStatus.Add(stage.Status.Id, stage);
+                    if (!_cacheStatus.ContainsKey(stage.Status.Id)) _cacheStatus.Add(stage.Status.Id, stage);
                 }
 
                 _is_cache_valid = true;
@@ -68,12 +91,14 @@ namespace mfc.domain.services {
         }
 
 
-        public FileStage GetStage(string code) {
+        public FileStage GetStage(string code)
+        {
             PrepareCache();
             return _cacheCode[code];
         }
 
-        public FileStage GetStageByStatus(long status) {
+        public FileStage GetStageByStatus(long status)
+        {
             PrepareCache();
             return _cacheStatus[status];
         }

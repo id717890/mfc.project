@@ -12,8 +12,10 @@ using mfc.infrastructure.services;
 using System.Diagnostics;
 using mfc.dal.services;
 
-namespace mfc.domain.services {
-    public class UserService : IUserService {
+namespace mfc.domain.services
+{
+    public class UserService : IUserService
+    {
         [Inject]
         public ISqlProvider SqlProvider { get; set; }
 
@@ -29,7 +31,8 @@ namespace mfc.domain.services {
         private Dictionary<String, User> _name_cache = new Dictionary<string, User>();
         #endregion
 
-        public User GetUser(string account) {
+        public User GetUser(string account)
+        {
             Debug.Assert(!string.IsNullOrEmpty(account));
 
             PrepareCache();
@@ -38,7 +41,8 @@ namespace mfc.domain.services {
 
             var key = account.ToLower();
 
-            if (_name_cache.ContainsKey(key)) {
+            if (_name_cache.ContainsKey(key))
+            {
                 user = _name_cache[key];
             }
 
@@ -46,14 +50,17 @@ namespace mfc.domain.services {
         }
 
 
-        public IEnumerable<User> GetAllUsers() {
+        public IEnumerable<User> GetAllUsers()
+        {
             PrepareCache();
 
-            return _name_cache.Values.OrderBy(item=>item.Account.ToLower());
+            return _name_cache.Values.OrderBy(item => item.Account.ToLower());
         }
 
-        public long AddNew(string account, string name, bool is_admin, bool is_expert, bool is_controller) {
-            var user = new User {
+        public long AddNew(string account, string name, bool is_admin, bool is_expert, bool is_controller)
+        {
+            var user = new User
+            {
                 Account = account,
                 Name = name,
                 IsAdmin = is_admin,
@@ -71,16 +78,19 @@ namespace mfc.domain.services {
             return user.Id;
         }
 
-        public bool IsUserExists(string account) {
+        public bool IsUserExists(string account)
+        {
             return GetUser(account) != null;
         }
 
-        public User GetUserById(long id) {
+        public User GetUserById(long id)
+        {
             PrepareCache();
 
             User user = null;
 
-            if (_id_cache.ContainsKey(id)) {
+            if (_id_cache.ContainsKey(id))
+            {
                 user = _id_cache[id];
             }
 
@@ -88,7 +98,8 @@ namespace mfc.domain.services {
         }
 
 
-        public void Update(User user) {
+        public void Update(User user)
+        {
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
             unit_of_work.BeginTransaction();
@@ -98,7 +109,8 @@ namespace mfc.domain.services {
             _is_cached_valid = false;
         }
 
-        public void Delete(Int64 userId) {
+        public void Delete(Int64 userId)
+        {
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
 
             unit_of_work.BeginTransaction();
@@ -109,11 +121,13 @@ namespace mfc.domain.services {
         }
 
 
-        public void SetPassword(long userId, string password) {
+        public void SetPassword(long userId, string password)
+        {
             var conn = SqlProvider.CreateConnection();
             var cmd = conn.CreateCommand();
 
-            try {
+            try
+            {
                 cmd.CommandText = @"
                         update Users set password = @password
                         where id = @id";
@@ -122,54 +136,64 @@ namespace mfc.domain.services {
 
                 int row_count = cmd.ExecuteNonQuery();
 
-                if (row_count == 0) {
+                if (row_count == 0)
+                {
                     throw new DomainException("Подсистеме работы с данными не удалось обновить информацию в таблице Users");
                 }
             }
-            finally {
+            finally
+            {
                 cmd.Dispose();
                 conn.Close();
             }
         }
 
-        public IEnumerable<User> GetExperts() {
+        public IEnumerable<User> GetExperts()
+        {
             PrepareCache();
 
-            return _name_cache.Values.Where(m => m.IsExpert).OrderBy(m=>m.Name);
+            return _name_cache.Values.Where(m => m.IsExpert).OrderBy(m => m.Name);
         }
 
-        public IEnumerable<User> GetControllers() {
+        public IEnumerable<User> GetControllers()
+        {
             PrepareCache();
 
             return _name_cache.Values.Where(m => m.IsController).OrderBy(m => m.Name);
         }
 
-        public User GetCurrentUser() {
+        public User GetCurrentUser()
+        {
             var name = System.Threading.Thread.CurrentPrincipal.Identity.Name;
             return GetUser(name);
         }
 
         #region Helpers
 
-        private void PrepareCache() {
-            if (_is_cached_valid) {
+        private void PrepareCache()
+        {
+            if (_is_cached_valid)
+            {
                 return;
             }
 
             _id_cache.Clear();
             _name_cache.Clear();
 
-            foreach (var user in GetAllUsersInternal()) {
-                if (!_id_cache.ContainsKey(user.Id)) {
+            foreach (var user in GetAllUsersInternal())
+            {
+                if (!_id_cache.ContainsKey(user.Id))
+                {
                     _id_cache.Add(user.Id, user);
-                    _name_cache.Add(user.Account.ToLower(), user);
+                    if (!_name_cache.ContainsKey(user.Account.ToLower())) _name_cache.Add(user.Account.ToLower(), user);
                 }
             }
 
             _is_cached_valid = true;
         }
 
-        private IEnumerable<User> GetAllUsersInternal() {
+        private IEnumerable<User> GetAllUsersInternal()
+        {
             return Repository.GetAll();
         }
 

@@ -11,6 +11,7 @@ namespace mfc.domain.services {
         FileStage GetStage(string code);
         FileStage GetStageByStatus(long status);
         void UpdateStages(IEnumerable<FileStage> stages);
+        void UpdateStage(FileStage fileStage);
         FileStatus GetStatusForStage(string code);
     }
 }
