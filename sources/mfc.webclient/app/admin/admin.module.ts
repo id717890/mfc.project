@@ -12,6 +12,7 @@ import { UserPasswordComponent } from './users/user-password/user-password.compo
 import { FileStatusEditComponent } from './filestatuses/filestatus-edit.component';
 import { FileStatusListComponent } from './filestatuses/filestatus-list.component';
 import { OrganizationTypeListComponent } from './organization-types/organization-type-list/organization-type-list.component';
+import { FileStageListComponent } from './file-stages/file-stage-list.component';
 
 import { adminRouting } from './admin.router';
 
@@ -19,27 +20,30 @@ import { UserService } from './users/user.service';
 import { CustomerTypeService } from './customer-types/customer-type.service';
 import { FileStatusService } from './filestatuses/filestatus.service';
 import { OrganizationTypeService } from './organization-types/organization-type.service';
+import { FileStageService } from './file-stages/file-stage.service';
 
 @NgModule({
-    imports: [
-      BrowserModule, 
-      HttpModule, 
-      adminRouting, 
-      FormsModule
-    ],
-    declarations: [
-      AdminComponent,
-      CustomerTypeListComponent,
-      UserListComponent,UserCreateComponent,UserEditComponent,UserPasswordComponent,
-      FileStatusListComponent, FileStatusEditComponent,
-      OrganizationTypeListComponent
-    ],
-    providers: [
-      UserService,
-      CustomerTypeService,
-      FileStatusService,
-      OrganizationTypeService
-    ]
+  imports: [
+    BrowserModule,
+    HttpModule,
+    adminRouting,
+    FormsModule
+  ],
+  declarations: [
+    AdminComponent,
+    CustomerTypeListComponent,
+    UserListComponent, UserCreateComponent, UserEditComponent, UserPasswordComponent,   //Справочник "Пользователи"
+    FileStatusListComponent, FileStatusEditComponent,
+    OrganizationTypeListComponent,
+    FileStageListComponent                                                              //Настройка этапов движения дела
+  ],
+  providers: [
+    UserService,
+    CustomerTypeService,
+    FileStatusService,
+    OrganizationTypeService,
+    FileStageService
+  ]
 })
 
 export class AdminModule { }
