@@ -36,68 +36,104 @@
 }
 
 @section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <h1 class="page-header">@ViewBag.Title</h1>
-            <p>
-               @using (Html.BeginForm()) {
-                <div style="margin: 0 10px; float: left">@Html.LabelFor(x => x.DateBegin) @Html.EditorFor(m => m.DateBegin)</div>
-                <div style="margin: 0 10px;float:left">@Html.LabelFor(x => x.DateEnd) @Html.EditorFor(m => m.DateEnd)</div>
-                <div style="margin: 0 10px;float:left">@Html.LabelFor(x=>x.SelectedUserId) @Html.DropDownListFor(m => m.SelectedUserId, new SelectList(Model.Users, "Id", "Name"), new { @class = "form-control" })
-                </div>
-                <input type="submit" value="Обновить" class="btn btn-lg btn-default" />
-                <div style="clear:both" />
-               }
-            </p>
-        </div>
-    </section>
+<section class="featured">
+    <div class="row">
+        <h1 class="page-header">@ViewBag.Title</h1>
+    </div>
+    <div class="row">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-inner">
+                @using (Html.BeginForm(string.Empty, "Action", FormMethod.Post, new { @class = "navbar-form" }))
+                {
+                    @Html.LabelFor(m => m.DateBegin, new { @class = "navbar-text" })
+                    @Html.EditorFor(m => m.DateBegin)
+
+                    @Html.LabelFor(m => m.DateEnd, new { @class = "navbar-text" })
+                    @Html.EditorFor(m => m.DateEnd)
+
+                    @Html.LabelFor(x => x.SelectedUserId, new { @class = "navbar-text" })
+                    @Html.DropDownListFor(m => m.SelectedUserId, new SelectList(Model.Users, "Id", "Name"), new { @class = "form-control" })
+
+                    <input type="submit" value="Обновить" class="btn btn-default navbar-btn" />
+                }
+            </div>
+        </nav>
+    </div>
+</section>
 }
+
 @section workmenu {
     @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Services)
 }
-<p>
-    @Html.ActionLink("Новый", "Create", new {date = DateTime.Today.ToShortDateString(), user_id = Model.SelectedUserId})
-</p>
 
-<table class="table">
-    <tr>
-        <th>Дата</th>
-        <th>Заявитель</th>
-        <th>Услуга</th>
-        <th>ОГВ</th>
-        <th>Тип услуги</th>
-        <th>Эксперт</th>
-        <th></th>
-    </tr>
+<div class="row">
+    <div class="navbar navbar-default">
+        <div class="navbar-header">
+            <span class="navbar-brand">Управление:</span>
+        </div>
+        <div class="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <p class="navbar-btn">
+                        @Html.ActionLink("Новый", "Create", new {date = DateTime.Today.ToShortDateString(), user_id = Model.SelectedUserId}, new {@class = "btn btn-default"})
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-    @foreach (var item in actions) {
-        <tr>
-            <td>
-                @item.Date.ToString("dd.MM.yyyy")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Service.Caption)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Service.Organization.Caption)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type.Caption)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Name)
-            </td>
-            <td>
-                @Html.ActionLink("Изменить", "Edit", new {id = item.Id}) |
-                @Html.ActionLink("Удалить", "Delete", new {id = item.Id})
-            </td>
-        </tr>
-    }
+@if (pagerModel.Count > 0)
+{
+    <div class="row">
+        <div class="pull-right">
+            @Html.PagedListPager(pagerModel, page => Url.Action("Index", new { page }))
+        </div>
+    </div>
+}
 
-</table>
+<div class="row">
+    <div class="table-responsive table-condensed">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Заявитель</th>
+                    <th>Услуга</th>
+                    <th>ОГВ</th>
+                    <th>Тип услуги</th>
+                    <th>Эксперт</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in actions)
+                {
+                    <tr>
+                        <td>@item.Date.ToString("dd.MM.yyyy")</td>
+                        <td>@Html.DisplayFor(modelItem => item.Customer)</td>
+                        <td class="col-md-10">@Html.DisplayFor(modelItem => item.Service.Caption)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Service.Organization.Caption)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Type.Caption)</td>
+                        <td>@Html.DisplayFor(modelItem => item.User.Name)</td>
+                        <td class="col-toolbar">
+                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                @Html.ActionLink("Изменить", "Edit", new { id = item.Id }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("Удалить", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
-
-@Html.PagedListPager(pagerModel, page => Url.Action("Index", new { page }))
+@if (pagerModel.Count > 0)
+{
+    <div class="row">
+        <div class="pull-right">
+            @Html.PagedListPager(pagerModel, page => Url.Action("Index", new { page }))
+        </div>
+    </div>
+}

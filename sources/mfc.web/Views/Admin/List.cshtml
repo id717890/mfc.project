@@ -2,59 +2,67 @@
 
 @{
     ViewBag.Title = "Администрирование";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-
-    var rowsPerPage = !string.IsNullOrEmpty(Request.Params["rowsPerPage"]) ? Convert.ToInt16(Request.Params["rowsPerPage"]) : 5;
-
-    var grid = new WebGrid(null,
-                          defaultSort: "UserName",
-                          rowsPerPage: rowsPerPage);
-    grid.Bind(Model, autoSortAndPage: true);
-
 }
+
+@section featured {
+    <section class="featured">
+        <div class="row">
+            <h1 class="page-header">@ViewBag.Title</h1>
+        </div>
+    </section>
+}
+
 @section workmenu {
     @Html.Partial("_AdminMenu", 0)
 }
 
-<h2>Список пользователей</h2>
+<div class="row">
+    <div class="navbar navbar-default">
+        <div class="navbar-header">
+            <span class="navbar-brand">Управление:</span>
+        </div>
+        <div class="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <p class="navbar-btn">
+                        @Html.ActionLink("Новый", "Create", null, new {@class = "btn btn-default"})
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-<p>
-    @Html.ActionLink("Добавить пользователя", "Create")
-</p>
-
-@Html.DropDownList("Sortby", new SelectListItem[]
-    {
-        new SelectListItem() { Text = "5", Value = "5" },
-        new SelectListItem() { Text = "10", Value = "10" },
-        new SelectListItem() { Text = "15", Value = "15" },
-
-    }, Request.Params["rowsPerPage"],
-       new { @onchange = "CallChangefunc(this.value)" }
-)
-
-
-
-@grid.GetHtml(columns: new[]
-{
-    grid.Column(columnName: "UserName", header: ModelMetadata.FromLambdaExpression (x=>x.UserName, new ViewDataDictionary<mfc.web.Models.AccountInfo>(new mfc.web.Models.AccountInfo())).DisplayName),
-    grid.Column(columnName: "Description", header: ModelMetadata.FromLambdaExpression (x=>x.Description, new ViewDataDictionary<mfc.web.Models.AccountInfo>(new mfc.web.Models.AccountInfo())).DisplayName),
-    grid.Column(format: (item) => Html.ActionLink("Изменить", "Edit", new { id = item.id })),
-    grid.Column(format: (item) => Html.ActionLink("Изменить пароль", "SetPassword", new { id = item.Id })),
-    grid.Column(format: (item) => Html.ActionLink("Удалить", "Delete", new { id = item.Id })),
-})
-
-<script>
-    function addOrUpdateUrlParam(uri, paramKey, paramVal) {
-        var re = new RegExp("([?&])" + paramKey + "=[^&#]*", "i");
-        if (re.test(uri)) {
-            uri = uri.replace(re, '$1' + paramKey + "=" + paramVal);
-        } else {
-            var separator = /\?/.test(uri) ? "&" : "?";
-            uri = uri + separator + paramKey + "=" + paramVal;
-        }
-        return uri;
-    }
-    function CallChangefunc(val) {
-        window.location.href = addOrUpdateUrlParam(window.location.href, "rowsPerPage", val);
-    }
-</script>
+<div class="row">
+    <div class="table-responsive table-condensed">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                        <td class="col-toolbar-lg">
+                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                @Html.ActionLink("Изменить", "Edit", new { id = item.Id }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("Изменить пароль", "SetPassword", new { id = item.Id }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("Удалить", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

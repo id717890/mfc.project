@@ -2,33 +2,42 @@
 
 @{
     ViewBag.Title = "Вход в систему";
+    Layout = "../Shared/_Blank.cshtml";
 }
 
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <h1 class="page-header">@ViewBag.Title</h1>
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="login-panel panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Вход в систему</h3>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("Login", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @id = "loginform", @class = "form-horizontal", role = "form" })) {
+                    @Html.AntiForgeryToken()
+
+                    if (ViewData.ModelState.Keys.Any(k => ViewData.ModelState[k].Errors.Any()))
+                    {
+                        <div class="alert alert-danger">
+                            <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            @Html.ValidationSummary(false, "Ошибки: ")
+                        </div>
+                    } 
+                    <fieldset>
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.UserName, new {@class = "form-control", placeholder = "Имя пользователя", type = "username"})
+                        </div>
+                        <div class="form-group">
+                            @Html.PasswordFor(m => m.Password, new {@class = "form-control", placeholder = "Пароль"})
+                        </div>
+                        <input type="submit" value="Войти" class="btn btn-lg btn-success btn-block" />
+                    </fieldset>
+                }
+            </div>
         </div>
-    </section>
-}
+    </div>
+</div>
 
-<section id="loginForm">
-@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin" })) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
-    <fieldset>
-        <legend>Log in Form</legend>
-            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder="Имя пользователя", type="username" })
-            @Html.ValidationMessageFor(m => m.UserName)
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder="Пароль" })
-            @Html.ValidationMessageFor(m => m.Password)
-        <input type="submit" value="Войти" class="btn btn-lg btn-primary btn-block" />
-    </fieldset>
-}
-
-    <script type="text/javascript">
-        //при аутентификации очищаем отмеченный дела
-        clear_checked_files();
-    </script>
-</section>
+<script type="text/javascript">
+    //при аутентификации очищаем отмеченный дела
+    clear_checked_files();
+</script>

@@ -1,13 +1,26 @@
-﻿@if (Request.IsAuthenticated) {
-    <text>
-        <span class="hello">Здравствуйте, </span>@Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
-        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
-            @Html.AntiForgeryToken()
-            <a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a>
-        }
-    </text>
-} else {
-    <ul>
-        <li>@Html.ActionLink("Вход", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+﻿@if (Request.IsAuthenticated)
+{
+    <li class="navbar-text">
+        Пользователь:
+    </li>
+    <li class="dropdown">
+        <a aria-expanded="true" class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <span class="glyphicon glyphicon-user"></span>
+            @User.Identity.Name
+        </a>
+        <ul class="dropdown-menu dropdown-user">
+            <li>
+                @Html.ActionLink("Настройки", "Manage", "Account", null, new {@class = "username", title = "Manage"})
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a>
+            </li>
+        </ul>
+    </li>
 }
+else
+{
+    <li>@Html.ActionLink("Вход", "Login", "Account", null, new { @class = "navbar-right", id = "loginLink" })</li>
+}
+

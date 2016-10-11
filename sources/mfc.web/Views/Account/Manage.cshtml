@@ -3,12 +3,14 @@
     ViewBag.Title = "Настройка учетной записи";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
+@section featured {
+    <section class="featured">
+        <div class="row">
+            <h1 class="page-header">@ViewBag.Title</h1>
+        </div>
+    </section>
+}
 
 <p class="message-success">@ViewBag.StatusMessage</p>
-
-<p>Вы вошли как <strong>@User.Identity.Name</strong>.</p>
 
 @Html.Partial("_SetPasswordPartial")

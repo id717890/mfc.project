@@ -2,36 +2,62 @@
 
 @{
     ViewBag.Title = "Справочник статусов";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="row">
+            <h1 class="page-header">@ViewBag.Title</h1>
+        </div>
+    </section>
 }
 
 @section workmenu {
     @Html.Partial("_AdminMenu", 5)
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="navbar navbar-default">
+        <div class="navbar-header">
+            <span class="navbar-brand">Управление:</span>
+        </div>
+        <div class="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <p class="navbar-btn">
+                        @Html.ActionLink("Новый", "Create", null, new { @class = "btn btn-default" })
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-<p>
-    @Html.ActionLink("Новый", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Caption)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Caption)
-            </td>
-            <td>
-                @Html.ActionLink("Изменить", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-</table>
+<div class="row">
+    <div class="table-responsive table-condensed">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Caption)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Caption)</td>
+                        <td class="col-toolbar">
+                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                @Html.ActionLink("Изменить", "Edit", new { id = item.Id }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("Удалить", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
