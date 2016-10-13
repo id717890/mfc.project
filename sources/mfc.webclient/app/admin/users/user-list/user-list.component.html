@@ -1,10 +1,14 @@
 <h2 class="page-header">Список пользователей</h2>
 
+<div *ngIf="loading">
+    <loading-indicator></loading-indicator>
+</div>
+
 <div class="form-group">
     <a data-toggle="modal" data-target="#CreateUser" class="btn btn-primary">Добавить пользователя</a>
 </div>
 
-<table class="table table-bordered table-striped table-hover table-condensed table-responsive">
+<table class="table table-bordered table-striped table-hover table-condensed table-responsive" [ngBusy]="busy">
     <thead>
         <tr>
             <th>Имя пользователя</th>

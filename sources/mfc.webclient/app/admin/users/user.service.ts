@@ -19,6 +19,14 @@ export class UserService extends BaseService {
             .catch(this.handlerError)
     }
 
+    getUserById(id: number): Promise<User> {
+        let url = this.apiUrl + 'user/' + id;
+        return this._http.get(url)
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handlerError)
+    }
+
     getUser(url: string): Promise<User> {
         return this._http.get(url)
             .toPromise()
@@ -59,7 +67,13 @@ export class UserService extends BaseService {
 
         return this._http.put(url, body)
             .toPromise()
-            .then(x => true)
+            .then((response) => {
+                if (response.status == 200) return true;
+                else {
+                    console.log(response);
+                    return false;
+                }
+            })
             .catch(this.handlerError)
     }
 
@@ -68,7 +82,13 @@ export class UserService extends BaseService {
 
         return this._http.delete(url)
             .toPromise()
-            .then(() => true)
+            .then((response) => {
+                if (response.status == 200) return true;
+                else {
+                    console.log(response);
+                    return false;
+                }
+            })
             .catch(this.handlerError)
     }
 

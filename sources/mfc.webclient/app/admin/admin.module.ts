@@ -25,13 +25,35 @@ import { FileStatusService } from './filestatuses/filestatus.service';
 import { ActionTypeService } from './actiontypes/actiontype.service';
 import { OrganizationTypeService } from './organization-types/organization-type.service';
 import { FileStageService } from './file-stages/file-stage.service';
+import { BusyModule, BusyConfig } from 'angular2-busy'; //Сторонний пакет для реализации busy indicatpr angular2-busy https://github.com/devyumao/angular2-busy
+import { LoadingIndicator, LoadingPage } from '../Infrastructure/loading-service/loading.component';  //Сторонний пакет для реализации busy indicatpr angular2-busy https://webcake.co/a-loading-spinner-in-angular-2-using-ngswitch/
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpModule,
     adminRouting,
-    FormsModule
+    FormsModule,
+    BusyModule.forRoot(
+      new BusyConfig({
+        message: 'Обработка данных...',
+        backdrop: true,
+        template: `
+          <div class="panel panel-default">
+            <div class="sk-wave">
+              <div class="sk-rect sk-rect1"></div>
+              <div class="sk-rect sk-rect2"></div>
+              <div class="sk-rect sk-rect3"></div>
+              <div class="sk-rect sk-rect4"></div>
+              <div class="sk-rect sk-rect5"></div>
+              <div class="sk-text">{{message}}</div>       
+            </div>
+          </div>    
+                `,
+        delay: 200,
+        minDuration: 600
+      })
+    )
   ],
   declarations: [
     AdminComponent,
@@ -40,7 +62,8 @@ import { FileStageService } from './file-stages/file-stage.service';
     FileStatusListComponent, FileStatusEditComponent,
     ActionTypeListComponent, ActionTypeEditComponent,
     OrganizationTypeListComponent,
-    FileStageListComponent                                                              //Настройка этапов движения дела
+    FileStageListComponent,                                                             //Настройка этапов движения дела
+    LoadingIndicator
   ],
   providers: [
     UserService,
