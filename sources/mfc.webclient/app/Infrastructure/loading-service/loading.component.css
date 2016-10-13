@@ -1,0 +1,22 @@
+/*Стили для индикатора загрузки (весь экран)*/
+.wrapper-loading-indicator {
+    position: fixed;
+    display: block;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: black;
+    background-color: rgba(0,0,0,0.4);
+    height: 100%;
+    width: 100%;
+    z-index: 1055;
+    padding-top: 10%;
+}
+
+.loading-indicator-panel {
+    position: relative;
+    display: block;
+    margin: auto !important;
+    float: none !important;
+}

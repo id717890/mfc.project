@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 
 namespace mfc.webapi.Controllers
@@ -13,9 +14,10 @@ namespace mfc.webapi.Controllers
     public class UserController : ApiController
     {
         // GET: api/User
-       
+
         public HttpResponseMessage Get()
         {
+            Thread.Sleep(2000); // Для проверки работы индикатора загрузки
             var user_service = CompositionRoot.Resolve<IUserService>();
             var users = new List<AccountInfo>();
 
@@ -38,6 +40,7 @@ namespace mfc.webapi.Controllers
         // GET: api/User/5
         public HttpResponseMessage Get(int id)
         {
+            Thread.Sleep(2000); // Для проверки работы индикатора загрузки
             var user_service = CompositionRoot.Resolve<IUserService>();
             var user = user_service.GetUserById(id);
 
@@ -54,6 +57,7 @@ namespace mfc.webapi.Controllers
         // POST: api/User
         public HttpResponseMessage Post([FromBody]AccountInfo value)
         {
+            Thread.Sleep(2000); // Для проверки работы индикатора загрузки
             var user_service = CompositionRoot.Resolve<IUserService>();
 
             var find_user = user_service.GetUser(value.UserName);
@@ -65,7 +69,7 @@ namespace mfc.webapi.Controllers
             {
                 var id = user_service.AddNew(value.UserName, value.Description, value.IsAdmin, value.IsExpert, value.IsController);
                 var msg = Request.CreateResponse(HttpStatusCode.Created);
-                msg.Headers.Location = new Uri(Request.RequestUri + "/"+id.ToString());
+                msg.Headers.Location = new Uri(Request.RequestUri + "/" + id.ToString());
                 return msg;
             }
         }
@@ -74,6 +78,7 @@ namespace mfc.webapi.Controllers
         [HttpPut]
         public HttpResponseMessage Put(int id, [FromBody]AccountInfo value)
         {
+            Thread.Sleep(2000); // Для проверки работы индикатора загрузки
             var user_service = CompositionRoot.Resolve<IUserService>();
             var user = user_service.GetUserById(id);
 
@@ -91,6 +96,7 @@ namespace mfc.webapi.Controllers
         // DELETE: api/User/5
         public HttpResponseMessage Delete(int id)
         {
+            Thread.Sleep(2000); // Для проверки работы индикатора загрузки
             var user_service = CompositionRoot.Resolve<IUserService>();
             var user = user_service.GetUserById(id);
 
