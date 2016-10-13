@@ -3,7 +3,7 @@
 @model string
 @{
     var items = new Dictionary<string, MvcHtmlString>();
-    if (User.IsInRole(MfcRoles.Expert) || User.IsInRole(MfcRoles.Admin)) {
+    if (User.IsInRole(MfcRoles.Expert) || User.IsInRole(MfcRoles.Admin)) { 
         items.Add(WorkMenuItems.Services, Html.ActionLink("Приемы", "Index", "Action"));
     }
     items.Add(WorkMenuItems.Files, Html.ActionLink("Дела", "Index", "File"));

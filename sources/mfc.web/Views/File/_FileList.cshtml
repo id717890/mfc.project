@@ -1,80 +1,57 @@
 ﻿@model List<mfc.web.Models.FileModelItem>
 
-@using (Html.BeginForm("", "FileList", FormMethod.Post, new { id = "file-list-form" })) {
-    <input type="submit" value="Принять" class="btn btn-lg btn-default" name="action:ControlList" />
-    <input type="submit" value="Создать пакет" class="btn btn-lg btn-default" name="action:CreatePackage"/>
-    <input type="submit" value="Статус" class="btn btn-lg btn-default" name="action:BatchSettings" />
-    <table class="table" id="file-list-table">
-        <tr>
-            <th><a href="javascript:void(0)" id="clear-checkboxes-button">x</a></th>
-            <th>Дата</th>
-            <th>Номер</th>
-            <th>Услуга</th>
-            <th>ОГВ</th>
-            <th>Эксперт</th>
-            <th>Контролёр</th>
-            <th>Статус</th>
-            <th></th>
-        </tr>
+@using (Html.BeginForm(string.Empty, "FileList", FormMethod.Post, new { id = "file-list-form" }))
+{
+    <div class="row">
+        <div class="table-responsive table-condensed">
+            <table class="table table-bordered table-hover" id="file-list-table">
+                <thead>
+                    <tr>
+                        <th><a href="javascript:void(0)" id="clear-checkboxes-button">x</a></th>
+                        <th>Дата</th>
+                        <th>Номер</th>
+                        <th>Услуга</th>
+                        <th>ОГВ</th>
+                        <th>Эксперт</th>
+                        <th>Контролёр</th>
+                        <th>Статус</th>
+                        <th></th>
+                    </tr>
+                </thead>
 
-        @for (int index = 0; index < Model.Count; index++) {
-            Int64 item_id = Model[index].Id;
-            String input_id = $"file{item_id}";
-            
-            /*@Html.HiddenFor(m => Model[index].Id)
-            @Html.HiddenFor(m => Model[index].Caption)
-            @Html.HiddenFor(m => Model[index].Controller)
-            @Html.HiddenFor(m => Model[index].Date)
-            @Html.HiddenFor(m => Model[index].Expert)
-            @Html.HiddenFor(m => Model[index].Organization)
-            @Html.HiddenFor(m => Model[index].Service)
-            @Html.HiddenFor(m => Model[index].Status)*/
+                <tbody>
+                    @for (var index = 0; index < Model.Count; index++)
+                    {
+                        var item_id = Model[index].Id;
+                        string input_id = $"file{item_id}";
 
-            <tr>
-                <td>
-                    <input id="@input_id" data-val="true"  name="@input_id" type="checkbox" value="@Model[index].IsChecked"/>
-                </td>
-                <td>
-                    @Model[index].Date.ToString("dd.MM.yyyy")
-                </td>
-                <td>
-                    @Html.DisplayFor(m => Model[index].Caption)
-                </td>
-                <td>
-                    @Html.DisplayFor(m => Model[index].Service)
-                </td>
-                <td>
-                    @Html.DisplayFor(m => Model[index].Organization)
-                </td>
-                <td>
-                    @Html.DisplayFor(m => Model[index].Expert)
-                </td>
-                <td>
-                    @Html.DisplayFor(m => Model[index].Controller)
-                </td>
-                <td>
-                    @Html.DisplayFor(m => Model[index].Status)
-                </td>
-                <td>
-                    @Html.ActionLink("Изменить", "Edit", "File", new { id = item_id }, new { })
-                    @Html.ActionLink("Удалить", "Delete", "File", new { id = item_id }, new { @class = "delete-link" })
-                </td>
-            </tr>
-        }
-
-    </table>
+                        <tr>
+                            <td><input id="@input_id" data-val="true" name="@input_id" type="checkbox" value="@Model[index].IsChecked" /></td>
+                            <td>@Model[index].Date.ToString("dd.MM.yyyy")</td>
+                            <td>@Html.DisplayFor(m => Model[index].Caption)</td>
+                            <td>@Html.DisplayFor(m => Model[index].Service)</td>
+                            <td>@Html.DisplayFor(m => Model[index].Organization)</td>
+                            <td>@Html.DisplayFor(m => Model[index].Expert)</td>
+                            <td>@Html.DisplayFor(m => Model[index].Controller)</td>
+                            <td>@Html.DisplayFor(m => Model[index].Status)</td>
+                            <td class="col-toolbar">
+                                <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                    @Html.ActionLink("Изменить", "Edit", "File", new { id = item_id }, new { @class = "btn btn-default" })
+                                    @Html.ActionLink("Удалить", "Delete", "File", new { id = item_id }, new { @class = "btn btn-danger" })
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
 
-<!--//
-Query dialig section
--->
 <div id="query-dialog" title="Удаление дела">
     Удалить Дело?
 </div>
-<div class="waiting"></div>
 
-<div id="query-dialog-status" title="Изменение статуса дела">
-</div>
 <div class="waiting"></div>
 
 <script type="text/javascript">
@@ -84,11 +61,10 @@ Query dialig section
         var checkboxes = get_checked_files();
 
         if (checkboxes != {}) {
-            $("#file-list-table :checkbox").each(function () {
+            $("#file-list-table :checkbox").each(function() {
                 if (checkboxes[this.id] != undefined) {
                     this.checked = checkboxes[this.id];
-                }
-                else {
+                } else {
                     this.checked = false;
                 }
             });
@@ -104,25 +80,22 @@ Query dialig section
         wait_dialog = $(".waiting");
     });
 
-    $("#file-list-table :checkbox").on("change", function () {
+    $("#file-list-table :checkbox").on("change", function() {
         if (this.checked) {
             add_checked_file(this.id);
-        }
-        else {
+        } else {
             remove_checked_file(this.id);
         }
     });
 
-
-    $(function () {
+    $(function() {
         update_checkboxes();
     });
 
-    $("#clear-checkboxes-button").click(function () {
+    $("#clear-checkboxes-button").click(function() {
         clear_checked_files();
         update_checkboxes();
     });
-
 
     $(".delete-link").click(function(e) {
         e.preventDefault();
@@ -130,16 +103,15 @@ Query dialig section
         var row = $(this).parent().parent();
 
         $("#query-dialog").dialog({
-            buttons : {
-                "Удалить": function () {
+            buttons: {
+                "Удалить": function() {
                     $(this).dialog('close');
                     wait_dialog.show();
 
-                    $.post(targetUrl, function (data) {
+                    $.post(targetUrl, function(data) {
                         if (data == '@Boolean.TrueString') {
                             row.remove();
-                        }
-                        else {
+                        } else {
                             alert('Не удалось удалить пакет');
                         }
 
@@ -147,7 +119,7 @@ Query dialig section
                     });
 
                 },
-                "Отмена" : function() {
+                "Отмена": function() {
                     $(this).dialog("close");
                 }
             }
@@ -156,17 +128,14 @@ Query dialig section
         $("#query-dialog").dialog("open");
     });
 
-    function appendCheckedFiles() {
+    $("input[name='action:CreatePackage'").click(function() {
         var checked_files = get_checked_files();
         if (checked_files != {}) {
             var input = $("<input>")
-                   .attr("type", "hidden")
-                   .attr("name", "checked-files").val(JSON.stringify(checked_files));
+                .attr("type", "hidden")
+                .attr("name", "checked-files").val(JSON.stringify(checked_files));
 
             $('#file-list-form').append($(input));
         }
-    }
-
-    $("input[name='action:CreatePackage'").click(appendCheckedFiles);
-    $("input[name='action:BatchSettings'").click(appendCheckedFiles);
+    })
 </script>

@@ -2,13 +2,8 @@
 
 @{
     ViewBag.Title = "Справочник услуг";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    Int64 last_org = -1; 
-    bool render_hr = false;
-}
-
-@section workmenu {
-    @Html.Partial("_AdminMenu", 4)
+    var last_org = -1;
+    var render_hr = false;
 }
 
 <script>
@@ -22,48 +17,70 @@
 
 @section featured {
     <section class="featured">
-        <div class="content-wrapper">
-            <h1>@ViewBag.Title</h1>
-            <p>
-                @using (Html.BeginForm()) {
-                    <div style="margin: 0 10px;float:left">
-                        ОГВ: @Html.DropDownListFor(m => m.OrganizationId, new SelectList(Model.Organizations, "Id", "Caption"), new { Id = "organization", @class = "form-control" })
-                    </div>
-                    <div style="clear:both" />
-                }
-            </p>
+        <div class="row">
+            <h1 class="page-header">@ViewBag.Title</h1>
+        </div>
+        <div class="row">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-inner">
+                    @using (Html.BeginForm(string.Empty, "Service", FormMethod.Post, new { @class = "navbar-form" }))
+                    {
+                        @Html.LabelFor(x => x.OrganizationId, new { @class = "navbar-text" })
+                        @Html.DropDownListFor(m => m.OrganizationId, new SelectList(Model.Organizations, "Id", "Caption"), new { Id = "organization", @class = "form-control" })
+                    }
+                </div>
+            </nav>
         </div>
     </section>
 }
-<p>
-    @Html.ActionLink("Новый", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            Название
-        </th>
-        <th>
-            ОГВ
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model.Services) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Caption)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Organization.Caption)
-            </td>
-            <td>
-                @Html.ActionLink("Изменить", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Удалить", "Delete", new { id = item.Id }) |
-                @Html.ActionLink("Подуслуги", "Index", "ServiceChild", new { parentId = item.Id }, new { }) 
-            </td>
-        </tr>
+@section workmenu {
+    @Html.Partial("_AdminMenu", 4)
+}
 
-    }
+<div class="row">
+    <div class="navbar navbar-default">
+        <div class="navbar-header">
+            <span class="navbar-brand">Управление:</span>
+        </div>
+        <div class="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <p class="navbar-btn">
+                        @Html.ActionLink("Новый", "Create", null, new { @class = "btn btn-default" })
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-</table>
+<div class="row">
+    <div class="table-responsive table-condensed">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>ОГВ</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Services)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Caption)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Organization.Caption)</td>
+                        <td class="col-toolbar-lg">
+                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                @Html.ActionLink("Изменить", "Edit", new { id = item.Id }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("Удалить", "Delete", new { id = item.Id }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("Подуслуги", "Index", "ServiceChild", new { parentId = item.Id }, new { @class = "btn btn-danger" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

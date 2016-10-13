@@ -3,71 +3,75 @@
 @{
     ViewBag.Title = "Пакеты";
 }
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <h1 class="page-header">@ViewBag.Title</h1>
-            <p>
-                @using (Html.BeginForm()) {
-                    <div style="margin: 0 10px;float:left">
-                        @Html.LabelFor(m => m.BeginDate): @Html.EditorFor(m => m.BeginDate)
-                    </div>
-                    <div style="margin: 0 10px;float:left">
-                        @Html.LabelFor(m => m.EndDate): @Html.EditorFor(m => m.EndDate)
-                    </div>
-                    <div style="margin: 0 10px;float:left">
-                        @Html.LabelFor(m => m.SelectedOgvId): @Html.DropDownListFor(m => m.SelectedOgvId, new SelectList(Model.Organizations, "Id", "Caption"), new { @class = "form-control" })
-                    </div>
-                    <div style="margin: 0 10px;float:left">
-                        @Html.LabelFor(m => m.SelectedControllerId): @Html.DropDownListFor(m => m.SelectedControllerId, new SelectList(Model.Controllers, "Id", "Name"), new { @class = "form-control" })
-                    </div>
-                    <input type="submit" value="Обновить" class="btn btn-lg btn-default" />
-                    <div style="clear:both" />
-                }
-            </p>
-        </div>
-    </section>
 
+@section featured {
+<section class="featured">
+    <div class="row">
+        <h1 class="page-header">@ViewBag.Title</h1>
+    </div>
+
+    <div class="row">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-inner">
+                @using (Html.BeginForm(string.Empty, "Package", FormMethod.Post, new { @class = "navbar-form" }))
+                {
+                    @Html.LabelFor(m => m.BeginDate, new { @class = "navbar-text" })
+                    @Html.EditorFor(m => m.BeginDate)
+
+                    @Html.LabelFor(m => m.EndDate, new { @class = "navbar-text" })
+                    @Html.EditorFor(m => m.EndDate)
+
+                    @Html.LabelFor(m => m.SelectedOgvId, new { @class = "navbar-text" })
+                    @Html.DropDownListFor(m => m.SelectedOgvId, new SelectList(Model.Organizations, "Id", "Caption"), new { @class = "form-control" })
+
+                    @Html.LabelFor(m => m.SelectedControllerId, new { @class = "navbar-text" })
+                    @Html.DropDownListFor(m => m.SelectedControllerId, new SelectList(Model.Controllers, "Id", "Name"), new { @class = "form-control" })
+
+                    <input type="submit" value="Обновить" class="btn btn-default navbar-btn" />
+                }
+            </div>
+        </nav>
+    </div>
+</section>
 }
+
 @section workmenu {
     @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Packages)
 }
 
-<table class="table">
-    <tr>
-        <th>Дата</th>
-        <th>ОГВ</th>
-        <th>Контролёр</th>
-        <th>Описание</th>
-        <th></th>
-    </tr>
+<div class="row">
+    <div class="table-responsive table-condensed">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>ОГВ</th>
+                    <th>Контролёр</th>
+                    <th>Описание</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var package in Model.Packages)
+                {
+                    <tr>
+                        <td>@package.Date.ToString("dd.MM.yyyy")</td>
+                        <td>@Html.DisplayFor(m => package.Organization.Caption)</td>
+                        <td>@Html.DisplayFor(m => package.Controller.Name)</td>
+                        <td>@Html.DisplayFor(m => package.Comment)</td>
+                        <td class="col-toolbar">
+                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                @Html.ActionLink("Изменить", "Edit", new { id = package.Id }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("Удалить", "Delete", new { id = package.Id }, new { @class = "btn btn-danger" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
-    @foreach (var package in Model.Packages) {
-
-        <tr>
-            <td>
-                @package.Date.ToString("dd.MM.yyyy")
-            </td>
-            <td>
-                @Html.DisplayFor(m => package.Organization.Caption)
-            </td>
-            <td>
-                @Html.DisplayFor(m => package.Controller.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(m => package.Comment)
-            </td>
-            <td>
-                @Html.ActionLink("Изменить", "Edit", "Package", new { id = package.Id}, new { })
-                @Html.ActionLink("Удалить", "Delete", "Package", new { id = package.Id }, new { @class = "delete-link" })
-            </td>
-        </tr>
-    }
-
-</table>
-<!--//
-    Query dialig section
--->
 <div id="query-dialog" title="Удаление пакета">
     Удалить пакет?
 </div>
@@ -84,8 +88,6 @@
         });
         wait_dialog = $(".waiting");
     });
-  
-  
 
     $(".delete-link").click(function(e) {
         e.preventDefault();

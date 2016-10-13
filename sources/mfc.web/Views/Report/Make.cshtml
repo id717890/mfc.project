@@ -1,44 +1,51 @@
 ﻿@model mfc.web.Models.ReportModel
+
 @{
     ViewBag.Title = "Отчеты";
 }
 
+@section featured {
+<section class="featured">
+    <div class="row">
+        <h1 class="page-header">@ViewBag.Title</h1>
+    </div>
+</section>
+}
 
-    @section featured {
-        <section class="featured">
-            <div class="content-wrapper">
-                <hgroup class="title"><h2>@ViewBag.Title</h2></hgroup>
-                
-            </div>
-        </section>
-    }
 @section workmenu {
     @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Reports)
 }
-@using (Html.BeginForm("Make", "Report", FormMethod.Post, new { @class = "form" })) {
-    <p>
 
-        <div style="margin: 0 10px; float: left">
-            <div style="margin: 0 10px; float: left">Дата начала: @Html.EditorFor(m => m.DateBegin)</div>
-            <div style="margin: 0 10px; float: left">Дата окончания: @Html.EditorFor(m => m.DateEnd)</div>
-        </div>
-        <div style="clear: both"/>
+<div class="row">
+    <div class="col-lg-6">
+        @using (Html.BeginForm("Make", "Report", FormMethod.Post, new { @class = "form" }))
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.DateBegin)
+                @Html.EditorFor(m => m.DateBegin)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.DateEnd)
+                @Html.EditorFor(m => m.DateEnd)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerTypeId)
+            </div>
+            <div class="form-group">
+                @Html.DropDownListFor(m => m.CustomerTypeId, new SelectList(ViewBag.CustomerTypes, "Id", "Caption"), new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CustomerTypeId)
+            </div>
 
-    </p>
-    <div class="editor-label">
-        @Html.LabelFor(model => model.CustomerTypeId)
-    </div>
-    <div class="editor-field">
-        @Html.DropDownListFor(m => m.CustomerTypeId, new SelectList(ViewBag.CustomerTypes, "Id", "Caption"), new {@class = "form-control"})
-        @Html.ValidationMessageFor(model => model.CustomerTypeId)
-    </div>
+            <div class="form-group">
+                @foreach (var radioitem in Model.Reports)
+                {
+                    <label class="radio-inline">@Html.RadioButtonFor(model => model.Report, radioitem.Value) @radioitem.Text</label>
+                }
+            </div>
 
-    <ul style="list-style: none">
-        @foreach (var radioitem in Model.Reports) {
+            <hr>
 
-            <li>@Html.RadioButtonFor(model => model.Report, radioitem.Value) @radioitem.Text</li>
+            <button type="submit" class="btn btn-default pull-right">Сформировать</button>
         }
-    </ul>
-    <input type="submit" value="Сформировать" class="btn btn-lg btn-default" />
-}
-
+    </div>
+</div>

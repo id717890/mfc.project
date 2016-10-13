@@ -1,32 +1,44 @@
 ﻿@model mfc.web.Models.FileStagesModel
 
+@{
+    ViewBag.Title = "Этапы обработки дела";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="row">
+            <h1 class="page-header">@ViewBag.Title</h1>
+        </div>
+    </section>
+}
+
 @section workmenu {
     @Html.Partial("_AdminMenu", 7)
 }
 
-@using (Html.BeginForm("Index", "FileStage", FormMethod.Post, new { @class = "form" })) {
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Этапы обработки дела</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            <table style="margin-left : 15px">
-                @{
-    for (int index = 0; index < Model.Stages.Count; index++) {
-                        <tr>
-                            @Html.HiddenFor(modelItem => Model.Stages[index].Code)
-                            @Html.HiddenFor(modelItem => Model.Stages[index].Caption)
-                            <td>@Html.DisplayFor(modelItem => Model.Stages[index].Caption)</td>
-                            <td>@Html.DropDownListFor(modelItem => Model.Stages[index].StatusId, new SelectList(Model.Statuses, "Id", "Caption", Model.Stages[index].StatusId), new { @class = "form-control" })</td>
-                        </tr>
-    }
-                }
-            </table>
-            <div class="col-md-offset-2 col-md-10">
+<div class="row">
+    <div class="col-lg-6">
+        @using (Html.BeginForm("Index", "FileStage", FormMethod.Post, new { @class = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            for (var index = 0; index < Model.Stages.Count; index++)
+            {
+                <div class="form-group">
+                    <label>@Html.DisplayFor(modelItem => Model.Stages[index].Caption)</label>
+                    @Html.DropDownListFor(modelItem => Model.Stages[index].StatusId, new SelectList(Model.Statuses, "Id", "Caption", Model.Stages[index].StatusId), new { @class = "form-control" })
+                </div>
+
+                @Html.HiddenFor(modelItem => Model.Stages[index].Code)
+                @Html.HiddenFor(modelItem => Model.Stages[index].Caption)
+            }
+
+            <hr>
+
+            <div class="pull-right">
                 <input type="submit" value="Сохранить" class="btn btn-default" />
             </div>
-        </div>
-    </div>
-}
+        }
+    </div>    
+</div>

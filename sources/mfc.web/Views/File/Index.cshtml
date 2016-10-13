@@ -9,67 +9,29 @@
 @{
     ViewBag.Title = "Список дел";
 }
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <h1 class="page-header">@ViewBag.Title</h1>
-            <p>
-               @using (Html.BeginForm()) {
-                <div style="margin: 0 10px;float:left">
-                    @Html.LabelFor(m => m.BeginDate): @Html.EditorFor(m => m.BeginDate)
-                </div>
-                <div style="margin: 0 10px;float:left">
-                    @Html.LabelFor(m => m.EndDate): @Html.EditorFor(m => m.EndDate)
-                </div>
-                <div style="margin: 0 10px;float:left">
-                    @Html.LabelFor(m=>m.SelectedStatusId): @Html.DropDownListFor(m => m.SelectedStatusId, new SelectList(Model.Statuses, "Id", "Caption"), new { @class = "form-control" })
-                </div>
-                <div style="margin: 0 10px;float:left">
-                    @Html.LabelFor(m => m.SelectedOgvId): @Html.DropDownListFor(m => m.SelectedOgvId, new SelectList(Model.Organizations, "Id", "Caption"), new { @class = "form-control" })
-                </div>
-                <div style="margin: 0 10px;float:left">
-                    @Html.LabelFor(m => m.SelectedControllerId): @Html.DropDownListFor(m => m.SelectedControllerId, new SelectList(Model.Controllers, "Id", "Name"), new { @class = "form-control" })
-                </div>
-                   <div style="margin: 0 10px; float: left">
-                       @Html.LabelFor(m => m.SelectedExpertId) : @Html.DropDownListFor(m => m.SelectedExpertId, new SelectList(Model.Experts, "Id", "Name"), new {@class = "form-control"})
-                   </div>
-                   <div style="clear: both"/>
-                   <div style="margin: 0 10px; ">
-                       @Html.LabelFor(x=>x.SelectedServiceId)
-                       @Html.TextBoxFor(x=>x.SelectedService, new {@class = "file-service-selector form-control", style= "style='width: 800px'" })
-                     
-                       @Html.HiddenFor(x=>x.SelectedServiceId)
-                   </div>
-                <input type="submit" value="Обновить" class="btn btn-lg btn-default" />
-                <div style="clear:both" />
-               }
-            </p>
-        </div>
-    </section>
 
-    }
-@section workmenu {
-    @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Files)
-}
-<hr/>
 @{
     var itemOnPage = 50;
 
     int pageCount = (int)Math.Round((decimal)Model.Files.Count / itemOnPage, 0);
-    if (pageCount == 0) {
+    if (pageCount == 0)
+    {
         pageCount = 1;
     }
 
-    var firstIndex = (Model.Page - 1)*itemOnPage + 1;
-    var lastIndex = Model.Page*itemOnPage;
+    var firstIndex = (Model.Page - 1) * itemOnPage + 1;
+    var lastIndex = Model.Page * itemOnPage;
 
-    if (lastIndex >= Model.Files.Count) {
+    if (lastIndex >= Model.Files.Count)
+    {
         lastIndex = Model.Files.Count;
     }
 
     var files = new List<mfc.web.Models.FileModelItem>();
-    if (firstIndex > 0) {
-        for (int index = firstIndex; index <= lastIndex; index++) {
+    if (firstIndex > 0)
+    {
+        for (int index = firstIndex; index <= lastIndex; index++)
+        {
             files.Add(Model.Files[index - 1]);
         }
     }
@@ -77,11 +39,87 @@
     var pagerModel = Model.Files.ToPagedList(Model.Page, itemOnPage);
 }
 
+@section featured {
+<section class="featured">
+    <div class="row">
+        <h1 class="page-header">@ViewBag.Title</h1>
+    </div>
+    <div class="row">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-inner">
+                @using (Html.BeginForm(string.Empty, "Action", FormMethod.Post, new { @class = "navbar-form" }))
+                {
+                    @Html.LabelFor(m => m.BeginDate, new { @class = "navbar-text" })
+                    @Html.EditorFor(m => m.BeginDate)
+
+                    @Html.LabelFor(m => m.EndDate, new { @class = "navbar-text" }) 
+                    @Html.EditorFor(m => m.EndDate)
+
+                    @Html.LabelFor(m => m.SelectedStatusId, new { @class = "navbar-text" }) 
+                    @Html.DropDownListFor(m => m.SelectedStatusId, new SelectList(Model.Statuses, "Id", "Caption"), new { @class = "form-control" })
+
+                    @Html.LabelFor(m => m.SelectedOgvId, new { @class = "navbar-text" }) 
+                    @Html.DropDownListFor(m => m.SelectedOgvId, new SelectList(Model.Organizations, "Id", "Caption"), new { @class = "form-control" })
+
+                    @Html.LabelFor(m => m.SelectedControllerId, new { @class = "navbar-text" }) 
+                    @Html.DropDownListFor(m => m.SelectedControllerId, new SelectList(Model.Controllers, "Id", "Name"), new { @class = "form-control" })
+
+                    @Html.LabelFor(m => m.SelectedExpertId, new { @class = "navbar-text" })  
+                    @Html.DropDownListFor(m => m.SelectedExpertId, new SelectList(Model.Experts, "Id", "Name"), new { @class = "form-control" })
+
+                    @Html.LabelFor(x => x.SelectedServiceId, new { @class = "navbar-text" })
+                    @Html.TextBoxFor(x => x.SelectedService, new { @class = "file-service-selector form-control", style = "style='width: 800px'" })
+
+                    @Html.HiddenFor(x => x.SelectedServiceId)
+                    <input type="submit" value="Обновить" class="btn btn-default navbar-btn"/>
+                }
+            </div>
+        </nav>
+    </div>
+</section>
+}
+
+@section workmenu {
+    @Html.Partial("_WorkMenu", mfc.web.Constants.WorkMenuItems.Files)
+}
+
+<div class="row">
+    <div class="navbar navbar-default">
+        <div class="navbar-header">
+            <span class="navbar-brand">Управление:</span>
+        </div>
+        <div class="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <p class="navbar-btn">
+                        <input type="submit" value="Принять" class="btn btn-default" form="file-list-form" name="action:ControlList" />
+                        <input type="submit" value="Создать пакет" class="btn btn-default" form="file-list-form" name="action:CreatePackage" />
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@if (pagerModel.Count > 0)
+{
+    <div class="row">
+        <div class="pull-right">
+            @Html.PagedListPager(pagerModel, page => Url.Action("Index", new { page }))
+        </div>
+    </div>
+}
 
 @Html.Partial("_FileList", files)
 
-
-@Html.PagedListPager(pagerModel, page => Url.Action("Index", new { page }))
+@if (pagerModel.Count > 0)
+{
+    <div class="row">
+        <div class="pull-right">
+            @Html.PagedListPager(pagerModel, page => Url.Action("Index", new { page }))
+        </div>
+    </div>
+}
 
 <script type="text/javascript">
     $(function () {
