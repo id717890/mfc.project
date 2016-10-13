@@ -23,9 +23,13 @@
         '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
         // other libraries
         'rxjs': 'npm:rxjs',
+        'core-js': 'npm:core-js',
+        'ts-metadata-helper': 'npm:ts-metadata-helper',
         'angular-in-memory-web-api': 'npm:angular-in-memory-web-api',
         'angular2-modal': 'npm:angular2-modal/bundles/angular2-modal.umd.js',
-        'angular2-modal/plugins/bootstrap' : 'npm:angular2-modal/bundles/angular2-modal.bootstrap.umd.js'
+        'angular2-modal/plugins/bootstrap' : 'npm:angular2-modal/bundles/angular2-modal.bootstrap.umd.js',
+		'angular2-dynamic-component': 'npm:angular2-dynamic-component',
+        'angular2-busy': 'node_modules/angular2-busy'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -39,7 +43,17 @@
         'angular-in-memory-web-api': {
         main: './index.js',
         defaultExtension: 'js'
-        }
+        },
+        'core-js': {
+            defaultExtension: 'js'
+        },
+        'ts-metadata-helper': {
+            defaultExtension: 'js'
+        },
+        'angular2-dynamic-component': {
+            defaultExtension: 'js'
+        },
+		'angular2-busy': { main: 'index.js', defaultExtension: 'js' }
     }
     });
 })(this);
