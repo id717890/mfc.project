@@ -6,7 +6,7 @@ import { FileStatus, FileStatusService } from '../filestatuses/filestatus.servic
 @Component({
     selector: 'mfc-file-stage-list',
     templateUrl: 'app/admin/file-stages/file-stage-list.component.html',
-    styles:[`
+    styles: [`
         table tr td {
             padding:10px;
         }
@@ -16,10 +16,17 @@ import { FileStatus, FileStatusService } from '../filestatuses/filestatus.servic
 export class FileStageListComponent {
     private fileStages: FileStage[];
     private fileStatuses: FileStatus[];
+    busy: Promise<any>;
 
-    constructor(private fileStageService: FileStageService, private fileStatusService: FileStatusService) {
-        fileStageService.get().then(x => this.fileStages = x);
+    constructor(
+        private fileStageService: FileStageService,
+        private fileStatusService: FileStatusService
+    ) {
         fileStatusService.get().then(x => this.fileStatuses = x);
+    }
+
+    ngOnInit() {
+        this.busy = this.fileStageService.get().then(x => this.fileStages = x);
     }
 
     onChangeStatus(fileStage: string, status_id: number) {
@@ -30,9 +37,12 @@ export class FileStageListComponent {
 
     saveChanges() {
         for (let i in this.fileStages) {
-            this.fileStageService.update(this.fileStages[i]);
+            this.fileStageService.update(this.fileStages[i]).then(isOk => {
+                if (isOk) {
+                } else {
+                    alert('Ошибка сохранения');
+                }
+            })
         }
-        alert("Изменения сохранены");
     }
-
 }

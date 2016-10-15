@@ -1,5 +1,5 @@
 <h2 class="page-header">Этапы движения дела</h2>
-<table>
+<table [ngBusy]="busy">
     <tbody>
         <tr *ngFor="let fileStage of fileStages">
             <td style="text-align:right">{{fileStage.caption}}</td>

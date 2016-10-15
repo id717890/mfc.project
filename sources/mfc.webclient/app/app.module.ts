@@ -16,6 +16,7 @@ import { CustomerTypeEditComponent } from './admin/customer-types/customer-type-
 
 import { routing, appRoutingProviders} from './app.router';
 import { DefaultRequestOptions } from './infrastructure/default-request-options';
+import { BusyComponent } from './Infrastructure/busy-service/busy-service.component'; 
 
 @NgModule({
   imports: [
@@ -29,12 +30,14 @@ import { DefaultRequestOptions } from './infrastructure/default-request-options'
     AppComponent,
     MenuComponent,
     WorkComponent,
-    UserComponent
+    UserComponent,
+    BusyComponent  //объявляем чтобы на HTML странице указать селектор busy-indicator компонента
   ],
   bootstrap: [AppComponent],
   providers: [
     appRoutingProviders,
-    { provide: RequestOptions, useClass: DefaultRequestOptions }
+    { provide: RequestOptions, useClass: DefaultRequestOptions },
+    BusyComponent  //объявляем сервис busy-indicator на данном уровне чтобы можно было его внедрить во всех других компонентах
   ],
   entryComponents: [
      FileStatusEditComponent,
