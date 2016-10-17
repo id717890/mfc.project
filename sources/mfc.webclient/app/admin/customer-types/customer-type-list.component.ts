@@ -6,7 +6,8 @@ import { DialogRef, overlayConfigFactory } from 'angular2-modal';
 
 import {CustomerTypeService} from './customer-type.service';
 import {CustomerType} from './customer-type';
-import {CustomerTypeEditComponent} from './customer-type-edit.component'
+import {CustomerTypeEditComponent} from './customer-type-edit.component';
+import {SAVE_MESAGE, LOAD_LIST_MESAGE} from './../../infrastructure/application-messages';
 
 @Component({
     selector: 'mfc-customer-type-list',
@@ -16,6 +17,9 @@ import {CustomerTypeEditComponent} from './customer-type-edit.component'
 
 export class CustomerTypeListComponent implements OnInit {
     customerTypes: CustomerType[];
+    busy: Promise<any>;
+    busyMessage: string;
+
 
     constructor(public modal: Modal, private customerTypeService: CustomerTypeService) {
     }
@@ -32,7 +36,8 @@ export class CustomerTypeListComponent implements OnInit {
             ).then(x => {
                 x.result.then(output => {
                     if (output != null) {
-                        this.customerTypeService.addCustomerType(output)
+                        this.busyMessage = SAVE_MESAGE;
+                        this.busy = this.customerTypeService.addCustomerType(output)
                             .then(x => {
                                 this.customerTypes.push(x);
                             }).catch(x => this.handlerError(x));
@@ -49,7 +54,8 @@ export class CustomerTypeListComponent implements OnInit {
             ).then(x => {
                 x.result.then(output => {
                     if (output != null) {
-                        this.customerTypeService.updateCustomerType(output)
+                        this.busyMessage = SAVE_MESAGE;
+                        this.busy = this.customerTypeService.updateCustomerType(output)
                             .then(x => {
                                 type.caption = output.caption;
                             }).catch(x => this.handlerError(x));
@@ -59,7 +65,8 @@ export class CustomerTypeListComponent implements OnInit {
     }
 
     deleteType(type: CustomerType) {
-        this.customerTypeService.deleteCustomerType(type)
+        this.busyMessage = SAVE_MESAGE;
+        this.busy = this.customerTypeService.deleteCustomerType(type)
             .then(res => {
                 if (res) {
                     this.customerTypes.splice(this.customerTypes.indexOf(type), 1);
@@ -68,7 +75,8 @@ export class CustomerTypeListComponent implements OnInit {
     }
 
     private fillCustomerTypes() {
-        this.customerTypeService.getCustomerTypes()
+        this.busyMessage = LOAD_LIST_MESAGE;
+        this.busy = this.customerTypeService.getCustomerTypes()
             .then(types => this.customerTypes = types);
     }
 

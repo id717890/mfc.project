@@ -36,10 +36,10 @@ import { LoadingIndicator, LoadingPage } from '../Infrastructure/loading-service
     FormsModule,
     BusyModule.forRoot(
       new BusyConfig({
-        message: 'Обработка данных...',
+        message: 'Загрузка...',
         backdrop: true,
-        template: `
-          <div class="panel panel-default">
+        /*template: `
+          <div class="panel panel-default ">
             <div class="sk-wave">
               <div class="sk-rect sk-rect1"></div>
               <div class="sk-rect sk-rect2"></div>
@@ -49,9 +49,9 @@ import { LoadingIndicator, LoadingPage } from '../Infrastructure/loading-service
               <div class="sk-text">{{message}}</div>       
             </div>
           </div>    
-                `,
-        delay: 200,
-        minDuration: 600
+                `,*/
+        delay: 50,
+        minDuration: 100
       })
     )
   ],
