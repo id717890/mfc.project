@@ -20,3 +20,5 @@ sources/mfc.webclient/node_modules/**
 sources/mfc.webclient/node_modules
 sources/mfc.webclient/typings/**
 sources/mfc.webclient/typings
+/**/*.log
+**/npm-debug.log.*
