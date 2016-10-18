@@ -1,39 +1,39 @@
 ﻿using System.Net.Http;
 using System.Web.Http;
+using System.Net.Http.Headers;
+
+using System;
 using System.Linq;
 using System.Net;
-using System.Net.Http.Headers;
-using System;
 
-namespace mfc.web.Controllers
+namespace mfc.webapi.Controllers
 {
     using domain.services;
-    using webapi;
-    using webapi.Models;
+    using Models;
 
-    public class OrganizationTypeController : ApiController
+    public class OrganizationController : ApiController
     {
         public HttpResponseMessage Get()
         {
             var organizationService = CompositionRoot.Resolve<IOrganizationService>();
-            var output = organizationService.GetAllTypes().Select(x => new OrganizationTypeInfo(x));
+            var output = organizationService.GetAllOrganizations().Select(x => new OrganizationInfo(x));
 
             return Request.CreateResponse(HttpStatusCode.OK, output);
         }
 
-        // GET: api/organizationtype/:id
+        // GET: api/organization/:id
         public HttpResponseMessage Get(int id)
         {
             var organizationService = CompositionRoot.Resolve<IOrganizationService>();
 
-            var output = organizationService.GetTypeById(id);
+            var output = organizationService.GetOrganizationById(id);
             return output != null ?
-                Request.CreateResponse(HttpStatusCode.OK, new OrganizationTypeInfo(output)) :
+                Request.CreateResponse(HttpStatusCode.OK, new OrganizationInfo(output)) :
                 Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        // POST: api/organizationtype
-        public HttpResponseMessage Post([FromBody]OrganizationTypeInfo value)
+        // POST: api/organization
+        public HttpResponseMessage Post([FromBody]OrganizationInfo value)
         {
             var organizationService = CompositionRoot.Resolve<IOrganizationService>();
             var identifier = organizationService.CreateType(value.Caption);
@@ -44,32 +44,34 @@ namespace mfc.web.Controllers
             return response;
         }
 
-        // PUT: api/organizationtype/:id
+        // PUT: api/organization/:id
         [HttpPut]
-        public HttpResponseMessage Put(int id, [FromBody]OrganizationTypeInfo value)
+        public HttpResponseMessage Put(int id, [FromBody]OrganizationInfo value)
         {
             var organizationService = CompositionRoot.Resolve<IOrganizationService>();
-            var organizationType = organizationService.GetTypeById(id);
+            var organization = organizationService.GetOrganizationById(id);
 
-            if (organizationType != null)
+            if (organization != null)
             {
-                organizationType.Caption = value.Caption;
-                organizationService.UpdateType(organizationType);
+                organization.Caption = value.Caption;
+                organization.FullCaption = value.FullCaption;
+                organization.Type = value.OrganizationType.ConvertToOrganizationType();
+                organizationService.UpdateOgranization(organization);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
 
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        // DELETE: api/organizationtype/:id
+        // DELETE: api/organization/:id
         public HttpResponseMessage Delete(int id)
         {
             var organizationService = CompositionRoot.Resolve<IOrganizationService>();
-            var organizationType = organizationService.GetTypeById(id);
+            var organization = organizationService.GetOrganizationById(id);
 
-            if (organizationType != null)
+            if (organization != null)
             {
-                organizationService.DeleteType(id);
+                organizationService.DeleteOrganization(id);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
 

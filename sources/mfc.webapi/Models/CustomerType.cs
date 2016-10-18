@@ -1,18 +1,13 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Entities = mfc.domain.entities;
 
 namespace mfc.webapi.Models
 {
-    [JsonObject("this_customer_type")]
-    public class CustomerType
+    [JsonObject("customer_type")]
+    public class CustomerTypeInfo
     {
-        public CustomerType() { }
+        public CustomerTypeInfo() { }
 
-        public CustomerType(Entities.CustomerType customerType)
+        public CustomerTypeInfo(mfc.domain.entities.CustomerType customerType)
         {
             Id = customerType.Id;
             Caption = customerType.Caption;

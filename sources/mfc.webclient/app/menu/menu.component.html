@@ -1,6 +1,12 @@
 ﻿<div id="navbar" class="navbar-collapse collapse">
-    <ul class="nav navbar-nav navbar-right">
+    <ul class="nav navbar-nav navbar-left">
+        <li><a [routerLink]="['acceptions']">Приемы</a></li>
+        <li><a [routerLink]="['files']">Дела</a></li>
+        <li><a [routerLink]="['packets']">Пакеты</a></li>
+        <li><a [routerLink]="['reports']">Отчеты</a></li>
+    </ul>
 
+    <ul class="nav navbar-nav navbar-right">
         <li><a [routerLink]="['work']" >Главная</a></li>
         <li><a [routerLink]="['admin']">Администрирование</a></li>
         <li id="login">

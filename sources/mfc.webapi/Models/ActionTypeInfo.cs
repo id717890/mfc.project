@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace mfc.webapi.Models
 {
+    [JsonObject("action_type_info")]
     public class ActionTypeInfo
     {
         public ActionTypeInfo() { }
