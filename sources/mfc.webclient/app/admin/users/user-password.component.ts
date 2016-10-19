@@ -17,7 +17,7 @@ export class UserPasswordComponent {
 
     constructor(private userService: UserService) {
         this.changedPassword = new EventEmitter<Password>();
-        this.user = new User(0, 'test', 'test');
+        this.user = new User(0, '', '','',false,false,false);
         this.pass = new Password('', '');
     }
 

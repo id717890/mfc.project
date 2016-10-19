@@ -1,30 +1,28 @@
 <h2 class="page-header">Список пользователей</h2>
 
-<div class="form-group">
-    <a data-toggle="modal" data-target="#CreateUser" class="btn btn-primary">Добавить пользователя</a>
+<div [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
+    <div class="form-group">
+        <a (click)="add()" class="btn btn-primary">Добавить пользователя</a>
+    </div>
+
+    <table class="table table-bordered table-striped table-hover table-condensed table-responsive" >
+        <thead>
+            <tr>
+                <th>Имя пользователя</th>
+                <th>Описание</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let model of models; let i = index">
+                <td>{{model.user_name}}</td>
+                <td>{{model.description}}</td>
+                <td>
+                    <a (click)="edit(model)" class="glyphicon glyphicon-edit" title="Редактировать"></a>
+                    <a data-toggle="modal" data-target="#ChangePassword" class="glyphicon glyphicon-lock" title="Сменить пароль"></a>
+                    <a (click)="delete(model)" class="glyphicon glyphicon-remove" title="Удалить запись"></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
-
-<table class="table table-bordered table-striped table-hover table-condensed table-responsive" [ngBusy]="busy">
-    <thead>
-        <tr>
-            <th>Имя пользователя</th>
-            <th>Описание</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let user of users; let i = index">
-            <td>{{user.user_name}}</td>
-            <td>{{user.description}}</td>
-            <td>
-                <a data-toggle="modal" data-target="#UpdateUser" class="glyphicon glyphicon-edit" title="Редактировать" (click)="selectUser(i)"></a>
-                <a data-toggle="modal" data-target="#ChangePassword" class="glyphicon glyphicon-lock" title="Сменить пароль" (click)="selectUser(i)"></a>
-                <a ng-click="deleteUser($index)" class="glyphicon glyphicon-remove" title="Удалить пользователя" (click)="deleteUser(i)"></a>
-            </td>
-        </tr>
-    </tbody>
-</table>
-
-<mfc-user-create (created)="onUserCreated($event)"></mfc-user-create>
-<mfc-user-edit (edited)="onUserEdited($event)" [user]="selectedUser"></mfc-user-edit>
-<mfc-user-password (changedPassword)="onPasswordChanged($event)" [user]="selectedUser"></mfc-user-password>

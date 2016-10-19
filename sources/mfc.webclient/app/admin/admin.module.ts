@@ -7,7 +7,6 @@ import { AdminComponent } from './admin.component';
 import { CustomerTypeListComponent } from './customer-types/customer-type-list.component';
 import { CustomerTypeEditComponent } from './customer-types/customer-type-edit.component';
 import { UserListComponent } from './users/user-list.component';
-import { UserCreateComponent } from './users/user-create.component';
 import { UserEditComponent } from './users/user-edit.component';
 import { UserPasswordComponent } from './users/user-password.component';
 import { FileStatusEditComponent } from './filestatuses/filestatus-edit.component';
@@ -57,7 +56,7 @@ import { BusyModule, BusyConfig } from 'angular2-busy'; //Сторонний п�
   declarations: [
     AdminComponent,
     CustomerTypeListComponent, CustomerTypeEditComponent,
-    UserListComponent, UserCreateComponent, UserEditComponent, UserPasswordComponent,   //Справочник "Пользователи"
+    UserListComponent, UserEditComponent, UserPasswordComponent,   //Справочник "Пользователи"
     FileStatusListComponent, FileStatusEditComponent,
     ActionTypeListComponent, ActionTypeEditComponent,
     OrganizationTypeListComponent,

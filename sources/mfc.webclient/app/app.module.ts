@@ -13,6 +13,7 @@ import { UserComponent } from './user/user.component';
 import { ActionTypeEditComponent } from './admin/actiontypes/actiontype-edit.component';
 import { FileStatusEditComponent } from './admin/filestatuses/filestatus-edit.component';
 import { CustomerTypeEditComponent } from './admin/customer-types/customer-type-edit.component';
+import { UserEditComponent } from './admin/users/user-edit.component';
 
 import { routing, appRoutingProviders} from './app.router';
 import { DefaultRequestOptions } from './infrastructure/default-request-options';
@@ -37,9 +38,10 @@ import { DefaultRequestOptions } from './infrastructure/default-request-options'
     { provide: RequestOptions, useClass: DefaultRequestOptions },
   ],
   entryComponents: [
-     FileStatusEditComponent,
-     ActionTypeEditComponent,
-     CustomerTypeEditComponent
+    FileStatusEditComponent,
+    ActionTypeEditComponent,
+    CustomerTypeEditComponent,
+    UserEditComponent
   ]
 })
 export class AppModule { }

@@ -1,24 +1,15 @@
-export class User {
-    id: number;
-    user_name: string;
-    description: string;
-    is_admin: boolean;
-    is_expert: boolean;
-    is_controller: boolean;
+import {BaseModel} from './../../infrastructure/base.component/base-model';
 
+export class User extends BaseModel {
     constructor(
-        id?: number,
-        user_name?: string,
-        description?: string,
-        is_admin?: boolean,
-        is_expert?: boolean,
-        is_controller?: boolean
+        public id: number,
+        public caption: string,
+        public user_name: string,
+        public description: string,
+        public is_admin: boolean,
+        public is_expert: boolean,
+        public is_controller: boolean
     ) {
-        this.id = id;
-        this.user_name = user_name;
-        this.description = description;
-        this.is_admin = false;
-        this.is_expert = false;
-        this.is_controller = false;
+        super(id, caption);
     }
 }
