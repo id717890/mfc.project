@@ -4,10 +4,10 @@ import {OnInit} from '@angular/core';
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DialogRef, overlayConfigFactory } from 'angular2-modal';
 
-import {BaseService} from './base.service';
-import {BaseModel} from './base-model';
-import {BaseEditComponent} from './base-edit.component';
-import {SAVE_MESAGE, LOAD_LIST_MESAGE} from './../application-messages';
+import { BaseService } from './base.service';
+import { BaseModel } from './base-model';
+import { BaseEditComponent } from './base-edit.component';
+import { SAVE_MESAGE, LOAD_LIST_MESAGE } from './../application-messages';
 
 @Component({
     selector: 'mfc-customer-type-list',
@@ -25,7 +25,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     }
 
     abstract newModel(): TModel;
-    abstract cloneModel(model : TModel): TModel;
+    abstract cloneModel(model: TModel): TModel;
     abstract getEditComponent(): any;
 
 
@@ -35,8 +35,8 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
             .then(models => this.models = models);
     }
 
-    add() { 
-        let model : TModel = this.newModel();
+    add() {
+        let model: TModel = this.newModel();
         this.modal
             .open(
             this.getEditComponent(),
@@ -46,27 +46,32 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
                     if (output != null) {
                         this.busyMessage = SAVE_MESAGE;
                         this.busy = this.service.post(output)
-                            .then(x => {
-                                this.models.push(x);
-                            }).catch(x => this.handlerError(x));
+                            .then(x => { if (x != null) this.models.push(x) })  //Здесь нужна проверка на null, т.к. если API вернул ответ с ошибкой, то х=undefined
+                            .catch(x => this.handlerError(x));
                     }
                 }, () => null);
             }).catch(this.handlerError);
     }
 
     edit(model: TModel) {
-        let clone : TModel = this.cloneModel(model);
+        let clone: TModel = this.cloneModel(model);
         this.modal
             .open(
             this.getEditComponent(),
-            overlayConfigFactory({ title: 'Редактирование', model: clone}, BSModalContext)
+            overlayConfigFactory({ title: 'Редактирование', model: clone }, BSModalContext)
             ).then(x => {
                 x.result.then(output => {
                     if (output != null) {
                         this.busyMessage = SAVE_MESAGE;
                         this.busy = this.service.put(output)
                             .then(x => {
-                                model.caption = output.caption;
+                                // model.caption = output.caption;  Это не катит, бывают разные модели с разными наборами полей.
+                                Object.keys(output).forEach((key) => {
+                                    if (key === 'id') {
+                                        return;
+                                    }
+                                    model[key] = output[key];
+                                });
                             }).catch(x => this.handlerError(x));
                     }
                 }, () => null);

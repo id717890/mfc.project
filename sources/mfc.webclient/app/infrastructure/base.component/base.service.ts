@@ -8,7 +8,7 @@ export class BaseService<TModel extends BaseModel>  {
     constructor(protected _http: Http) {
     }
 
-    getApiTag() : string {
+    getApiTag(): string {
         return this.apiUrl;
     }
 
@@ -27,7 +27,11 @@ export class BaseService<TModel extends BaseModel>  {
             })
             .map((x: Response) => x.json())
             .toPromise()
-            .then(x => x)
+            .then(x => x, y => {
+                let error = this.extractData(y);
+                alert(error);
+                console.warn(error);
+            })
             .catch(this.handlerError);
     }
 
@@ -39,10 +43,12 @@ export class BaseService<TModel extends BaseModel>  {
     }
 
     delete(model: TModel): Promise<Boolean> {
-        return this._http.delete(`${this.getApiTag()}/${model.id}`)
-            .toPromise()
-            .then(res => true)
-            .catch(this.handlerError);
+        if (confirm('Удалить запись?')) {
+            return this._http.delete(`${this.getApiTag()}/${model.id}`)
+                .toPromise()
+                .then(res => true)
+                .catch(this.handlerError);
+        }
     }
 
     private extractData(res: Response) {
