@@ -1,12 +1,12 @@
 import { Component, Output, EventEmitter, ElementRef, ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
 
-import { User } from '../user.model';
-import { UserService } from '../user.service';
+import { User } from './user.model';
+import { UserService } from './user.service';
 
 @Component({
     selector: 'mfc-user-create',
-    templateUrl: 'app/admin/users/user-create/user-create.component.html'
+    templateUrl: 'app/admin/users/user-create.component.html'
 })
 
 export class UserCreateComponent {

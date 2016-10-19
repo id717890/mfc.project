@@ -3,7 +3,7 @@ import { Routes, RouterModule } from "@angular/router";
 
 import { AdminComponent } from './admin.component';
 import { CustomerTypeListComponent } from "./customer-types/customer-type-list.component";
-import { UserListComponent } from "./users/user-list/user-list.component";
+import { UserListComponent } from "./users/user-list.component";
 import { FileStatusListComponent } from "./filestatuses/filestatus-list.component";
 import { ActionTypeListComponent } from "./actiontypes/actiontype-list.component";
 import { OrganizationTypeListComponent } from './organization-types/organization-type-list/organization-type-list.component';

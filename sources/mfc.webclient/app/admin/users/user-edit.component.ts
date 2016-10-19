@@ -1,11 +1,11 @@
 import { Component, Output, Input, EventEmitter } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { User } from '../user.model';
-import { UserService } from '../user.service'
+import { User } from './user.model';
+import { UserService } from './user.service'
 
 @Component({
     selector: 'mfc-user-edit',
-    templateUrl: 'app/admin/users/user-edit/user-edit.component.html'
+    templateUrl: 'app/admin/users/user-edit.component.html'
 })
 
 export class UserEditComponent {

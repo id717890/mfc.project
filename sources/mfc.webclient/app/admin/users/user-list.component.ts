@@ -1,17 +1,17 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 
-import { UserCreateComponent  } from '../user-create/user-create.component';
-import { UserEditComponent  } from '../user-edit/user-edit.component';
-import { UserService  } from '../user.service';
+import { UserCreateComponent  } from './user-create.component';
+import { UserEditComponent  } from './user-edit.component';
+import { UserService  } from './user.service';
 
-import { User } from '../user.model';
-import { Password } from '../password.model';
+import { User } from './user.model';
+import { Password } from './password.model';
 
 declare var jQuery: any; //объявляем переменную для возможности вызова jQuery
 
 @Component({
     selector: 'mfc-user-list',
-    templateUrl: 'app/admin/users/user-list/user-list.component.html'
+    templateUrl: 'app/admin/users/user-list.component.html'
 })
 
 export class UserListComponent {
