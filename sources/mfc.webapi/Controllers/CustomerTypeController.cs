@@ -1,79 +1,92 @@
-﻿using System.Net.Http;
-using System.Web.Http;
-using System.Net.Http.Headers;
-
+﻿using mfc.domain.services;
 using System;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 
 namespace mfc.webapi.Controllers
 {
-    using domain.services;
-    using Models;
-
+    [RoutePrefix("api/customer-types")]
     public class CustomerTypeController : ApiController
     {
+        private readonly ICustomerTypeService _customerTypeService;
+
+        public CustomerTypeController(ICustomerTypeService customerTypeService)
+        {
+            _customerTypeService = customerTypeService;
+        }
+
+        [HttpGet]
+        [Route("")]
         public HttpResponseMessage Get()
         {
-            var customerTypeService = CompositionRoot.Resolve<ICustomerTypeService>();
-            var output = customerTypeService.GetAllTypes().Select(x => new CustomerTypeInfo(x));
-
-            return Request.CreateResponse(HttpStatusCode.OK, output);
+            var types = _customerTypeService.GetAllTypes().Select(type => new Models.CustomerTypeInfo(type)).ToArray();
+            if (types == null || types.Length == 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, types);
         }
 
-        // GET: api/customertype/:id
+        [HttpGet]
+        [Route("{id}")]
         public HttpResponseMessage Get(int id)
         {
-            var customerTypeService = CompositionRoot.Resolve<ICustomerTypeService>();
-
-            var output = customerTypeService.GetTypeById(id);
-            return output != null ?
-                Request.CreateResponse(HttpStatusCode.OK, new CustomerTypeInfo(output)) :
-                Request.CreateResponse(HttpStatusCode.NotFound);
+            var type = _customerTypeService.GetTypeById(id);
+            if (type == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, new Models.CustomerTypeInfo(type));
         }
 
-        // POST: api/customertype
-        public HttpResponseMessage Post([FromBody]CustomerTypeInfo value)
+        [HttpPost]
+        [Route("")]
+        public HttpResponseMessage Post([FromBody]Models.CustomerTypeInfo value)
         {
-            var customerTypeService = CompositionRoot.Resolve<ICustomerTypeService>();
-            var identifier = customerTypeService.Create(value.Caption);
+            var id = _customerTypeService.Create(value.Caption);
 
-            var response = Request.CreateResponse(HttpStatusCode.Created, new Uri(Request.RequestUri + "/" + identifier.ToString()), MediaTypeHeaderValue.Parse("application/json"));
-            response.Headers.Location = new Uri(Request.RequestUri + identifier.ToString());
+            var response = Request.CreateResponse(HttpStatusCode.Created);
+            response.Headers.Location = new Uri($"{Request.RequestUri}/{id}");
 
             return response;
         }
 
-        // PUT: api/customertype/:id
         [HttpPut]
-        public HttpResponseMessage Put(int id, [FromBody]CustomerTypeInfo value)
+        [Route("{id}")]
+        public HttpResponseMessage Put(int id, [FromBody]Models.CustomerTypeInfo value)
         {
-            var customerTypeService = CompositionRoot.Resolve<ICustomerTypeService>();
-            var customerType = customerTypeService.GetTypeById(id);
+            var type = _customerTypeService.GetTypeById(id);
 
-            if (customerType != null)
+            if (type != null)
             {
-                customerType.Caption = value.Caption;
-                customerTypeService.Update(customerType);
+                type.Caption = value.Caption;
+                _customerTypeService.Update(type);
+
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
-
-            return Request.CreateResponse(HttpStatusCode.NotFound);
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
         }
 
-        // DELETE: api/customertype/:id
+        [HttpDelete]
+        [Route("{id}")]
         public HttpResponseMessage Delete(int id)
         {
-            var customerTypeService = CompositionRoot.Resolve<ICustomerTypeService>();
-            var customerType = customerTypeService.GetTypeById(id);
+            var type = _customerTypeService.GetTypeById(id);
 
-            if (customerType != null)
+            if (type != null)
             {
-                customerTypeService.Delete(id);
+                _customerTypeService.Delete(id);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
-
-            return Request.CreateResponse(HttpStatusCode.NotFound);
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
         }
     }
 }
