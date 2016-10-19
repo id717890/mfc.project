@@ -10,6 +10,7 @@
 /**/bin
 /.vs
 .vs/**
+/**/.vscode
 packages
 packages/**
 sources/mfc.webclient/app/*.js
