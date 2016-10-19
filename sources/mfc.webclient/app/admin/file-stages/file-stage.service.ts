@@ -7,14 +7,10 @@ import 'rxjs/add/operator/toPromise';
 
 import { BaseService } from '../../infrastructure/base-service';
 import { FileStage } from './file-stage.model';
-import { BusyComponent } from '../../Infrastructure/busy-service/busy-service.component';
 
 @Injectable()
 export class FileStageService extends BaseService {
-    constructor(
-        http: Http
-        , private _busyService: BusyComponent
-    ) {
+    constructor(http: Http) {
         super(http);
     }
 
@@ -45,20 +41,18 @@ export class FileStageService extends BaseService {
     }
 
     update(fileStage: FileStage) {
-        this._busyService.Standby("Выполняется сохранение этапов движения дела")
         let body = JSON.stringify(fileStage);
         let url = this.apiUrl + 'filestage/' + fileStage.code;
 
         return this._http.put(url, body)
             .toPromise()
             .then((response) => {
-                this._busyService.Ready();
                 if (response.status == 200) return true;
                 else {
                     console.log(response);
                     return false;
                 }
-            }, () => this._busyService.Ready())
+            })
             .catch(this.handlerError)
     }
 

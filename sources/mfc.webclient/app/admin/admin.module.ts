@@ -26,7 +26,6 @@ import { ActionTypeService } from './actiontypes/actiontype.service';
 import { OrganizationTypeService } from './organization-types/organization-type.service';
 import { FileStageService } from './file-stages/file-stage.service';
 import { BusyModule, BusyConfig } from 'angular2-busy'; //Сторонний пакет для реализации busy indicatpr angular2-busy https://github.com/devyumao/angular2-busy
-import { LoadingIndicator, LoadingPage } from '../Infrastructure/loading-service/loading.component';  //Сторонний пакет для реализации busy indicatpr angular2-busy https://webcake.co/a-loading-spinner-in-angular-2-using-ngswitch/
 
 @NgModule({
   imports: [
@@ -63,7 +62,6 @@ import { LoadingIndicator, LoadingPage } from '../Infrastructure/loading-service
     ActionTypeListComponent, ActionTypeEditComponent,
     OrganizationTypeListComponent,
     FileStageListComponent,                                                             //Настройка этапов движения дела
-    LoadingIndicator
   ],
   providers: [
     UserService,
