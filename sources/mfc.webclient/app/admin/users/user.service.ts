@@ -12,6 +12,6 @@ export class UserService extends BaseService<User> {
     }
 
     getApiTag(): string {
-        return super.getApiTag() + 'user';
+        return super.getApiTag() + 'users';
     }
 }
