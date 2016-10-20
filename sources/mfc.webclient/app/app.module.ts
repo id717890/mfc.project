@@ -5,11 +5,11 @@ import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
 import { AdminModule } from './admin/admin.module';
+import { WorkModule } from './work/work.module';
 
 import { AppComponent } from './app.component';
 import { WorkComponent } from './work/work.component';
 import { MenuComponent } from './menu/menu.component';
-import { UserComponent } from './user/user.component';
 import { ActionTypeEditComponent } from './admin/actiontypes/actiontype-edit.component';
 import { FileStatusEditComponent } from './admin/filestatuses/filestatus-edit.component';
 import { CustomerTypeEditComponent } from './admin/customer-types/customer-type-edit.component';
@@ -22,6 +22,7 @@ import { DefaultRequestOptions } from './infrastructure/default-request-options'
   imports: [
     BrowserModule,
     AdminModule,
+    WorkModule,
     ModalModule.forRoot(),
     BootstrapModalModule,
     routing
@@ -30,7 +31,6 @@ import { DefaultRequestOptions } from './infrastructure/default-request-options'
     AppComponent,
     MenuComponent,
     WorkComponent,
-    UserComponent,
   ],
   bootstrap: [AppComponent],
   providers: [
