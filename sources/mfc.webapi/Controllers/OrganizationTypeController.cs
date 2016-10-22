@@ -39,7 +39,7 @@ namespace mfc.web.Controllers
             var identifier = organizationService.CreateType(value.Caption);
 
             var response = Request.CreateResponse(HttpStatusCode.Created, new Uri(Request.RequestUri + "/" + identifier.ToString()), MediaTypeHeaderValue.Parse("application/json"));
-            response.Headers.Location = new Uri(Request.RequestUri + identifier.ToString());
+            response.Headers.Location = new Uri(Request.RequestUri + "/" + identifier.ToString());
 
             return response;
         }

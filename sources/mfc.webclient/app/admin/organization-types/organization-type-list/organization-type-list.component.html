@@ -3,7 +3,7 @@
 
 <div [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
     <div class="form-group">
-        <a (click)="add()" class="btn btn-primary">Добавить пользователя</a>
+        <a (click)="add()" class="btn btn-primary">Добавить тип ОГВ</a>
     </div>
 
     <table class="table table-bordered table-striped table-hover table-condensed table-responsive" >
@@ -14,14 +14,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let model of organizationTypes; let i = index">
+            <tr *ngFor="let model of models; let i = index">
                 <td hidden>{{model.id}}</td>
                 <td>{{model.caption}}</td>
                 <td>
                     <a (click)="edit(model)" class="glyphicon glyphicon-edit" title="Редактировать"></a>
-                    <!--
                     <a (click)="delete(model)" class="glyphicon glyphicon-remove" title="Удалить запись"></a>
-                    -->
                 </td>
             </tr>
         </tbody>
