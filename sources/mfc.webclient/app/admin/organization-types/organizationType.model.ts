@@ -1,12 +1,10 @@
-export class OrganizationType {
-    id:number;
-    caption: string;
+import {BaseModel} from './../../infrastructure/base.component/base-model';
 
+export class OrganizationType extends BaseModel {
     constructor(
-        id?:number,
-        caption?: string
+        public id: number,
+        public caption: string
     ) {
-        this.id = id;
-        this.caption = caption;
+        super(id, caption);
     }
 }

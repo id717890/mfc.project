@@ -64,7 +64,7 @@ namespace mfc.domain.services {
 
             _is_type_cache_valid = false;
 
-            return 0;
+            return type.Id;
         }
 
         public void DeleteType(long typeId) {

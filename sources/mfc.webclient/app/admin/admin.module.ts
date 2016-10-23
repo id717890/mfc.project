@@ -14,6 +14,7 @@ import { FileStatusListComponent } from './filestatuses/filestatus-list.componen
 import { ActionTypeEditComponent } from './actiontypes/actiontype-edit.component';
 import { ActionTypeListComponent } from './actiontypes/actiontype-list.component';
 import { OrganizationTypeListComponent } from './organization-types/organization-type-list/organization-type-list.component';
+import { OrganizationTypeEditComponent } from './organization-types/organization-type-edit.component';
 import { FileStageListComponent } from './file-stages/file-stage-list.component';
 
 import { adminRouting } from './admin.router';
@@ -59,7 +60,7 @@ import { BusyModule, BusyConfig } from 'angular2-busy'; //Сторонний п�
     UserListComponent, UserEditComponent, UserPasswordComponent,   //Справочник "Пользователи"
     FileStatusListComponent, FileStatusEditComponent,
     ActionTypeListComponent, ActionTypeEditComponent,
-    OrganizationTypeListComponent,
+    OrganizationTypeListComponent, OrganizationTypeEditComponent,
     FileStageListComponent,                                                             //Настройка этапов движения дела
   ],
   providers: [

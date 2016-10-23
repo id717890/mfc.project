@@ -1,16 +1,27 @@
 <h1 class="page-header">Справочник 'Типы ОГВ'</h1>
 
-<table class="table table-bordered table-striped table-hover table-condensed table-responsive">
-    <thead>
-        <tr>
-            <th hidden>Id</th>
-            <th>Наименование</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let organizationType of organizationTypes; let i = index">
-            <td hidden>{{organizationType.id}}</td>
-            <td>{{organizationType.caption}}</td>
-        </tr>
-    </tbody>
-</table>
+
+<div [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
+    <div class="form-group">
+        <a (click)="add()" class="btn btn-primary">Добавить тип ОГВ</a>
+    </div>
+
+    <table class="table table-bordered table-striped table-hover table-condensed table-responsive" >
+        <thead>
+            <tr>
+                <th hidden>Id</th>
+                <th>Наименование</th> 
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let model of models; let i = index">
+                <td hidden>{{model.id}}</td>
+                <td>{{model.caption}}</td>
+                <td>
+                    <a (click)="edit(model)" class="glyphicon glyphicon-edit" title="Редактировать"></a>
+                    <a (click)="delete(model)" class="glyphicon glyphicon-remove" title="Удалить запись"></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
