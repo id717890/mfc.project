@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import {OnInit} from '@angular/core';
+
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DialogRef, overlayConfigFactory } from 'angular2-modal';
 
 import { BaseService } from './base.service';
 import { BaseModel } from './base-model';
 import { BaseEditComponent } from './base-edit.component';
-import { SAVE_MESAGE, LOAD_LIST_MESAGE } from './../application-messages';
+import { DIALOG_CONFIRM, DIALOG_DELETE, SAVE_MESAGE, LOAD_LIST_MESAGE } from './../application-messages';
 
 export abstract class BaseListComponent<TModel extends BaseModel> implements OnInit {
     models: TModel[];
@@ -27,7 +27,6 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
         this.busy = this.service.get()
             .then(models => {
                 this.models = models
-                console.log(models);
             });
     }
 
@@ -35,8 +34,8 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
         let model: TModel = this.newModel();
         this.modal
             .open(
-            this.getEditComponent(),
-            overlayConfigFactory({ title: 'Новый', model: model }, BSModalContext)
+                this.getEditComponent(),
+                overlayConfigFactory({ title: 'Новый', model: model }, BSModalContext)
             ).then(x => {
                 x.result.then(output => {
                     if (output != null) {
@@ -53,8 +52,8 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
         let clone: TModel = this.cloneModel(model);
         this.modal
             .open(
-            this.getEditComponent(),
-            overlayConfigFactory({ title: 'Редактирование', model: clone }, BSModalContext)
+                this.getEditComponent(),
+                overlayConfigFactory({ title: 'Редактирование', model: clone }, BSModalContext)
             ).then(x => {
                 x.result.then(output => {
                     if (output != null) {
@@ -74,12 +73,24 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     }
 
     delete(model: TModel) {
-        this.busyMessage = SAVE_MESAGE;
-        this.busy = this.service.delete(model)
-            .then(res => {
-                if (res) {
-                    this.models.splice(this.models.indexOf(model), 1);
-                }
+        this.modal
+            .confirm()
+            .title(DIALOG_CONFIRM)
+            .body(DIALOG_DELETE)
+            .open()
+            .then(x => {
+                x.result.then(result => {
+                    if (!result)
+                        return;
+
+                    this.busyMessage = SAVE_MESAGE;
+                    this.busy = this.service.delete(model)
+                        .then(res => {
+                            if (res) {
+                                this.models.splice(this.models.indexOf(model), 1);
+                            }
+                        }); 
+                });
             });
     }
 

@@ -42,9 +42,10 @@ namespace mfc.webapi.Controllers
             var fileStatusService = CompositionRoot.Resolve<IFileStatusService>();
             var identifier = fileStatusService.Create(value.Caption);
 
-            var response = Request.CreateResponse(HttpStatusCode.Created, new Uri(Request.RequestUri + "/" + identifier.ToString()), MediaTypeHeaderValue.Parse("application/json"));
-            response.Headers.Location = new Uri(Request.RequestUri + identifier.ToString());
-            
+            var location = new Uri(Request.RequestUri + "/" + identifier.ToString());
+            var response = Request.CreateResponse(HttpStatusCode.Created, location, MediaTypeHeaderValue.Parse("application/json"));
+            response.Headers.Location = location;
+
             return response;
         }
 
