@@ -1,10 +1,13 @@
 import { Component, Output, Input, EventEmitter } from "@angular/core";
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+
+import { Observable } from 'rxjs/Observable';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 import { BaseService } from './base.service';
-import {BaseModel} from './base-model';
+import { BaseModel } from './base-model';
 
 export class BaseEditContext<TModel extends BaseModel> extends BSModalContext {
     public title: string;
@@ -13,17 +16,19 @@ export class BaseEditContext<TModel extends BaseModel> extends BSModalContext {
 
 export class BaseEditComponent<TModel extends BaseModel> implements CloseGuard, ModalComponent<BaseEditContext<TModel>> {
     context: BaseEditContext<TModel>;
-    is_changing: boolean;
+    isShaking: boolean = false;
 
-    public caption: string;
-
-    constructor(public dialog: DialogRef<BaseEditContext<TModel>>) {
+    constructor(public dialog: DialogRef<BaseEditContext<TModel>>, public formGroup : FormGroup = null)  {
         this.context = dialog.context;
 
-        this.is_changing = !dialog.context.model;
-        this.caption = this.is_changing ? dialog.context.model.caption : '';
+        if (!dialog.context.model)
+            dialog.context.model.reset();
         
         dialog.setCloseGuard(this);
+        formGroup.valueChanges.subscribe((form: any) => this.mapFormToModel(form));
+    }
+
+    mapFormToModel(form: any): void {
     }
 
     beforeDismiss(): boolean {
@@ -31,6 +36,21 @@ export class BaseEditComponent<TModel extends BaseModel> implements CloseGuard, 
     }
 
     beforeClose(): boolean {
-        return this.caption !== '';
+        if (!this.formGroup.valid) {
+            if (this.isShaking)
+                return true; 
+
+            let timer = Observable.timer(1000, 1000);
+            this.isShaking = true;
+
+            let subscription = timer.subscribe(t => {
+                this.isShaking = false;
+                subscription.unsubscribe();
+            });
+
+            return true;
+        }
+
+        return false;
     }
 }

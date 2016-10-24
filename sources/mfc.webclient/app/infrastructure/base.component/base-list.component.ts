@@ -9,17 +9,10 @@ import { BaseModel } from './base-model';
 import { BaseEditComponent } from './base-edit.component';
 import { SAVE_MESAGE, LOAD_LIST_MESAGE } from './../application-messages';
 
-@Component({
-    selector: 'mfc-customer-type-list',
-    templateUrl: 'app/admin/customer-types/customer-type-list.component.html',
-    providers: [Modal, BaseEditComponent]
-})
-
 export abstract class BaseListComponent<TModel extends BaseModel> implements OnInit {
     models: TModel[];
     busy: Promise<any>;
     busyMessage: string;
-
 
     constructor(public modal: Modal, private service: BaseService<TModel>) {
     }
@@ -32,7 +25,10 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     ngOnInit(): void {
         this.busyMessage = LOAD_LIST_MESAGE;
         this.busy = this.service.get()
-            .then(models => this.models = models);
+            .then(models => {
+                this.models = models
+                console.log(models);
+            });
     }
 
     add() {
@@ -65,7 +61,6 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
                         this.busyMessage = SAVE_MESAGE;
                         this.busy = this.service.put(output)
                             .then(x => {
-                                // model.caption = output.caption;  Это не катит, бывают разные модели с разными наборами полей.
                                 Object.keys(output).forEach((key) => {
                                     if (key === 'id') {
                                         return;

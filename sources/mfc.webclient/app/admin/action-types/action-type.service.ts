@@ -5,53 +5,50 @@ import { Observable } from "rxjs/Observable";
 import "rxjs/Rx";
 import 'rxjs/add/operator/toPromise';
 
+import { ActionType } from './action-type.model';
 import { BaseService } from '../../infrastructure/base-service';
 
-export class FileStatus {
-    constructor(public id: number, public caption: string) { }
-}
-
 @Injectable()
-export class FileStatusService extends BaseService {
+export class ActionTypeService extends BaseService {
     constructor(http: Http) {
         super(http);
     }
 
-    get(): Promise<FileStatus[]> {
-        return this._http.get(this.apiUrl + 'filestatus')
+    get(): Promise<ActionType[]> {
+        return this._http.get(this.apiUrl + 'action-types')
             .toPromise()
             .then(x => x.json())
             .catch(this.handlerError)
     }
 
-    getById(id:number): Promise<FileStatus> {
-        return this._http.get(this.apiUrl + 'filestatus/' + id)
+    getById(id:number): Promise<ActionType> {
+        return this._http.get(this.apiUrl + 'action-types/' + id)
             .toPromise()
             .then(x => x.json())
             .catch(this.handlerError)
     }
 
-    create(filestatus: FileStatus): Promise<FileStatus> {
-        let body = JSON.stringify(filestatus);
-        return this._http.post(this.apiUrl + 'filestatus/', body)
+    create(actionType: ActionType): Promise<ActionType> {
+        let body = JSON.stringify(actionType);
+        return this._http.post(this.apiUrl + 'action-types/', body)
             .flatMap((x:Response) => {
                 var location = x.headers.get('Location');
                 return this._http.get(location);
             }).map((x:Response) => x.json())
             .toPromise()
-            .then(x => new FileStatus(x.id, x.caption));
+            .then(x => new ActionType(x.id, x.caption, x.need_make_file));
     }
 
-    update(filestatus: FileStatus) {
-        let body = JSON.stringify(filestatus);
-        return this._http.put(this.apiUrl + 'filestatus/' + filestatus.id, body)
+    update(actionType: ActionType) {
+        let body = JSON.stringify(actionType);
+        return this._http.put(this.apiUrl + 'action-types/' + actionType.id, body)
             .toPromise()
             .then()
             .catch(this.handlerError);
     }
 
-    delete(filestatus: FileStatus) {
-        return this._http.delete(this.apiUrl + 'filestatus/' + filestatus.id)
+    delete(actionType: ActionType) {
+        return this._http.delete(this.apiUrl + 'action-types/' + actionType.id)
             .toPromise()
             .then()
             .catch(this.handlerError);

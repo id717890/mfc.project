@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FileStageService } from './file-stage.service';
 import { FileStage } from './file-stage.model';
-import { FileStatus, FileStatusService } from '../filestatuses/filestatus.service';
+
+import { FileStatusService } from '../file-statuses/file-status.service';
+import { FileStatus } from '../file-statuses/file-status.model';
 
 @Component({
     selector: 'mfc-file-stage-list',
