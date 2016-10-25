@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { OnInit } from '@angular/core';
+
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DialogRef, overlayConfigFactory } from 'angular2-modal';
 
 import { BaseService } from './base.service';
 import { BaseModel } from './base-model';
 import { BaseEditComponent } from './base-edit.component';
-import { SAVE_MESAGE, LOAD_LIST_MESAGE, P_PAGE_SIZE } from './../application-messages';
+import { DIALOG_CONFIRM, DIALOG_DELETE, SAVE_MESAGE, LOAD_LIST_MESAGE, PAGIN_PAGE_SIZE } from './../application-messages';
 
 @Component({
     selector: 'mfc-customer-type-list',
@@ -21,11 +21,10 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     busyMessage: string;
 
     totalRows: number;  // общее кол-во строк сущности для компонента ng2-pagination
-    pageSize: number = P_PAGE_SIZE;  // количество элементов на странице
+    pageSize: number = PAGIN_PAGE_SIZE;  // количество элементов на странице
     pageIndex: number = 1; //текущая страница
 
-    constructor(public modal: Modal, private service: BaseService<TModel>) {
-    }
+    constructor(public modal: Modal, private service: BaseService<TModel>) { }
 
     abstract newModel(): TModel;
     abstract cloneModel(model: TModel): TModel;
@@ -36,7 +35,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
         this.busy = this.service.get()
             .then(models => {
                 this.models = models['data'];       // извлекаем массив данных
-                           this.totalRows = models['total'];   // извлекаем общее кол-во строк сущности для корректного отображения страниц
+                this.totalRows = models['total'];   // извлекаем общее кол-во строк сущности для корректного отображения страниц
             });
     }
 
@@ -70,7 +69,6 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
                         this.busyMessage = SAVE_MESAGE;
                         this.busy = this.service.put(output)
                             .then(x => {
-                                // model.caption = output.caption;  Это не катит, бывают разные модели с разными наборами полей.
                                 Object.keys(output).forEach((key) => {
                                     if (key === 'id') {
                                         return;
@@ -84,12 +82,24 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     }
 
     delete(model: TModel) {
-        this.busyMessage = SAVE_MESAGE;
-        this.busy = this.service.delete(model)
-            .then(res => {
-                if (res) {
-                    this.models.splice(this.models.indexOf(model), 1);
-                }
+        this.modal
+            .confirm()
+            .title(DIALOG_CONFIRM)
+            .body(DIALOG_DELETE)
+            .open()
+            .then(x => {
+                x.result.then(result => {
+                    if (!result)
+                        return;
+
+                    this.busyMessage = SAVE_MESAGE;
+                    this.busy = this.service.delete(model)
+                        .then(res => {
+                            if (res) {
+                                this.models.splice(this.models.indexOf(model), 1);
+                            }
+                        });
+                });
             });
     }
 

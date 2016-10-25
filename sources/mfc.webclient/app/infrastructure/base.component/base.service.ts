@@ -56,12 +56,10 @@ export class BaseService<TModel extends BaseModel>  {
     }
 
     delete(model: TModel): Promise<Boolean> {
-        if (confirm('Удалить запись?')) {
-            return this._http.delete(`${this.getApiTag()}/${model.id}`)
-                .toPromise()
-                .then(res => true)
-                .catch(this.handlerError);
-        }
+        return this._http.delete(`${this.getApiTag()}/${model.id}`)
+            .toPromise()
+            .then(res => true)
+            .catch(this.handlerError);
     }
 
     extractData(res: Response) {

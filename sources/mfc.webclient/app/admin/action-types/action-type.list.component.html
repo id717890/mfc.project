@@ -10,12 +10,12 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let actiontype of actiontypes">
-            <td>{{actiontype.caption}}</td>
-            <td>{{actiontype.need_make_file}}</td>
+        <tr *ngFor="let actionType of actionTypes">
+            <td>{{actionType.caption}}</td>
+            <td>{{actionType.need_make_file}}</td>
             <td>
-                <a (click)="onEditClick($event, actiontype)" class="glyphicon glyphicon-edit" title="Редактировать"></a>
-                <a (click)="onDeleteClick($event, actiontype)" class="glyphicon glyphicon-remove" title="Удалить"></a>
+                <a (click)="onEditClick($event, actionType)" class="glyphicon glyphicon-edit" title="Редактировать"></a>
+                <a (click)="onDeleteClick($event, actionType)" class="glyphicon glyphicon-remove" title="Удалить"></a>
             </td>
         </tr>
     </tbody>

@@ -10,8 +10,9 @@ import { WorkModule } from './work/work.module';
 import { AppComponent } from './app.component';
 import { WorkComponent } from './work/work.component';
 import { MenuComponent } from './menu/menu.component';
-import { ActionTypeEditComponent } from './admin/actiontypes/actiontype-edit.component';
-import { FileStatusEditComponent } from './admin/filestatuses/filestatus-edit.component';
+
+import { ActionTypeEditComponent } from './admin/action-types/action-type.edit.component';
+import { FileStatusEditComponent } from './admin/file-statuses/file-status.edit.component';
 import { CustomerTypeEditComponent } from './admin/customer-types/customer-type-edit.component';
 import { UserEditComponent } from './admin/users/user-edit.component';
 import { OrganizationTypeEditComponent } from './admin/organization-types/organization-type-edit.component'

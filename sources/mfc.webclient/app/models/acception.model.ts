@@ -1,7 +1,7 @@
 import { BaseModel } from '../infrastructure/base.component/base-model';
 import { CustomerType } from '../admin/customer-types/customer-type';
 import { User } from '../admin/users/user.model';
-import { ActionType } from '../admin/actiontypes/actiontype.service';
+import { ActionType } from '../admin/action-types/action-type.model';
 
 export class Acception extends BaseModel {
     constructor(

@@ -3,16 +3,18 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using System.Linq;
 
 namespace mfc.webapi.Controllers
 {
     using Models;
     using domain.services;
-    using System.Linq;
 
+    [RoutePrefix("api/action-types")]
     public class ActionTypeController : ApiController
     {
-        // GET: api/actiontype
+        [HttpGet]
+        [Route("")]
         public HttpResponseMessage Get()
         {
             var actionTypeService = CompositionRoot.Resolve<IActionTypeService>();
@@ -23,7 +25,8 @@ namespace mfc.webapi.Controllers
                 Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        // GET: api/actiontype/:id
+        [HttpGet]
+        [Route("{id}")]
         public HttpResponseMessage Get(int id)
         {
             var actionTypeService = CompositionRoot.Resolve<IActionTypeService>();
@@ -34,7 +37,8 @@ namespace mfc.webapi.Controllers
                 Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        // POST: api/actiontype
+        [HttpPost]
+        [Route("")]
         public HttpResponseMessage Post([FromBody]ActionTypeInfo value)
         {
             var actionTypeService = CompositionRoot.Resolve<IActionTypeService>();
@@ -46,8 +50,8 @@ namespace mfc.webapi.Controllers
             return response;
         }
 
-        // PUT: api/actiontype/:id
         [HttpPut]
+        [Route("{id}")]
         public HttpResponseMessage Put(int id, [FromBody]ActionTypeInfo value)
         {
             var actionTypeService = CompositionRoot.Resolve<IActionTypeService>();
@@ -64,7 +68,8 @@ namespace mfc.webapi.Controllers
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        // DELETE: api/actiontype/:id
+        [HttpDelete]
+        [Route("{id}")]
         public HttpResponseMessage Delete(int id)
         {
             var actionTypeService = CompositionRoot.Resolve<IActionTypeService>();

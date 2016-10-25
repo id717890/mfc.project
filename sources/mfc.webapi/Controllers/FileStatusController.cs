@@ -10,8 +10,11 @@ namespace mfc.webapi.Controllers
     using Models;
     using domain.services;
 
+    [RoutePrefix("api/file-statuses")]
     public class FileStatusController : ApiController
     {
+        [HttpGet]
+        [Route("")]
         public HttpResponseMessage Get()
         {
             var fileStatusService = CompositionRoot.Resolve<IFileStatusService>();
@@ -20,7 +23,8 @@ namespace mfc.webapi.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, output);
         }
 
-        // GET: api/filestatus/:id
+        [HttpGet]
+        [Route("{id}")]
         public HttpResponseMessage Get(int id)
         {
             var fileStatusService = CompositionRoot.Resolve<IFileStatusService>();
@@ -31,20 +35,22 @@ namespace mfc.webapi.Controllers
                 Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        // POST: api/filestatus
+        [HttpPost]
+        [Route("")]
         public HttpResponseMessage Post([FromBody]FileStatusInfo value)
         {
             var fileStatusService = CompositionRoot.Resolve<IFileStatusService>();
             var identifier = fileStatusService.Create(value.Caption);
 
-            var response = Request.CreateResponse(HttpStatusCode.Created, new Uri(Request.RequestUri + "/" + identifier.ToString()), MediaTypeHeaderValue.Parse("application/json"));
-            response.Headers.Location = new Uri(Request.RequestUri + identifier.ToString());
-            
+            var location = new Uri(Request.RequestUri + "/" + identifier.ToString());
+            var response = Request.CreateResponse(HttpStatusCode.Created, location, MediaTypeHeaderValue.Parse("application/json"));
+            response.Headers.Location = location;
+
             return response;
         }
 
-        // PUT: api/filestatus/:id
         [HttpPut]
+        [Route("{id}")]
         public HttpResponseMessage Put(int id, [FromBody]FileStatusInfo value)
         {
             var fileStatusService = CompositionRoot.Resolve<IFileStatusService>();
@@ -60,7 +66,8 @@ namespace mfc.webapi.Controllers
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        // DELETE: api/filestatus/:id
+        [HttpDelete]
+        [Route("{id}")]
         public HttpResponseMessage Delete(int id)
         {
             var fileStatusService = CompositionRoot.Resolve<IFileStatusService>();
