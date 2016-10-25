@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, RequestOptionsArgs, Response } from '@angular/http';
-import {BaseModel} from './base-model';
+import { Http, Headers, RequestOptions, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { BaseModel } from './base-model';
+
 
 @Injectable()
 export class BaseService<TModel extends BaseModel>  {
@@ -15,7 +16,19 @@ export class BaseService<TModel extends BaseModel>  {
     get(): Promise<TModel[]> {
         return this._http.get(this.getApiTag())
             .toPromise()
-            .then(this.extractData)
+            .then(x => this.extractData(x))
+            .catch(this.handlerError);
+    }
+
+    //Для отправки GET запроса с параметрами
+    getWithParameters(parameters: any[]): Promise<TModel[]> {
+        let params: URLSearchParams = new URLSearchParams();
+        Object.keys(parameters).forEach((key) => {
+            params.set(key, parameters[key].toString());
+        });
+        return this._http.get(this.getApiTag(), { search: params })
+            .toPromise()
+            .then(x => this.extractData(x))
             .catch(this.handlerError);
     }
 
@@ -51,11 +64,25 @@ export class BaseService<TModel extends BaseModel>  {
         }
     }
 
-    private extractData(res: Response) {
-        return res.json();
+    extractData(res: Response) {
+        /*
+        В headers ответа от сервера добавлен заголовок "Total-rows", в который пишется кол-во строк запрошенной сущности.
+        Это количество нужно для компонента ng2-pagination, чтобы корректно рассчитывать кол-во страниц.
+        После извлечения данных возвращается массив 
+        {
+            total: count,
+            data: Object[] 
+        }        
+         */
+        let output = [];
+        let data = res.json();
+        let total: number = +res.headers.get('Total-rows');
+        output['total'] = total != null ? total : 0;
+        output['data'] = data;
+        return output;
     }
 
-    private handlerError(error: any) {
+    handlerError(error: any) {
         console.log(error.message);
     }
 }

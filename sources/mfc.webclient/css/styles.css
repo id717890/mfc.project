@@ -30,7 +30,8 @@ body {
 }
 
 .no-m {
-    margin: 0 !important;
+    margin: auto !important;
+    float: none !important;
 }
 
 .sidebar {
@@ -204,3 +205,12 @@ body {
     -webkit-transform: perspective(140px) rotateY(180deg);
             transform: perspective(140px) rotateY(180deg);
     opacity: 0; } }
+
+
+.mydp{
+    height: 36px !important;
+}
+
+.ng2-pagination{
+    float: right;
+}

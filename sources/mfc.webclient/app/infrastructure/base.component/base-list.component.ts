@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import {OnInit} from '@angular/core';
+import { OnInit } from '@angular/core';
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DialogRef, overlayConfigFactory } from 'angular2-modal';
 
 import { BaseService } from './base.service';
 import { BaseModel } from './base-model';
 import { BaseEditComponent } from './base-edit.component';
-import { SAVE_MESAGE, LOAD_LIST_MESAGE } from './../application-messages';
+import { SAVE_MESAGE, LOAD_LIST_MESAGE, P_PAGE_SIZE } from './../application-messages';
 
 @Component({
     selector: 'mfc-customer-type-list',
@@ -20,6 +20,9 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     busy: Promise<any>;
     busyMessage: string;
 
+    totalRows: number;  // общее кол-во строк сущности для компонента ng2-pagination
+    pageSize: number = P_PAGE_SIZE;  // количество элементов на странице
+    pageIndex: number = 1; //текущая страница
 
     constructor(public modal: Modal, private service: BaseService<TModel>) {
     }
@@ -28,11 +31,13 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     abstract cloneModel(model: TModel): TModel;
     abstract getEditComponent(): any;
 
-
     ngOnInit(): void {
         this.busyMessage = LOAD_LIST_MESAGE;
         this.busy = this.service.get()
-            .then(models => this.models = models);
+            .then(models => {
+                this.models = models['data'];       // извлекаем массив данных
+                           this.totalRows = models['total'];   // извлекаем общее кол-во строк сущности для корректного отображения страниц
+            });
     }
 
     add() {
