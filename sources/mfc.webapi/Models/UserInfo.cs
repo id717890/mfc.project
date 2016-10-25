@@ -17,7 +17,7 @@ namespace mfc.webapi.Models
             IsExpert = user.IsExpert;
             IsController = user.IsController;
         }
-        
+
         [Display(Name = "Идентификатор")]
         [JsonProperty("id")]
         public long Id { get; set; }
@@ -39,7 +39,7 @@ namespace mfc.webapi.Models
 
         [Required]
         [Display(Name = "Эксперт")]
-        [JsonProperty("is_admin")]
+        [JsonProperty("is_expert")]
         public bool IsExpert { get; set; }
 
         [Required]

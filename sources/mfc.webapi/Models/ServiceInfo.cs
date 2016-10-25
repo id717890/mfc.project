@@ -11,6 +11,9 @@ namespace mfc.webapi.Models
 
         public ServiceInfo(domain.entities.Service service)
         {
+            Id = service.Id;
+            Caption = service.Caption;
+            Organistaion = new OrganizationInfo(service.Organization);
         }
 
         [Display(Name = "Идентификатор")]

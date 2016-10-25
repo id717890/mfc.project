@@ -16,11 +16,11 @@ namespace mfc.webapi.Models
             Customer = action.Customer;
             CustomerType = new CustomerTypeInfo(action.CustomerType);
 
-            Service = new ServiceInfo(action.Service);
-            ServiceChild = new ServiceInfo(action.ServiceChild);
+            Service = action.Service != null ? new ServiceInfo(action.Service) : null;
+            ServiceChild = action.ServiceChild != null ? new ServiceInfo(action.ServiceChild) : null;
 
             ActionType = new ActionTypeInfo(action.Type);
-            User = new UserInfo(action.User);
+            User = action.User != null ? new AccountInfo(action.User) : null;
         }
 
         [Display(Name = "Идентификатор")]
@@ -60,15 +60,15 @@ namespace mfc.webapi.Models
         [Required]
         [Display(Name = "Эксперт")]
         [JsonProperty("expert")]
-        public UserInfo User { get; set; }
+        public AccountInfo User { get; set; }
 
         [Required]
-        [Display(Name = "Вид деятельности")]
-        [JsonProperty("action_type")]
+        [Display(Name = "Комментарий")]
+        [JsonProperty("comments")]
         public string Comments { get; set; }
 
         [Required]
-        [Display(Name = "Вид деятельности")]
+        [Display(Name = "Иногородний")]
         [JsonProperty("is_non_resident")]
         public bool IsNonresident { get; set; }
 
@@ -83,7 +83,6 @@ namespace mfc.webapi.Models
             {
                 Id = this.Id,
                 Customer = this.Customer,
-
             };
         }
     }
