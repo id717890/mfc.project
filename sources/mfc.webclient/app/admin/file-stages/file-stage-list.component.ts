@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FileStageService } from './file-stage.service';
-import { FileStage } from './file-stage.model';
+import { FileStage } from '../../models/file-stage.model';
 
 import { FileStatusService } from '../file-statuses/file-status.service';
-import { FileStatus } from '../file-statuses/file-status.model';
+import { FileStatus } from '../../models/file-status.model';
 
 @Component({
     selector: 'mfc-file-stage-list',
@@ -24,7 +24,7 @@ export class FileStageListComponent {
         private fileStageService: FileStageService,
         private fileStatusService: FileStatusService
     ) {
-        fileStatusService.get().then(x => this.fileStatuses = x);
+        fileStatusService.get().then(x => this.fileStatuses = x["data"]);
     }
 
     ngOnInit() {

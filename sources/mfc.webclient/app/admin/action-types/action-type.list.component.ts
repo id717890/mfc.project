@@ -3,7 +3,7 @@ import { Component, EventEmitter } from '@angular/core';
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DialogRef, overlayConfigFactory } from 'angular2-modal';
 
-import { ActionType } from './action-type.model'
+import { ActionType } from '../../models/action-type.model'
 import { ActionTypeService } from './action-type.service'
 
 import { ActionTypeEditComponent } from './action-type.edit.component'

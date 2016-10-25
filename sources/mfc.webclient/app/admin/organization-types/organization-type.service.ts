@@ -3,7 +3,7 @@ import { Http, Response } from '@angular/http';
 //import { Observable }     from 'rxjs/Observable';
 //import 'rxjs/add/operator/toPromise';
 //import 'rxjs/add/operator/catch'
-import { OrganizationType } from './organizationType.model';
+import { OrganizationType } from '../../models/organization-type.model';
 import { BaseService } from './../../infrastructure/base.component/base.service';
 
 @Injectable()

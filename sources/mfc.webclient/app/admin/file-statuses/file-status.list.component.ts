@@ -6,7 +6,7 @@ import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/pl
 import { BaseListComponent} from './../../infrastructure/base.component/base-list.component';
 
 import { FileStatusService } from './file-status.service'
-import { FileStatus } from './file-status.model'
+import { FileStatus } from '../../models/file-status.model'
 import { FileStatusEditComponent } from './file-status.edit.component'
 
 @Component({

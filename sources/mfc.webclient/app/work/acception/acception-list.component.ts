@@ -4,7 +4,7 @@ import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/pl
 import { BaseListComponent } from './../../infrastructure/base.component/base-list.component';
 
 import { Acception } from '../../models/acception.model';
-import { User } from '../../admin/users/user.model';
+import { User } from '../../models/user.model';
 import { AcceptionService } from './acception.service';
 import { UserService } from '../../admin/users/user.service';
 

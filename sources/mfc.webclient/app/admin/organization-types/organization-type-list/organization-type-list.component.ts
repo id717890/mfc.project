@@ -8,7 +8,7 @@ import { BaseListComponent } from './../../../infrastructure/base.component/base
 import { OrganizationTypeService } from '../organization-type.service';
 import { OrganizationTypeEditComponent } from '../organization-type-edit.component'
 
-import { OrganizationType } from '../organizationType.model';
+import { OrganizationType } from '../../../models/organization-type.model';
 
 @Component({
     selector: 'mfc-organizationType-list',

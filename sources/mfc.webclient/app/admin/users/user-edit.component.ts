@@ -4,7 +4,7 @@ import { NgForm } from "@angular/forms";
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
-import { User } from './user.model';
+import { User } from '../../models/user.model';
 import { UserService } from './user.service'
 import {BaseEditComponent, BaseEditContext} from './../../infrastructure/base.component/base-edit.component';
 

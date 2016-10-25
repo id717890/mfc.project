@@ -3,7 +3,7 @@ import { Component, Output, Input, EventEmitter } from "@angular/core";
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
-import { ActionType } from './action-type.model'
+import { ActionType } from '../../models/action-type.model'
 
 export class ActionTypeEditContext extends BSModalContext {
     public title: string;

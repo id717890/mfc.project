@@ -5,7 +5,7 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 
-import { OrganizationType } from './organizationType.model';
+import { OrganizationType } from '../../models/organization-type.model';
 import { OrganizationTypeService } from './organization-type.service';
 import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.component/base-edit.component';
 

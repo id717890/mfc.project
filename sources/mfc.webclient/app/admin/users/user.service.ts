@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
-import { User } from './user.model';
-import { Password } from './password.model';
+import { User } from '../../models/user.model';
+import { Password } from '../../models/password.model';
 import { BaseService } from './../../infrastructure/base.component/base.service';
 
 @Injectable()

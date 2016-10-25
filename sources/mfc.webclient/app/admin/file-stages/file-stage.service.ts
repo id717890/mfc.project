@@ -6,7 +6,7 @@ import "rxjs/Rx";
 import 'rxjs/add/operator/toPromise';
 
 import { BaseService } from '../../infrastructure/base-service';
-import { FileStage } from './file-stage.model';
+import { FileStage } from '../../models/file-stage.model';
 
 @Injectable()
 export class FileStageService extends BaseService {

@@ -5,7 +5,7 @@ import { Observable } from "rxjs/Observable";
 import "rxjs/Rx";
 import 'rxjs/add/operator/toPromise';
 
-import { ActionType } from './action-type.model';
+import { ActionType } from '../../models/action-type.model';
 import { BaseService } from '../../infrastructure/base-service';
 
 @Injectable()

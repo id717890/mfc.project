@@ -6,8 +6,8 @@ import { BaseListComponent } from './../../infrastructure/base.component/base-li
 import { UserEditComponent  } from './user-edit.component';
 import { UserService  } from './user.service';
 
-import { User } from './user.model';
-import { Password } from './password.model';
+import { User } from '../../models/user.model';
+import { Password } from '../../models/password.model';
 
 @Component({
     selector: 'mfc-user-list',

@@ -1,8 +1,8 @@
 import { Component, Output, Input, EventEmitter } from "@angular/core";
 import { NgForm } from "@angular/forms";
 
-import { User } from './user.model';
-import { Password } from './password.model';
+import { User } from '../../models/user.model';
+import { Password } from '../../models/password.model';
 import { UserService } from './user.service';
 
 @Component({
