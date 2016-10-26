@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace mfc.webapi.Models
@@ -13,7 +14,7 @@ namespace mfc.webapi.Models
         {
             Id = service.Id;
             Caption = service.Caption;
-            Organistaion = new OrganizationInfo(service.Organization);
+            OrganistaionId = service.Organization.Id;
         }
 
         [Display(Name = "Идентификатор")]
@@ -28,7 +29,7 @@ namespace mfc.webapi.Models
         [Required]
         [Display(Name = "Организация")]
         [JsonProperty("organization")]
-        public OrganizationInfo Organistaion { get; set; }
+        public Int64 OrganistaionId { get; set; }
 
         public domain.entities.Service ConvertToService()
         {
@@ -36,7 +37,8 @@ namespace mfc.webapi.Models
             {
                 Id = this.Id,
                 Caption = this.Caption,
-                Organization = this.Organistaion.ConvertToOrganization()
+                //Organization = this.OrganistaionId.ConvertToOrganization()
+                //todo: convert to organization
             };
         }
     }
