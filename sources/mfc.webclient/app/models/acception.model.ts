@@ -1,5 +1,5 @@
 import { BaseModel } from '../infrastructure/base.component/base-model';
-import { CustomerType } from '../admin/customer-types/customer-type';
+import { CustomerType } from './customer-type.model';
 import { User } from './user.model';
 import { ActionType } from './action-type.model';
 

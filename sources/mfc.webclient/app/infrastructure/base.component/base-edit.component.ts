@@ -18,14 +18,16 @@ export class BaseEditComponent<TModel extends BaseModel> implements CloseGuard, 
     context: BaseEditContext<TModel>;
     isShaking: boolean = false;
 
-    constructor(public dialog: DialogRef<BaseEditContext<TModel>>, public formGroup : FormGroup = null)  {
+    constructor(public dialog: DialogRef<BaseEditContext<TModel>>, public formGroup: FormGroup = null) {
         this.context = dialog.context;
 
         if (!dialog.context.model)
             dialog.context.model.reset();
-        
+
         dialog.setCloseGuard(this);
-        formGroup.valueChanges.subscribe((form: any) => this.mapFormToModel(form));
+        if (formGroup != null) {
+            formGroup.valueChanges.subscribe((form: any) => this.mapFormToModel(form));
+        }
     }
 
     mapFormToModel(form: any): void {
@@ -36,9 +38,11 @@ export class BaseEditComponent<TModel extends BaseModel> implements CloseGuard, 
     }
 
     beforeClose(): boolean {
+        if (this.formGroup==null) return false; 
+
         if (!this.formGroup.valid) {
             if (this.isShaking)
-                return true; 
+                return true;
 
             let timer = Observable.timer(1000, 1000);
             this.isShaking = true;

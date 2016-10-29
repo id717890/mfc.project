@@ -16,6 +16,7 @@ import { FileStatusEditComponent } from './admin/file-statuses/file-status.edit.
 import { CustomerTypeEditComponent } from './admin/customer-types/customer-type-edit.component';
 import { UserEditComponent } from './admin/users/user-edit.component';
 import { OrganizationTypeEditComponent } from './admin/organization-types/organization-type-edit.component'
+import { AcceptionEditComponent } from './work/acception/acception.edit.component'
 
 import { routing, appRoutingProviders } from './app.router';
 import { DefaultRequestOptions } from './infrastructure/default-request-options';
@@ -44,7 +45,8 @@ import { DefaultRequestOptions } from './infrastructure/default-request-options'
     ActionTypeEditComponent,
     CustomerTypeEditComponent,
     UserEditComponent,
-    OrganizationTypeEditComponent
+    OrganizationTypeEditComponent,
+    AcceptionEditComponent
   ]
 })
 export class AppModule { }
