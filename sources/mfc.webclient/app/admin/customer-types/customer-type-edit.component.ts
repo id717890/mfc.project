@@ -4,7 +4,7 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 import { CustomerTypeService } from './customer-type.service';
-import { CustomerType } from './customer-type';
+import { CustomerType } from '../../models/customer-type.model';
 
 import {BaseEditComponent, BaseEditContext} from './../../infrastructure/base.component/base-edit.component';
 

@@ -1,12 +1,12 @@
-import { Injectable }     from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Observable }     from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-import {BaseService} from './../../infrastructure/base.component/base.service';
-import {CustomerType} from './customer-type';
+import { BaseService } from './../../infrastructure/base.component/base.service';
+import { CustomerType } from '../../models/customer-type.model';
 
 @Injectable()
 export class CustomerTypeService extends BaseService<CustomerType> {
@@ -14,7 +14,7 @@ export class CustomerTypeService extends BaseService<CustomerType> {
         super(http);
     }
 
-    getApiTag() : string {
+    getApiTag(): string {
         return super.getApiTag() + 'customer-types';
     }
 }
