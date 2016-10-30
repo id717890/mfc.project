@@ -1,15 +1,8 @@
 ﻿using mfc.infrastructure.services;
-using System;
-using System.Collections.Generic;
+using mfc.webapi.App_Start;
 using System.Configuration;
-using System.Linq;
-using System.Security.Principal;
-using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
-using System.Web.Optimization;
-using System.Web.Routing;
-using System.Web.Security;
 
 namespace mfc.webapi
 {
@@ -17,8 +10,10 @@ namespace mfc.webapi
     {
         protected void Application_Start()
         {
+            AutoMapperConfig.Configure();
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 
             //Настройка параметров подключения к серверу СУБД

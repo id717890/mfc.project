@@ -70,6 +70,7 @@ namespace mfc.webapi.App_Start
             kernel.Load(new mfc.domain.CompositeModule());
             kernel.Load(new mfc.infrastructure.CompositeModule());
             kernel.Load(new mfc.dal.CompositeModule());
+            kernel.Load(new mfc.webapi.CompositeModule());
         }        
     }
 }

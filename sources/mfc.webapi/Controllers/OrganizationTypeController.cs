@@ -1,41 +1,45 @@
-﻿using System.Net.Http;
-using System.Web.Http;
-using System.Linq;
+﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Net.Http.Headers;
-using System;
+using System.Web.Http;
 
 namespace mfc.web.Controllers
 {
+    using AutoMapper;
     using domain.services;
+    using System.Collections.Generic;
     using webapi;
     using webapi.Models;
 
     public class OrganizationTypeController : ApiController
     {
+        private IMapper _mapper;
+        private IOrganizationService organizationService;
+
+        public OrganizationTypeController()
+        {
+            _mapper = CompositionRoot.Resolve<IMapper>();
+            organizationService = CompositionRoot.Resolve<IOrganizationService>();
+        }
+
         public HttpResponseMessage Get()
         {
-            var organizationService = CompositionRoot.Resolve<IOrganizationService>();
-            var output = organizationService.GetAllTypes().Select(x => new OrganizationTypeInfo(x));
-
-            return Request.CreateResponse(HttpStatusCode.OK, output);
+            return Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<OrganizationTypeInfo>>(organizationService.GetAllTypes()));
         }
 
         // GET: api/organizationtype/:id
         public HttpResponseMessage Get(int id)
         {
-            var organizationService = CompositionRoot.Resolve<IOrganizationService>();
-
             var output = organizationService.GetTypeById(id);
             return output != null ?
-                Request.CreateResponse(HttpStatusCode.OK, new OrganizationTypeInfo(output)) :
+                Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<OrganizationTypeInfo>(output)) :
                 Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         // POST: api/organizationtype
         public HttpResponseMessage Post([FromBody]OrganizationTypeInfo value)
         {
-            var organizationService = CompositionRoot.Resolve<IOrganizationService>();
             var identifier = organizationService.CreateType(value.Caption);
 
             var response = Request.CreateResponse(HttpStatusCode.Created, new Uri(Request.RequestUri + "/" + identifier.ToString()), MediaTypeHeaderValue.Parse("application/json"));
@@ -48,7 +52,6 @@ namespace mfc.web.Controllers
         [HttpPut]
         public HttpResponseMessage Put(int id, [FromBody]OrganizationTypeInfo value)
         {
-            var organizationService = CompositionRoot.Resolve<IOrganizationService>();
             var organizationType = organizationService.GetTypeById(id);
 
             if (organizationType != null)
@@ -64,7 +67,6 @@ namespace mfc.web.Controllers
         // DELETE: api/organizationtype/:id
         public HttpResponseMessage Delete(int id)
         {
-            var organizationService = CompositionRoot.Resolve<IOrganizationService>();
             var organizationType = organizationService.GetTypeById(id);
 
             if (organizationType != null)
