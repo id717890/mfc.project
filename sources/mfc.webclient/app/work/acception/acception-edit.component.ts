@@ -52,13 +52,27 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
         , private _customerTypeService: CustomerTypeService
         , private _actionTypeService: ActionTypeService
     ) {
-        super(dialog);
+        super(dialog, formBuilder.group(
+            {
+                'customer': [null, Validators.required],
+                'comments': [null],
+                'is_non_resident': [false],
+                'is_free_visit': [false]
+            }));
+        this.formGroup.patchValue({ customer: dialog.context.model.customer });
+    }
+
+    mapFormToModel(form: any): void {
+        this.context.model.customer = form.customer;
+        this.context.model.comments = form.comments;
+        this.context.model.is_non_resident = form.is_non_resident;
+        this.context.model.is_free_visit = form.is_free_visit;
     }
 
     ngOnInit() {
         let today = new Date();
         this.currentDate = today.getDate() + '.' + (today.getMonth() + 1) + '.' + today.getFullYear();
-        this.getContextModel().date = today;
+        this.context.model.date = today;
     }
 
     ngAfterViewInit() {
@@ -66,19 +80,19 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
     }
 
     onChangeDate(event: any) {
-        this.getContextModel().date = new Date(event.date.year, event.date.month, event.date.day);
+        this.context.model.date = new Date(event.date.year, event.date.month, event.date.day);
     }
 
     onChangeExpert(userId: any) {
-        this.getContextModel().expert = this.experts.find(x => x.id == userId);
+        this.context.model.expert = this.experts.find(x => x.id == userId);
+    }
+
+    onChangeActionType(actionType: any) {
+        this.context.model.action_type = this.actionTypes.find(x => x.id == actionType);
     }
 
     onChangeCustomerType(customerType: any) {
-        this.getContextModel().customer_type = this.customerTypes.find(x => x.id == customerType);
-    }
-
-    getContextModel(): Acception {
-        return (<Acception>this.context.model);
+        this.context.model.customer_type = this.customerTypes.find(x => x.id == customerType);
     }
 
     private fillLists(): void {
@@ -86,19 +100,19 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
         this.busy =
             this._userService.get().then(x => {
                 this.experts = x["data"];
-                if (this.experts.length != 0) this.getContextModel().expert = this.experts[0];
+                if (this.experts.length != 0) this.context.model.expert = this.experts[0];
             });
 
         //получаем список Категорий заявителей для combobox
         this.busy = this._customerTypeService.get().then(x => {
             this.customerTypes = x["data"];
-            if (this.customerTypes.length != 0) this.getContextModel().customer_type = this.customerTypes[0];
+            if (this.customerTypes.length != 0) this.context.model.customer_type = this.customerTypes[0];
         });
 
         //получаем список Типов услуг для combobox
         this.busy = this._actionTypeService.get().then(x => {
-            this.actionTypes = x;
-            if (this.actionTypes.length != 0) this.getContextModel().action_type = this.actionTypes[0];
+            this.actionTypes = x["data"];
+            if (this.actionTypes.length != 0) this.context.model.action_type = this.actionTypes[0];
         });
     }
 }

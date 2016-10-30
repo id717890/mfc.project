@@ -1,13 +1,13 @@
 <span defaultOverlayTarget></span>
 <div class='container-fluid custom-modal-container'>
 	<div class="row custom-modal-header">
-		<div class="col-sm-12">
-			<h1>{{context.title}}</h1>
+		<div class="col-sm-12">&nbsp;
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-12">
-			<form id="acception-editor" class="form" role="form" [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
+			<form [formGroup]="formGroup" id="acception-editor" class="form" role="form" [ngBusy]="{busy: busy, message:busyMessage}"
+				style="position: relative">
 				<div class="form-group">
 					<label>Эксперт</label>
 					<select name="expert" class="form-control" (change)="onChangeExpert($event.target.value)">
@@ -18,9 +18,10 @@
 					<label>Дата</label>
 					<my-date-picker [options]="myDatePickerOptions" (dateChanged)="onChangeDate($event)" [selDate]="currentDate"></my-date-picker>
 				</div>
-				<div class="form-group">
+				<div class="form-group" [ngClass]="{'has-error':!formGroup.controls['customer'].valid && formGroup.controls['customer'].touched, 'shake': isShaking}">
 					<label>ФИО заявителя/наименование ЮЛ</label>
-					<input [(ngModel)]="context.model.customer" id="input-customer" class="form-control" name="customer">
+					<input id="input-customer" class="form-control" name="customer" [formControl]="formGroup.controls['customer']">
+					<div *ngIf="!formGroup.controls['customer'].valid && formGroup.controls['customer'].touched" class="form-control alert alert-danger">Поле не может быть пустым.</div>
 				</div>
 				<div class="form-group">
 					<label>Категория заявителя/посетителя</label>
@@ -29,24 +30,28 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<input type="checkbox" id="input-is-resident" [(ngModel)]="context.model.is_non_resident" name="is_non_resident"><label for="input-is-resident">&nbsp;Иногородний</label>
+					<input type="checkbox" id="input-is-resident" name="is_non_resident" [formControl]="formGroup.controls['is_non_resident']">
+					<label
+						for="input-is-resident">&nbsp;Иногородний</label>
 				</div>
 				<div class="form-group">
-					<input type="checkbox" id="input-is-free-visit" [(ngModel)]="context.model.is_free_visit" name="is_free_visit"><label for="input-is-free-visit">&nbsp;Бесплатный выезд</label>
+					<input type="checkbox" id="input-is-free-visit" name="is_free_visit" [formControl]="formGroup.controls['is_free_visit']">
+					<label
+						for="input-is-free-visit">&nbsp;Бесплатный выезд</label>
 				</div>
 				<div class="form-group">
 					<label>Тип услуги</label>
-					<select name="actionType" class="form-control">
+					<select name="actionType" class="form-control" (change)="onChangeActionType($event.target.value)">
 						<option *ngFor="let actionType of actionTypes" [value]="actionType.id">{{actionType.caption}}</option>
 					</select>
 				</div>
 				<div class="form-group">
 					<label>Комментарий</label>
-					<textarea [(ngModel)]="context.model.comments" id="input-comments" class="form-control" name="comments" style="resize:vertical"></textarea>
+					<textarea id="input-comments" [formControl]="formGroup.controls['comments']" class="form-control" name="comments" style="resize:vertical"></textarea>
 				</div>
 				<div class="form-group">
 					<a id="button-apply" class="btn btn-success" (click)="dialog.close(context.model)">Применить</a>
-					<a id="button-cancel" class="btn btn-primary" (click)="dialog.close()">Отменить</a>
+					<a id="button-cancel" class="btn btn-primary" (click)="dialog.dismiss()">Отменить</a>
 				</div>
 			</form>
 		</div>
