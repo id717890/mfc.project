@@ -1,22 +1,26 @@
-<h2>Справочник "Виды деятельности"</h2>
+<h2 class="page-header">Справочник "Виды деятельности"</h2>
 
-<button (click)="onNewClick($event)">Новый</button>
-<table class="table table-bordered table-striped table-hover table-condensed table-responsive">
-    <thead>
-        <tr>
-            <th>Описание</th>
-            <th>Создавать дела</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let actionType of actionTypes">
-            <td>{{actionType.caption}}</td>
-            <td>{{actionType.need_make_file}}</td>
-            <td>
-                <a (click)="onEditClick($event, actionType)" class="glyphicon glyphicon-edit" title="Редактировать"></a>
-                <a (click)="onDeleteClick($event, actionType)" class="glyphicon glyphicon-remove" title="Удалить"></a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
+    <a (click)="add()" class="btn btn-primary">Новый</a>
+    <table class="table table-bordered table-striped table-hover table-condensed table-responsive">
+        <thead>
+            <tr>
+                <th>Описание</th>
+                <th>Создавать дела</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let model of models">
+                <td>{{model.caption}}</td>
+                <td>
+                    <input #{{model.id}} [ngModel]="model.need_make_file" type="checkbox" onclick="return false">
+                </td>
+                <td>
+                    <a (click)="edit(model)" class="glyphicon glyphicon-edit" title="Редактировать"></a>
+                    <a (click)="delete(model)" class="glyphicon glyphicon-remove" title="Удалить"></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

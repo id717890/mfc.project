@@ -1,7 +1,10 @@
 import { Component, EventEmitter } from '@angular/core';
+import { OnInit } from '@angular/core';
 
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DialogRef, overlayConfigFactory } from 'angular2-modal';
+
+import { BaseListComponent} from './../../infrastructure/base.component/base-list.component';
 
 import { ActionType } from '../../models/action-type.model'
 import { ActionTypeService } from './action-type.service'
@@ -14,72 +17,23 @@ import { ActionTypeEditComponent } from './action-type.edit.component'
     providers: [Modal]
 })
 
-export class ActionTypeListComponent {
-    private actionTypes: ActionType[];
-    
+export class ActionTypeListComponent extends BaseListComponent<ActionType> implements OnInit {
+    busy: Promise<any>;
+    busyMessage: string;
+
     constructor(public modal: Modal, private actionTypeService: ActionTypeService) {
-        actionTypeService.get()
-            .then(x => {
-                this.actionTypes = x;
-            })
-            .catch(this.handlerError);
+        super(modal, actionTypeService);
     }
 
-    dialogNew() {
-        this.modal
-            .open(
-                ActionTypeEditComponent,
-                overlayConfigFactory({ title: 'Новый вид деятельности', actionType: new ActionType(null, '', false) }, BSModalContext)
-            ).then((x) => {
-                return x.result.then((output) => {
-                    this.actionTypeService.create(output).then(x => {
-                        this.actionTypes.push(x);
-                    }).catch(x => this.handlerError(x));
-                }, () => null);
-            });
-    }
+     newModel(): ActionType {
+         return new ActionType(null, '', false);
+     };
 
-    dialogEdit(id: number) {
-        let actionType: ActionType = this.actionTypes.find(x => x.id == id);
-        this.modal
-            .open(
-                ActionTypeEditComponent,
-                overlayConfigFactory({ title: ('Изменить вид деятельности'), actionType: new ActionType(actionType.id, actionType.caption, actionType.need_make_file) }, BSModalContext)
-            ).then((x) => {
-                return x.result.then((output) => {
-                    actionType.caption = output.caption;
-                    actionType.need_make_file = output.need_make_file;
-                    this.actionTypeService.update(actionType);
-                }, () => null);
-            });
-    }
+     cloneModel(model : ActionType): ActionType {
+         return new ActionType(model.id, model.caption, model.need_make_file);
+     };
 
-    onNewClick(event: Event) {
-        this.dialogNew();
-    }
-
-    onEditClick(event: Event, actionType: ActionType) {
-        this.dialogEdit(actionType.id);
-    }
-
-    onDeleteClick(event: Event, actionType: ActionType) {
-        this.modal.confirm()
-            .showClose(true)
-            .title('Предупреждение')
-            .body('<h4>Вы действительно желаете удалить запись?</h4>')
-            .open()
-            .then(x => {
-                x.result.then(x => {
-                    if (x) {
-                        let founded = this.actionTypes.findIndex(x => x.id == actionType.id);
-                        this.actionTypeService.delete(this.actionTypes[founded]);
-                        delete this.actionTypes.splice(founded, 1);
-                    }
-                }, () => null)
-            });
-    }
-
-    private handlerError(error: any) {
-        console.log('ActionTypeListComponent::error ' + error);
-    }
+     getEditComponent() : any {
+         return ActionTypeEditComponent;
+     }
 }
