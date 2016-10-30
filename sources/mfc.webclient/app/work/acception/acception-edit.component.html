@@ -7,7 +7,7 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-12">
-			<form id="acception-editor" class="form" role="form">
+			<form id="acception-editor" class="form" role="form" [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
 				<div class="form-group">
 					<label>Эксперт</label>
 					<select name="expert" class="form-control" (change)="onChangeExpert($event.target.value)">

@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { WorkComponent } from './work.component';
 import { AcceptionListComponent } from './acception/acception-list.component';  // Приемы
 import { AcceptionService } from './acception/acception.service';  // Приемы
-import { AcceptionEditComponent } from './acception/acception.edit.component'
+import { AcceptionEditComponent } from './acception/acception-edit.component'
 
 import { MyDatePickerModule } from 'mydatepicker';  // https://github.com/kekeh/mydatepicker
 import { Ng2PaginationModule } from 'ng2-pagination'; //https://github.com/michaelbromley/ng2-pagination

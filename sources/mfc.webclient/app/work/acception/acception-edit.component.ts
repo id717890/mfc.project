@@ -1,4 +1,4 @@
-import { Component, Output, Input, EventEmitter } from "@angular/core";
+import { Component, Output, Input, EventEmitter, AfterViewInit, OnInit } from "@angular/core";
 import { FormBuilder, Validators } from '@angular/forms';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
@@ -26,15 +26,17 @@ import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.
             margin-top: 10px;
         }
     `],
-    templateUrl: 'app/work/acception/acception.edit.component.html',
+    templateUrl: 'app/work/acception/acception-edit.component.html',
     providers: [Modal]
 })
 
-export class AcceptionEditComponent extends BaseEditComponent<Acception> {
+export class AcceptionEditComponent extends BaseEditComponent<Acception> implements AfterViewInit, OnInit {
     experts: User[];
     customerTypes: CustomerType[];
     actionTypes: ActionType[];
     currentDate: string;
+    busy: Promise<any>;
+    busyMessage: string="Загрузка списков...";
 
     /* Настройки для datepicker */
     myDatePickerOptions = {
@@ -51,14 +53,21 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> {
         , private _actionTypeService: ActionTypeService
     ) {
         super(dialog);
-        this.fillLists();
-        let today = new Date();
+        
+    }
+
+    ngOnInit() {
+let today = new Date();
         this.currentDate = today.getDate() + '.' + (today.getMonth() + 1) + '.' + today.getFullYear();
-        this.getContextModel().date = today;        
+        this.getContextModel().date = today;
+    }
+
+    ngAfterViewInit() {
+        this.fillLists();
     }
 
     onChangeDate(event: any) {
-        this.getContextModel().date = new Date(event.date.year,event.date.month,event.date.day);        
+        this.getContextModel().date = new Date(event.date.year, event.date.month, event.date.day);
     }
 
     onChangeExpert(userId: any) {
@@ -75,6 +84,7 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> {
 
     private fillLists(): void {
         //получаем список пользоввателей для combobox
+        this.busy=
         this._userService.get().then(x => {
             this.experts = x["data"];
             if (this.experts.length != 0) this.getContextModel().expert = this.experts[0];

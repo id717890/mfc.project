@@ -18,7 +18,7 @@ import { UserEditComponent } from './admin/users/user-edit.component';
 import { OrganizationTypeEditComponent } from './admin/organization-types/organization-type-edit.component';
 import { ServiceEditComponent } from './admin/services/service-edit.component';
 import { OrganizationEditComponent } from './admin/organizations/organization-edit.component';
-import { AcceptionEditComponent } from './work/acception/acception.edit.component'
+import { AcceptionEditComponent } from './work/acception/acception-edit.component'
 
 import { routing, appRoutingProviders } from './app.router';
 import { DefaultRequestOptions } from './infrastructure/default-request-options';

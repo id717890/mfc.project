@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { BaseListComponent } from './../../infrastructure/base.component/base-list.component';
-import { AcceptionEditComponent } from './acception.edit.component';
+import { AcceptionEditComponent } from './acception-edit.component';
 
 import { Acception } from '../../models/acception.model';
 import { User } from '../../models/user.model';
