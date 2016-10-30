@@ -47,8 +47,9 @@ namespace mfc.webapi.Controllers
             //todo: обработка ошибок и правильный возврат кода HTTP.
             var identifier = _organizationService.CreateOrganization(value.Caption, value.FullCaption, value.OrganizationType.Id);
 
-            var response = Request.CreateResponse(HttpStatusCode.Created, new Uri(Request.RequestUri + "/" + identifier.ToString()), MediaTypeHeaderValue.Parse("application/json"));
-            response.Headers.Location = new Uri(Request.RequestUri + identifier.ToString());
+            var locationUri = new Uri($"{Request.RequestUri}/{identifier}");
+            var response = Request.CreateResponse(HttpStatusCode.Created, locationUri, MediaTypeHeaderValue.Parse("application/json"));
+            response.Headers.Location = locationUri;
 
             return response;
         }

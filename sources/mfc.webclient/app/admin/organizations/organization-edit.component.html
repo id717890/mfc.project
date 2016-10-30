@@ -13,9 +13,9 @@
                 <div class="input-group input-line">
                     <input [(ngModel)]="context.model.caption" id="input-caption" class="form-control" name="caption" placeholder="Наименование">
                     <input [(ngModel)]="context.model.full_caption" id="input-full-caption" class="form-control" name="full-caption" placeholder="Полное  наименование">
-                    <select [(ngModel)]="context.model.organization-type.id" name="input-organization-type">
-                        <option *ngFor="let type of context.organizationTypes" value="{{type.id}}">{{type.caption}}</option> 
-                    </select>
+                    <select [(ngModel)]="context.model.organization_type" name="input-organization-type" class="form-control" >
+						<option *ngFor="let type of context.organizationTypes" [ngValue]="type">{{type.caption}}</option>
+					</select>
                 </div>
 
                 <div class="form-group input-buttons">

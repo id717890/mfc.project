@@ -1,4 +1,4 @@
-import { Component, Output, Input, EventEmitter, OnInit } from "@angular/core";
+import { Component, Output, Input, EventEmitter, OnInit, AfterViewInit } from "@angular/core";
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -26,17 +26,29 @@ import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.
     providers: [ Modal ]
 })
 
-export class OrganizationEditComponent extends BaseEditComponent<Organization> {
+export class OrganizationEditComponent extends BaseEditComponent<Organization> implements AfterViewInit {
     constructor(public dialog: DialogRef<OrganizationEditContext>, private organizationTypeService: OrganizationTypeService) {
         super(dialog);
     }
 
-
-    init() : void {
+    ngAfterViewInit() {
         this.organizationTypeService.get()
             .then(models => {
                 this.dialog.context.organizationTypes = models['data'];
-                console.log(this.dialog.context.organizationTypes);
+                
+                //поскольку в typescript нет возможности переопределить
+                //оператор равенства, то для нормальной работы binding selector
+                //заменяет ссылку на OrganizationType из формы списка на полученную в запросе 
+                var types = this.dialog.context.organizationTypes;
+                if (types != null && this.dialog.context.model.organization_type != null) {
+                    var id = this.dialog.context.model.organization_type.id;
+                    for (var item of types) {
+                        if (item.id == id){
+                            this.dialog.context.model.organization_type = item;
+                            break; 
+                        }
+                    }
+                }
             });
     }
 }

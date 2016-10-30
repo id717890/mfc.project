@@ -115,7 +115,7 @@ namespace mfc.domain.services {
 
             _is_org_cache_valid = false;
 
-            return 0;
+            return org.Id;
         }
 
         public void DeleteOrganization(long organizationId) {

@@ -8,6 +8,7 @@ import {BaseListComponent} from './../../infrastructure/base.component/base-list
 
 import {OrganizationService} from './organization.service';
 import {Organization} from './../../models/organization.model';
+import {OrganizationType} from './../../models/organization-type.model';
 import {OrganizationEditComponent} from './organization-edit.component';
 
 @Component({
