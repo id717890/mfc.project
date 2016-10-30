@@ -36,7 +36,7 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
     actionTypes: ActionType[];
     currentDate: string;
     busy: Promise<any>;
-    busyMessage: string="Загрузка списков...";
+    busyMessage: string = "Загрузка списков...";
 
     /* Настройки для datepicker */
     myDatePickerOptions = {
@@ -53,11 +53,10 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
         , private _actionTypeService: ActionTypeService
     ) {
         super(dialog);
-        
     }
 
     ngOnInit() {
-let today = new Date();
+        let today = new Date();
         this.currentDate = today.getDate() + '.' + (today.getMonth() + 1) + '.' + today.getFullYear();
         this.getContextModel().date = today;
     }
@@ -84,20 +83,20 @@ let today = new Date();
 
     private fillLists(): void {
         //получаем список пользоввателей для combobox
-        this.busy=
-        this._userService.get().then(x => {
-            this.experts = x["data"];
-            if (this.experts.length != 0) this.getContextModel().expert = this.experts[0];
-        });
+        this.busy =
+            this._userService.get().then(x => {
+                this.experts = x["data"];
+                if (this.experts.length != 0) this.getContextModel().expert = this.experts[0];
+            });
 
         //получаем список Категорий заявителей для combobox
-        this._customerTypeService.get().then(x => {
+        this.busy = this._customerTypeService.get().then(x => {
             this.customerTypes = x["data"];
             if (this.customerTypes.length != 0) this.getContextModel().customer_type = this.customerTypes[0];
         });
 
         //получаем список Типов услуг для combobox
-        this._actionTypeService.get().then(x => {
+        this.busy = this._actionTypeService.get().then(x => {
             this.actionTypes = x;
             if (this.actionTypes.length != 0) this.getContextModel().action_type = this.actionTypes[0];
         });
