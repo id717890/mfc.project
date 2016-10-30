@@ -11,7 +11,7 @@ import { BaseModel } from './../../models/base.model';
 
 export class BaseEditContext<TModel extends BaseModel> extends BSModalContext {
     public title: string;
-    public model: BaseModel;
+    public model: TModel;
 }
 
 export class BaseEditComponent<TModel extends BaseModel> implements CloseGuard, ModalComponent<BaseEditContext<TModel>> {
