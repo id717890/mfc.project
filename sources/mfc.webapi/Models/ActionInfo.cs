@@ -14,7 +14,7 @@ namespace mfc.webapi.Models
             Id = action.Id;
             Date = action.Date;
             Customer = action.Customer;
-            CustomerType = new CustomerTypeInfo(action.CustomerType);
+            CustomerType = action.CustomerType!=null ? new CustomerTypeInfo(action.CustomerType) : null;
 
             Service = action.Service != null ? new ServiceInfo(action.Service) : null;
             ServiceChild = action.ServiceChild != null ? new ServiceInfo(action.ServiceChild) : null;

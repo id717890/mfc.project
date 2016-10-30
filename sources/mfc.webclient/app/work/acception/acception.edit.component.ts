@@ -34,6 +34,8 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> {
     experts: User[];
     customerTypes: CustomerType[];
     actionTypes: ActionType[];
+    currentDate: string;
+
     /* Настройки для datepicker */
     myDatePickerOptions = {
         todayBtnTxt: 'Today',
@@ -50,17 +52,44 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> {
     ) {
         super(dialog);
         this.fillLists();
-        //Заполняем форму
-        // this.formGroup.patchValue({ caption: dialog.context.model.caption });
+        let today = new Date();
+        this.currentDate = today.getDate() + '.' + (today.getMonth() + 1) + '.' + today.getFullYear();
+        this.getContextModel().date = today;        
+    }
+
+    onChangeDate(event: any) {
+        this.getContextModel().date = new Date(event.date.year,event.date.month,event.date.day);        
+    }
+
+    onChangeExpert(userId: any) {
+        this.getContextModel().expert = this.experts.find(x => x.id == userId);
+    }
+
+    onChangeCustomerType(customerType: any) {
+        this.getContextModel().customer_type = this.customerTypes.find(x => x.id == customerType);
+    }
+
+    getContextModel(): Acception {
+        return (<Acception>this.context.model);
     }
 
     private fillLists(): void {
-        this._userService.get().then(x => this.experts = x["data"]);    //получаем список пользоввателей для combobox
-        this._customerTypeService.get().then(x => this.customerTypes = x["data"]);    //получаем список Категорий заявителей для combobox
-        this._actionTypeService.get().then(x => this.actionTypes = x);    //получаем список Типов услуг для combobox
-    }
+        //получаем список пользоввателей для combobox
+        this._userService.get().then(x => {
+            this.experts = x["data"];
+            if (this.experts.length != 0) this.getContextModel().expert = this.experts[0];
+        });
 
-    // mapFormToModel(form: any): void {
-    //     this.context.model.caption = form.caption;
-    // }
+        //получаем список Категорий заявителей для combobox
+        this._customerTypeService.get().then(x => {
+            this.customerTypes = x["data"];
+            if (this.customerTypes.length != 0) this.getContextModel().customer_type = this.customerTypes[0];
+        });
+
+        //получаем список Типов услуг для combobox
+        this._actionTypeService.get().then(x => {
+            this.actionTypes = x;
+            if (this.actionTypes.length != 0) this.getContextModel().action_type = this.actionTypes[0];
+        });
+    }
 }

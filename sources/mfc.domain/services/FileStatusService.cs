@@ -163,10 +163,12 @@ namespace mfc.domain.services {
             var conn = SqlProvider.CreateConnection();
             SqlCommand cmd = null;
 
-            var user = UserService.GetCurrentUser();
-            if (user == null) {
-                throw new DomainException("Для текущего контекста не определен пользователь. Метод IUserService.GetCurrentUser вернул пустое значение");
-            }
+            /*Т.к. авторизация еще не реализована берем админа = 1*/
+            var user = UserService.GetUserById(1);
+//            var user = UserService.GetCurrentUser();
+//            if (user == null) {
+//                throw new DomainException("Для текущего контекста не определен пользователь. Метод IUserService.GetCurrentUser вернул пустое значение");
+//            }
 
             try {
                 cmd = conn.CreateCommand();

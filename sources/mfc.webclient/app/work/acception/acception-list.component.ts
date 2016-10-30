@@ -61,6 +61,10 @@ export class AcceptionListComponent extends BaseListComponent<Acception> {
         this.selectedExpert = user_id;
     }
 
+    onChangeExp(user_id: any){
+        console.log(user_id);
+    }
+
     Search() {
         this.busy = this.acceptionService.getWithParameters(this.prepareData()).then(x => {
             this.models = x['data'];

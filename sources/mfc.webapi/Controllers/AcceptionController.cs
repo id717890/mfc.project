@@ -96,5 +96,38 @@ namespace mfc.webapi.Controllers
                 return response;
             }
         }
+
+        // GET: api/acceptions/5
+        [HttpGet]
+        [Route("{id}")]
+        public HttpResponseMessage Get(int id)
+        {
+            var acception = _actionService.GetActionById(id);
+            if (acception != null)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new ActionInfo(acception));
+            }
+            return Request.CreateResponse(HttpStatusCode.NotFound);
+        }
+
+        // POST: api/acceptions
+        [HttpPost]
+        [Route("")]
+        public HttpResponseMessage Post([FromBody]ActionInfo value)
+        {
+//            return Request.CreateResponse(HttpStatusCode.OK);
+            var id = _actionService.Add(
+                value.Date,
+                1,
+                value.Customer,
+                value.ActionType.Id,
+                value.CustomerType.Id,
+                value.User.Id,
+                1, value.IsNonresident, value.FreeVisit, value.Comments
+                );
+            var msg = Request.CreateResponse(HttpStatusCode.Created);
+            msg.Headers.Location = new Uri(Request.RequestUri + "/" + id.ToString());
+            return msg;
+        }
     }
 }

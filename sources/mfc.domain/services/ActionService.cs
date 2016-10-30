@@ -127,7 +127,7 @@ namespace mfc.domain.services {
             
             unit_of_work.Commit();
 
-            return 0;
+            return action.Id;
         }
 
         public void Update(ServiceAction action) {

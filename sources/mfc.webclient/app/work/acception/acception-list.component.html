@@ -55,8 +55,8 @@
 							<tr *ngFor="let model of models | paginate: { id: 'paginate', itemsPerPage: pageSize, currentPage: pageIndex, totalItems: totalRows }">
 								<td>{{model.date | date: 'dd.MM.yyyy HH:mm'}}</td>
 								<td>{{model.customer}}</td>
-								<td>{{model.customer_type.caption}}</td>
-								<td>{{model.action_type.caption}}</td>
+								<td>{{model.customer_type?.caption}}</td>
+								<td>{{model.action_type?.caption}}</td>
 								<td>{{model.expert?.description}}</td>
 							</tr>
 							<tr *ngIf="totalRows==0">
