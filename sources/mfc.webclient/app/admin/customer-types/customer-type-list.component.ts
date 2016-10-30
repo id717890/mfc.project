@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import {OnInit} from '@angular/core';
+import { OnInit } from '@angular/core';
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DialogRef, overlayConfigFactory } from 'angular2-modal';
 
-import {BaseListComponent} from './../../infrastructure/base.component/base-list.component';
+import { BaseListComponent } from './../../infrastructure/base.component/base-list.component';
 
-import {CustomerTypeService} from './customer-type.service';
-import { CustomerType } from './../../models/customer-type.model';
-import {CustomerTypeEditComponent} from './customer-type-edit.component';
+import { CustomerTypeService } from './customer-type.service';
+import { CustomerType } from '../../models/customer-type.model';
+import { CustomerTypeEditComponent } from './customer-type-edit.component';
 
 @Component({
     selector: 'mfc-customer-type-list',
@@ -26,15 +26,15 @@ export class CustomerTypeListComponent extends BaseListComponent<CustomerType> i
         super(modal, customerTypeService);
     }
 
-     newModel(): CustomerType {
-         return new CustomerType(null, '');
-     };
+    newModel(): CustomerType {
+        return new CustomerType(null, '');
+    };
 
-     cloneModel(model : CustomerType): CustomerType {
-         return new CustomerType(model.id, model.caption);
-     };
+    cloneModel(model: CustomerType): CustomerType {
+        return new CustomerType(model.id, model.caption);
+    };
 
-     getEditComponent() : any{
-         return CustomerTypeEditComponent;
-     }
+    getEditComponent(): any {
+        return CustomerTypeEditComponent;
+    }
 }

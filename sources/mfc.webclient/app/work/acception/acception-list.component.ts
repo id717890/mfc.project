@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { BaseListComponent } from './../../infrastructure/base.component/base-list.component';
+import { AcceptionEditComponent } from './acception.edit.component';
 
 import { Acception } from '../../models/acception.model';
 import { User } from '../../models/user.model';
@@ -33,7 +34,15 @@ export class AcceptionListComponent extends BaseListComponent<Acception> {
 
     constructor(public modal: Modal, private acceptionService: AcceptionService, private _userService: UserService) {
         super(modal, acceptionService);
+        this.fillLists();
+        this.prepareForm();
+    }
+
+    private fillLists(): void {
         this.busy = this._userService.get().then(x => this.experts = x["data"]);    //получаем список пользоввателей для combobox
+    }
+
+    private prepareForm(): void {
         let today = new Date();
         let tomorrow = new Date();
         tomorrow.setDate(today.getDate() + 1);
@@ -52,8 +61,8 @@ export class AcceptionListComponent extends BaseListComponent<Acception> {
         this.selectedExpert = user_id;
     }
 
-    NewAcception(){
-        alert("Функционал еще не работает!")
+    onChangeExp(user_id: any){
+        console.log(user_id);
     }
 
     Search() {
@@ -102,6 +111,6 @@ export class AcceptionListComponent extends BaseListComponent<Acception> {
     };
 
     getEditComponent(): any {
-        return null;
+        return AcceptionEditComponent;
     }
 }

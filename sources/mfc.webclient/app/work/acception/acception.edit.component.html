@@ -1,0 +1,54 @@
+<span defaultOverlayTarget></span>
+<div class='container-fluid custom-modal-container'>
+	<div class="row custom-modal-header">
+		<div class="col-sm-12">
+			<h1>{{context.title}}</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<form id="acception-editor" class="form" role="form">
+				<div class="form-group">
+					<label>Эксперт</label>
+					<select name="expert" class="form-control" (change)="onChangeExpert($event.target.value)">
+						<option *ngFor="let expert of experts" [value]="expert.id" >{{expert.user_name}}</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Дата</label>
+					<my-date-picker [options]="myDatePickerOptions" (dateChanged)="onChangeDate($event)" [selDate]="currentDate"></my-date-picker>
+				</div>
+				<div class="form-group">
+					<label>ФИО заявителя/наименование ЮЛ</label>
+					<input [(ngModel)]="context.model.customer" id="input-customer" class="form-control" name="customer">
+				</div>
+				<div class="form-group">
+					<label>Категория заявителя/посетителя</label>
+					<select name="customerType" class="form-control" (change)="onChangeCustomerType($event.target.value)">
+						<option *ngFor="let customerType of customerTypes" [value]="customerType.id">{{customerType.caption}}</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<input type="checkbox" id="input-is-resident" [(ngModel)]="context.model.is_non_resident" name="is_non_resident"><label for="input-is-resident">&nbsp;Иногородний</label>
+				</div>
+				<div class="form-group">
+					<input type="checkbox" id="input-is-free-visit" [(ngModel)]="context.model.is_free_visit" name="is_free_visit"><label for="input-is-free-visit">&nbsp;Бесплатный выезд</label>
+				</div>
+				<div class="form-group">
+					<label>Тип услуги</label>
+					<select name="actionType" class="form-control">
+						<option *ngFor="let actionType of actionTypes" [value]="actionType.id">{{actionType.caption}}</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Комментарий</label>
+					<textarea [(ngModel)]="context.model.comments" id="input-comments" class="form-control" name="comments" style="resize:vertical"></textarea>
+				</div>
+				<div class="form-group">
+					<a id="button-apply" class="btn btn-success" (click)="dialog.close(context.model)">Применить</a>
+					<a id="button-cancel" class="btn btn-primary" (click)="dialog.close()">Отменить</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
