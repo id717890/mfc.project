@@ -21,6 +21,7 @@
     "@angular/router": "3.0.0",
     "@angular/upgrade": "2.0.0",
     "angular2-busy": "^1.0.2",
+    "angular2-dynamic-component": "0.0.50",
     "angular2-in-memory-web-api": "0.0.20",
     "angular2-modal": "2.0.0-beta.13",
     "base64-js": "^0.0.8",
