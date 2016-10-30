@@ -11,9 +11,10 @@ namespace mfc.webapi.Models
 
         public OrganizationInfo(domain.entities.Organization organization)
         {
-            this.Id = organization.Id;
-            this.Caption = organization.Caption;
-            this.OrganizationType = new OrganizationTypeInfo(organization.Type);
+            Id = organization.Id;
+            Caption = organization.Caption;
+            FullCaption = organization.FullCaption;
+            OrganizationType = new OrganizationTypeInfo(organization.Type);
         }
 
         [Display(Name = "Идентификатор")]

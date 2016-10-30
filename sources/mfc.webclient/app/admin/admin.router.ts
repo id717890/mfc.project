@@ -8,6 +8,8 @@ import { FileStatusListComponent } from "./file-statuses/file-status.list.compon
 import { ActionTypeListComponent } from "./action-types/action-type.list.component";
 import { OrganizationTypeListComponent } from './organization-types/organization-type-list/organization-type-list.component';
 import { FileStageListComponent } from './file-stages/file-stage-list.component';
+import { ServiceListComponent } from "./services/service-list.component";
+import { OrganizationListComponent } from "./organizations/organization-list.component";
 
 const routes: Routes = [
     {
@@ -18,9 +20,11 @@ const routes: Routes = [
             { path: 'customer-types', component: CustomerTypeListComponent },
             { path: 'action-types', component: ActionTypeListComponent },
             { path: 'file-statuses', component: FileStatusListComponent },
+            { path: 'organizations', component: OrganizationListComponent },
             { path: 'organization-types', component: OrganizationTypeListComponent },
             { path: 'customer-types', component: CustomerTypeListComponent },
-            { path: 'file-stages', component: FileStageListComponent }
+            { path: 'file-stages', component: FileStageListComponent },
+            { path: 'services', component: ServiceListComponent }
         ]
     }
 ];

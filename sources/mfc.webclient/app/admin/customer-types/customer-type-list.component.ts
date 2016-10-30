@@ -7,7 +7,7 @@ import { DialogRef, overlayConfigFactory } from 'angular2-modal';
 import {BaseListComponent} from './../../infrastructure/base.component/base-list.component';
 
 import {CustomerTypeService} from './customer-type.service';
-import {CustomerType} from './customer-type';
+import { CustomerType } from './../../models/customer-type.model';
 import {CustomerTypeEditComponent} from './customer-type-edit.component';
 
 @Component({

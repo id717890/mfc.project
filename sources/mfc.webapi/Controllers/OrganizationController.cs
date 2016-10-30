@@ -11,32 +11,41 @@ namespace mfc.webapi.Controllers
     using domain.services;
     using Models;
 
+    [RoutePrefix("api/organizations")]
     public class OrganizationController : ApiController
     {
+        private readonly IOrganizationService _organizationService;
+
+        public OrganizationController(IOrganizationService organizationService)
+        {
+            _organizationService = organizationService;
+        }
+
+        [HttpGet]
+        [Route("")]
         public HttpResponseMessage Get()
         {
-            var organizationService = CompositionRoot.Resolve<IOrganizationService>();
-            var output = organizationService.GetAllOrganizations().Select(x => new OrganizationInfo(x));
+            var output = _organizationService.GetAllOrganizations().Select(x => new OrganizationInfo(x));
 
             return Request.CreateResponse(HttpStatusCode.OK, output);
         }
 
-        // GET: api/organization/:id
+        [HttpGet]
+        [Route("{id}")]
         public HttpResponseMessage Get(int id)
         {
-            var organizationService = CompositionRoot.Resolve<IOrganizationService>();
-
-            var output = organizationService.GetOrganizationById(id);
+            var output = _organizationService.GetOrganizationById(id);
             return output != null ?
                 Request.CreateResponse(HttpStatusCode.OK, new OrganizationInfo(output)) :
                 Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        // POST: api/organization
+        [HttpPost]
+        [Route("")]
         public HttpResponseMessage Post([FromBody]OrganizationInfo value)
         {
-            var organizationService = CompositionRoot.Resolve<IOrganizationService>();
-            var identifier = organizationService.CreateType(value.Caption);
+            //todo: обработка ошибок и правильный возврат кода HTTP.
+            var identifier = _organizationService.CreateOrganization(value.Caption, value.FullCaption, value.OrganizationType.Id);
 
             var response = Request.CreateResponse(HttpStatusCode.Created, new Uri(Request.RequestUri + "/" + identifier.ToString()), MediaTypeHeaderValue.Parse("application/json"));
             response.Headers.Location = new Uri(Request.RequestUri + identifier.ToString());
@@ -44,34 +53,35 @@ namespace mfc.webapi.Controllers
             return response;
         }
 
-        // PUT: api/organization/:id
         [HttpPut]
+        [Route("{id}")]
         public HttpResponseMessage Put(int id, [FromBody]OrganizationInfo value)
         {
-            var organizationService = CompositionRoot.Resolve<IOrganizationService>();
-            var organization = organizationService.GetOrganizationById(id);
+            //todo: обработка ошибок и возврат кода HTTP в соответствии с соглашением
+            var organization = _organizationService.GetOrganizationById(id);
 
             if (organization != null)
             {
                 organization.Caption = value.Caption;
                 organization.FullCaption = value.FullCaption;
                 organization.Type = value.OrganizationType.ConvertToOrganizationType();
-                organizationService.UpdateOgranization(organization);
+                _organizationService.UpdateOgranization(organization);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
 
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        // DELETE: api/organization/:id
+        [HttpDelete]
+        [Route("{id}")]
         public HttpResponseMessage Delete(int id)
         {
-            var organizationService = CompositionRoot.Resolve<IOrganizationService>();
-            var organization = organizationService.GetOrganizationById(id);
+            //todo: обработка ошибок и возврат кода HTTP в соответствии с соглашением
+            var organization = _organizationService.GetOrganizationById(id);
 
             if (organization != null)
             {
-                organizationService.DeleteOrganization(id);
+                _organizationService.DeleteOrganization(id);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
 

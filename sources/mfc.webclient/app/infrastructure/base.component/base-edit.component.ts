@@ -7,7 +7,7 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 import { BaseService } from './base.service';
-import { BaseModel } from './base-model';
+import { BaseModel } from './../../models/base.model';
 
 export class BaseEditContext<TModel extends BaseModel> extends BSModalContext {
     public title: string;
@@ -25,7 +25,10 @@ export class BaseEditComponent<TModel extends BaseModel> implements CloseGuard, 
             dialog.context.model.reset();
         
         dialog.setCloseGuard(this);
-        formGroup.valueChanges.subscribe((form: any) => this.mapFormToModel(form));
+        if (formGroup != null)
+        {
+            formGroup.valueChanges.subscribe((form: any) => this.mapFormToModel(form));
+        }
     }
 
     mapFormToModel(form: any): void {
@@ -36,7 +39,7 @@ export class BaseEditComponent<TModel extends BaseModel> implements CloseGuard, 
     }
 
     beforeClose(): boolean {
-        if (!this.formGroup.valid) {
+        if (this.formGroup != null && !this.formGroup.valid) {
             if (this.isShaking)
                 return true; 
 

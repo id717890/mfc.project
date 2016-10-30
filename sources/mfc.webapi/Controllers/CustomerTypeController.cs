@@ -21,6 +21,7 @@ namespace mfc.webapi.Controllers
         [Route("")]
         public HttpResponseMessage Get()
         {
+            //todo: обработка ошибок и возврат кода HTTP в соответствии с соглашением
             var types = _customerTypeService.GetAllTypes().Select(type => new Models.CustomerTypeInfo(type)).ToArray();
             if (types == null || types.Length == 0)
             {
@@ -33,6 +34,7 @@ namespace mfc.webapi.Controllers
         [Route("{id}")]
         public HttpResponseMessage Get(int id)
         {
+            //todo: обработка ошибок и возврат кода HTTP в соответствии с соглашением
             var type = _customerTypeService.GetTypeById(id);
             if (type == null)
             {
@@ -45,6 +47,7 @@ namespace mfc.webapi.Controllers
         [Route("")]
         public HttpResponseMessage Post([FromBody]Models.CustomerTypeInfo value)
         {
+            //todo: обработка ошибок и возврат кода HTTP
             var id = _customerTypeService.Create(value.Caption);
 
             var response = Request.CreateResponse(HttpStatusCode.Created);
@@ -57,6 +60,7 @@ namespace mfc.webapi.Controllers
         [Route("{id}")]
         public HttpResponseMessage Put(int id, [FromBody]Models.CustomerTypeInfo value)
         {
+            //todo: обработка ошибок и возврат кода HTTP в соответствии с соглашением
             var type = _customerTypeService.GetTypeById(id);
 
             if (type != null)
@@ -76,6 +80,7 @@ namespace mfc.webapi.Controllers
         [Route("{id}")]
         public HttpResponseMessage Delete(int id)
         {
+            //todo: обработка ошибок и возврат кода HTTP в соответствии с соглашением
             var type = _customerTypeService.GetTypeById(id);
 
             if (type != null)

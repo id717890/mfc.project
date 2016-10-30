@@ -3,8 +3,7 @@ import { Component, Output, Input, EventEmitter } from "@angular/core";
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
-import { CustomerTypeService } from './customer-type.service';
-import { CustomerType } from './../../models/customer-type.model';
+import { Service } from './../../models/service.model';
 
 import {BaseEditComponent, BaseEditContext} from './../../infrastructure/base.component/base-edit.component';
 
@@ -19,12 +18,12 @@ import {BaseEditComponent, BaseEditContext} from './../../infrastructure/base.co
             margin-top: 10px;
         }
     `],
-    templateUrl: 'app/admin/customer-types/customer-type-edit.component.html',
+    templateUrl: 'app/admin/services/service-edit.component.html',
     providers: [ Modal ]
 })
 
-export class CustomerTypeEditComponent extends BaseEditComponent<CustomerType> {
-    constructor(public dialog: DialogRef<BaseEditContext<CustomerType>>) {
+export class ServiceEditComponent extends BaseEditComponent<Service> {
+    constructor(public dialog: DialogRef<BaseEditContext<Service>>) {
         super(dialog);
     }
 }

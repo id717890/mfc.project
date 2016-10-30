@@ -1,0 +1,26 @@
+<h2 class="page-header">Услуги</h2>
+
+<div [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
+
+	<a (click)="add()" class="btn btn-primary">Новый</a>
+	<table class="table table-bordered table-striped table-hover table-condensed table-responsive">
+		<thead>
+			<tr>
+				<th hidden>Id</th>
+				<th>Наименование</th>
+				<th>ОГВ</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let model of models">
+				<td hidden>{{model.id}}</td>
+				<td>{{model.caption}}</td>
+				<td>{{model.organization_caption}}</td>
+				<td>
+					<a (click)="edit(model)" class="glyphicon glyphicon-edit" title="Редактировать"></a>
+					<a (click)="delete(model)" class="glyphicon glyphicon-remove" title="Удалить запись"></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

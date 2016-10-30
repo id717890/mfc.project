@@ -3,10 +3,10 @@
         <div class="col-sm-2 col-md-3 col-lg-2 sidebar">
             <ul class="nav nav-sidebar">
                 <li class="active"><a [routerLink]="['users']">Пользователи</a></li>
-                <li class="active"><a [routerLink]="['organization-types']">Справочник 'Типы ОГВ'</a></li>
-                <li><a href="/Organization/List">Справочник 'ОГВ'</a></li>
+                <li><a [routerLink]="['organization-types']">Справочник 'Типы ОГВ'</a></li>
+                <li><a [routerLink]="['organizations']">Справочник 'ОГВ'</a></li>
                 <li><a [routerLink]="['action-types']">Справочник 'Виды деятельности'</a></li>
-                <li><a href="/Service/List">Справочник 'Услуги'</a></li>
+                <li><a [routerLink]="['services']">Справочник 'Услуги'</a></li>
                 <li><a [routerLink]="['file-statuses']">Справочник 'Статусы дел'</a></li>
                 <li><a [routerLink]="['customer-types']">Справочник 'Категории посетителей/заявителей'</a></li>
                 <li><a [routerLink]="['file-stages']">Настройка этапов движения дела</a></li>

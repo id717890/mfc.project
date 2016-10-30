@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
-import { BaseModel } from './base-model';
+import { BaseModel } from './../../models/base.model';
 
 
 @Injectable()

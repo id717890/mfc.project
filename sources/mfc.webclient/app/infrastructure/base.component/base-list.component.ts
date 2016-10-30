@@ -5,7 +5,7 @@ import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/pl
 import { DialogRef, overlayConfigFactory } from 'angular2-modal';
 
 import { BaseService } from './base.service';
-import { BaseModel } from './base-model';
+import { BaseModel } from './../../models/base.model';
 import { BaseEditComponent } from './base-edit.component';
 import { DIALOG_CONFIRM, DIALOG_DELETE, SAVE_MESAGE, LOAD_LIST_MESAGE, PAGIN_PAGE_SIZE } from './../application-messages';
 

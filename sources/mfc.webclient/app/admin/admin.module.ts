@@ -16,6 +16,11 @@ import { ActionTypeListComponent } from './action-types/action-type.list.compone
 import { OrganizationTypeListComponent } from './organization-types/organization-type-list/organization-type-list.component';
 import { OrganizationTypeEditComponent } from './organization-types/organization-type-edit.component';
 import { FileStageListComponent } from './file-stages/file-stage-list.component';
+import { ServiceListComponent } from './services/service-list.component';
+import { ServiceEditComponent } from './services/service-edit.component';
+import { OrganizationListComponent } from './organizations/organization-list.component';
+import { OrganizationEditComponent } from './organizations/organization-edit.component';
+
 
 import { adminRouting } from './admin.router';
 
@@ -25,6 +30,8 @@ import { FileStatusService } from './file-statuses/file-status.service';
 import { ActionTypeService } from './action-types/action-type.service';
 import { OrganizationTypeService } from './organization-types/organization-type.service';
 import { FileStageService } from './file-stages/file-stage.service';
+import { ServiceService } from './services/service.service';
+import { OrganizationService } from './organizations/organization.service';
 import { BusyModule, BusyConfig } from 'angular2-busy'; //Сторонний пакет для реализации busy indicatpr angular2-busy https://github.com/devyumao/angular2-busy
 
 @NgModule({
@@ -63,6 +70,8 @@ import { BusyModule, BusyConfig } from 'angular2-busy'; //Сторонний п�
     ActionTypeListComponent, ActionTypeEditComponent,
     OrganizationTypeListComponent, OrganizationTypeEditComponent,
     FileStageListComponent,                                                             //Настройка этапов движения дела
+    ServiceListComponent, ServiceEditComponent,
+    OrganizationListComponent, OrganizationEditComponent
   ],
   providers: [
     UserService,
@@ -70,7 +79,9 @@ import { BusyModule, BusyConfig } from 'angular2-busy'; //Сторонний п�
     FileStatusService,
     ActionTypeService,
     OrganizationTypeService,
-    FileStageService
+    FileStageService,
+    ServiceService,
+    OrganizationService
   ]
 })
 

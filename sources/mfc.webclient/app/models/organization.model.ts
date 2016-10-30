@@ -1,4 +1,4 @@
-import { BaseModel } from './../infrastructure/base.component/base-model';
+import { BaseModel } from './base.model';
 import { OrganizationType } from './organization-type.model';
 
 export class Organization extends BaseModel {

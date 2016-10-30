@@ -15,21 +15,20 @@ namespace mfc.webapi.Models
             Id = service.Id;
             Caption = service.Caption;
             OrganistaionId = service.Organization.Id;
+            Organistaion = service.Organization.Caption;
         }
 
-        [Display(Name = "Идентификатор")]
         [JsonProperty("id")]
         public long Id { get; set; }
 
-        [Required]
-        [Display(Name = "Название")]
         [JsonProperty("caption")]
         public string Caption { get; set; }
 
-        [Required]
-        [Display(Name = "Организация")]
         [JsonProperty("organization")]
         public Int64 OrganistaionId { get; set; }
+
+        [JsonProperty("organization_caption")]
+        public string Organistaion { get; set; }
 
         public domain.entities.Service ConvertToService()
         {
@@ -37,8 +36,7 @@ namespace mfc.webapi.Models
             {
                 Id = this.Id,
                 Caption = this.Caption,
-                //Organization = this.OrganistaionId.ConvertToOrganization()
-                //todo: convert to organization
+                Organization = new domain.entities.Organization { Id = OrganistaionId, Caption = Organistaion }
             };
         }
     }

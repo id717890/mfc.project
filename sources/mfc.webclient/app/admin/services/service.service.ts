@@ -6,15 +6,15 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import {BaseService} from './../../infrastructure/base.component/base.service';
-import { CustomerType } from './../../models/customer-type.model';
+import {Service} from './../../models/service.model';
 
 @Injectable()
-export class CustomerTypeService extends BaseService<CustomerType> {
+export class ServiceService extends BaseService<Service> {
     constructor(http: Http) {
         super(http);
     }
 
     getApiTag() : string {
-        return super.getApiTag() + 'customer-types';
+        return super.getApiTag() + 'services';
     }
 }
