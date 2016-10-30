@@ -2,7 +2,11 @@
 <div class='container-fluid custom-modal-container' >
     <div class="row custom-modal-header">
         <div class="col-sm-12">
-            <h1>{{context.title}}</h1>
+        <div class="pull-left"><h1>{{context.title}}</h1></div>
+            <div class="input-group input-buttons pull-right" [ngClass]="{'has-error':!formGroup.controls['caption'].valid && formGroup.controls['caption'].touched}">
+                <button id="button-apply" class="btn btn-success" (click)="dialog.close(context.model)">Применить</button>
+                <button id="button-cancel" class="btn btn-primary" (click)="dialog.dismiss()">Отменить</button>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -12,10 +16,6 @@
                     <label>Наименование:</label>
                     <input class="form-control" type="text" placeholder="Введите наименование" [formControl]="formGroup.controls['caption']">
                     <div *ngIf="formGroup.controls['caption'].hasError('required') && formGroup.controls['caption'].touched" class="form-control alert alert-danger">Поле не может быть пустым.</div>
-                </div>
-                <div class="input-group input-buttons" [ngClass]="{'has-error':!formGroup.controls['caption'].valid && formGroup.controls['caption'].touched}">
-                    <button id="button-apply" class="btn btn-success" (click)="dialog.close(context.model)">Применить</button>
-                    <button id="button-cancel" class="btn btn-primary" (click)="dialog.dismiss()">Отменить</button>
                 </div>
             </form>
         </div>

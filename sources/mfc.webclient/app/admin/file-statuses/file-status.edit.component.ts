@@ -10,15 +10,6 @@ import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.
 
 @Component({
     selector: 'modal-content',
-    styles: [`
-        .input-line {
-            margin-bottom: 25px;
-            width: 100%;
-        }
-        .input-buttons {
-            margin-top: 10px;
-        }
-    `],
     templateUrl: 'app/admin/file-statuses/file-status.edit.component.html',
     providers: [ Modal ]
 })
