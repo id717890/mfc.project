@@ -13,7 +13,7 @@ namespace mfc.webapi.Controllers
         public HttpResponseMessage Get()
         {
             var fileStageService = CompositionRoot.Resolve<IFileStageService>();
-            var fileStageList = fileStageService.GetAllStages().Select(x => new FileStageInfo(x));
+            var fileStageList = fileStageService.GetAllStages().Select(x => new FileStageModel(x));
 
             return Request.CreateResponse(HttpStatusCode.OK, fileStageList);
         }
@@ -24,13 +24,13 @@ namespace mfc.webapi.Controllers
             var fileStageService = CompositionRoot.Resolve<IFileStageService>();
             var output = fileStageService.GetStage(code);
             return output != null ?
-                Request.CreateResponse(HttpStatusCode.OK, new FileStageInfo(output)) :
+                Request.CreateResponse(HttpStatusCode.OK, new FileStageModel(output)) :
                 Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         // PUT: api/filestage/:code
         [HttpPut]
-        public HttpResponseMessage Put(string code, [FromBody]FileStageInfo value)
+        public HttpResponseMessage Put(string code, [FromBody]FileStageModel value)
         {
             var fileStageService = CompositionRoot.Resolve<IFileStageService>();
             var fileStage = fileStageService.GetStage(code);
@@ -45,7 +45,7 @@ namespace mfc.webapi.Controllers
         }
 
         // POST: api/filestage
-        public HttpResponseMessage Post([FromBody]FileStageInfo value)
+        public HttpResponseMessage Post([FromBody]FileStageModel value)
         {
             return Request.CreateResponse(HttpStatusCode.MethodNotAllowed);
         }

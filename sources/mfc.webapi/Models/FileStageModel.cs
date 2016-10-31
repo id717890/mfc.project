@@ -1,15 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using mfc.domain.entities;
+﻿using mfc.domain.entities;
 using Newtonsoft.Json;
 
 namespace mfc.webapi.Models
 {
-    [JsonObject("file_stage_info")]
-    public class FileStageInfo
+    public class FileStageModel
     {
-        public FileStageInfo() { }
+        public FileStageModel() { }
 
-        public FileStageInfo(FileStage fileStage)
+        public FileStageModel(FileStage fileStage)
         {
             Code = fileStage.Code;
             Caption = fileStage.Caption;
@@ -17,22 +15,27 @@ namespace mfc.webapi.Models
             Order = fileStage.Order;
         }
 
-        [Display(Name = "Идентификатор")]
+        /// <summary>
+        /// Идентификатор
+        /// </summary>
         [JsonProperty("code")]
         public string Code { get; set; }
 
-        [Required]
-        [Display(Name = "Название")]
+        /// <summary>
+        /// Название
+        /// </summary>
         [JsonProperty("caption")]
         public string Caption { get; set; }
 
-        [Required]
-        [Display(Name = "Статус")]
+        /// <summary>
+        /// Статус
+        /// </summary>
         [JsonProperty("status")]
         public FileStatusInfo Status { get; set; }
 
-        [Required]
-        [Display(Name = "Порядок")]
+        /// <summary>
+        /// Порядок
+        /// </summary>
         [JsonProperty("order")]
         public int Order { get; set; }
 

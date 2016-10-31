@@ -266,7 +266,7 @@
     <Compile Include="Models\ActionTypeInfo.cs" />
     <Compile Include="Models\CustomerType.cs" />
     <Compile Include="Models\FileInfo.cs" />
-    <Compile Include="Models\FileStageInfo.cs" />
+    <Compile Include="Models\FileStageModel.cs" />
     <Compile Include="Models\FileStatusInfo.cs" />
     <Compile Include="Models\OrganisationInfo.cs" />
     <Compile Include="Models\OrganizationTypeInfo.cs" />
