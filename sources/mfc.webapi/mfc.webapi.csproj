@@ -261,7 +261,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models.Mappings\OrganizationTypeModelProfile.cs" />
-    <Compile Include="Models\AccountInfo.cs" />
+    <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\AcceptionModel.cs" />
     <Compile Include="Models\ActionTypeInfo.cs" />
     <Compile Include="Models\CustomerType.cs" />

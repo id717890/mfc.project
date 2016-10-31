@@ -23,7 +23,7 @@ namespace mfc.webapi.Controllers
         [Route("")]
         public HttpResponseMessage Get()
         {
-            var users = _userService.GetAllUsers().Select(user => new AccountInfo
+            var users = _userService.GetAllUsers().Select(user => new AccountModel
             {
                 Id = user.Id,
                 UserName = user.Account,
@@ -43,7 +43,7 @@ namespace mfc.webapi.Controllers
             var user = _userService.GetUserById(id);
             if (user != null)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new AccountInfo(user));
+                return Request.CreateResponse(HttpStatusCode.OK, new AccountModel(user));
             }
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
@@ -51,7 +51,7 @@ namespace mfc.webapi.Controllers
         // POST: api/users
         [HttpPost]
         [Route("")]
-        public HttpResponseMessage Post([FromBody]AccountInfo value)
+        public HttpResponseMessage Post([FromBody]AccountModel value)
         {
             var find_user = _userService.GetUser(value.UserName);
             if (find_user != null)
@@ -67,7 +67,7 @@ namespace mfc.webapi.Controllers
         // PUT: api/users/5
         [HttpPut]
         [Route("{id}")]
-        public HttpResponseMessage Put(int id, [FromBody]AccountInfo value)
+        public HttpResponseMessage Put(int id, [FromBody]AccountModel value)
         {
             var user = _userService.GetUserById(id);
             if (user == null)

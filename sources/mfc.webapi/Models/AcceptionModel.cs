@@ -18,7 +18,7 @@ namespace mfc.webapi.Models
             ServiceChild = action.ServiceChild != null ? new ServiceInfo(action.ServiceChild) : null;
 
             ActionType = new ActionTypeInfo(action.Type);
-            User = action.User != null ? new AccountInfo(action.User) : null;
+            User = action.User != null ? new AccountModel(action.User) : null;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace mfc.webapi.Models
         /// Эксперт
         /// </summary>
         [JsonProperty("expert")]
-        public AccountInfo User { get; set; }
+        public AccountModel User { get; set; }
 
         /// <summary>
         /// Комментарий

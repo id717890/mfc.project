@@ -6,11 +6,10 @@ using System.Linq;
 using System.Web;
 
 namespace mfc.webapi.Models {
-    [JsonObject("this_info")]
-    public class AccountInfo {
-        public AccountInfo() { }
+    public class AccountModel {
+        public AccountModel() { }
 
-        public AccountInfo(mfc.domain.entities.User user)
+        public AccountModel(mfc.domain.entities.User user)
         {
             Id = user.Id;
             UserName = user.Account;
@@ -20,23 +19,39 @@ namespace mfc.webapi.Models {
             IsExpert = user.IsExpert;
         }
         
+        /// <summary>
+        /// Идентификатор
+        /// </summary>
         [JsonProperty("id")]
         public Int64 Id { get; set; }
 
-        [Required]
-        [Display(Name = "Имя пользователя")]
+        /// <summary>
+        /// Имя пользователя
+        /// </summary>
         [JsonProperty("user_name")]
         public string UserName { get; set; }
 
-        [Required]
-        [Display(Name = "Ф.И.О.")]
+        /// <summary>
+        /// Ф.И.О.
+        /// </summary>
         [JsonProperty("description")]
         public string Description { get; set; }
 
+        /// <summary>
+        /// Признак администратора
+        /// </summary>
         [JsonProperty("is_admin")]
         public bool IsAdmin { get; set; }
+
+        /// <summary>
+        /// Признак эксперта
+        /// </summary>
         [JsonProperty("is_expert")]
         public bool IsExpert { get; set; }
+
+        /// <summary>
+        /// Признак контролера
+        /// </summary>
         [JsonProperty("is_controller")]
         public bool IsController { get; set; }
 
