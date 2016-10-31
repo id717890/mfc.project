@@ -4,12 +4,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace mfc.webapi.Models
 {
-    [JsonObject("action_info")]
-    public class ActionInfo
+    public class AcceptionModel
     {
-        public ActionInfo() { }
+        public AcceptionModel() { }
 
-        public ActionInfo(domain.entities.ServiceAction action)
+        public AcceptionModel(domain.entities.ServiceAction action)
         {
             Id = action.Id;
             Date = action.Date;
@@ -23,57 +22,69 @@ namespace mfc.webapi.Models
             User = action.User != null ? new AccountInfo(action.User) : null;
         }
 
-        [Display(Name = "Идентификатор")]
+        /// <summary>
+        /// Идентификатор
+        /// </summary>
         [JsonProperty("id")]
         public long Id { get; set; }
 
-        [Required]
-        [Display(Name = "Дата")]
+        /// <summary>
+        /// Дата
+        /// </summary>
         [JsonProperty("date")]
         public DateTime Date { get; set; }
 
-        [Required]
-        [Display(Name = "Заявитель")]
+        /// <summary>
+        /// Заявитель
+        /// </summary>
         [JsonProperty("customer")]
         public string Customer { get; set; }
 
-        [Required]
-        [Display(Name = "Тип заявителя")]
+        /// <summary>
+        /// Тип заявителя
+        /// </summary>
         [JsonProperty("customer_type")]
         public CustomerTypeInfo CustomerType { get; set; }
 
-        [Required]
-        [Display(Name = "Услуга")]
+        /// <summary>
+        /// Услуга
+        /// </summary>
         [JsonProperty("service")]
         public ServiceInfo Service { get; set; }
 
-        [Required]
-        [Display(Name = "Дочерняя услуга")]
+        /// <summary>
+        /// Дочерняя услуга
+        /// </summary>
         [JsonProperty("service_child")]
         public ServiceInfo ServiceChild { get; set; }
 
-        [Required]
-        [Display(Name = "Вид деятельности")]
+        /// <summary>
+        /// Вид деятельности
+        /// </summary>
         [JsonProperty("action_type")]
         public ActionTypeInfo ActionType { get; set; }
 
-        [Required]
-        [Display(Name = "Эксперт")]
+        /// <summary>
+        /// Эксперт
+        /// </summary>
         [JsonProperty("expert")]
         public AccountInfo User { get; set; }
 
-        [Required]
-        [Display(Name = "Комментарий")]
+        /// <summary>
+        /// Комментарий
+        /// </summary>
         [JsonProperty("comments")]
         public string Comments { get; set; }
 
-        [Required]
-        [Display(Name = "Иногородний")]
+        /// <summary>
+        /// Иногородний
+        /// </summary>
         [JsonProperty("is_non_resident")]
         public bool IsNonresident { get; set; }
 
-        [Required]
-        [Display(Name = "Бесплатный выезд")]
+        /// <summary>
+        /// Бесплатный выезд
+        /// </summary>
         [JsonProperty("is_free_visit")]
         public bool FreeVisit { get; set; }
 

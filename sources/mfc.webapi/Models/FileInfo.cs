@@ -15,7 +15,7 @@ namespace mfc.webapi.Models
         {
             Id = file.Id;
             Date = file.Date;
-            Action = new ActionInfo(file.Action);
+            Action = new AcceptionModel(file.Action);
             Caption = file.Caption;
             Controller = new UserInfo(file.Controller);
             Expert = new UserInfo(file.Expert);
@@ -40,7 +40,7 @@ namespace mfc.webapi.Models
         [Required]
         [Display(Name = "Прием")]
         [JsonProperty("action")]
-        public ActionInfo Action { get; set; }
+        public AcceptionModel Action { get; set; }
 
         [Required]
         [Display(Name = "Контролер")]

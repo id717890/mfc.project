@@ -28,7 +28,7 @@ namespace mfc.webapi.Controllers
             var queryDateBegin = DateTime.Today;
             var queryDateEnd = DateTime.Today.AddDays(1);
             var acceptions = _actionService.GetActions(queryDateBegin, queryDateEnd, null)
-                .Select(x => new ActionInfo(x)).ToList();
+                .Select(x => new AcceptionModel(x)).ToList();
             var response = Request.CreateResponse(HttpStatusCode.OK, acceptions);
             response.Headers.Add("Total-rows", acceptions.Count().ToString());
             return response;
@@ -44,7 +44,7 @@ namespace mfc.webapi.Controllers
             var acceptions = _actionService.GetActions(queryDateBegin, queryDateEnd, null)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
-                .Select(x => new ActionInfo(x)).ToList();
+                .Select(x => new AcceptionModel(x)).ToList();
             var response = Request.CreateResponse(HttpStatusCode.OK, acceptions);
             response.Headers.Add("Total-rows", acceptions.Count().ToString());
             return response;
@@ -78,7 +78,7 @@ namespace mfc.webapi.Controllers
                 var paging = acceptions
                     .Skip((pageIndex - 1) * pageSize)
                     .Take(pageSize)
-                    .Select(x => new ActionInfo(x)).ToList();
+                    .Select(x => new AcceptionModel(x)).ToList();
                 var response = Request.CreateResponse(HttpStatusCode.OK, paging);
                 response.Headers.Add("Total-rows", totalRows.ToString());
                 return response;
@@ -90,7 +90,7 @@ namespace mfc.webapi.Controllers
                 var paging = acceptions
                     .Skip((pageIndex - 1) * pageSize)
                     .Take(pageSize)
-                    .Select(x => new ActionInfo(x)).ToList();
+                    .Select(x => new AcceptionModel(x)).ToList();
                 var response = Request.CreateResponse(HttpStatusCode.OK, paging);
                 response.Headers.Add("Total-rows", totalRows.ToString());
                 return response;
@@ -105,7 +105,7 @@ namespace mfc.webapi.Controllers
             var acception = _actionService.GetActionById(id);
             if (acception != null)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new ActionInfo(acception));
+                return Request.CreateResponse(HttpStatusCode.OK, new AcceptionModel(acception));
             }
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
@@ -113,7 +113,7 @@ namespace mfc.webapi.Controllers
         // POST: api/acceptions
         [HttpPost]
         [Route("")]
-        public HttpResponseMessage Post([FromBody]ActionInfo value)
+        public HttpResponseMessage Post([FromBody]AcceptionModel value)
         {
 //            return Request.CreateResponse(HttpStatusCode.OK);
             var id = _actionService.Add(
