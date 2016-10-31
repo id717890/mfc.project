@@ -12,6 +12,10 @@ import { CustomerType } from '../../models/customer-type.model';
 import { CustomerTypeService } from '../../admin/customer-types/customer-type.service';
 import { ActionType } from '../../models/action-type.model';
 import { ActionTypeService } from '../../admin/action-types/action-type.service';
+import { Organization } from '../../models/organization.model';
+import { OrganizationService } from '../../admin/organizations/organization.service';
+import { Service } from '../../models/service.model';
+import { ServiceService } from '../../admin/services/service.service';
 
 import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.component/base-edit.component';
 
@@ -34,6 +38,10 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
     experts: User[];
     customerTypes: CustomerType[];
     actionTypes: ActionType[];
+    organizations: Organization[];
+    services: Service[];
+    service_childs: Service[];
+
     currentDate: string;
     busy: Promise<any>;
     busyMessage: string = "Загрузка списков...";
@@ -51,6 +59,8 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
         , private _userService: UserService
         , private _customerTypeService: CustomerTypeService
         , private _actionTypeService: ActionTypeService
+        , private _organizationService: OrganizationService
+        , private _serviceService: ServiceService
     ) {
         super(dialog, formBuilder.group(
             {
@@ -79,6 +89,17 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
         this.fillLists();
     }
 
+    onChangeService(service: any) {
+        this.context.model.service= this.services.find(x => x.id == service);        
+    }
+
+    onChangeServiceChild(service_child: any) {
+        this.context.model.service_child= this.services.find(x => x.id == service_child);                
+    }
+
+    onChangeOrganization(organization: any) {
+    }
+
     onChangeDate(event: any) {
         this.context.model.date = new Date(event.date.year, event.date.month, event.date.day);
     }
@@ -96,6 +117,21 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
     }
 
     private fillLists(): void {
+        //получаем список услуг для combobox
+        this.busy =
+            this._serviceService.get().then(x => {
+                this.services = x["data"];
+                this.service_childs = x["data"];
+                if (this.services.length != 0) this.context.model.service = this.services[0];
+                if (this.services.length != 0) this.context.model.service_child= this.services[0];
+            });
+
+        //получаем список ОГВ для combobox
+        this.busy =
+            this._organizationService.get().then(x => {
+                this.organizations = x["data"];
+            });
+
         //получаем список пользоввателей для combobox
         this.busy =
             this._userService.get().then(x => {

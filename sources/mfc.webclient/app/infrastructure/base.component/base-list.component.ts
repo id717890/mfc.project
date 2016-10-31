@@ -50,7 +50,10 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
                     if (output != null) {
                         this.busyMessage = SAVE_MESAGE;
                         this.busy = this.service.post(output)
-                            .then(x => { if (x != null) this.models.push(x) })  //Здесь нужна проверка на null, т.к. если API вернул ответ с ошибкой, то х=undefined
+                            .then(x => { if (x != null) {
+                                this.models.push(x);
+                                this.totalRows=+1;
+                            } })  //Здесь нужна проверка на null, т.к. если API вернул ответ с ошибкой, то х=undefined
                             .catch(x => this.handlerError(x));
                     }
                 }, () => null);

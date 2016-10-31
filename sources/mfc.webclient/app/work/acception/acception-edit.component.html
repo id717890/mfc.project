@@ -31,13 +31,29 @@
 				</div>
 				<div class="form-group">
 					<input type="checkbox" id="input-is-resident" name="is_non_resident" [formControl]="formGroup.controls['is_non_resident']">
-					<label
-						for="input-is-resident">&nbsp;Иногородний</label>
+					<label for="input-is-resident">&nbsp;Иногородний</label>
 				</div>
 				<div class="form-group">
 					<input type="checkbox" id="input-is-free-visit" name="is_free_visit" [formControl]="formGroup.controls['is_free_visit']">
-					<label
-						for="input-is-free-visit">&nbsp;Бесплатный выезд</label>
+					<label for="input-is-free-visit">&nbsp;Бесплатный выезд</label>
+				</div>
+				<div class="form-group">
+					<label>ОГВ</label>
+					<select name="organization" class="form-control" (change)="onChangeOrganization($event.target.value)">
+						<option *ngFor="let organization of organizations" [value]="organization.id">{{organization.caption}}</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Услгуа</label>
+					<select name="service" class="form-control" (change)="onChangeService($event.target.value)">
+						<option *ngFor="let service of services" [value]="service.id">{{service.caption}}</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Подуслуга</label>
+					<select name="service_child" class="form-control" (change)="onChangeServiceChild($event.target.value)">
+						<option *ngFor="let service_child of service_childs" [value]="service_child.id">{{service_child.caption}}</option>
+					</select>
 				</div>
 				<div class="form-group">
 					<label>Тип услуги</label>
