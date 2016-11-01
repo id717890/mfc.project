@@ -11,10 +11,12 @@ namespace mfc.webapi.Controllers
     public class ServiceController : ApiController
     {
         private readonly IServiceService _servicesService;
+        private readonly IOrganizationService _organizationService;
 
-        public ServiceController(IServiceService customerTypeService)
+        public ServiceController(IServiceService customerTypeService, IOrganizationService organizationService)
         {
             _servicesService = customerTypeService;
+            _organizationService = organizationService;
         }
 
         [HttpGet]
@@ -27,6 +29,15 @@ namespace mfc.webapi.Controllers
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
             return Request.CreateResponse(HttpStatusCode.OK, services);
+        }
+
+        // GET: api/services?organization=12
+        [HttpGet]
+        [Route("")]
+        public HttpResponseMessage Get(long organization)
+        {
+            var services = _servicesService.GetOrganizationServices(organization).Select(x=>new Models.ServiceInfo(x)).ToArray();
+            return services == null ? Request.CreateResponse(HttpStatusCode.NotFound) : Request.CreateResponse(HttpStatusCode.OK, services);
         }
 
         [HttpGet]

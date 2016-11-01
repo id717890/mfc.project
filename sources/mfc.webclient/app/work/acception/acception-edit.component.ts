@@ -41,6 +41,7 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
     organizations: Organization[];
     services: Service[];
     service_childs: Service[];
+    ser: string = "";
 
     currentDate: string;
     busy: Promise<any>;
@@ -69,7 +70,9 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
                 'is_non_resident': [false],
                 'is_free_visit': [false]
             }));
-        this.formGroup.patchValue({ customer: dialog.context.model.customer });
+        this.formGroup.patchValue({
+            customer: dialog.context.model.customer
+        });
     }
 
     mapFormToModel(form: any): void {
@@ -89,15 +92,24 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
         this.fillLists();
     }
 
-    onChangeService(service: any) {
-        this.context.model.service= this.services.find(x => x.id == service);        
+    onChangeService(service: number) {
+        this.context.model.service = this.services.find(x => x.id == service);
     }
 
-    onChangeServiceChild(service_child: any) {
-        this.context.model.service_child= this.services.find(x => x.id == service_child);                
+    onChangeServiceChild(service_child: number) {
+        this.context.model.service_child = this.services.find(x => x.id == service_child);
     }
 
-    onChangeOrganization(organization: any) {
+    onChangeOrganization(organization: number) {
+        if (organization != 0) {
+            this.busy = this._serviceService.getWithParameters(this.prepareData(organization)).then(x => {
+                this.services = x['data'];
+                this.service_childs = x['data'];
+            })
+        } else {
+            this.services = null;
+            this.service_childs = null;
+        }
     }
 
     onChangeDate(event: any) {
@@ -116,15 +128,21 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
         this.context.model.customer_type = this.customerTypes.find(x => x.id == customerType);
     }
 
+    private prepareData(organizationId: number): any[] {
+        let param = [];
+        param["organization"] = organizationId;
+        return param;
+    }
+
     private fillLists(): void {
-        //получаем список услуг для combobox
-        this.busy =
-            this._serviceService.get().then(x => {
-                this.services = x["data"];
-                this.service_childs = x["data"];
-                if (this.services.length != 0) this.context.model.service = this.services[0];
-                if (this.services.length != 0) this.context.model.service_child= this.services[0];
-            });
+        // //получаем список услуг для combobox
+        // this.busy =
+        //     this._serviceService.get().then(x => {
+        //         this.services = x["data"];
+        //         this.service_childs = x["data"];
+        //         if (this.services.length != 0) this.context.model.service = this.services[0];
+        //         if (this.services.length != 0) this.context.model.service_child= this.services[0];
+        //     });
 
         //получаем список ОГВ для combobox
         this.busy =

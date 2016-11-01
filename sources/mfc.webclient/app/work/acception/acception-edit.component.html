@@ -40,18 +40,23 @@
 				<div class="form-group">
 					<label>ОГВ</label>
 					<select name="organization" class="form-control" (change)="onChangeOrganization($event.target.value)">
+						<option selected="selected" value="0">Выберите ОГВ</option>						
 						<option *ngFor="let organization of organizations" [value]="organization.id">{{organization.caption}}</option>
 					</select>
 				</div>
 				<div class="form-group">
 					<label>Услгуа</label>
-					<select name="service" class="form-control" (change)="onChangeService($event.target.value)">
+					<select class="form-control" (change)="onChangeService($event.target.value)" [disabled]="serviceField.length==1" #serviceField>
+						<option selected="selected">Выберите услугу</option>						
 						<option *ngFor="let service of services" [value]="service.id">{{service.caption}}</option>
 					</select>
 				</div>
+
 				<div class="form-group">
 					<label>Подуслуга</label>
-					<select name="service_child" class="form-control" (change)="onChangeServiceChild($event.target.value)">
+					<select name="service_child" class="form-control" (change)="onChangeServiceChild($event.target.value)" [disabled]="serviceChildField.length==1"
+						#serviceChildField>
+						<option selected="selected">Выберите подуслгу</option>
 						<option *ngFor="let service_child of service_childs" [value]="service_child.id">{{service_child.caption}}</option>
 					</select>
 				</div>
