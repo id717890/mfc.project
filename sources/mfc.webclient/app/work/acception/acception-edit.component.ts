@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { CompleterService, CompleterData } from 'ng2-completer';
 
 import { Acception } from '../../models/acception.model';
 import { AcceptionService } from './acception.service';
@@ -42,6 +43,8 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
     services: Service[];
     service_childs: Service[];
     ser: string = "";
+    private autoCompleteServices: CompleterData;
+    private autoCompleteServicesChild: CompleterData;
 
     currentDate: string;
     busy: Promise<any>;
@@ -62,6 +65,7 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
         , private _actionTypeService: ActionTypeService
         , private _organizationService: OrganizationService
         , private _serviceService: ServiceService
+        , private completerService: CompleterService
     ) {
         super(dialog, formBuilder.group(
             {
@@ -100,11 +104,21 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
         this.context.model.service_child = this.services.find(x => x.id == service_child);
     }
 
+    onSelectService(item: any) {
+        if (item != null) this.context.model.service = item.originalObject;
+    }
+
+    onSelectServiceChild(item: any) {
+        if (item != null) this.context.model.service_child = item.originalObject;
+    }
+
     onChangeOrganization(organization: number) {
         if (organization != 0) {
             this.busy = this._serviceService.getWithParameters(this.prepareData(organization)).then(x => {
                 this.services = x['data'];
                 this.service_childs = x['data'];
+                this.autoCompleteServices = this.completerService.local(this.services, 'caption', 'caption');
+                this.autoCompleteServicesChild = this.completerService.local(this.services, 'caption', 'caption');
             })
         } else {
             this.services = null;

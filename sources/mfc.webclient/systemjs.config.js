@@ -31,7 +31,8 @@
             'angular2-dynamic-component': 'npm:angular2-dynamic-component',
             'angular2-busy': 'node_modules/angular2-busy',
             'mydatepicker': 'npm:mydatepicker',
-            'ng2-pagination': 'npm:ng2-pagination'
+            'ng2-pagination': 'npm:ng2-pagination',
+            'ng2-completer': 'node_modules/ng2-completer/bundles'
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
@@ -61,6 +62,7 @@
                 defaultExtension: 'js'
             },
             'ng2-pagination': { main: 'index.js', defaultExtension: 'js' },
+            'ng2-completer': { main: 'ng2-completer.js', format: 'cjs' }
         }
     });
 })(this);

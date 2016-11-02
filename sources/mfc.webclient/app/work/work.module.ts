@@ -10,6 +10,7 @@ import { AcceptionEditComponent } from './acception/acception-edit.component'
 
 import { MyDatePickerModule } from 'mydatepicker';  // https://github.com/kekeh/mydatepicker
 import { Ng2PaginationModule } from 'ng2-pagination'; //https://github.com/michaelbromley/ng2-pagination
+import { Ng2CompleterModule } from "ng2-completer";  //https://github.com/oferh/ng2-completer
 
 import { BusyModule, BusyConfig } from 'angular2-busy';
 
@@ -18,6 +19,7 @@ import { BusyModule, BusyConfig } from 'angular2-busy';
         BrowserModule,
         HttpModule,
         FormsModule,
+        Ng2CompleterModule,
         ReactiveFormsModule,
         BusyModule.forRoot(
             new BusyConfig({
