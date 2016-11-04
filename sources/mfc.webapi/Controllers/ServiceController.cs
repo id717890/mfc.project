@@ -1,5 +1,8 @@
-﻿using mfc.domain.services;
+﻿using AutoMapper;
+using mfc.domain.services;
+using mfc.webapi.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,9 +15,11 @@ namespace mfc.webapi.Controllers
     {
         private readonly IServiceService _servicesService;
         private readonly IOrganizationService _organizationService;
+        private IMapper _mapper;
 
         public ServiceController(IServiceService customerTypeService, IOrganizationService organizationService)
         {
+            _mapper = CompositionRoot.Resolve<IMapper>();
             _servicesService = customerTypeService;
             _organizationService = organizationService;
         }
@@ -23,8 +28,8 @@ namespace mfc.webapi.Controllers
         [Route("")]
         public HttpResponseMessage Get()
         {
-            var services = _servicesService.GetAllServices().Select(service => new Models.ServiceInfo(service)).ToArray();
-            if (services == null || services.Length == 0)
+            var services = _mapper.Map<IEnumerable<ServiceInfo>>(_servicesService.GetAllServices());
+            if (services == null || !services.Any())
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
@@ -36,7 +41,7 @@ namespace mfc.webapi.Controllers
         [Route("")]
         public HttpResponseMessage Get(long organization)
         {
-            var services = _servicesService.GetOrganizationServices(organization).Select(x=>new Models.ServiceInfo(x)).ToArray();
+            var services = _mapper.Map<IEnumerable<ServiceInfo>>(_servicesService.GetOrganizationServices(organization));
             return services == null ? Request.CreateResponse(HttpStatusCode.NotFound) : Request.CreateResponse(HttpStatusCode.OK, services);
         }
 
@@ -49,14 +54,14 @@ namespace mfc.webapi.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
-            return Request.CreateResponse(HttpStatusCode.OK, new Models.ServiceInfo(service));
+            return Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<ServiceInfo>(service));
         }
 
         [HttpPost]
         [Route("")]
         public HttpResponseMessage Post([FromBody]Models.ServiceInfo value)
         {
-            var id = _servicesService.Create(value.Caption, value.OrganistaionId);
+            var id = _servicesService.Create(value.Caption, value.OrganizationId);
 
             var response = Request.CreateResponse(HttpStatusCode.Created);
             response.Headers.Location = new Uri($"{Request.RequestUri}/{id}");

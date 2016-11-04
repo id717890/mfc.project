@@ -14,8 +14,8 @@ namespace mfc.webapi.Models
         {
             Id = service.Id;
             Caption = service.Caption;
-            OrganistaionId = service.Organization.Id;
-            Organistaion = service.Organization.Caption;
+            OrganizationId = service.Organization.Id;
+            Organization = service.Organization.Caption;
         }
 
         [JsonProperty("id")]
@@ -25,10 +25,10 @@ namespace mfc.webapi.Models
         public string Caption { get; set; }
 
         [JsonProperty("organization")]
-        public Int64 OrganistaionId { get; set; }
+        public Int64 OrganizationId { get; set; }
 
         [JsonProperty("organization_caption")]
-        public string Organistaion { get; set; }
+        public string Organization { get; set; }
 
         public domain.entities.Service ConvertToService()
         {
@@ -36,7 +36,7 @@ namespace mfc.webapi.Models
             {
                 Id = this.Id,
                 Caption = this.Caption,
-                Organization = new domain.entities.Organization { Id = OrganistaionId, Caption = Organistaion }
+                Organization = new domain.entities.Organization { Id = OrganizationId, Caption = Organization}
             };
         }
     }

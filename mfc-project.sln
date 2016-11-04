@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mfc.domain.interface", "sources\mfc.domain.interface\mfc.domain.interface.csproj", "{CA144FB7-3BE0-4E32-898F-B2F4A33B4846}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mfc.dal", "sources\mfc.dal\mfc.dal.csproj", "{1631C6F3-F3D5-48AD-88D8-950F884D2976}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mfc.webapi", "sources\mfc.webapi\mfc.webapi.csproj", "{8340FD03-7EFC-4788-89C7-4611E26D9EF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mfc.webapi.tests", "testings\mfc.webapi.tests\mfc.webapi.tests.csproj", "{C32BCE9C-A195-4939-AEA4-68C38CB2DD2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{8340FD03-7EFC-4788-89C7-4611E26D9EF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8340FD03-7EFC-4788-89C7-4611E26D9EF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8340FD03-7EFC-4788-89C7-4611E26D9EF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C32BCE9C-A195-4939-AEA4-68C38CB2DD2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C32BCE9C-A195-4939-AEA4-68C38CB2DD2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C32BCE9C-A195-4939-AEA4-68C38CB2DD2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C32BCE9C-A195-4939-AEA4-68C38CB2DD2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

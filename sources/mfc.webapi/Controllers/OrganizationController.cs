@@ -8,16 +8,21 @@ using System.Net;
 
 namespace mfc.webapi.Controllers
 {
+    using AutoMapper;
+    using domain.entities;
     using domain.services;
     using Models;
+    using System.Collections.Generic;
 
     [RoutePrefix("api/organizations")]
     public class OrganizationController : ApiController
     {
         private readonly IOrganizationService _organizationService;
+        private IMapper _mapper;
 
         public OrganizationController(IOrganizationService organizationService)
         {
+            _mapper = CompositionRoot.Resolve<IMapper>();
             _organizationService = organizationService;
         }
 
@@ -25,7 +30,7 @@ namespace mfc.webapi.Controllers
         [Route("")]
         public HttpResponseMessage Get()
         {
-            var output = _organizationService.GetAllOrganizations().Select(x => new OrganizationInfo(x));
+            var output = _mapper.Map<IEnumerable<OrganizationInfo>> (_organizationService.GetAllOrganizations());
 
             return Request.CreateResponse(HttpStatusCode.OK, output);
         }
@@ -36,7 +41,7 @@ namespace mfc.webapi.Controllers
         {
             var output = _organizationService.GetOrganizationById(id);
             return output != null ?
-                Request.CreateResponse(HttpStatusCode.OK, new OrganizationInfo(output)) :
+                Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<OrganizationInfo>(output)) :
                 Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
@@ -63,10 +68,10 @@ namespace mfc.webapi.Controllers
 
             if (organization != null)
             {
-                organization.Caption = value.Caption;
-                organization.FullCaption = value.FullCaption;
-                organization.Type = value.OrganizationType.ConvertToOrganizationType();
-                _organizationService.UpdateOgranization(organization);
+                //organization.Caption = value.Caption;
+                //organization.FullCaption = value.FullCaption;
+                //organization.Type = value.OrganizationType.ConvertToOrganizationType();
+                _organizationService.UpdateOgranization(_mapper.Map<Organization>(value));
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
 
