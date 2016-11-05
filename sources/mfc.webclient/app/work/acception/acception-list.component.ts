@@ -8,6 +8,7 @@ import { Acception } from '../../models/acception.model';
 import { User } from '../../models/user.model';
 import { AcceptionService } from './acception.service';
 import { UserService } from '../../admin/users/user.service';
+import { DIALOG_CONFIRM, DIALOG_DELETE, SAVE_MESAGE, LOAD_LIST_MESAGE, PAGIN_PAGE_SIZE } from '../../Infrastructure/application-messages';
 
 @Component({
     selector: 'mft-acception-list',
@@ -114,5 +115,28 @@ export class AcceptionListComponent extends BaseListComponent<Acception> {
 
     getEditComponent(): any {
         return AcceptionEditComponent;
+    }
+
+    delete(model: Acception) {
+        this.modal
+            .confirm()
+            .title(DIALOG_CONFIRM)
+            .body(DIALOG_DELETE)
+            .open()
+            .then(x => {
+                x.result.then(result => {
+                    if (!result)
+                        return;
+
+                    this.busyMessage = SAVE_MESAGE;
+                    this.busy = this.acceptionService.delete(model)
+                        .then(res => {
+                            if (res) {
+                                this.models.splice(this.models.indexOf(model), 1);
+                                this.totalRows-=1;
+                            }
+                        });
+                }, () => null);
+            });
     }
 }

@@ -129,5 +129,19 @@ namespace mfc.webapi.Controllers
             msg.Headers.Location = new Uri(Request.RequestUri + "/" + id.ToString());
             return msg;
         }
+
+        // DELETE: api/acceptions/5
+        [HttpDelete]
+        [Route("{id}")]
+        public HttpResponseMessage Delete(int id)
+        {
+            var acception = _actionService.GetActionById(id);
+            if (acception != null)
+            {
+                _actionService.Delete(id);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            return Request.CreateResponse(HttpStatusCode.NotFound);
+        }
     }
 }

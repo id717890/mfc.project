@@ -317,7 +317,7 @@ body {
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
-.completer-nput[disabled]{
+.completer-input[disabled]{
     background-color: #eee;
     opacity: 1;
     cursor: not-allowed;
