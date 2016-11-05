@@ -12,6 +12,10 @@ import { Password } from '../../models/password.model';
 @Component({
     selector: 'mfc-user-list',
     templateUrl: 'app/admin/users/user-list.component.html',
+    styles:[`
+        .glyphicon-ok-sign { color: green; font-size: 1.1em; }
+        .glyphicon-minus-sign { color: silver }
+    `],
     providers: [Modal]
 })
 

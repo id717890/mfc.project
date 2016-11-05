@@ -1,6 +1,6 @@
 <div class="container-fluid" style="min-height:calc(100% - 171px)">
     <div class="row">
-        <div class="col-sm-2 col-md-3 col-lg-2 sidebar">
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3 sidebar">
             <ul class="nav nav-sidebar">
                 <li class="active"><a [routerLink]="['users']">Пользователи</a></li>
                 <li><a [routerLink]="['organization-types']">Справочник 'Типы ОГВ'</a></li>
@@ -12,7 +12,7 @@
                 <li><a [routerLink]="['file-stages']">Настройка этапов движения дела</a></li>
             </ul>
         </div>
-        <div class="col-sm-8 col-md-8 main">
+        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-9 main">
             <section class="content-wrapper main-content clear-fix">
                 <router-outlet></router-outlet>
             </section>

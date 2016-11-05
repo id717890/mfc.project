@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using AutoMapper;
+using mfc.domain.entities;
 using mfc.domain.services;
 using mfc.webapi.Models;
 
@@ -12,10 +16,12 @@ namespace mfc.webapi.Controllers
     public class UserController : ApiController
     {
         private readonly IUserService _userService;
+        private IMapper _mapper;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
 
         // GET: api/users
@@ -23,15 +29,7 @@ namespace mfc.webapi.Controllers
         [Route("")]
         public HttpResponseMessage Get()
         {
-            var users = _userService.GetAllUsers().Select(user => new AccountModel
-            {
-                Id = user.Id,
-                UserName = user.Account,
-                Description = user.Name,
-                IsAdmin = user.IsAdmin,
-                IsExpert = user.IsExpert,
-                IsController = user.IsController
-            }).ToList();
+            var users = _mapper.Map<IEnumerable<AccountModel>>(_userService.GetAllUsers());
             return Request.CreateResponse(HttpStatusCode.OK, users);
         }
 
@@ -43,7 +41,7 @@ namespace mfc.webapi.Controllers
             var user = _userService.GetUserById(id);
             if (user != null)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new AccountModel(user));
+                return Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<AccountModel>(user));
             }
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
@@ -70,11 +68,8 @@ namespace mfc.webapi.Controllers
         public HttpResponseMessage Put(int id, [FromBody]AccountModel value)
         {
             var user = _userService.GetUserById(id);
-            if (user == null)
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-            _userService.Update(value.ConvertToUser());
+            if (user == null) return Request.CreateResponse(HttpStatusCode.NotFound);
+            _userService.Update(_mapper.Map<User>(value));
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
