@@ -7,9 +7,12 @@ using mfc.webapi.Models;
 
 namespace mfc.webapi.Controllers
 {
+    [RoutePrefix("api/file-stages")]
     public class FileStageController : ApiController
     {
         // GET: api/filestage
+        [HttpGet]
+        [Route("")]
         public HttpResponseMessage Get()
         {
             var fileStageService = CompositionRoot.Resolve<IFileStageService>();
@@ -19,6 +22,8 @@ namespace mfc.webapi.Controllers
         }
 
         // GET: api/filestage/1
+        [HttpGet]
+        [Route("{code}")]
         public HttpResponseMessage Get(string code)
         {
             var fileStageService = CompositionRoot.Resolve<IFileStageService>();
@@ -30,6 +35,7 @@ namespace mfc.webapi.Controllers
 
         // PUT: api/filestage/:code
         [HttpPut]
+        [Route("{code}")]
         public HttpResponseMessage Put(string code, [FromBody]FileStageModel value)
         {
             var fileStageService = CompositionRoot.Resolve<IFileStageService>();
@@ -45,12 +51,16 @@ namespace mfc.webapi.Controllers
         }
 
         // POST: api/filestage
+        [HttpPost]
+        [Route("")]
         public HttpResponseMessage Post([FromBody]FileStageModel value)
         {
             return Request.CreateResponse(HttpStatusCode.MethodNotAllowed);
         }
 
         // DELETE: api/filestage/:code
+        [HttpDelete]
+        [Route("")]
         public HttpResponseMessage Delete(string code)
         {
             return Request.CreateResponse(HttpStatusCode.MethodNotAllowed);
