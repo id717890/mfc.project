@@ -11,7 +11,7 @@ namespace mfc.webapi.Models
         {
             Code = fileStage.Code;
             Caption = fileStage.Caption;
-            Status = new FileStatusInfo(fileStage.Status);
+            Status = new FileStatusModel(fileStage.Status);
             Order = fileStage.Order;
         }
 
@@ -31,7 +31,7 @@ namespace mfc.webapi.Models
         /// Статус
         /// </summary>
         [JsonProperty("status")]
-        public FileStatusInfo Status { get; set; }
+        public FileStatusModel Status { get; set; }
 
         /// <summary>
         /// Порядок

@@ -5,11 +5,11 @@ using Newtonsoft.Json;
 namespace mfc.webapi.Models
 {
     [JsonObject("file_status_info")]
-    public class FileStatusInfo
+    public class FileStatusModel
     {
-        public FileStatusInfo() { }
+        public FileStatusModel() { }
 
-        public FileStatusInfo(domain.entities.FileStatus fileStatus)
+        public FileStatusModel(domain.entities.FileStatus fileStatus)
         {
             Id = fileStatus.Id;
             Caption = fileStatus.Caption;

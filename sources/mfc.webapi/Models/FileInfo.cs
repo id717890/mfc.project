@@ -19,7 +19,7 @@ namespace mfc.webapi.Models
             Caption = file.Caption;
             Controller = new UserInfo(file.Controller);
             Expert = new UserInfo(file.Expert);
-            Status = new FileStatusInfo(file.CurrentStatus);
+            Status = new FileStatusModel(file.CurrentStatus);
             Organization = new OrganizationInfo(file.Ogv);
         }
 
@@ -55,7 +55,7 @@ namespace mfc.webapi.Models
         [Required]
         [Display(Name = "Статус")]
         [JsonProperty("status")]
-        public FileStatusInfo Status { get; set; }
+        public FileStatusModel Status { get; set; }
 
         [Required]
         [Display(Name = "Организация")]

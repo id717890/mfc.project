@@ -261,6 +261,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models.Mappings\AccountModelProfile.cs" />
+    <Compile Include="Models.Mappings\FileStageModelProfile.cs" />
+    <Compile Include="Models.Mappings\FileStatusModelProfile.cs" />
     <Compile Include="Models.Mappings\OrganizationModelProfile.cs" />
     <Compile Include="Models.Mappings\OrganizationTypeModelProfile.cs" />
     <Compile Include="Models.Mappings\ServiceModelProfile.cs" />
@@ -271,7 +273,7 @@
     <Compile Include="Models\CustomerType.cs" />
     <Compile Include="Models\FileInfo.cs" />
     <Compile Include="Models\FileStageModel.cs" />
-    <Compile Include="Models\FileStatusInfo.cs" />
+    <Compile Include="Models\FileStatusModel.cs" />
     <Compile Include="Models\OrganisationInfo.cs" />
     <Compile Include="Models\OrganizationTypeInfo.cs" />
     <Compile Include="Models\ServiceInfo.cs" />

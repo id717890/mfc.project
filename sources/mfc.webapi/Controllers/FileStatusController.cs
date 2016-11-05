@@ -18,7 +18,7 @@ namespace mfc.webapi.Controllers
         public HttpResponseMessage Get()
         {
             var fileStatusService = CompositionRoot.Resolve<IFileStatusService>();
-            var output = fileStatusService.GetAllStatuses().Select(x => new FileStatusInfo(x));
+            var output = fileStatusService.GetAllStatuses().Select(x => new FileStatusModel(x));
 
             return Request.CreateResponse(HttpStatusCode.OK, output);
         }
@@ -31,13 +31,13 @@ namespace mfc.webapi.Controllers
 
             var output = fileStatusService.GetStatusById(id);
             return output != null ? 
-                Request.CreateResponse(HttpStatusCode.OK, new FileStatusInfo(output)) : 
+                Request.CreateResponse(HttpStatusCode.OK, new FileStatusModel(output)) : 
                 Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         [HttpPost]
         [Route("")]
-        public HttpResponseMessage Post([FromBody]FileStatusInfo value)
+        public HttpResponseMessage Post([FromBody]FileStatusModel value)
         {
             var fileStatusService = CompositionRoot.Resolve<IFileStatusService>();
             var identifier = fileStatusService.Create(value.Caption);
@@ -51,7 +51,7 @@ namespace mfc.webapi.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public HttpResponseMessage Put(int id, [FromBody]FileStatusInfo value)
+        public HttpResponseMessage Put(int id, [FromBody]FileStatusModel value)
         {
             var fileStatusService = CompositionRoot.Resolve<IFileStatusService>();
             var fileStatus = fileStatusService.GetStatusById(id);

@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using AutoMapper;
+using mfc.domain.entities;
 using mfc.domain.services;
 using mfc.webapi.Models;
 
@@ -10,47 +12,51 @@ namespace mfc.webapi.Controllers
     [RoutePrefix("api/file-stages")]
     public class FileStageController : ApiController
     {
-        // GET: api/filestage
+        private readonly IFileStageService _fileStageService;
+        private readonly IMapper _mapper;
+
+        public FileStageController(IFileStageService fileStageService, IMapper mapper)
+        {
+            _fileStageService = fileStageService;
+            _mapper = mapper;
+        }
+
+        // GET: api/file-stages
         [HttpGet]
         [Route("")]
         public HttpResponseMessage Get()
         {
-            var fileStageService = CompositionRoot.Resolve<IFileStageService>();
-            var fileStageList = fileStageService.GetAllStages().Select(x => new FileStageModel(x));
-
+            var fileStageList = _mapper.Map<IEnumerable<FileStageModel>>(_fileStageService.GetAllStages());
             return Request.CreateResponse(HttpStatusCode.OK, fileStageList);
         }
 
-        // GET: api/filestage/1
+        // GET: api/file-stages/1
         [HttpGet]
         [Route("{code}")]
         public HttpResponseMessage Get(string code)
         {
-            var fileStageService = CompositionRoot.Resolve<IFileStageService>();
-            var output = fileStageService.GetStage(code);
+            var output = _fileStageService.GetStage(code);
             return output != null ?
-                Request.CreateResponse(HttpStatusCode.OK, new FileStageModel(output)) :
+                Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<FileStageModel>(output)) :
                 Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        // PUT: api/filestage/:code
+        // PUT: api/file-stages/:code
         [HttpPut]
         [Route("{code}")]
         public HttpResponseMessage Put(string code, [FromBody]FileStageModel value)
         {
-            var fileStageService = CompositionRoot.Resolve<IFileStageService>();
-            var fileStage = fileStageService.GetStage(code);
-
+            var fileStage = _fileStageService.GetStage(code);
             if (fileStage != null)
             {
-                fileStage.Status = value.Status.ConvertToFileStatus();
-                fileStageService.UpdateStage(fileStage);
+                fileStage.Status = _mapper.Map<FileStatus>(value.Status);
+                _fileStageService.UpdateStage(fileStage);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        // POST: api/filestage
+        // POST: api/file-stages
         [HttpPost]
         [Route("")]
         public HttpResponseMessage Post([FromBody]FileStageModel value)
@@ -58,7 +64,7 @@ namespace mfc.webapi.Controllers
             return Request.CreateResponse(HttpStatusCode.MethodNotAllowed);
         }
 
-        // DELETE: api/filestage/:code
+        // DELETE: api/file-stages/:code
         [HttpDelete]
         [Route("")]
         public HttpResponseMessage Delete(string code)
