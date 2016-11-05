@@ -260,7 +260,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models.Mappings\AcceptionModelProfile.cs" />
     <Compile Include="Models.Mappings\AccountModelProfile.cs" />
+    <Compile Include="Models.Mappings\ActionTypeModelProfile.cs" />
+    <Compile Include="Models.Mappings\CustomerTypeModelProfile.cs" />
     <Compile Include="Models.Mappings\FileStageModelProfile.cs" />
     <Compile Include="Models.Mappings\FileStatusModelProfile.cs" />
     <Compile Include="Models.Mappings\OrganizationModelProfile.cs" />
