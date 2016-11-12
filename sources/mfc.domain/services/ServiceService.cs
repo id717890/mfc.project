@@ -41,6 +41,17 @@ namespace mfc.domain.services {
                     .OrderBy(m => m.Caption);
         }
 
+        public IEnumerable<Service> GetOrganizationServices(long orgId, long parentId)
+        {
+            PrepareCache();
+
+            var output = _cache.Values
+                    .Where(item => item.Organization.Id == orgId && item.Parent!=null && item.Parent.Id == parentId)
+                    .OrderBy(m => m.Caption);
+
+            return output;
+        }
+
         public Service GetServiceById(long id) {
             PrepareCache();
 

@@ -9,6 +9,7 @@ namespace mfc.domain.services {
     public interface IServiceService {
         IEnumerable<Service> GetAllServices();
         IEnumerable<Service> GetOrganizationServices(Int64 orgId);
+        IEnumerable<Service> GetOrganizationServices(Int64 orgId, Int64 parentId);
         Service GetServiceById(Int64 Id);
         Int64 Create(string caption, Int64 organizationId);
         Int64 Create(string caption, Int64 organizationId, Int64 parentId);

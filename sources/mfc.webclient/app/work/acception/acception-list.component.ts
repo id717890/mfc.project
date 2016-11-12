@@ -11,7 +11,7 @@ import { UserService } from '../../admin/users/user.service';
 import { DIALOG_CONFIRM, DIALOG_DELETE, SAVE_MESAGE, LOAD_LIST_MESAGE, PAGIN_PAGE_SIZE } from '../../Infrastructure/application-messages';
 
 @Component({
-    selector: 'mft-acception-list',
+    selector: 'mfc-acception-list',
     templateUrl: 'app/work/acception/acception-list.component.html'
 })
 
@@ -62,7 +62,7 @@ export class AcceptionListComponent extends BaseListComponent<Acception> {
         this.selectedExpert = user_id;
     }
 
-    onChangeExp(user_id: any){
+    onChangeExp(user_id: any) {
         console.log(user_id);
     }
 
@@ -94,7 +94,7 @@ export class AcceptionListComponent extends BaseListComponent<Acception> {
     }
 
     newModel(): Acception {
-        return new Acception(null, '', null, '', null, null, null,null,null, '', false, false);
+        return new Acception(null, '', null, '', null, null, null, null, null, '', false, false);
     };
 
     cloneModel(model: Acception): Acception {
@@ -133,7 +133,7 @@ export class AcceptionListComponent extends BaseListComponent<Acception> {
                         .then(res => {
                             if (res) {
                                 this.models.splice(this.models.indexOf(model), 1);
-                                this.totalRows-=1;
+                                this.totalRows -= 1;
                             }
                         });
                 }, () => null);

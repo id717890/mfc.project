@@ -6,9 +6,9 @@
 			<div [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
 				<div class="row">
 					<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 no-m">
-						<nav class="navbar navbar-default" role="navigation">
+						<nav class="navbar navbar-default" role="navigation" style="margin-bottom:0">
 							<div class="navbar-inner">
-								<div class="form-inline" style="margin:25px">
+								<div class="form-inline" style="margin:5px">
 									<div class="form-group">
 										<my-date-picker [options]="myDatePickerOptions" (dateChanged)="onDateBeginChanged($event)" [selDate]="dateBegin"></my-date-picker>
 									</div>
@@ -40,7 +40,7 @@
 						<pagination-controls (pageChange)="getPage($event)" id="paginate"></pagination-controls>
 					</div>
 				</div>
-				<div class="panel panel-default">
+				<div class="panel panel-default" style="margin-top:10px">
 					<table class="table table-striped table-hover table-responsive table-condensed">
 						<colgroup>
 							<col>
@@ -70,7 +70,7 @@
 								<td><a (click)="delete(model)" class="glyphicon glyphicon-remove" title="Удалить запись"></a></td>
 							</tr>
 							<tr *ngIf="totalRows==0">
-								<td colspan="5" style="text-align:center; padding: 15px">За указанный период данные отсутствуют</td>
+								<td colspan="6" style="text-align:center; padding: 15px">За указанный период данные отсутствуют</td>
 							</tr>
 						</tbody>
 					</table>

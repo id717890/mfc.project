@@ -117,7 +117,7 @@ namespace mfc.webapi.Controllers
                 value.ActionType.Id,
                 value.CustomerType.Id,
                 value.User.Id,
-                value.ServiceChild.Id,
+                value.ServiceChild?.Id ?? -1,
                 value.IsNonresident,
                 value.FreeVisit,
                 value.Comments

@@ -45,6 +45,15 @@ namespace mfc.webapi.Controllers
             return services == null ? Request.CreateResponse(HttpStatusCode.NotFound) : Request.CreateResponse(HttpStatusCode.OK, services);
         }
 
+        // GET: api/services?organization=12&parent=204
+        [HttpGet]
+        [Route("")]
+        public HttpResponseMessage Get(int organization, int parent)
+        {
+            var services = _mapper.Map<IEnumerable<ServiceInfo>>(_servicesService.GetOrganizationServices(organization,parent));
+            return services == null ? Request.CreateResponse(HttpStatusCode.NotFound) : Request.CreateResponse(HttpStatusCode.OK, services);
+        }
+
         [HttpGet]
         [Route("{id}")]
         public HttpResponseMessage Get(int id)
