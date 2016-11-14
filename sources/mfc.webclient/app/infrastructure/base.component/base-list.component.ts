@@ -61,7 +61,11 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     }
 
     edit(model: TModel) {
+        // console.log("bs-before");
+        // console.log(model);
         let clone: TModel = this.cloneModel(model);
+        // console.log("bs-after");
+        // console.log(clone);
         this.modal
             .open(
             this.getEditComponent(),

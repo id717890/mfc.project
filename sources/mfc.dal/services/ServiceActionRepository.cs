@@ -52,7 +52,7 @@ namespace mfc.dal.services {
                 cmd = connection.CreateCommand();
 
                 cmd.CommandText = @"
-                    select a.id, a.dt, a.customer, a.service_id, a.type_id, a.user_id, s.org_id, a.customer_type_id
+                    select a.id, a.dt, a.customer, a.service_id, a.service_child_id, a.type_id, a.user_id, s.org_id, a.customer_type_id, a.free_visit, a.is_nonresident, a.comments  
                         from Actions a
                         join Services s on s.id = a.service_id
                     where a.dt between @date1 and @date2
@@ -71,15 +71,20 @@ namespace mfc.dal.services {
 
 
                 reader = cmd.ExecuteReader();
-                while (reader.Read()) {
+                while (reader.Read())
+                {
                     actions.Add(new ServiceAction {
                         Id = Convert.ToInt64(reader["id"]),
                         Service = ServiceService.GetServiceById(Convert.ToInt64(reader["service_id"])),
+                        ServiceChild = reader["service_child_id"] != DBNull.Value ? ServiceService.GetServiceById(Convert.ToInt64(reader["service_child_id"])) : null,
                         User = UserService.GetUserById(Convert.ToInt64(reader["user_id"])),
                         Date = Convert.ToDateTime(reader["dt"]),
                         Type = ActionTypeService.GetTypeById(Convert.ToInt64(reader["type_id"])),
                         Customer = reader["customer"] != DBNull.Value ? Convert.ToString(reader["customer"]) : string.Empty,
-                        CustomerType = reader["customer_type_id"] != DBNull.Value ? CustomerTypeService.GetTypeById(Convert.ToInt64(reader["customer_type_id"])) : CustomerType.Empty
+                        CustomerType = reader["customer_type_id"] != DBNull.Value ? CustomerTypeService.GetTypeById(Convert.ToInt64(reader["customer_type_id"])) : CustomerType.Empty,
+                        FreeVisit = reader["free_visit"] !=DBNull.Value && Convert.ToBoolean(reader["free_visit"]),
+                        IsNonresident = reader["is_nonresident"] !=DBNull.Value && Convert.ToBoolean(reader["is_nonresident"]),
+                        Comments = reader["comments"] != DBNull.Value ? Convert.ToString(reader["comments"]) : string.Empty
                     });
                 }
             }

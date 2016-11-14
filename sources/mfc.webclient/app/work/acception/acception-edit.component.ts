@@ -19,6 +19,7 @@ import { Service } from '../../models/service.model';
 import { ServiceService } from '../../admin/services/service.service';
 
 import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.component/base-edit.component';
+import { AcceptionContext } from './acception-edit.context';
 
 @Component({
     selector: 'modal-content',
@@ -27,14 +28,14 @@ import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.
 })
 
 export class AcceptionEditComponent extends BaseEditComponent<Acception> implements AfterViewInit, OnInit {
-    experts: User[];
-    customerTypes: CustomerType[];
-    actionTypes: ActionType[];
     organizations: Organization[];
     services: Service[];
     service_childs: Service[];
+
     selected_service: string = null;
     selected_service_child: string = null;
+    selected_organization: number;
+
     private autoCompleteServices: CompleterData;
     private autoCompleteServicesChild: CompleterData;
 
@@ -50,7 +51,7 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
         inline: false,
     };
 
-    constructor(public dialog: DialogRef<BaseEditContext<Acception>>
+    constructor(public dialog: DialogRef<AcceptionContext>
         , private acceptionService: AcceptionService
         , private _userService: UserService
         , private _customerTypeService: CustomerTypeService
@@ -69,7 +70,7 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
     }
 
     ngAfterViewInit() {
-        this.fillLists();
+        this.fillForm();
     }
 
     onChangeDate(event: any) {
@@ -132,30 +133,88 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
         return param;
     }
 
-    private fillLists(): void {
-        //получаем список ОГВ для combobox
+    private fillForm(): void {
+        //получаем список типов приемов для combobox, если действие редактирование заполняем поле
+        this.busy =
+            this._actionTypeService.get().then(x => {
+                this.dialog.context.actionTypes = x['data'];
+                var actionTypes = this.dialog.context.actionTypes;
+                if (actionTypes != null) {
+                    if (this.dialog.context.model.action_type != null) {
+                        var id = this.dialog.context.model.action_type.id;
+                        for (var item of actionTypes) {
+                            if (item.id == id) {
+                                this.dialog.context.model.action_type = item;
+                                break;
+                            }
+                        }
+                    } else this.context.model.action_type = actionTypes[0];
+                }
+            });
+
+        //получаем список ОГВ для combobox, если действие редактирование заполняем поле
         this.busy =
             this._organizationService.get().then(x => {
                 this.organizations = x["data"];
+                if (this.context.model.service != null) this.selected_organization = this.context.model.service.organization;
+                else this.selected_organization = 0;
             });
 
-        //получаем список пользоввателей для combobox
+        //получаем список пользоввателей для combobox, если действие редактирование заполняем поле
         this.busy =
             this._userService.get().then(x => {
-                this.experts = x["data"];
-                if (this.experts.length != 0) this.context.model.expert = this.experts[0];
+                this.dialog.context.users = x['data'];
+                var users = this.dialog.context.users;
+                if (users != null) {
+                    if (this.dialog.context.model.expert != null) {
+                        var id = this.dialog.context.model.expert.id;
+                        for (var item of users) {
+                            if (item.id == id) {
+                                this.dialog.context.model.expert = item;
+                                break;
+                            }
+                        }
+                    } else this.context.model.expert = users[0];
+                }
             });
 
-        //получаем список Категорий заявителей для combobox
+        //получаем список Категорий заявителей для combobox, если действие редактирование заполняем поле
         this.busy = this._customerTypeService.get().then(x => {
-            this.customerTypes = x["data"];
-            if (this.customerTypes.length != 0) this.context.model.customer_type = this.customerTypes[0];
+            this.dialog.context.customerTypes = x['data'];
+            var customerTypes = this.dialog.context.customerTypes;
+            if (customerTypes != null) {
+                if (this.dialog.context.model.customer_type != null) {
+                    var id = this.dialog.context.model.customer_type.id;
+                    for (var item of customerTypes) {
+                        if (item.id == id) {
+                            this.dialog.context.model.customer_type = item;
+                            break;
+                        }
+                    }
+                } else this.context.model.customer_type = customerTypes[0];
+            }
         });
 
-        //получаем список Типов услуг для combobox
-        this.busy = this._actionTypeService.get().then(x => {
-            this.actionTypes = x["data"];
-            if (this.actionTypes.length != 0) this.context.model.action_type = this.actionTypes[0];
-        });
+        //Загрузка поля услгуи , если действие редактирование заполняем поле
+        let service = this.dialog.context.model.service;
+        if (service != null) {
+            // this.selected_organization=service.organization; //выставляем выбранный ОГВ            
+            this.busy = this._serviceService.getWithParameters(this.prepareData(service.organization)).then(x => {
+                this.services = x['data'];
+                this.autoCompleteServices = this.completerService.local(this.services, 'caption', 'caption');
+                this.selected_service = service.caption;
+            })
+        }
+
+        //Загрузка поля подуслгуи, если действие редактирование заполняем поле
+        let service_child = this.dialog.context.model.service_child;
+        if (service_child != null) {
+            this.busy = this._serviceService.getWithParameters(this.prepareDataForServiceChild(service.organization, service.id)).then(x => {
+                this.service_childs = x['data'];
+                this.autoCompleteServicesChild = this.completerService.local(this.service_childs, 'caption', 'caption');
+                this.selected_service_child = service_child.caption;
+            })
+        } else if (this.dialog.context.model.service != null) this.selected_service_child = "Нет подуслуг";
+        else this.selected_service_child = "";
     }
 }

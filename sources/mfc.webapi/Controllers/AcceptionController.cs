@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
+using mfc.domain.entities;
 using mfc.domain.services;
 using mfc.webapi.Models;
 
@@ -125,6 +126,32 @@ namespace mfc.webapi.Controllers
             var msg = Request.CreateResponse(HttpStatusCode.Created);
             msg.Headers.Location = new Uri(Request.RequestUri + "/" + id.ToString());
             return msg;
+        }
+
+        // PUT: api/acceptions/5
+        [HttpPut]
+        [Route("{id}")]
+        public HttpResponseMessage Put(int id, [FromBody]AcceptionModel value)
+        {
+            var acception = _actionService.GetActionById(id);
+            if (acception == null) return Request.CreateResponse(HttpStatusCode.NotFound);
+
+//            _actionService.Update(_mapper.Map<ServiceAction>(value));  // Так не работает, Hibernate выдает ошибку "a different object with the same identifier value was already associated with the session"
+
+            /* А так работает */
+            acception.Date = value.Date;
+            acception.Customer = value.Customer;
+            acception.CustomerType= _mapper.Map<CustomerType>(value.CustomerType);
+            acception.Service = _mapper.Map<Service>(value.Service);
+            acception.ServiceChild= _mapper.Map<Service>(value.ServiceChild);
+            acception.Type = _mapper.Map<ActionType>(value.ActionType);
+            acception.User= _mapper.Map<User>(value.User);
+            acception.Comments = value.Comments;
+            acception.FreeVisit = value.FreeVisit;
+            acception.IsNonresident = value.IsNonresident;
+            _actionService.Update(acception);
+
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         // DELETE: api/acceptions/5

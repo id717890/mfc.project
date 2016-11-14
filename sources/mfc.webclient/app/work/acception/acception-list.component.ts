@@ -94,7 +94,7 @@ export class AcceptionListComponent extends BaseListComponent<Acception> {
     }
 
     newModel(): Acception {
-        return new Acception(null, '', null, '', null, null, null, null, null, '', false, false);
+        return new Acception(null, '', null, '', null, null, null, null, null, null, '', false, false);
     };
 
     cloneModel(model: Acception): Acception {
@@ -106,6 +106,7 @@ export class AcceptionListComponent extends BaseListComponent<Acception> {
             model.customer_type,
             model.action_type,
             model.expert,
+            model.service.organization,
             model.service,
             model.service_child,
             model.comments,

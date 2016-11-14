@@ -3,6 +3,7 @@ import { CustomerType } from './customer-type.model';
 import { User } from './user.model';
 import { ActionType } from './action-type.model';
 import { Service } from './service.model';
+import { Organization } from './organization.model';
 
 export class Acception extends BaseModel {
     constructor(
@@ -13,6 +14,7 @@ export class Acception extends BaseModel {
         public customer_type: CustomerType,
         public action_type: ActionType,
         public expert: User,
+        public organization: number,
         public service: Service,
         public service_child: Service,
         public comments: string,

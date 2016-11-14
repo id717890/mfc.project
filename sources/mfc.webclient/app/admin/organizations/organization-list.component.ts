@@ -31,6 +31,9 @@ export class OrganizationListComponent extends BaseListComponent<Organization> i
      };
 
      cloneModel(model : Organization): Organization {
+         console.log("clone");
+        console.log(model);
+        console.log(model.organization_type);
          return new Organization(model.id, model.caption, model.full_caption, model.organization_type);
      };
 
