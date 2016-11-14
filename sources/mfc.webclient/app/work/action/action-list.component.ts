@@ -2,20 +2,20 @@ import { Component } from '@angular/core';
 
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { BaseListComponent } from './../../infrastructure/base.component/base-list.component';
-import { AcceptionEditComponent } from './acception-edit.component';
+import { ActionEditComponent } from './action-edit.component';
 
-import { Acception } from '../../models/acception.model';
+import { Action } from '../../models/action.model';
 import { User } from '../../models/user.model';
-import { AcceptionService } from './acception.service';
+import { ActionService } from './action.service';
 import { UserService } from '../../admin/users/user.service';
 import { DIALOG_CONFIRM, DIALOG_DELETE, SAVE_MESAGE, LOAD_LIST_MESAGE, PAGIN_PAGE_SIZE } from '../../Infrastructure/application-messages';
 
 @Component({
     selector: 'mfc-acception-list',
-    templateUrl: 'app/work/acception/acception-list.component.html'
+    templateUrl: 'app/work/action/action-list.component.html'
 })
 
-export class AcceptionListComponent extends BaseListComponent<Acception> {
+export class ActionListComponent extends BaseListComponent<Action> {
     experts: User[];
     selectedExpert: number = -1;
     dateBegin: string;
@@ -33,7 +33,7 @@ export class AcceptionListComponent extends BaseListComponent<Acception> {
         // selectionTxtFontSize: '16px'
     };
 
-    constructor(public modal: Modal, private acceptionService: AcceptionService, private _userService: UserService) {
+    constructor(public modal: Modal, private acceptionService: ActionService, private _userService: UserService) {
         super(modal, acceptionService);
         this.fillLists();
         this.prepareForm();
@@ -93,12 +93,12 @@ export class AcceptionListComponent extends BaseListComponent<Acception> {
         return param;
     }
 
-    newModel(): Acception {
-        return new Acception(null, '', null, '', null, null, null, null, null, null, '', false, false);
+    newModel(): Action {
+        return new Action(null, '', null, '', null, null, null, null, null, null, '', false, false);
     };
 
-    cloneModel(model: Acception): Acception {
-        return new Acception(
+    cloneModel(model: Action): Action {
+        return new Action(
             model.id,
             model.caption,
             model.date,
@@ -115,10 +115,10 @@ export class AcceptionListComponent extends BaseListComponent<Acception> {
     };
 
     getEditComponent(): any {
-        return AcceptionEditComponent;
+        return ActionEditComponent;
     }
 
-    delete(model: Acception) {
+    delete(model: Action) {
         this.modal
             .confirm()
             .title(DIALOG_CONFIRM)

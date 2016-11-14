@@ -5,7 +5,7 @@ import { ActionType } from './action-type.model';
 import { Service } from './service.model';
 import { Organization } from './organization.model';
 
-export class Acception extends BaseModel {
+export class Action extends BaseModel {
     constructor(
         public id: number,
         public caption: string,

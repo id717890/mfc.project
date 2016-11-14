@@ -2,21 +2,21 @@ import { Injectable } from '@angular/core';
 import { Http, URLSearchParams } from '@angular/http';
 import { Headers, RequestOptions, RequestOptionsArgs, Response } from '@angular/http';
 
-import { Acception } from '../../models/acception.model';
+import { Action } from '../../models/action.model';
 import { BaseService } from './../../infrastructure/base.component/base.service';
 import { PAGIN_PAGE_SIZE } from '../../Infrastructure/application-messages';
 
 @Injectable()
-export class AcceptionService extends BaseService<Acception> {
+export class ActionService extends BaseService<Action> {
     constructor(http: Http) {
         super(http);
     }
 
     getApiTag(): string {
-        return super.getApiTag() + 'acceptions';
+        return super.getApiTag() + 'actions';
     }
 
-    get(): Promise<Acception[]> {
+    get(): Promise<Action[]> {
         let params: URLSearchParams = new URLSearchParams();
         params.set("pageIndex", "1");
         params.set("pageSize", PAGIN_PAGE_SIZE.toString());

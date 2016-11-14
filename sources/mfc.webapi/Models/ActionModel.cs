@@ -3,11 +3,11 @@ using System;
 
 namespace mfc.webapi.Models
 {
-    public class AcceptionModel
+    public class ActionModel
     {
-        public AcceptionModel() { }
+        public ActionModel() { }
 
-        public AcceptionModel(domain.entities.ServiceAction action)
+        public ActionModel(domain.entities.ServiceAction action)
         {
             Id = action.Id;
             Date = action.Date;

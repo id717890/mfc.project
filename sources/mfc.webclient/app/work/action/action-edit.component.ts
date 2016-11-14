@@ -5,8 +5,8 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { CompleterService, CompleterData } from 'ng2-completer';
 
-import { Acception } from '../../models/acception.model';
-import { AcceptionService } from './acception.service';
+import { Action } from '../../models/action.model';
+import { ActionService } from './action.service';
 import { User } from '../../models/user.model';
 import { UserService } from '../../admin/users/user.service';
 import { CustomerType } from '../../models/customer-type.model';
@@ -19,15 +19,15 @@ import { Service } from '../../models/service.model';
 import { ServiceService } from '../../admin/services/service.service';
 
 import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.component/base-edit.component';
-import { AcceptionContext } from './acception-edit.context';
+import { ActionContext } from './action-edit.context';
 
 @Component({
     selector: 'modal-content',
-    templateUrl: 'app/work/acception/acception-edit.component.html',
+    templateUrl: 'app/work/action/action-edit.component.html',
     providers: [Modal]
 })
 
-export class AcceptionEditComponent extends BaseEditComponent<Acception> implements AfterViewInit, OnInit {
+export class ActionEditComponent extends BaseEditComponent<Action> implements AfterViewInit, OnInit {
     organizations: Organization[];
     services: Service[];
     service_childs: Service[];
@@ -51,8 +51,8 @@ export class AcceptionEditComponent extends BaseEditComponent<Acception> impleme
         inline: false,
     };
 
-    constructor(public dialog: DialogRef<AcceptionContext>
-        , private acceptionService: AcceptionService
+    constructor(public dialog: DialogRef<ActionContext>
+        , private actionService: ActionService
         , private _userService: UserService
         , private _customerTypeService: CustomerTypeService
         , private _actionTypeService: ActionTypeService

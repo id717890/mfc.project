@@ -271,7 +271,7 @@
     <Compile Include="Models.Mappings\ServiceModelProfile.cs" />
     <Compile Include="Models.Mappings\UserModelProfile.cs" />
     <Compile Include="Models\AccountModel.cs" />
-    <Compile Include="Models\AcceptionModel.cs" />
+    <Compile Include="Models\ActionModel.cs" />
     <Compile Include="Models\ActionTypeInfo.cs" />
     <Compile Include="Models\CustomerType.cs" />
     <Compile Include="Models\FileInfo.cs" />

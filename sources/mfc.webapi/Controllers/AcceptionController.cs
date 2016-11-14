@@ -12,7 +12,7 @@ using mfc.webapi.Models;
 
 namespace mfc.webapi.Controllers
 {
-    [RoutePrefix("api/acceptions")]
+    [RoutePrefix("api/actions")]
     public class AcceptionController : ApiController
     {
         private readonly IActionService _actionService;
@@ -32,27 +32,27 @@ namespace mfc.webapi.Controllers
         {
             var queryDateBegin = DateTime.Today;
             var queryDateEnd = DateTime.Today.AddDays(1);
-            var acceptions = _mapper.Map<IEnumerable<AcceptionModel>>(_actionService.GetActions(queryDateBegin, queryDateEnd, null)).ToList();
+            var acceptions = _mapper.Map<IEnumerable<ActionModel>>(_actionService.GetActions(queryDateBegin, queryDateEnd, null)).ToList();
             var response = Request.CreateResponse(HttpStatusCode.OK, acceptions);
             response.Headers.Add("Total-rows", acceptions.Count().ToString());
             return response;
         }
 
-        // GET: api/acceptions?pageIndex=1&pageSize=50
+        // GET: api/actions?pageIndex=1&pageSize=50
         [HttpGet]
         [Route("")]
         public HttpResponseMessage Get(int pageIndex, int pageSize)
         {
             var queryDateBegin = DateTime.Today;
             var queryDateEnd = DateTime.Today.AddDays(1);
-            var acceptions = _mapper.Map<IEnumerable<AcceptionModel>>(_actionService.GetActions(queryDateBegin, queryDateEnd, null).Skip((pageIndex - 1) * pageSize)
+            var acceptions = _mapper.Map<IEnumerable<ActionModel>>(_actionService.GetActions(queryDateBegin, queryDateEnd, null).Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)).ToList();
             var response = Request.CreateResponse(HttpStatusCode.OK, acceptions);
             response.Headers.Add("Total-rows", acceptions.Count().ToString());
             return response;
         }
 
-        // GET: api/acceptions?dateBegin='01.01.2016'&dateEnd='01.10.2016'&pageIndex=1&pageSize=50&userId=1000
+        // GET: api/actions?dateBegin='01.01.2016'&dateEnd='01.10.2016'&pageIndex=1&pageSize=50&userId=1000
         [HttpGet]
         [Route("")]
         public HttpResponseMessage Get(string dateBegin, string dateEnd, int pageIndex, int pageSize, long userId)
@@ -75,7 +75,7 @@ namespace mfc.webapi.Controllers
 
             if (user == null)
             {
-                var acceptions = _mapper.Map<IEnumerable<AcceptionModel>>(_actionService.GetActions(queryDateBegin, queryDateEnd, null)).ToList();
+                var acceptions = _mapper.Map<IEnumerable<ActionModel>>(_actionService.GetActions(queryDateBegin, queryDateEnd, null)).ToList();
                 var totalRows = acceptions.Count();
                 var paging = acceptions
                     .Skip((pageIndex - 1) * pageSize)
@@ -86,7 +86,7 @@ namespace mfc.webapi.Controllers
             }
             else
             {
-                var acceptions = _mapper.Map<IEnumerable<AcceptionModel>>(_actionService.GetActions(user, queryDateBegin, queryDateEnd)).ToList();
+                var acceptions = _mapper.Map<IEnumerable<ActionModel>>(_actionService.GetActions(user, queryDateBegin, queryDateEnd)).ToList();
                 var totalRows = acceptions.Count();
                 var paging = acceptions
                     .Skip((pageIndex - 1) * pageSize)
@@ -97,19 +97,19 @@ namespace mfc.webapi.Controllers
             }
         }
 
-        // GET: api/acceptions/5
+        // GET: api/actions/5
         [HttpGet]
         [Route("{id}")]
         public HttpResponseMessage Get(int id)
         {
             var acception = _actionService.GetActionById(id);
-            return acception != null ? Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<AcceptionModel>(acception)) : Request.CreateResponse(HttpStatusCode.NotFound);
+            return acception != null ? Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<ActionModel>(acception)) : Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        // POST: api/acceptions
+        // POST: api/actions
         [HttpPost]
         [Route("")]
-        public HttpResponseMessage Post([FromBody]AcceptionModel value)
+        public HttpResponseMessage Post([FromBody]ActionModel value)
         {
             var id = _actionService.Add(
                 value.Date,
@@ -128,10 +128,10 @@ namespace mfc.webapi.Controllers
             return msg;
         }
 
-        // PUT: api/acceptions/5
+        // PUT: api/actions/5
         [HttpPut]
         [Route("{id}")]
-        public HttpResponseMessage Put(int id, [FromBody]AcceptionModel value)
+        public HttpResponseMessage Put(int id, [FromBody]ActionModel value)
         {
             var acception = _actionService.GetActionById(id);
             if (acception == null) return Request.CreateResponse(HttpStatusCode.NotFound);
@@ -154,7 +154,7 @@ namespace mfc.webapi.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        // DELETE: api/acceptions/5
+        // DELETE: api/actions/5
         [HttpDelete]
         [Route("{id}")]
         public HttpResponseMessage Delete(int id)
