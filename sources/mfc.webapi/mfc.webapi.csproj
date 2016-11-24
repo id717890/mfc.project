@@ -246,7 +246,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="CompositeModule.cs" />
     <Compile Include="CompostionRoot.cs" />
-    <Compile Include="Controllers\AcceptionController.cs" />
+    <Compile Include="Controllers\ActionController.cs" />
     <Compile Include="Controllers\ActionTypeController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\FileController.cs" />
