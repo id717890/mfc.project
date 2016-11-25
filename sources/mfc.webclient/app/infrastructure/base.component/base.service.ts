@@ -2,7 +2,6 @@
 import { Http, Headers, RequestOptions, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { BaseModel } from './../../models/base.model';
 
-
 @Injectable()
 export class BaseService<TModel extends BaseModel>  {
     protected apiUrl: string = "http://localhost:4664/api/";
@@ -80,7 +79,11 @@ export class BaseService<TModel extends BaseModel>  {
         return output;
     }
 
-    handlerError(error: any) {
+    public handlerError(error: any) {
+        if (error!=null && error.message!=null)
         console.log(error.message);
+        else if (error!=null && error.message==null)
+        console.log(error);
+        else console.log("Произошла не понятная ошибка");
     }
 }

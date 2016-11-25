@@ -11,7 +11,7 @@ import { UserService } from '../../admin/users/user.service';
 import { DIALOG_CONFIRM, DIALOG_DELETE, SAVE_MESAGE, LOAD_LIST_MESAGE, PAGIN_PAGE_SIZE } from '../../Infrastructure/application-messages';
 
 @Component({
-    selector: 'mfc-acception-list',
+    selector: 'mfc-action-list',
     templateUrl: 'app/work/action/action-list.component.html'
 })
 
@@ -33,8 +33,8 @@ export class ActionListComponent extends BaseListComponent<Action> {
         // selectionTxtFontSize: '16px'
     };
 
-    constructor(public modal: Modal, private acceptionService: ActionService, private _userService: UserService) {
-        super(modal, acceptionService);
+    constructor(public modal: Modal, private actionService: ActionService, private _userService: UserService) {
+        super(modal, actionService);
         this.fillLists();
         this.prepareForm();
     }
@@ -67,7 +67,7 @@ export class ActionListComponent extends BaseListComponent<Action> {
     }
 
     Search() {
-        this.busy = this.acceptionService.getWithParameters(this.prepareData()).then(x => {
+        this.busy = this.actionService.getWithParameters(this.prepareData()).then(x => {
             this.models = x['data'];
             this.totalRows = x['total'];
         })
@@ -77,7 +77,7 @@ export class ActionListComponent extends BaseListComponent<Action> {
     getPage(page: number) {
         this.pageIndex = page;
         this.busy =
-            this.acceptionService.getWithParameters(this.prepareData()).then(x => {
+            this.actionService.getWithParameters(this.prepareData()).then(x => {
                 this.models = x['data'];
                 this.totalRows = x['total'];
             })
@@ -130,7 +130,7 @@ export class ActionListComponent extends BaseListComponent<Action> {
                         return;
 
                     this.busyMessage = SAVE_MESAGE;
-                    this.busy = this.acceptionService.delete(model)
+                    this.busy = this.actionService.delete(model)
                         .then(res => {
                             if (res) {
                                 this.models.splice(this.models.indexOf(model), 1);
