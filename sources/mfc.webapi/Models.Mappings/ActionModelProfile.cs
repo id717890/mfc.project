@@ -3,9 +3,9 @@ using mfc.domain.entities;
 
 namespace mfc.webapi.Models.Mappings
 {
-    public class AcceptionModelProfile: Profile
+    public class ActionModelProfile: Profile
     {
-        public AcceptionModelProfile()
+        public ActionModelProfile()
         {
             CreateMapEntityToModel();
             CreateMapModelToEntity();

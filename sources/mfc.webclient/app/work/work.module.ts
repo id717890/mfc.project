@@ -4,9 +4,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { WorkComponent } from './work.component';
-import { ActionListComponent } from './action/action-list.component';  // Приемы
-import { ActionService } from './action/action.service';  // Приемы
-import { ActionEditComponent } from './action/action-edit.component'
+
+// Приемы
+import { ActionListComponent } from './action/action-list.component';
+import { ActionService } from './action/action.service';
+import { ActionEditComponent } from './action/action-edit.component';
+
+// Дела
+import { FileListComponent } from './file/file-list.component';
+import { FileService } from './file/file.service';
+import { FileEditComponent } from './file/file-edit.component';
 
 import { MyDatePickerModule } from 'mydatepicker';  // https://github.com/kekeh/mydatepicker
 import { Ng2PaginationModule } from 'ng2-pagination'; //https://github.com/michaelbromley/ng2-pagination
@@ -33,10 +40,12 @@ import { BusyModule, BusyConfig } from 'angular2-busy';
         Ng2PaginationModule
     ],
     declarations: [
-        ActionListComponent, ActionEditComponent
+        ActionListComponent, ActionEditComponent,
+        FileListComponent, FileEditComponent
     ],
     providers: [
-        ActionService
+        ActionService,
+        FileService
     ]
 })
 

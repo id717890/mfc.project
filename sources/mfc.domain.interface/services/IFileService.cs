@@ -23,5 +23,9 @@ namespace mfc.domain.services {
         void Return(Int64 fileId, string comments);
         void Checked(Int64 fileId, string comments);
         void SetStage(IEnumerable<long> file_ids, string stage, string comments);
+
+        /*Рефакторинг*/
+        KeyValuePair<long, IEnumerable<File>> GetFiles(DateTime beginDate, DateTime endDate, Int32 pageIndex, Int32 pageSize);
+
     }
 }

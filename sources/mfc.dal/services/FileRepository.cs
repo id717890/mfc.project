@@ -11,6 +11,7 @@ using Ninject;
 using mfc.domain.services;
 using mfc.infrastructure.services;
 using NHibernate.Cache;
+using NHibernate.Criterion;
 using NHibernate.Proxy;
 
 namespace mfc.dal.services {
@@ -198,6 +199,32 @@ namespace mfc.dal.services {
             }
 
             return files;
+        }
+
+        public long TotalRows { get; set; }
+
+        public IEnumerable<File> GetFiles(DateTime dateBegin, DateTime dateEnd, int pageIndex, int pageSize)
+        {
+            var date1 = new DateTime(dateBegin.Year, dateBegin.Month, dateBegin.Day, 0, 0, 0);
+            var date2 = new DateTime(dateEnd.Year, dateEnd.Month, dateEnd.Day, 23, 59, 59);
+            var criteria = Session.CreateCriteria<File>()
+                .Add(Restrictions.Between("Date", date1, date2))
+                .Add(Restrictions.Eq("IsDeleted", false))
+                .AddOrder(Order.Desc("Date"))
+                .AddOrder(Order.Desc("Id"))
+                .SetMaxResults(pageSize)
+                .SetFirstResult((pageIndex - 1) * pageSize)
+                .Future<File>();
+
+            var countOfActions = Session.CreateCriteria<File>()
+                .Add(Restrictions.Between("Date", date1, date2))
+                .Add(Restrictions.Eq("IsDeleted", false))
+                .SetProjection(Projections.Count(Projections.Id()))
+                .FutureValue<int>();
+
+            TotalRows = countOfActions.Value;
+
+            return criteria;
         }
 
         private Int64 _end_file_status_id = -1;
