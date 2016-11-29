@@ -6,28 +6,70 @@
 				<div class="row">
 					<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 no-m">
 						<div class="panel panel-default">
-							<div class="row">
-								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-									<div class="row">
-										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-											<div class="form-group">
-												<my-date-picker [options]="myDatePickerOptions" (dateChanged)="onDateBeginChanged($event)" [selDate]="dateBegin"></my-date-picker>
-											</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<label>От</label>
+											<my-date-picker [options]="myDatePickerOptions" (dateChanged)="onDateBeginChanged($event)" [selDate]="dateBegin"></my-date-picker>
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-											<div class="form-group">
-												<my-date-picker [options]="myDatePickerOptions" (dateChanged)="onDateBeginChanged($event)" [selDate]="dateBegin"></my-date-picker>
-											</div>
+									<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<label>До</label>
+											<my-date-picker [options]="myDatePickerOptions" (dateChanged)="onDateBeginChanged($event)" [selDate]="dateBegin"></my-date-picker>
+										</div>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<label>Статус</label>
+											<select name="fileStatus" class="form-control" (change)="onExpertChange($event.target.value)">
+                    						<option [value]="-1">Все</option>
+                    						<option *ngFor="let fileStatus of fileStatuses" [value]="fileStatus.id">{{fileStatus.caption}}</option>
+                						</select>
+										</div>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<label>ОГВ</label>
+											<select name="organization" class="form-control" (change)="onExpertChange($event.target.value)">
+                    						<option [value]="-1">Все</option>
+                    						<option *ngFor="let organization of organizations" [value]="organization.id">{{organization.caption}}</option>
+                						</select>
 										</div>
 									</div>
 								</div>
-								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-									1
-								</div>
-								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-									2
+								<div class="row">
+									<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<label>Эксперт</label>
+											<select name="expert" class="form-control" (change)="onExpertChange($event.target.value)">
+                    						<option [value]="-1">Все</option>
+                    						<option *ngFor="let expert of experts" [value]="expert.id">{{expert.description}}</option>
+                						</select>
+										</div>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<label>Контролёр</label>
+											<select name="controller" class="form-control" (change)="onExpertChange($event.target.value)">
+                    						<option [value]="-1">Все</option>
+                    						<option *ngFor="let controller of controllers" [value]="controller.id">{{controller.description}}</option>
+                						</select>
+										</div>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<label>Услуга</label>
+											<ng2-completer [dataService]="autoCompleteServices" [minSearchLength]="0" placeholder="Выберите услугу" textSearching="Поиск..."
+												textNoResults="Ничего не найдено!" name="service"></ng2-completer>
+											<input type="hidden" name="test">
+										</div>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+										<label>&nbsp;</label>
+										<button class="btn btn-primary" style="width:100%">Обновить</button>
+									</div>
 								</div>
 							</div>
 						</div>
