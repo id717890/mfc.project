@@ -13,7 +13,8 @@ export class File extends BaseModel {
         public expert: User,
         public controller: User,
         public status: FileStatus,
-        public organization: Organization
+        public organization: Organization,
+        public is_selected:boolean
     ) {
         super(id, caption);
     }

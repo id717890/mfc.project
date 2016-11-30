@@ -39,6 +39,7 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
     selectedExpert: number = -1;
     selectedController: number = -1;
     selectedService: number = -1;
+    checkAll:boolean=false;
 
     //Autocomplete
     private autoCompleteServices: CompleterData;
@@ -74,6 +75,20 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
         })
     }
 
+    //Создать пакет
+    CreatePackage(){
+        console.log(this.models.filter(x => x.is_selected));
+    }
+
+    //Выбираем все объекты
+    onSelectAllFiles(event:any){
+        if (event.target.checked)
+            this.models.forEach(x=>x.is_selected=true);
+        else 
+            this.models.forEach(x=>x.is_selected=false);
+        
+    }
+
     //Изменение Услуги
     onSelectService(item: any) {
         if (item != null) this.selectedService = item.originalObject.id;
@@ -90,29 +105,10 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
         if (event.formatted != "") this.dateEnd = event.formatted;
     }
 
-    //Изменение статуса
-    onChangeStatus(id: any) {
-        this.selectedFileStatus = id;
-    }
-
-    //Изменение ОГВ
-    onChangeOgv(id: any) {
-        this.selectedOrganization = id;
-    }
-
-    //Изменение Эксперта
-    onChangeExpert(id: any) {
-        this.selectedExpert = id;
-    }
-
-    //Изменение Контролера
-    onChangeController(id: any) {
-        this.selectedController = id;
-    }
-
     //Перелистывание страницы
     getPage(page: number) {
         this.pageIndex = page;
+        this.checkAll=false;
         this.busy =
             this.fileService.getWithParameters(this.prepareDataForSearch()).then(x => {
                 this.models = x['data'];
@@ -167,7 +163,7 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
     }
 
     newModel(): File {
-        return new File(null, '', null, null, null, null, null, null);
+        return new File(null, '', null, null, null, null, null, null,false);
     };
 
     cloneModel(model: File): File {
@@ -179,7 +175,8 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
             model.expert,
             model.controller,
             model.status,
-            model.organization
+            model.organization,
+            model.is_selected
         );
     };
 
