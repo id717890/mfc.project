@@ -22,6 +22,7 @@ import { ServiceService } from '../../admin/services/service.service';
     templateUrl: "app/work/file/file-list.component.html"
 })
 
+
 export class FileListComponent extends BaseListComponent<File> implements AfterViewInit {
     dateBegin: string;
     dateEnd: string;
@@ -32,6 +33,12 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
     controllers: User[];
     experts: User[];
     services: Service[];
+
+    selectedFileStatus: number = -1;
+    selectedOrganization: number = -1;
+    selectedExpert: number = -1;
+    selectedController: number = -1;
+    selectedService: number = -1;
 
     //Autocomplete
     private autoCompleteServices: CompleterData;
@@ -59,12 +66,86 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
         this.fillComboboxLists();
     }
 
+    //Обновить фильтр
+    Search() {
+        this.busy = this.fileService.getWithParameters(this.prepareDataForSearch()).then(x => {
+            this.models = x['data'];
+            this.totalRows = x['total'];
+        })
+    }
+
+    //Изменение Услуги
+    onSelectService(item: any) {
+        if (item != null) this.selectedService = item.originalObject.id;
+        else this.selectedService = -1;
+    }
+
+    //Собитие изменения даты начала диапазона
+    onChangedDateBegin(event: any) {
+        if (event.formatted != "") this.dateBegin = event.formatted;
+    }
+
+    //Собитие изменения даты окончания диапазона
+    onChangedDateEnd(event: any) {
+        if (event.formatted != "") this.dateEnd = event.formatted;
+    }
+
+    //Изменение статуса
+    onChangeStatus(id: any) {
+        this.selectedFileStatus = id;
+    }
+
+    //Изменение ОГВ
+    onChangeOgv(id: any) {
+        this.selectedOrganization = id;
+    }
+
+    //Изменение Эксперта
+    onChangeExpert(id: any) {
+        this.selectedExpert = id;
+    }
+
+    //Изменение Контролера
+    onChangeController(id: any) {
+        this.selectedController = id;
+    }
+
+    //Перелистывание страницы
+    getPage(page: number) {
+        this.pageIndex = page;
+        this.busy =
+            this.fileService.getWithParameters(this.prepareDataForSearch()).then(x => {
+                this.models = x['data'];
+                this.totalRows = x['total'];
+            })
+    }
+
+    //Подготавливаем данные для обновления фильтра
+    private prepareDataForSearch(): any[] {
+        let param = [];
+        param["pageIndex"] = this.pageIndex;
+        param["pageSize"] = this.pageSize;
+        param["beginDate"] = this.dateBegin;
+        param["endDate"] = this.dateEnd;
+        param["status"] = this.selectedFileStatus;
+        param["organization"] = this.selectedOrganization;
+        param["service"] = this.selectedService;
+        param["expert"] = this.selectedExpert;
+        param["controller"] = this.selectedController;
+        return param;
+    }
+
     private prepareForm(): void {
-        let today = new Date();
-        let tomorrow = new Date();
-        tomorrow.setDate(today.getDate() + 1);
-        this.dateBegin = today.getDate() + '.' + (today.getMonth() + 1) + '.' + today.getFullYear();
-        this.dateEnd = tomorrow.getDate() + '.' + (tomorrow.getMonth() + 1) + '.' + tomorrow.getFullYear();
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        this.dateBegin =
+            (firstDay.getDate().toString().length == 1 ? "0" + firstDay.getDate() : firstDay.getDate()) + '.'
+            + (((firstDay.getMonth() + 1)).toString().length == 1 ? "0" + (firstDay.getMonth() + 1) : (firstDay.getMonth() + 1)) + '.'
+            + firstDay.getFullYear();
+        this.dateEnd = lastDay.getDate() + '.'
+            + (((lastDay.getMonth() + 1)).toString().length == 1 ? "0" + (lastDay.getMonth() + 1) : (lastDay.getMonth() + 1)) + '.'
+            + lastDay.getFullYear();
     }
 
     private fillComboboxLists() {

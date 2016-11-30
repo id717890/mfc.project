@@ -6,18 +6,20 @@ using System.Text;
 using System.Threading.Tasks;
 using mfc.domain.models;
 
-namespace mfc.domain.services {
+namespace mfc.domain.services
+{
     /// <summary>
     /// Интерфейс для работы с делами
     /// </summary>
-    public interface IFileService {
+    public interface IFileService
+    {
         IEnumerable<FileRecord> GetFiles(DateTime beginDate, DateTime endDate, Int64 controllerId, Int64 expertId, Int64 statusId, Int64 orgId, Int64 serviceId);
         File GetFileById(Int64 Id);
         File GetFileByActionId(Int64 actionId);
         Int64 Add(ServiceAction action);
         void Update(File file);
         void Delete(Int64 id);
-        
+
         void SendForControl(Int64 fileId, string comments);
         IEnumerable<Int64> AcceptForControl(IEnumerable<Int64> file_ids);
         void Return(Int64 fileId, string comments);
@@ -25,7 +27,6 @@ namespace mfc.domain.services {
         void SetStage(IEnumerable<long> file_ids, string stage, string comments);
 
         /*Рефакторинг*/
-        KeyValuePair<long, IEnumerable<File>> GetFiles(DateTime beginDate, DateTime endDate, Int32 pageIndex, Int32 pageSize);
-
+        KeyValuePair<long, IEnumerable<File>> GetFiles(DateTime beginDate, DateTime endDate, Int64 fileStatus, Int64 organization, Int64 service, Int64 expert, Int64 controller, Int32 pageIndex, Int32 pageSize);
     }
 }

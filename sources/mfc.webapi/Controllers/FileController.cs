@@ -29,13 +29,21 @@ namespace mfc.webapi.Controllers
         // GET: api/files?pageIndex=1&pageSize=50
         [HttpGet]
         [Route("")]
-        public HttpResponseMessage Get(int pageIndex, int pageSize)
+        public HttpResponseMessage Get(int pageIndex, int pageSize, string beginDate = "-1", string endDate = "-1", int status = -1, int organization = -1, int service = -1, int expert = -1, int controller = -1)
         {
-            DateTime queryDateBegin = DateTime.Today;
-            queryDateBegin = new DateTime(queryDateBegin.Year, queryDateBegin.Month, 1);
+            DateTime queryDateBegin = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             DateTime queryDateEnd = queryDateBegin.AddMonths(1).AddSeconds(-1);
 
-            var output =_fileService.GetFiles(queryDateBegin,queryDateEnd,pageIndex,pageSize);
+            if ((!string.IsNullOrEmpty(beginDate)) && (beginDate != "-1"))
+            {
+                DateTime.TryParse(beginDate, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDateBegin);
+            }
+
+            if ((!string.IsNullOrEmpty(endDate)) && (endDate != "-1"))
+            {
+                DateTime.TryParse(endDate, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDateEnd);
+            }
+            var output = _fileService.GetFiles(queryDateBegin, queryDateEnd, status, organization, service, expert, controller, pageIndex, pageSize);
             var files = _mapper.Map<IEnumerable<FileModel>>(output.Value);
             var response = Request.CreateResponse(HttpStatusCode.OK, files);
             response.Headers.Add("Total-rows", output.Key.ToString());
@@ -49,7 +57,7 @@ namespace mfc.webapi.Controllers
         public HttpResponseMessage Get([FromUri]DateTime beginDate, [FromUri]DateTime endDate, [FromUri]int controller, [FromUri]int expert, [FromUri]int status, [FromUri]int organization, [FromUri]int service)
         {
             var fileService = CompositionRoot.Resolve<IFileService>();
-            var output = fileService.GetFiles(beginDate, endDate, controller, expert, status, organization, service).Select(x => new FileModel { } );
+            var output = fileService.GetFiles(beginDate, endDate, controller, expert, status, organization, service).Select(x => new FileModel { });
 
             return Request.CreateResponse(HttpStatusCode.OK, output);
         }

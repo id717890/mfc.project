@@ -11,6 +11,6 @@ namespace mfc.dal.services {
 
         /*Рефакторинг*/
         Int64 TotalRows { get; set; }
-        IEnumerable<File> GetFiles(DateTime dateBegin, DateTime dateEnd, Int32 pageIndex, Int32 pageSize);
+        IEnumerable<File> GetFiles(DateTime dateBegin, DateTime dateEnd, Int64 fileStatus, Int64 organization, Int64 service, Int64 expert, Int64 controller, Int32 pageIndex, Int32 pageSize);
     }
 }
