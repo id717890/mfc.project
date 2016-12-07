@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using mfc.domain.entities;
+using NUnit.Framework;
 
 namespace mfc.webapi.tests.Automapper.Tests
 {
+    [TestFixture]
+    [Category(TestCategories.AutomapperTest)]
     public abstract class AutomapperBaseTests<TEntity, TModel>
     {
         protected IMapper _mapper;

@@ -14,11 +14,12 @@ namespace mfc.domain {
             Kernel.Bind<IActionTypeService>().To<ActionTypeService>().InSingletonScope();
             Kernel.Bind<ICustomerTypeService>().To<CustomerTypeService>().InSingletonScope();
             Kernel.Bind<IServiceService>().To<ServiceService>().InSingletonScope();
-            Kernel.Bind<IActionService>().To<ActionService>().InSingletonScope();
-            Kernel.Bind<IFileService>().To<FileService>().InSingletonScope();
             Kernel.Bind<IFileStatusService>().To<FileStatusService>().InSingletonScope();
             Kernel.Bind<IFileStageService>().To<FileStageService>().InSingletonScope();
-            Kernel.Bind<IPackageService>().To<PackageService>().InSingletonScope();
+
+            Kernel.Bind<IActionService>().To<ActionService>();
+            Kernel.Bind<IFileService>().To<FileService>();
+            Kernel.Bind<IPackageService>().To<PackageService>();
         }
     }
 }

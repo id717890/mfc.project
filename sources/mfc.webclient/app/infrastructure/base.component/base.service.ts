@@ -1,12 +1,13 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { BaseModel } from './../../models/base.model';
-
+import { AppSettings } from './../application-settings';
+import { AbstractService} from './../abstract-service';
 
 @Injectable()
-export class BaseService<TModel extends BaseModel>  {
-    protected apiUrl: string = "http://localhost:4664/api/";
+export class BaseService<TModel extends BaseModel> extends AbstractService {
     constructor(protected _http: Http) {
+        super(_http);
     }
 
     getApiTag(): string {

@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
+import { BusyModule, BusyConfig } from 'angular2-busy'; //Сторонний пакет для реализации busy indicatpr angular2-busy https://github.com/devyumao/angular2-busy
+
 import { AdminModule } from './admin/admin.module';
 import { WorkModule } from './work/work.module';
 
@@ -22,10 +24,31 @@ import { ActionEditComponent } from './work/action/action-edit.component'
 
 import { routing, appRoutingProviders } from './app.router';
 import { DefaultRequestOptions } from './infrastructure/default-request-options';
+import { ActionPermissionService } from './infrastructure/security/action-permission.service';
 
 @NgModule({
   imports: [
     BrowserModule,
+    BusyModule.forRoot(
+      new BusyConfig({
+        message: 'Загрузка...',
+        backdrop: true,
+        /*template: `
+          <div class="panel panel-default ">
+            <div class="sk-wave">
+              <div class="sk-rect sk-rect1"></div>
+              <div class="sk-rect sk-rect2"></div>
+              <div class="sk-rect sk-rect3"></div>
+              <div class="sk-rect sk-rect4"></div>
+              <div class="sk-rect sk-rect5"></div>
+              <div class="sk-text">{{message}}</div>       
+            </div>
+          </div>    
+                `,*/
+        delay: 50,
+        minDuration: 100
+      })
+    ),
     AdminModule,
     WorkModule,
     ModalModule.forRoot(),
@@ -41,6 +64,7 @@ import { DefaultRequestOptions } from './infrastructure/default-request-options'
   providers: [
     appRoutingProviders,
     { provide: RequestOptions, useClass: DefaultRequestOptions },
+    ActionPermissionService
   ],
   entryComponents: [
     FileStatusEditComponent,

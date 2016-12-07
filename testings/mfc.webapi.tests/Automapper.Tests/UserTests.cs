@@ -4,6 +4,8 @@ using NUnit.Framework;
 
 namespace mfc.webapi.tests.Automapper.Tests
 {
+    [TestFixture]
+    [Category(TestCategories.AutomapperTest)]
     public class UserTests : AutomapperBaseTests<User, UserInfo>
     {
         [TestCase(1, "account", "name", true, true, true)]

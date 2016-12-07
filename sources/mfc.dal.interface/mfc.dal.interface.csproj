@@ -43,6 +43,7 @@
     <Compile Include="services\ICustomerTypeRepository.cs" />
     <Compile Include="services\IFileStageRepository.cs" />
     <Compile Include="services\IFileStatusRepository.cs" />
+    <Compile Include="services\IModulePermissionRepository.cs" />
     <Compile Include="services\IPackageRepository.cs" />
     <Compile Include="services\IServiceActionRepository.cs" />
     <Compile Include="services\IServiceRepository.cs" />

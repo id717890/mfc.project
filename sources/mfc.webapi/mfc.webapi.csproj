@@ -247,6 +247,8 @@
     <Compile Include="CompositeModule.cs" />
     <Compile Include="CompostionRoot.cs" />
     <Compile Include="Controllers\AcceptionController.cs" />
+    <Compile Include="Controllers\ActionPermissionController.cs" />
+    <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\ActionTypeController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\FileController.cs" />
@@ -257,21 +259,28 @@
     <Compile Include="Controllers\PasswordController.cs" />
     <Compile Include="Controllers\CustomerTypeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Domain\Services\ModuleService.cs" />
+    <Compile Include="Domain\Services\ModulesFileConfiguration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\IModulesConfiguration.cs" />
+    <Compile Include="Helpers\IModulesProvider.cs" />
+    <Compile Include="Helpers\ModulesProvider.cs" />
     <Compile Include="Models.Mappings\AcceptionModelProfile.cs" />
     <Compile Include="Models.Mappings\AccountModelProfile.cs" />
     <Compile Include="Models.Mappings\ActionTypeModelProfile.cs" />
     <Compile Include="Models.Mappings\CustomerTypeModelProfile.cs" />
     <Compile Include="Models.Mappings\FileStageModelProfile.cs" />
     <Compile Include="Models.Mappings\FileStatusModelProfile.cs" />
+    <Compile Include="Models.Mappings\ModuleModelProfile.cs" />
     <Compile Include="Models.Mappings\OrganizationModelProfile.cs" />
     <Compile Include="Models.Mappings\OrganizationTypeModelProfile.cs" />
     <Compile Include="Models.Mappings\ServiceModelProfile.cs" />
     <Compile Include="Models.Mappings\UserModelProfile.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\ActionModel.cs" />
+    <Compile Include="Models\ModuleModel.cs" />
     <Compile Include="Models\ActionTypeInfo.cs" />
     <Compile Include="Models\CustomerType.cs" />
     <Compile Include="Models\FileInfo.cs" />
@@ -306,6 +315,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <Content Include="modules.json" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>

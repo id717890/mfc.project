@@ -8,7 +8,7 @@ import { Action } from '../../models/action.model';
 import { User } from '../../models/user.model';
 import { ActionService } from './action.service';
 import { UserService } from '../../admin/users/user.service';
-import { DIALOG_CONFIRM, DIALOG_DELETE, SAVE_MESAGE, LOAD_LIST_MESAGE, PAGIN_PAGE_SIZE } from '../../Infrastructure/application-messages';
+import { Messages } from '../../Infrastructure/application-messages';
 
 @Component({
     selector: 'mfc-acception-list',
@@ -121,15 +121,15 @@ export class ActionListComponent extends BaseListComponent<Action> {
     delete(model: Action) {
         this.modal
             .confirm()
-            .title(DIALOG_CONFIRM)
-            .body(DIALOG_DELETE)
+            .title(Messages.ACTION_CONFIRM)
+            .body(Messages.DELETE_CONFIRM)
             .open()
             .then(x => {
                 x.result.then(result => {
                     if (!result)
                         return;
 
-                    this.busyMessage = SAVE_MESAGE;
+                    this.busyMessage = Messages.SAVING;
                     this.busy = this.acceptionService.delete(model)
                         .then(res => {
                             if (res) {

@@ -1,0 +1,35 @@
+﻿[
+  {
+    "code": "admin",
+    "name": "Администирование",
+    "modules": [
+      {
+        "code": "customer-type",
+        "name": "Виды посетителей",
+        "operations": [
+          {
+            "code": "add",
+            "name": "Добавить"
+          },
+          {
+            "code": "delete",
+            "name": "Удалить"
+          },
+          {
+            "code": "update",
+            "name": "Изменить"
+          }
+        ]
+      }
+    ]
+
+  },
+  {
+    "code": "action",
+    "name": "Приемы"
+  },
+  {
+    "code": "file",
+    "name": "Дела"
+  }
+]

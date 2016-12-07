@@ -7,11 +7,13 @@ import { DialogRef, overlayConfigFactory } from 'angular2-modal';
 import { BaseService } from './base.service';
 import { BaseModel } from './../../models/base.model';
 import { BaseEditComponent } from './base-edit.component';
-import { DIALOG_CONFIRM, DIALOG_DELETE, SAVE_MESAGE, LOAD_LIST_MESAGE, PAGIN_PAGE_SIZE } from './../application-messages';
+import { Messages } from './../application-messages';
+import { AppSettings } from './../application-settings';
 
 @Component({
     selector: 'mfc-customer-type-list',
-    templateUrl: 'app/admin/customer-types/customer-type-list.component.html',
+    //todo: удалить
+    //templateUrl: 'app/admin/customer-types/customer-type-list.component.html',
     providers: [Modal, BaseEditComponent]
 })
 
@@ -21,7 +23,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     busyMessage: string;
 
     totalRows: number;  // общее кол-во строк сущности для компонента ng2-pagination
-    pageSize: number = PAGIN_PAGE_SIZE;  // количество элементов на странице
+    pageSize: number = AppSettings.DEFAULT_PAGE_SIZE;  // количество элементов на странице
     pageIndex: number = 1; //текущая страница
 
     constructor(public modal: Modal, private service: BaseService<TModel>) { }
@@ -31,7 +33,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     abstract getEditComponent(): any;
 
     ngOnInit(): void {
-        this.busyMessage = LOAD_LIST_MESAGE;
+        this.busyMessage = Messages.LOADING_LIST;
         this.busy = this.service.get()
             .then(models => {
                 this.models = models['data'];       // извлекаем массив данных
@@ -48,7 +50,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
             ).then(x => {
                 x.result.then(output => {
                     if (output != null) {
-                        this.busyMessage = SAVE_MESAGE;
+                        this.busyMessage = Messages.SAVING;
                         this.busy = this.service.post(output)
                             .then(x => { if (x != null) {
                                 this.models.push(x);
@@ -73,7 +75,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
             ).then(x => {
                 x.result.then(output => {
                     if (output != null) {
-                        this.busyMessage = SAVE_MESAGE;
+                        this.busyMessage = Messages.SAVING;
                         this.busy = this.service.put(output)
                             .then(x => {
                                 Object.keys(output).forEach((key) => {
@@ -91,15 +93,15 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     delete(model: TModel) {
         this.modal
             .confirm()
-            .title(DIALOG_CONFIRM)
-            .body(DIALOG_DELETE)
+            .title(Messages.ACTION_CONFIRM)
+            .body(Messages.DELETE_CONFIRM)
             .open()
             .then(x => {
                 x.result.then(result => {
                     if (!result)
                         return;
 
-                    this.busyMessage = SAVE_MESAGE;
+                    this.busyMessage = Messages.SAVING;
                     this.busy = this.service.delete(model)
                         .then(res => {
                             if (res) {

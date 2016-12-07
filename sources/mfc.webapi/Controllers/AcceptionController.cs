@@ -30,11 +30,10 @@ namespace mfc.webapi.Controllers
         [Route("")]
         public HttpResponseMessage Get()
         {
-            var queryDateBegin = DateTime.Today;
-            var queryDateEnd = DateTime.Today.AddDays(1);
-            var acceptions = _mapper.Map<IEnumerable<ActionModel>>(_actionService.GetActions(queryDateBegin, queryDateEnd, null)).ToList();
+            var acceptions = _mapper.Map<IEnumerable<ActionModel>>(_actionService.GetActions(DateTime.Today, DateTime.Today.AddDays(1), null)).ToList();
             var response = Request.CreateResponse(HttpStatusCode.OK, acceptions);
-            response.Headers.Add("Total-rows", acceptions.Count().ToString());
+            response.Headers.Add("Total-rows", acceptions.Count.ToString());
+
             return response;
         }
 
