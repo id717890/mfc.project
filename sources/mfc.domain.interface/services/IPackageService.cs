@@ -32,5 +32,11 @@ namespace mfc.domain.services {
         void Delete(Int64 id);
 
         void UpdatePackageFiles(Int64 package_id, IEnumerable<Int64> file_ids);
+
+        /*Рефакторинг*/
+        /// <summary>
+        /// Позволяет получить страницу <code>pageIndex</code> со списком пакетов, созданных контролером <code>controller</code> и имеют дату создания в диапазоне от <code>beginDate</code> до <code>endDate</code>
+        /// </summary>
+        KeyValuePair<long, IEnumerable<Package>> GetPackages(DateTime beginDate, DateTime endDate, Int64 organization, Int64 controller, Int32 pageIndex, Int32 pageSize);
     }
 }

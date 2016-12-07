@@ -115,7 +115,6 @@ namespace mfc.domain.services {
             ReturnStatusForFiles(return_status);
         }
 
-
         public void Update(Package package) {
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
             unit_of_work.BeginTransaction();
@@ -162,6 +161,14 @@ namespace mfc.domain.services {
                     FileService.Update(file);
                 }
             }
+        }
+
+
+        public KeyValuePair<long, IEnumerable<Package>> GetPackages(DateTime beginDate, DateTime endDate, long organization, long controller, int pageIndex,
+            int pageSize)
+        {
+            var packages = PackageRepository.GetPackages(beginDate, endDate, organization, controller, pageIndex, pageSize).OrderByDescending(x => x.Date).ThenByDescending(x => x.Id);
+            return new KeyValuePair<long, IEnumerable<Package>>(PackageRepository.TotalRows, packages);
         }
     }
 }

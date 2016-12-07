@@ -77,6 +77,9 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
 
     //Создать пакет
     CreatePackage(){
+        this.modal.prompt().open();
+
+        
         console.log(this.models.filter(x => x.is_selected));
     }
 

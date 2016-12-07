@@ -15,6 +15,10 @@ import { FileListComponent } from './file/file-list.component';
 import { FileService } from './file/file.service';
 import { FileEditComponent } from './file/file-edit.component';
 
+// Пакеты
+import { PackageListComponent } from './package/package-list.component';
+import { PackageService } from './package/package.service';
+
 import { MyDatePickerModule } from 'mydatepicker';  // https://github.com/kekeh/mydatepicker
 import { Ng2PaginationModule } from 'ng2-pagination'; //https://github.com/michaelbromley/ng2-pagination
 import { Ng2CompleterModule } from "ng2-completer";  //https://github.com/oferh/ng2-completer
@@ -41,11 +45,13 @@ import { BusyModule, BusyConfig } from 'angular2-busy';
     ],
     declarations: [
         ActionListComponent, ActionEditComponent,
-        FileListComponent, FileEditComponent
+        FileListComponent, FileEditComponent,
+        PackageListComponent
     ],
     providers: [
         ActionService,
-        FileService
+        FileService,
+        PackageService
     ]
 })
 

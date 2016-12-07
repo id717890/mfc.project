@@ -248,6 +248,7 @@
     <Compile Include="CompostionRoot.cs" />
     <Compile Include="Controllers\ActionController.cs" />
     <Compile Include="Controllers\ActionTypeController.cs" />
+    <Compile Include="Controllers\PackageController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\FileStageController.cs" />
@@ -269,6 +270,7 @@
     <Compile Include="Models.Mappings\FileStatusModelProfile.cs" />
     <Compile Include="Models.Mappings\OrganizationModelProfile.cs" />
     <Compile Include="Models.Mappings\OrganizationTypeModelProfile.cs" />
+    <Compile Include="Models.Mappings\PackageModelProfile.cs" />
     <Compile Include="Models.Mappings\ServiceModelProfile.cs" />
     <Compile Include="Models.Mappings\UserModelProfile.cs" />
     <Compile Include="Models\AccountModel.cs" />
@@ -280,6 +282,7 @@
     <Compile Include="Models\FileStatusModel.cs" />
     <Compile Include="Models\OrganisationInfo.cs" />
     <Compile Include="Models\OrganizationTypeInfo.cs" />
+    <Compile Include="Models\PackageModel.cs" />
     <Compile Include="Models\ServiceInfo.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

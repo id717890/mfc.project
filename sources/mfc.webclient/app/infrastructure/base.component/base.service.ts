@@ -73,6 +73,7 @@ export class BaseService<TModel extends BaseModel>  {
          */
         let output = [];
         let data = res.json();
+        console.log(data);
         let total: number = +res.headers.get('Total-rows');
         output['total'] = total != null ? total : 0;
         output['data'] = data;
