@@ -13,13 +13,13 @@ using mfc.webapi.Models;
 namespace mfc.webapi.Controllers
 {
     [RoutePrefix("api/actions")]
-    public class AcceptionController : ApiController
+    public class ActionController : ApiController
     {
         private readonly IActionService _actionService;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public AcceptionController(IActionService actionService, IUserService userService, IMapper mapper)
+        public ActionController(IActionService actionService, IUserService userService, IMapper mapper)
         {
             _actionService = actionService;
             _userService = userService;
@@ -30,10 +30,12 @@ namespace mfc.webapi.Controllers
         [Route("")]
         public HttpResponseMessage Get()
         {
-            var acceptions = _mapper.Map<IEnumerable<ActionModel>>(_actionService.GetActions(DateTime.Today, DateTime.Today.AddDays(1), null)).ToList();
-            var response = Request.CreateResponse(HttpStatusCode.OK, acceptions);
-            response.Headers.Add("Total-rows", acceptions.Count.ToString());
-
+            var queryDateBegin = DateTime.Today;
+            var queryDateEnd = DateTime.Today.AddDays(1);
+            var actions = _mapper.Map<IEnumerable<ActionModel>>(_actionService.GetActions(queryDateBegin, queryDateEnd, null)).ToList();
+            var response = Request.CreateResponse(HttpStatusCode.OK, actions);
+            response.Headers.Add("Total-rows", actions.Count().ToString());
+            
             return response;
         }
 
@@ -44,10 +46,10 @@ namespace mfc.webapi.Controllers
         {
             var queryDateBegin = DateTime.Today;
             var queryDateEnd = DateTime.Today.AddDays(1);
-            var acceptions = _mapper.Map<IEnumerable<ActionModel>>(_actionService.GetActions(queryDateBegin, queryDateEnd, null).Skip((pageIndex - 1) * pageSize)
-                .Take(pageSize)).ToList();
-            var response = Request.CreateResponse(HttpStatusCode.OK, acceptions);
-            response.Headers.Add("Total-rows", acceptions.Count().ToString());
+            var output = _actionService.GetActions(queryDateBegin, queryDateEnd, pageIndex, pageSize);
+            var actions = _mapper.Map<IEnumerable<ActionModel>>(output.Value);
+            var response = Request.CreateResponse(HttpStatusCode.OK, actions);
+            response.Headers.Add("Total-rows", output.Key.ToString());
             return response;
         }
 
@@ -74,23 +76,19 @@ namespace mfc.webapi.Controllers
 
             if (user == null)
             {
-                var acceptions = _mapper.Map<IEnumerable<ActionModel>>(_actionService.GetActions(queryDateBegin, queryDateEnd, null)).ToList();
-                var totalRows = acceptions.Count();
-                var paging = acceptions
-                    .Skip((pageIndex - 1) * pageSize)
-                    .Take(pageSize);
-                var response = Request.CreateResponse(HttpStatusCode.OK, paging);
+                var output = _actionService.GetActions(queryDateBegin, queryDateEnd, pageIndex, pageSize);
+                var actions = _mapper.Map<IEnumerable<ActionModel>>(output.Value).ToList();
+                var totalRows = output.Key;
+                var response = Request.CreateResponse(HttpStatusCode.OK, actions);
                 response.Headers.Add("Total-rows", totalRows.ToString());
                 return response;
             }
             else
             {
-                var acceptions = _mapper.Map<IEnumerable<ActionModel>>(_actionService.GetActions(user, queryDateBegin, queryDateEnd)).ToList();
-                var totalRows = acceptions.Count();
-                var paging = acceptions
-                    .Skip((pageIndex - 1) * pageSize)
-                    .Take(pageSize);
-                var response = Request.CreateResponse(HttpStatusCode.OK, paging);
+                var output = _actionService.GetActions(user, queryDateBegin, queryDateEnd, pageIndex, pageSize);
+                var actions = _mapper.Map<IEnumerable<ActionModel>>(output.Value).ToList();
+                var totalRows = output.Key;
+                var response = Request.CreateResponse(HttpStatusCode.OK, actions);
                 response.Headers.Add("Total-rows", totalRows.ToString());
                 return response;
             }
@@ -101,8 +99,8 @@ namespace mfc.webapi.Controllers
         [Route("{id}")]
         public HttpResponseMessage Get(int id)
         {
-            var acception = _actionService.GetActionById(id);
-            return acception != null ? Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<ActionModel>(acception)) : Request.CreateResponse(HttpStatusCode.NotFound);
+            var actions = _actionService.GetActionById(id);
+            return actions != null ? Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<ActionModel>(actions)) : Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         // POST: api/actions
@@ -132,23 +130,23 @@ namespace mfc.webapi.Controllers
         [Route("{id}")]
         public HttpResponseMessage Put(int id, [FromBody]ActionModel value)
         {
-            var acception = _actionService.GetActionById(id);
-            if (acception == null) return Request.CreateResponse(HttpStatusCode.NotFound);
+            var actions = _actionService.GetActionById(id);
+            if (actions == null) return Request.CreateResponse(HttpStatusCode.NotFound);
 
-//            _actionService.Update(_mapper.Map<ServiceAction>(value));  // Так не работает, Hibernate выдает ошибку "a different object with the same identifier value was already associated with the session"
+            //            _actionService.Update(_mapper.Map<ServiceAction>(value));  // Так не работает, Hibernate выдает ошибку "a different object with the same identifier value was already associated with the session"
 
             /* А так работает */
-            acception.Date = value.Date;
-            acception.Customer = value.Customer;
-            acception.CustomerType= _mapper.Map<CustomerType>(value.CustomerType);
-            acception.Service = _mapper.Map<Service>(value.Service);
-            acception.ServiceChild= _mapper.Map<Service>(value.ServiceChild);
-            acception.Type = _mapper.Map<ActionType>(value.ActionType);
-            acception.User= _mapper.Map<User>(value.User);
-            acception.Comments = value.Comments;
-            acception.FreeVisit = value.FreeVisit;
-            acception.IsNonresident = value.IsNonresident;
-            _actionService.Update(acception);
+            actions.Date = value.Date;
+            actions.Customer = value.Customer;
+            actions.CustomerType= _mapper.Map<CustomerType>(value.CustomerType);
+            actions.Service = _mapper.Map<Service>(value.Service);
+            actions.ServiceChild= _mapper.Map<Service>(value.ServiceChild);
+            actions.Type = _mapper.Map<ActionType>(value.ActionType);
+            actions.User= _mapper.Map<User>(value.User);
+            actions.Comments = value.Comments;
+            actions.FreeVisit = value.FreeVisit;
+            actions.IsNonresident = value.IsNonresident;
+            _actionService.Update(actions);
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
@@ -158,8 +156,8 @@ namespace mfc.webapi.Controllers
         [Route("{id}")]
         public HttpResponseMessage Delete(int id)
         {
-            var acception = _actionService.GetActionById(id);
-            if (acception != null)
+            var actions = _actionService.GetActionById(id);
+            if (actions != null)
             {
                 _actionService.Delete(id);
                 return Request.CreateResponse(HttpStatusCode.OK);

@@ -351,3 +351,15 @@ body {
 .ng-invalid:not(form)  {
   border-left: 5px solid #a94442; /* red */
 }
+
+
+/*Error handler style*/
+.modal-body-error{
+    padding: 15px;
+}
+
+.modal-body-error .panel{
+    height: 100px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}

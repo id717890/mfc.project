@@ -11,6 +11,7 @@ using Ninject;
 using mfc.domain.services;
 using mfc.infrastructure.services;
 using NHibernate.Cache;
+using NHibernate.Criterion;
 using NHibernate.Proxy;
 
 namespace mfc.dal.services {
@@ -198,6 +199,63 @@ namespace mfc.dal.services {
             }
 
             return files;
+        }
+
+        public long TotalRows { get; set; }
+
+        public IEnumerable<File> GetFiles(DateTime dateBegin, DateTime dateEnd, long fileStatus, long organization, long service, long expert, long controller, int pageIndex, int pageSize)
+        {
+            var date1 = new DateTime(dateBegin.Year, dateBegin.Month, dateBegin.Day, 0, 0, 0);
+            var date2 = new DateTime(dateEnd.Year, dateEnd.Month, dateEnd.Day, 23, 59, 59);
+            var criteria = Session.CreateCriteria<File>()
+                .Add(Restrictions.Between("Date", date1, date2))
+                .Add(Restrictions.Eq("IsDeleted", false));
+
+            var countOfFiles = Session.CreateCriteria<File>()
+                .Add(Restrictions.Between("Date", date1, date2))
+                .Add(Restrictions.Eq("IsDeleted", false));
+
+            if (fileStatus != -1)
+            {
+                criteria.CreateCriteria("CurrentStatus").Add(Restrictions.Eq("Id", fileStatus));
+                countOfFiles.CreateCriteria("CurrentStatus").Add(Restrictions.Eq("Id", fileStatus));
+            }
+
+            if (organization != -1)
+            {
+                criteria.CreateCriteria("Ogv").Add(Restrictions.Eq("Id", organization));
+                countOfFiles.CreateCriteria("Ogv").Add(Restrictions.Eq("Id", organization));
+            }
+
+            if (service != -1)
+            {
+                criteria.CreateCriteria("Action").CreateCriteria("Service").Add(Restrictions.Eq("Id", service));
+                countOfFiles.CreateCriteria("Action").CreateCriteria("Service").Add(Restrictions.Eq("Id", service));
+            }
+
+            if (expert != -1)
+            {
+                criteria.CreateCriteria("Expert").Add(Restrictions.Eq("Id", expert));
+                countOfFiles.CreateCriteria("Expert").Add(Restrictions.Eq("Id", expert));
+            }
+
+            if (controller != -1)
+            {
+                criteria.CreateCriteria("Controller").Add(Restrictions.Eq("Id", controller));
+                countOfFiles.CreateCriteria("Controller").Add(Restrictions.Eq("Id", controller));
+            }
+
+            criteria
+                .AddOrder(Order.Desc("Date"))
+                .AddOrder(Order.Desc("Id"))
+                .SetMaxResults(pageSize)
+                .SetFirstResult((pageIndex - 1) * pageSize)
+                .Future<File>();
+
+            countOfFiles.SetProjection(Projections.Count(Projections.Id()));
+            TotalRows = countOfFiles.FutureValue<int>().Value;
+
+            return criteria.List<File>();
         }
 
         private Int64 _end_file_status_id = -1;

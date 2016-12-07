@@ -38,7 +38,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
             .then(models => {
                 this.models = models['data'];       // извлекаем массив данных
                 this.totalRows = models['total'];   // извлекаем общее кол-во строк сущности для корректного отображения страниц
-            });
+        });
     }
 
     add() {
@@ -52,10 +52,12 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
                     if (output != null) {
                         this.busyMessage = Messages.SAVING;
                         this.busy = this.service.post(output)
-                            .then(x => { if (x != null) {
-                                this.models.push(x);
-                                this.totalRows+=1;
-                            } })  //Здесь нужна проверка на null, т.к. если API вернул ответ с ошибкой, то х=undefined
+                            .then(x => {
+                                if (x != null) {
+                                    this.models.push(x);
+                                    this.totalRows += 1;
+                                }
+                            })  //Здесь нужна проверка на null, т.к. если API вернул ответ с ошибкой, то х=undefined
                             .catch(x => this.handlerError(x));
                     }
                 }, () => null);
@@ -63,11 +65,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     }
 
     edit(model: TModel) {
-        // console.log("bs-before");
-        // console.log(model);
         let clone: TModel = this.cloneModel(model);
-        // console.log("bs-after");
-        // console.log(clone);
         this.modal
             .open(
             this.getEditComponent(),

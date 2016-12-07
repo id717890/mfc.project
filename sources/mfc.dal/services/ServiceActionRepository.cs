@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using FluentNHibernate.Visitors;
 using mfc.domain.services;
 using mfc.infrastructure.services;
+using NHibernate.Criterion;
 using Ninject;
 
 namespace mfc.dal.services {
@@ -33,6 +34,8 @@ namespace mfc.dal.services {
         public ICustomerTypeService CustomerTypeService { get; set; }
 
         public ServiceActionRepository(IUnitOfWorkProvider provider) : base(provider) { }
+
+        public long TotalRows { get; set; }
 
         public IEnumerable<ServiceAction> GetActions(DateTime dateBegin, DateTime dateEnd) {
             return GetActions(-1, dateBegin, dateEnd);
@@ -105,6 +108,57 @@ namespace mfc.dal.services {
             }
 
             return actions;
+        }
+
+        public IEnumerable<ServiceAction> GetActions(DateTime dateBegin, DateTime dateEnd, Int32 pageIndex, Int32 pageSize)
+        {
+            var date1 = new DateTime(dateBegin.Year, dateBegin.Month, dateBegin.Day, 0, 0, 0);
+            var date2 = new DateTime(dateEnd.Year, dateEnd.Month, dateEnd.Day, 23, 59, 59);
+            var criteria = Session.CreateCriteria<ServiceAction>()
+                .Add(Restrictions.Between("Date", date1, date2))
+                .Add(Restrictions.Eq("IsDeleted", false))
+                .AddOrder(Order.Desc("Date"))
+                .AddOrder(Order.Desc("Id"))
+                .SetMaxResults(pageSize)
+                .SetFirstResult((pageIndex - 1) * pageSize)
+                .Future<ServiceAction>();
+
+            var countOfActions = Session.CreateCriteria<ServiceAction>()
+                .Add(Restrictions.Between("Date", date1, date2))
+                .Add(Restrictions.Eq("IsDeleted", false))
+                .SetProjection(Projections.Count(Projections.Id()))
+                .FutureValue<int>();
+
+            TotalRows = countOfActions.Value;
+
+            return criteria;
+        }
+
+        public IEnumerable<ServiceAction> GetActions(long userId, DateTime dateBegin, DateTime dateEnd, int pageIndex, int pageSize)
+        {
+            var date1 = new DateTime(dateBegin.Year, dateBegin.Month, dateBegin.Day, 0, 0, 0);
+            var date2 = new DateTime(dateEnd.Year, dateEnd.Month, dateEnd.Day, 23, 59, 59);
+
+            var criteria = Session.CreateCriteria<ServiceAction>()
+                .Add(Restrictions.Between("Date", date1, date2))
+                .Add(Restrictions.Eq("IsDeleted", false))
+                .AddOrder(Order.Desc("Date"))
+                .AddOrder(Order.Desc("Id"))
+                .CreateCriteria("User").Add(Restrictions.Eq("Id", userId))
+                .SetMaxResults(pageSize)
+                .SetFirstResult((pageIndex - 1) * pageSize)
+                .Future<ServiceAction>();
+
+            var countOfActions = Session.CreateCriteria<ServiceAction>()
+               .Add(Restrictions.Between("Date", date1, date2))
+               .Add(Restrictions.Eq("IsDeleted", false))
+               .CreateCriteria("User").Add(Restrictions.Eq("Id", userId))
+               .SetProjection(Projections.Count(Projections.Id()))
+               .FutureValue<int>();
+
+            TotalRows = countOfActions.Value;
+
+            return criteria;
         }
     }
 }

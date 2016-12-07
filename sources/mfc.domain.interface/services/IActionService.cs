@@ -17,5 +17,8 @@ namespace mfc.domain.services {
         Int64 Add(DateTime date, Int64 serviceId, string curtomer, Int64 typeId, Int64 customerTypeId, Int64 userId, Int64 serviceChildId, bool is_nonresident, bool free_visit, string comments);
         void Update(ServiceAction action);
         void Delete(Int64 id);
+
+        KeyValuePair<Int64, IEnumerable<ServiceAction>>  GetActions(DateTime dateBegin, DateTime dateEnd, Int32 pageIndex, Int32 pageSize);
+        KeyValuePair<Int64, IEnumerable<ServiceAction>>  GetActions(User user, DateTime dateBegin, DateTime dateEnd, Int32 pageIndex, Int32 pageSize);
     }
 }

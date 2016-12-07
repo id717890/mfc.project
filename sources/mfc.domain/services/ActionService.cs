@@ -48,6 +48,8 @@ namespace mfc.domain.services {
             IEnumerable<ServiceAction> actions = null;
 
             if (customerType != null) {
+
+
                 actions =
 
                     Repository.GetActions(dateBegin, dateEnd).Where(x => {
@@ -169,6 +171,19 @@ namespace mfc.domain.services {
                 FileService.Delete(file.Id);
             }
             unit_of_work.Commit();
+        }
+
+        public KeyValuePair<long, IEnumerable<ServiceAction>> GetActions(DateTime dateBegin, DateTime dateEnd, Int32 pageIndex, Int32 pageSize)
+        {
+            var actions = Repository.GetActions(dateBegin, dateEnd, pageIndex, pageSize).OrderByDescending(x => x.Date).ThenByDescending(x => x.Id);
+            return new KeyValuePair<long, IEnumerable<ServiceAction>>(Repository.TotalRows, actions);
+        }
+
+        public KeyValuePair<long, IEnumerable<ServiceAction>> GetActions(User user, DateTime dateBegin, DateTime dateEnd, int pageIndex, int pageSize)
+        {
+            if (user == User.All) return GetActions(dateBegin, dateEnd, pageIndex, pageSize);
+            var actions = Repository.GetActions(user.Id, dateBegin, dateEnd, pageIndex, pageSize);
+            return new KeyValuePair<long, IEnumerable<ServiceAction>>(Repository.TotalRows, actions);
         }
     }
 }

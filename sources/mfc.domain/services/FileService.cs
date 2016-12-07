@@ -220,5 +220,12 @@ namespace mfc.domain.services {
 
             return free_file_ids;
         }
+
+        public KeyValuePair<long, IEnumerable<File>> GetFiles(DateTime beginDate, DateTime endDate, long fileStatus, long organization, long service, long expert, long controller, int pageIndex, int pageSize)
+        {
+            var files = FileRepository.GetFiles(beginDate, endDate, fileStatus, organization, service, expert, controller, pageIndex, pageSize).OrderByDescending(x => x.Date).ThenByDescending(x => x.Id);
+            return new KeyValuePair<long, IEnumerable<File>>(FileRepository.TotalRows, files);
+        }
+
     }
 }

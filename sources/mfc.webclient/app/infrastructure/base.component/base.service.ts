@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { BaseModel } from './../../models/base.model';
+
 import { AppSettings } from './../application-settings';
 import { AbstractService} from './../abstract-service';
 
@@ -81,7 +82,11 @@ export class BaseService<TModel extends BaseModel> extends AbstractService {
         return output;
     }
 
-    handlerError(error: any) {
+    public handlerError(error: any) {
+        if (error!=null && error.message!=null)
         console.log(error.message);
+        else if (error!=null && error.message==null)
+        console.log(error);
+        else console.log("Произошла не понятная ошибка");
     }
 }
