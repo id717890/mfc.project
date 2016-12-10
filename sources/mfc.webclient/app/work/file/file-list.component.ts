@@ -23,7 +23,7 @@ import { ServiceService } from '../../admin/services/service.service';
 })
 
 
-export class FileListComponent extends BaseListComponent<File> implements AfterViewInit {
+export class FileListComponent extends BaseListComponent<File>  implements AfterViewInit {
     dateBegin: string;
     dateEnd: string;
 

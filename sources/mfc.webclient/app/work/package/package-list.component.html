@@ -3,6 +3,51 @@
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<h2 class="page-header">Пакеты</h2>
 			<div [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
+				<div class="row" style="margin-bottom:-30px;" [class.margin-for-empty-list]="totalRows===0">
+					<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12 no-m">
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<label>От</label>
+											<my-date-picker [options]="myDatePickerOptions" (dateChanged)="onChangedDateBegin($event)" [selDate]="dateBegin"></my-date-picker>
+										</div>
+									</div>
+									<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<label>До</label>
+											<my-date-picker [options]="myDatePickerOptions" (dateChanged)="onChangedDateEnd($event)" [selDate]="dateEnd"></my-date-picker>
+										</div>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<label>ОГВ</label>
+											<select name="organization" class="form-control" [(ngModel)]="selectedOrganization">
+                    						<option [value]="-1">Все</option>
+                    						<option *ngFor="let organization of organizations" [value]="organization.id">{{organization.caption}}</option>
+                						</select>
+										</div>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<label>Контролёр</label>
+											<select name="controller" class="form-control" [(ngModel)]="selectedController">
+                    						<option [value]="-1">Все</option>
+                    						<option *ngFor="let controller of controllers" [value]="controller.id">{{controller.description}}</option>
+                						</select>
+										</div>
+									</div>
+									<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+										<label>&nbsp;</label>
+										<button class="btn btn-default glyphicon glyphicon-refresh" style="width:100%" (click)="Search()" title="Обновить"></button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<div class="row" *ngIf="totalRows!=0">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<span style="display:block; width:100%; padding-right:20px; text-align:right">Всего: {{totalRows}}</span>

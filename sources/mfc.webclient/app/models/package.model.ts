@@ -7,7 +7,7 @@ export class Package extends BaseModel {
         public id: number,
         public caption: string,
         public date: Date,
-        public ogv: Organization,
+        public organization: Organization,
         public controller: User,
         public comment: string
     ) {

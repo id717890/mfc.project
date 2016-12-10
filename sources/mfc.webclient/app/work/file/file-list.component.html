@@ -3,7 +3,7 @@
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<h2 class="page-header">Список дел</h2>
 			<div [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
-				<div class="row" style="margin-bottom:-30px;">
+				<div class="row" style="margin-bottom:-30px;" [class.margin-for-empty-list]="totalRows===0">
 					<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12 no-m">
 						<div class="panel panel-default">
 							<div class="panel-body">
