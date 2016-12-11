@@ -249,6 +249,7 @@
     <Compile Include="Controllers\ActionController.cs" />
     <Compile Include="Controllers\ActionTypeController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
+    <Compile Include="Controllers\PackageFileController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\FileStageController.cs" />

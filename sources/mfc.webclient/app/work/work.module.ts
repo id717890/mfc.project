@@ -18,6 +18,8 @@ import { FileEditComponent } from './file/file-edit.component';
 // Пакеты
 import { PackageListComponent } from './package/package-list.component';
 import { PackageService } from './package/package.service';
+import { PackageFileService } from './package/package-file.service';
+import { PackageEditComponent } from './package/package-edit.component';
 
 import { MyDatePickerModule } from 'mydatepicker';  // https://github.com/kekeh/mydatepicker
 import { Ng2PaginationModule } from 'ng2-pagination'; //https://github.com/michaelbromley/ng2-pagination
@@ -46,12 +48,12 @@ import { BusyModule, BusyConfig } from 'angular2-busy';
     declarations: [
         ActionListComponent, ActionEditComponent,
         FileListComponent, FileEditComponent,
-        PackageListComponent
+        PackageListComponent, PackageEditComponent
     ],
     providers: [
         ActionService,
         FileService,
-        PackageService
+        PackageService,PackageFileService
     ]
 })
 

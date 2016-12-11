@@ -31,6 +31,19 @@ export class BaseService<TModel extends BaseModel>  {
             .catch(this.handlerError);
     }
 
+    //Для отправки GET запроса с параметрами
+    getWithParameters2(parameters: any[]): Promise<TModel[]> {
+        // let params: URLSearchParams = new URLSearchParams();
+        // Object.keys(parameters).forEach((key) => {
+        //     params.set(key, parameters[key].toString());
+        // });
+        // return this._http.get(this.getApiTag(), { search: params })
+        //     .toPromise()
+        //     .then(x => this.extractData(x))
+        //     .catch(this.handlerError);
+        return null;
+    }
+
     post(model: TModel): Promise<TModel> {
         return this._http.post(this.getApiTag(), JSON.stringify(model))
             .flatMap((x: Response) => {

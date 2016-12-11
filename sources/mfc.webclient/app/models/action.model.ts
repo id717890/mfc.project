@@ -14,7 +14,7 @@ export class Action extends BaseModel {
         public customer_type: CustomerType,
         public action_type: ActionType,
         public expert: User,
-        public organization: number,
+        public organization: Organization,
         public service: Service,
         public service_child: Service,
         public comments: string,

@@ -2,6 +2,8 @@ import { Component, AfterViewInit } from '@angular/core';
 
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { BaseListComponent } from './../../infrastructure/base.component/base-list.component';
+import { PackageEditComponent } from './package-edit.component';
+import { DateService } from './../../infrastructure/assistant/date.service';
 
 import { Organization } from '../../models/organization.model';
 import { OrganizationService } from '../../admin/organizations/organization.service';
@@ -17,7 +19,7 @@ import { DIALOG_CONFIRM, DIALOG_DELETE, SAVE_MESAGE, LOAD_LIST_MESAGE, PAGIN_PAG
     templateUrl: 'app/work/package/package-list.component.html'
 })
 
-export class PackageListComponent extends BaseListComponent<Package> implements AfterViewInit  {
+export class PackageListComponent extends BaseListComponent<Package> implements AfterViewInit {
     dateBegin: string;
     dateEnd: string;
 
@@ -39,6 +41,7 @@ export class PackageListComponent extends BaseListComponent<Package> implements 
     constructor(public modal: Modal, private packageService: PackageService
         , private organizationService: OrganizationService
         , private userService: UserService
+        , private _dateService: DateService
     ) {
         super(modal, packageService);
         this.prepareForm();
@@ -103,17 +106,12 @@ export class PackageListComponent extends BaseListComponent<Package> implements 
         var date = new Date();
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-        this.dateBegin =
-            (firstDay.getDate().toString().length == 1 ? "0" + firstDay.getDate() : firstDay.getDate()) + '.'
-            + (((firstDay.getMonth() + 1)).toString().length == 1 ? "0" + (firstDay.getMonth() + 1) : (firstDay.getMonth() + 1)) + '.'
-            + firstDay.getFullYear();
-        this.dateEnd = lastDay.getDate() + '.'
-            + (((lastDay.getMonth() + 1)).toString().length == 1 ? "0" + (lastDay.getMonth() + 1) : (lastDay.getMonth() + 1)) + '.'
-            + lastDay.getFullYear();
+        this.dateBegin = this._dateService.ConvertDateToString(firstDay);
+        this.dateEnd = this._dateService.ConvertDateToString(lastDay);
     }
 
     newModel(): Package {
-        return new Package(null, '', null, null, null, '');
+        return new Package(null, '', null, null, null, '', null);
     };
 
     cloneModel(model: Package): Package {
@@ -123,10 +121,11 @@ export class PackageListComponent extends BaseListComponent<Package> implements 
             model.date,
             model.organization,
             model.controller,
-            model.comment);
+            model.comment,
+            model.files);
     };
 
     getEditComponent(): any {
-        return null;
+        return PackageEditComponent;
     }
 }
