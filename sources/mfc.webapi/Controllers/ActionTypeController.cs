@@ -31,7 +31,7 @@ namespace mfc.webapi.Controllers
             var output = _actionTypeService.GetAllTypes();
 
             return output != null ?
-                Request.CreateResponse(HttpStatusCode.OK, output.Select( x => new ActionTypeInfo(x))) :
+                Request.CreateResponse(HttpStatusCode.OK, output.Select( x => new ActionTypeModel(x))) :
                 Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
@@ -42,13 +42,13 @@ namespace mfc.webapi.Controllers
             var output = _actionTypeService.GetTypeById(id);
 
             return output != null ?
-                Request.CreateResponse(HttpStatusCode.OK, new ActionTypeInfo(output)) :
+                Request.CreateResponse(HttpStatusCode.OK, new ActionTypeModel(output)) :
                 Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         [HttpPost]
         [Route("")]
-        public HttpResponseMessage Post([FromBody]ActionTypeInfo value)
+        public HttpResponseMessage Post([FromBody]ActionTypeModel value)
         {
             var identifier = _actionTypeService.Create(value.Caption, value.NeedMakeFile);
 
@@ -60,7 +60,7 @@ namespace mfc.webapi.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public HttpResponseMessage Put(int id, [FromBody]ActionTypeInfo value)
+        public HttpResponseMessage Put(int id, [FromBody]ActionTypeModel value)
         {
             var actionType = _actionTypeService.GetTypeById(id);
             if (actionType != null)

@@ -13,13 +13,13 @@ namespace mfc.webapi.Models.Mappings
 
         private void CreateMapEntityToModel()
         {
-            CreateMap<Organization, OrganizationInfo>()
+            CreateMap<Organization, OrganizationModel>()
                 .ForMember(x => x.OrganizationType, s => s.MapFrom(x => x.Type));
         }
 
         private void CreateMapModelToEntity()
         {
-            CreateMap<OrganizationInfo, Organization>()
+            CreateMap<OrganizationModel, Organization>()
                 .ForMember(x => x.Type, s => s.MapFrom(x => x.OrganizationType));
         }
 

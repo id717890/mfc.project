@@ -13,7 +13,7 @@ namespace mfc.webapi.Models
         {
             Id = package.Id;
             Date = package.Date;
-            Organization = new OrganizationInfo(package.Organization);
+            Organization = new OrganizationModel(package.Organization);
             Controller = new AccountModel(package.Controller);
             Comment = package.Comment;
         }
@@ -34,7 +34,7 @@ namespace mfc.webapi.Models
         /// Организация
         /// </summary>
         [JsonProperty("organization")]
-        public OrganizationInfo Organization { get; set; }
+        public OrganizationModel Organization { get; set; }
 
         /// <summary>
         /// Контролёр

@@ -7,7 +7,7 @@ namespace mfc.webapi.Models.Mappings
     {
         public OrganizationTypeModelProfile()
         {
-            CreateMap<OrganizationType, OrganizationTypeInfo>().ReverseMap();
+            CreateMap<OrganizationType, OrganizationTypeModel>().ReverseMap();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace mfc.webapi.tests.Automapper.Tests
 {
     [TestFixture]
     [Category(TestCategories.AutomapperTest)]
-    public class OrganizationTests : AutomapperBaseTests<Organization, OrganizationInfo>
+    public class OrganizationTests : AutomapperBaseTests<Organization, OrganizationModel>
     {
 
         [TestCase(1, "Organization caption", "Full organization caption", 1, "type 1")]
@@ -35,12 +35,12 @@ namespace mfc.webapi.tests.Automapper.Tests
         [TestCase(4, "Organization caption", "Full organization caption", 3, "type 3")]
         public void ModelToOrganization(long id, string caption, string fullcaption, long typeId, string typeCaption)
         {
-            var model = new OrganizationInfo
+            var model = new OrganizationModel
             {
                 Id = id,
                 Caption = caption,
                 FullCaption = fullcaption,
-                OrganizationType = new OrganizationTypeInfo
+                OrganizationType = new OrganizationTypeModel
                 {
                     Id = typeId,
                     Caption = typeCaption
@@ -50,7 +50,7 @@ namespace mfc.webapi.tests.Automapper.Tests
         }
 
 
-        protected override void AssertEntityToModel(Organization entity, OrganizationInfo model)
+        protected override void AssertEntityToModel(Organization entity, OrganizationModel model)
         {
             Assert.AreEqual(entity.Id, model.Id);
             Assert.AreEqual(entity.Caption, model.Caption);
@@ -59,7 +59,7 @@ namespace mfc.webapi.tests.Automapper.Tests
             Assert.AreEqual(entity.Type.Caption, model.OrganizationType.Caption);
         }
 
-        protected override void AssertModelToEntity(OrganizationInfo model, Organization entity)
+        protected override void AssertModelToEntity(OrganizationModel model, Organization entity)
         {
             Assert.AreEqual(model.Id, entity.Id);
             Assert.AreEqual(model.Caption, entity.Caption);
