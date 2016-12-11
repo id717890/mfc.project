@@ -44,5 +44,11 @@ namespace mfc.dal.services {
             entity.IsDeleted = true;
             Session.Update(entity);
         }
+
+        public virtual void Delete(TEntity entity)
+        {
+            entity.IsDeleted = true;
+            Session.Update(entity);
+        }
     }
 }

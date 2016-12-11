@@ -35,6 +35,7 @@ namespace mfc.webapi.Controllers
             var actions = _mapper.Map<IEnumerable<ActionModel>>(_actionService.GetActions(queryDateBegin, queryDateEnd, null)).ToList();
             var response = Request.CreateResponse(HttpStatusCode.OK, actions);
             response.Headers.Add("Total-rows", actions.Count().ToString());
+            
             return response;
         }
 

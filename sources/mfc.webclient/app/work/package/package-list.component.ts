@@ -12,7 +12,7 @@ import { UserService } from '../../admin/users/user.service';
 import { Package } from '../../models/package.model';
 import { PackageService } from './package.service';
 
-import { DIALOG_CONFIRM, DIALOG_DELETE, SAVE_MESAGE, LOAD_LIST_MESAGE, PAGIN_PAGE_SIZE } from '../../Infrastructure/application-messages';
+import { Messages } from '../../Infrastructure/application-messages';
 
 @Component({
     selector: 'mfc-package-list',

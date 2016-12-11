@@ -2,10 +2,13 @@
 import { Http, Headers, RequestOptions, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { BaseModel } from './../../models/base.model';
 
+import { AppSettings } from './../application-settings';
+import { AbstractService} from './../abstract-service';
+
 @Injectable()
-export class BaseService<TModel extends BaseModel>  {
-    protected apiUrl: string = "http://localhost:4664/api/";
+export class BaseService<TModel extends BaseModel> extends AbstractService {
     constructor(protected _http: Http) {
+        super(_http);
     }
 
     getApiTag(): string {
@@ -29,19 +32,6 @@ export class BaseService<TModel extends BaseModel>  {
             .toPromise()
             .then(x => this.extractData(x))
             .catch(this.handlerError);
-    }
-
-    //Для отправки GET запроса с параметрами
-    getWithParameters2(parameters: any[]): Promise<TModel[]> {
-        // let params: URLSearchParams = new URLSearchParams();
-        // Object.keys(parameters).forEach((key) => {
-        //     params.set(key, parameters[key].toString());
-        // });
-        // return this._http.get(this.getApiTag(), { search: params })
-        //     .toPromise()
-        //     .then(x => this.extractData(x))
-        //     .catch(this.handlerError);
-        return null;
     }
 
     post(model: TModel): Promise<TModel> {

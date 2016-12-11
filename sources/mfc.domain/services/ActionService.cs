@@ -12,9 +12,6 @@ using mfc.dal.services;
 namespace mfc.domain.services {
     public class ActionService : IActionService {
         [Inject]
-        public ISqlProvider SqlProvider { get; set; }
-
-        [Inject]
         public IServiceService ServiceService { get; set; }
 
         [Inject]

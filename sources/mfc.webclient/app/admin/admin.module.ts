@@ -2,6 +2,7 @@ import { NgModule }      from '@angular/core';
 import { Http, HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BusyModule, BusyConfig } from 'angular2-busy';
 
 import { AdminComponent } from './admin.component';
 import { CustomerTypeListComponent } from './customer-types/customer-type-list.component';
@@ -32,7 +33,6 @@ import { OrganizationTypeService } from './organization-types/organization-type.
 import { FileStageService } from './file-stages/file-stage.service';
 import { ServiceService } from './services/service.service';
 import { OrganizationService } from './organizations/organization.service';
-import { BusyModule, BusyConfig } from 'angular2-busy'; //Сторонний пакет для реализации busy indicatpr angular2-busy https://github.com/devyumao/angular2-busy
 
 @NgModule({
   imports: [
@@ -41,26 +41,7 @@ import { BusyModule, BusyConfig } from 'angular2-busy'; //Сторонний п�
     adminRouting,
     FormsModule,
     ReactiveFormsModule,
-    BusyModule.forRoot(
-      new BusyConfig({
-        message: 'Загрузка...',
-        backdrop: true,
-        /*template: `
-          <div class="panel panel-default ">
-            <div class="sk-wave">
-              <div class="sk-rect sk-rect1"></div>
-              <div class="sk-rect sk-rect2"></div>
-              <div class="sk-rect sk-rect3"></div>
-              <div class="sk-rect sk-rect4"></div>
-              <div class="sk-rect sk-rect5"></div>
-              <div class="sk-text">{{message}}</div>       
-            </div>
-          </div>    
-                `,*/
-        delay: 50,
-        minDuration: 100
-      })
-    )
+    BusyModule
   ],
   declarations: [
     AdminComponent,

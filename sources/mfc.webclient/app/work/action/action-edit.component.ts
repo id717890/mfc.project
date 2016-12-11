@@ -199,7 +199,7 @@ export class ActionEditComponent extends BaseEditComponent<Action> implements Af
         let service = this.dialog.context.model.service;
         if (service != null) {
             // this.selected_organization=service.organization; //выставляем выбранный ОГВ            
-            this.busy = this._serviceService.getWithParameters2(this.prepareData(service.organization.id)).then(x => {
+            this.busy = this._serviceService.getWithParameters(this.prepareData(service.organization.id)).then(x => {
                 this.services = x['data'];
                 this.autoCompleteServices = this.completerService.local(this.services, 'caption', 'caption');
                 this.selected_service = service.caption;

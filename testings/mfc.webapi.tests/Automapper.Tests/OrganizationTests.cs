@@ -4,6 +4,8 @@ using NUnit.Framework;
 
 namespace mfc.webapi.tests.Automapper.Tests
 {
+    [TestFixture]
+    [Category(TestCategories.AutomapperTest)]
     public class OrganizationTests : AutomapperBaseTests<Organization, OrganizationInfo>
     {
 

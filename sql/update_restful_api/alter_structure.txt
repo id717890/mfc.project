@@ -1,0 +1,1 @@
+create table modules (id bigint, parent_id bigint, code nvarchar(250), caption nvarchar(512));

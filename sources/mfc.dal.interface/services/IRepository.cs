@@ -12,5 +12,6 @@ namespace mfc.dal.services {
         void Create(TEntity entity);
         void Update(TEntity entity);
         void Delete(Int64 id);
+        void Delete(TEntity entity);
     }
 }

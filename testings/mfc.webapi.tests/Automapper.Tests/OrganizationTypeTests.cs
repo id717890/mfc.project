@@ -6,6 +6,8 @@ using System;
 
 namespace mfc.webapi.tests.Automapper.Tests
 {
+    [TestFixture]
+    [Category(TestCategories.AutomapperTest)]
     public class OrganizationTypeTests : AutomapperBaseTests<OrganizationType, OrganizationTypeInfo>
     {
 
