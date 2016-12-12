@@ -104,6 +104,8 @@ namespace mfc.webapi.Controllers
         }
 
         // DELETE: api/file/:id
+        [HttpDelete]
+        [Route("{id}")]
         public HttpResponseMessage Delete(int id)
         {
             var fileService = CompositionRoot.Resolve<IFileService>();

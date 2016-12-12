@@ -31,5 +31,9 @@
   {
     "code": "file",
     "name": "Дела"
+  },
+  {
+    "code": "package",
+    "name": "Пакеты"
   }
 ]

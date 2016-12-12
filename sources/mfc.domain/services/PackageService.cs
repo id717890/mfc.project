@@ -64,9 +64,10 @@ namespace mfc.domain.services {
 
         public IEnumerable<File> GetPackageFiles(long packageId) {
             List<File> files = new List<File>();
-
-            foreach (var id in PackageRepository.GetPackageFileIds(packageId)) {
-                files.Add(FileService.GetFileById(id));
+            foreach (var id in PackageRepository.GetPackageFileIds(packageId))
+            {
+                var file = FileService.GetFileById(id);
+                if (!file.IsDeleted) files.Add(file);
             }
 
             return files;

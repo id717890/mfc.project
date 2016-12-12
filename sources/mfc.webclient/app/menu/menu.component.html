@@ -3,7 +3,7 @@
     <ul class="nav navbar-nav navbar-left">
         <li *ngIf="actions['action']"><a [routerLink]="['actions']">Приемы</a></li>
         <li *ngIf="actions['file']"><a [routerLink]="['files']">Дела</a></li>
-        <li><a [routerLink]="['packages']">Пакеты</a></li>
+        <li *ngIf="actions['package']"><a [routerLink]="['packages']">Пакеты</a></li>
         <li *ngIf="actions['report']"><a [routerLink]="['reports']">Отчеты</a></li>
     </ul>
 

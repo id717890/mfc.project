@@ -117,27 +117,4 @@ export class ActionListComponent extends BaseListComponent<Action> {
     getEditComponent(): any {
         return ActionEditComponent;
     }
-
-    delete(model: Action) {
-        this.modal
-            .confirm()
-            .title(Messages.ACTION_CONFIRM)
-            .body(Messages.DELETE_CONFIRM)
-            .open()
-            .then(x => {
-                x.result.then(result => {
-                    if (!result)
-                        return;
-
-                    this.busyMessage = Messages.SAVING;
-                    this.busy = this.actionService.delete(model)
-                        .then(res => {
-                            if (res) {
-                                this.models.splice(this.models.indexOf(model), 1);
-                                this.totalRows -= 1;
-                            }
-                        });
-                }, () => null);
-            });
-    }
 }

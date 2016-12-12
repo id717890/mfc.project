@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
+using mfc.domain.entities;
 using mfc.domain.services;
 using mfc.webapi.Models;
 
@@ -16,11 +17,15 @@ namespace mfc.webapi.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IPackageService _packageService;
+        private readonly IFileService _fileService;
+        private readonly IFileStageService _fileStageService;
 
-        public PackageController(IMapper mapper, IPackageService packageService)
+        public PackageController(IMapper mapper, IPackageService packageService, IFileService fileService, IFileStageService fileStageService)
         {
             _mapper = mapper;
             _packageService = packageService;
+            _fileService = fileService;
+            _fileStageService = fileStageService;
         }
         
         [HttpGet]
@@ -44,6 +49,45 @@ namespace mfc.webapi.Controllers
             var response = Request.CreateResponse(HttpStatusCode.OK, packages);
             response.Headers.Add("Total-rows", output.Key.ToString());
             return response;
+        }
+
+        // PUT: api/packages/5
+        [HttpPut]
+        [Route("{id}")]
+        public HttpResponseMessage Put(int id, [FromBody]PackageModel value)
+        {
+            try
+            {
+                var package = _mapper.Map<Package>(value);
+                var packageItems = _packageService.GetPackageFiles(id).ToList();
+                if (!packageItems.Any()) throw new Exception("В данном пакете отсутствуют дела, выявить статус невозможно");
+                _fileService.SetStage(packageItems.Select(x=>x.Id),_fileStageService.GetStageByStatus(packageItems.Last().CurrentStatus.Id).Code,String.Empty);
+                _packageService.Update(package);
+                _packageService.UpdatePackageFiles(package.Id,packageItems.Select(x=>x.Id));
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, e);
+            }
+        }
+
+        // DELETE: api/packages/5
+        [HttpDelete]
+        [Route("{id}")]
+        public HttpResponseMessage Delete(int id)
+        {
+            try
+            {
+                var package = _packageService.GetPackageById(id);
+                if (package == null) return Request.CreateResponse(HttpStatusCode.NotFound);
+                _packageService.Delete(id);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, e);
+            }
         }
     }
 }

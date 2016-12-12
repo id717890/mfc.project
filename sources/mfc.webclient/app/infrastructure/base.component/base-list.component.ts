@@ -38,7 +38,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
             .then(models => {
                 this.models = models['data'];       // извлекаем массив данных
                 this.totalRows = models['total'];   // извлекаем общее кол-во строк сущности для корректного отображения страниц
-        });
+            });
     }
 
     add() {
@@ -104,9 +104,10 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
                         .then(res => {
                             if (res) {
                                 this.models.splice(this.models.indexOf(model), 1);
+                                this.totalRows -= 1;
                             }
                         });
-                });
+                }, () => null);
             });
     }
 

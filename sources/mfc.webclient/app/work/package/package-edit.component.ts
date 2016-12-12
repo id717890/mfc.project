@@ -13,6 +13,9 @@ import { OrganizationService } from '../../admin/organizations/organization.serv
 import { Action } from '../../models/action.model';
 import { ActionService } from '../action/action.service';
 import { ActionEditComponent } from '../action/action-edit.component';
+import { File } from '../../models/file.model';
+import { FileService } from '../file/file.service';
+import { Messages } from '../../infrastructure/application-messages';
 
 import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.component/base-edit.component';
 import { DateService } from './../../infrastructure/assistant/date.service';
@@ -46,6 +49,7 @@ export class PackageEditComponent extends BaseEditComponent<Package> implements 
         , private _packageFileService: PackageFileService
         , private _organizationService: OrganizationService
         , private _actionService: ActionService
+        , private _fileService: FileService
         , private _dateService: DateService
     ) {
         super(dialog);
@@ -62,7 +66,7 @@ export class PackageEditComponent extends BaseEditComponent<Package> implements 
     }
 
     onChangeDate(event: any) {
-        if (event.formatted != "" && event.epoc != 0) this.context.model.date = new Date(event.date.year, event.date.month, event.date.day);
+        if (event.formatted != "" && event.epoc != 0) this.context.model.date = new Date(event.formatted);
         else {
             let today = new Date();
             this.currentDate = today.getDate() + '.' + (today.getMonth() + 1) + '.' + today.getFullYear();
@@ -75,63 +79,70 @@ export class PackageEditComponent extends BaseEditComponent<Package> implements 
         this.busy =
             this._organizationService.get().then(x => {
                 this.organizations = x["data"];
-                if (this.context.model.organization != null) this.selected_organization = this.context.model.organization.id;
+                if (this.organizations != null)
+                    if (this.context.model.organization != null) {
+                        var id = this.dialog.context.model.organization.id;
+                        for (var item of this.organizations) {
+                            if (item.id == id) {
+                                this.dialog.context.model.organization = item;
+                                break;
+                            }
+                        }
+                    } else this.context.model.organization = this.organizations[0];
             });
 
         //Загружаем дела принадлежащие пакету
         if (this.context.model.id != null)
             this.busy = this._packageFileService.getById(this.context.model.id).then(x => {
                 this.context.model.files = x["data"];
-            })
+            }).catch(() => this.context.model.files = [])
     }
 
-    editActionOfPackage(action: Action)
-    {
+    editActionOfPackage(action: Action, file: File) {
         this.modal
-        .open(ActionEditComponent,overlayConfigFactory({ title: 'Редактирование', model: action }, BSModalContext))
-        .then(x => {
+            .open(ActionEditComponent, overlayConfigFactory({ title: 'Редактирование', model: action }, BSModalContext))
+            .then(x => {
                 x.result.then(output => {
-                    console.log(output);
                     if (output != null) {
                         this.busy = this._actionService.put(output)
                             .then(x => {
-                                // Object.keys(output).forEach((key) => {
-                                //     if (key === 'id') {
-                                //         return;
-                                //     }
-                                //     action[key] = output[key];
-                                // });
+                                if (x["status"] == 200) {
+                                    Object.keys(output).forEach((key) => {
+                                        if (key === 'id') {
+                                            return;
+                                        }
+                                        file.organization = action.service.organization;
+                                    });
+                                }
+                                else this.handlerError(x["statusText"])
                             }).catch(x => this.handlerError(x));
                     }
                 }, () => null);
             }).catch(this.handlerError);
     }
 
-    protected handlerError(error: any) {
-        console.log('CustomerTypeListComponent::error ' + error);
+    deleteFileOfPackage(file: File) {
+        this.modal
+            .confirm()
+            .title(Messages.ACTION_CONFIRM)
+            .body(Messages.DELETE_CONFIRM)
+            .open()
+            .then(x => {
+                x.result.then(result => {
+                    if (!result) return;
+                    this.busyMessage = Messages.SAVING;
+                    this.busy = this._fileService.delete(file)
+                        .then(res => {
+                            if (res) {
+                                this.context.model.files.splice(this.context.model.files.indexOf(file), 1);
+                            }
+                        });
+                }, () => null);
+            });
     }
 
-    // edit(model: TModel) {
-    //     let clone: TModel = this.cloneModel(model);
-    //     this.modal
-    //         .open(
-    //         this.getEditComponent(),
-    //         overlayConfigFactory({ title: 'Редактирование', model: clone }, BSModalContext)
-    //         ).then(x => {
-    //             x.result.then(output => {
-    //                 if (output != null) {
-    //                     this.busyMessage = SAVE_MESAGE;
-    //                     this.busy = this.service.put(output)
-    //                         .then(x => {
-    //                             Object.keys(output).forEach((key) => {
-    //                                 if (key === 'id') {
-    //                                     return;
-    //                                 }
-    //                                 model[key] = output[key];
-    //                             });
-    //                         }).catch(x => this.handlerError(x));
-    //                 }
-    //             }, () => null);
-    //         }).catch(this.handlerError);
-    // }
+    protected handlerError(error: any) {
+        console.log('PackageEditComponent::error ' + error);
+        throw new Error("Ошибка приложения");
+    }
 }

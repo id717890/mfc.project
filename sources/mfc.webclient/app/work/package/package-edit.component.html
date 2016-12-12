@@ -6,12 +6,12 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-12">
-			<form id="acception-editor" class="form" role="form" [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative"
-				#acceptionForm="ngForm">
+			<form id="package-editor" class="form" role="form" [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative"
+				#packageForm="ngForm">
 				<div class="form-group">
 					<div class="row">
 						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-							<button id="button-apply" class="btn btn-success" (click)="dialog.close(context.model)" [disabled]="!acceptionForm.form.valid"
+							<button id="button-apply" class="btn btn-success" (click)="dialog.close(context.model)" [disabled]="context.model.files==0"
 								style="width:100%">Сохранить</button>
 						</div>
 						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -29,10 +29,8 @@
 					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 						<div class="form-group">
 							<label>ОГВ</label>
-							<select name="organization" class="form-control" (change)="onChangeOrganization($event.target.value)" [(ngModel)]="selected_organization"
-								#ogv>
-						        <option selected="selected" value="0">Выберите ОГВ</option>						
-						        <option *ngFor="let organization of organizations" [value]="organization.id">{{organization.caption}}</option>
+							<select name="organization" class="form-control" [(ngModel)]="context.model.organization">
+						        <option *ngFor="let organization of organizations" [ngValue]="organization">{{organization.caption}}</option>
 					        </select>
 						</div>
 					</div>
@@ -81,9 +79,12 @@
 										<td>{{file.caption}}</td>
 										<td>{{file.status?.caption}}</td>
 										<td>
-											<a (click)="editActionOfPackage(file.action)" class="glyphicon glyphicon-edit" title="Редактировать дело"></a>
-											<a (click)="delete(model)" class="glyphicon glyphicon-remove" title="Удалить запись"></a>
+											<a (click)="editActionOfPackage(file.action, file)" class="glyphicon glyphicon-edit" title="Редактировать дело"></a>
+											<a (click)="deleteFileOfPackage(file)" class="glyphicon glyphicon-remove" title="Удалить запись"></a>
 										</td>
+									</tr>
+									<tr *ngIf="context.model.files==0">
+										<td colspan="8" style="text-align:center; padding: 5px">Данный пакет не содержит дела</td>
 									</tr>
 								</tbody>
 							</table>
