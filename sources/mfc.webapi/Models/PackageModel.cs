@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using mfc.domain.entities;
 using Newtonsoft.Json;
 
@@ -47,5 +48,11 @@ namespace mfc.webapi.Models
         /// </summary>
         [JsonProperty("comment")]
         public string Comment { get; set; }
+
+        /// <summary>
+        /// Список дел
+        /// </summary>
+        [JsonProperty("files")]
+        public IEnumerable<FileModel> Files { get; set; } 
     }
 }

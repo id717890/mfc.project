@@ -1,7 +1,8 @@
 <span defaultOverlayTarget></span>
 <div class="container-fluid custom-modal-container">
 	<div class="row custom-modal-header">
-		<div class="col-sm-12">&nbsp;
+		<div class="col-sm-12">
+			<h3>{{context.title}}</h3>
 		</div>
 	</div>
 	<div class="row">
@@ -55,7 +56,7 @@
 									<col>
 									<col>
 									<col>
-									<col class="col-width-50">
+									<col class="col-width-50" *ngIf="context.model.id!=null">
 								</colgroup>
 								<thead>
 									<tr>
@@ -66,7 +67,7 @@
 										<th>Контролёр</th>
 										<th>Описание</th>
 										<th>Статус</th>
-										<th></th>
+										<th *ngIf="context.model.id!=null"></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -78,7 +79,7 @@
 										<td>{{file.controller?.user_name}}</td>
 										<td>{{file.caption}}</td>
 										<td>{{file.status?.caption}}</td>
-										<td>
+										<td *ngIf="context.model.id!=null">
 											<a (click)="editActionOfPackage(file.action, file)" class="glyphicon glyphicon-edit" title="Редактировать дело"></a>
 											<a (click)="deleteFileOfPackage(file)" class="glyphicon glyphicon-remove" title="Удалить запись"></a>
 										</td>

@@ -396,3 +396,8 @@ table {
         width: 800px !important;
     }
 }
+
+/*Заголовок диалогового окна*/
+.custom-modal-header{
+    text-align: center;
+}

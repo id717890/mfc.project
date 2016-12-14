@@ -19,18 +19,35 @@ namespace mfc.webapi.Controllers
         private readonly IPackageService _packageService;
         private readonly IFileService _fileService;
         private readonly IFileStageService _fileStageService;
+        private readonly IUserService _userService;
 
-        public PackageController(IMapper mapper, IPackageService packageService, IFileService fileService, IFileStageService fileStageService)
+
+        public PackageController(
+            IMapper mapper
+            , IPackageService packageService
+            , IFileService fileService
+            , IFileStageService fileStageService
+            , IUserService userService)
         {
             _mapper = mapper;
             _packageService = packageService;
             _fileService = fileService;
             _fileStageService = fileStageService;
+            _userService = userService;
         }
-        
+
+        // GET: api/users/5
+        [HttpGet]
+        [Route("{id}")]
+        public HttpResponseMessage Get(int id)
+        {
+            var package = _packageService.GetPackageById(id);
+            return package != null ? Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<PackageModel>(package)) : Request.CreateResponse(HttpStatusCode.NotFound);
+        }
+
         [HttpGet]
         [Route("")]
-        public HttpResponseMessage Get(int pageIndex, int pageSize, string beginDate="-1", string endDate="-1", int organization=-1, int controller=-1)
+        public HttpResponseMessage Get(int pageIndex, int pageSize, string beginDate = "-1", string endDate = "-1", int organization = -1, int controller = -1)
         {
             DateTime queryDateBegin = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             DateTime queryDateEnd = queryDateBegin.AddMonths(1).AddSeconds(-1);
@@ -61,10 +78,29 @@ namespace mfc.webapi.Controllers
                 var package = _mapper.Map<Package>(value);
                 var packageItems = _packageService.GetPackageFiles(id).ToList();
                 if (!packageItems.Any()) throw new Exception("В данном пакете отсутствуют дела, выявить статус невозможно");
-                _fileService.SetStage(packageItems.Select(x=>x.Id),_fileStageService.GetStageByStatus(packageItems.Last().CurrentStatus.Id).Code,String.Empty);
+                _fileService.SetStage(packageItems.Select(x => x.Id), _fileStageService.GetStageByStatus(packageItems.Last().CurrentStatus.Id).Code, String.Empty);
                 _packageService.Update(package);
-                _packageService.UpdatePackageFiles(package.Id,packageItems.Select(x=>x.Id));
+                _packageService.UpdatePackageFiles(package.Id, packageItems.Select(x => x.Id));
                 return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, e);
+            }
+        }
+
+        // POST: api/package
+        [HttpPost]
+        [Route("")]
+        public HttpResponseMessage Post([FromBody]PackageModel value)
+        {
+            var fileIds = value.Files.Select(item => item.Id).ToList();
+            try
+            {
+                var id = _packageService.CreatePackage(_userService.GetCurrentUser(), value.Date, _mapper.Map<Organization>(value.Organization), fileIds, value.Comment);
+                var msg = Request.CreateResponse(HttpStatusCode.Created);
+                msg.Headers.Location = new Uri(Request.RequestUri + "/" + id.ToString());
+                return msg;
             }
             catch (Exception e)
             {

@@ -56,9 +56,18 @@ export class PackageEditComponent extends BaseEditComponent<Package> implements 
     }
 
     ngOnInit() {
-        let today = new Date(this.context.model.date);
+        //Выставляем дату если при создании/редакитровании пакета
+        let today: Date = null;
+        if (this.context.model.date != null)
+            today = new Date(this.context.model.date);
+        else today = new Date();
         this.currentDate = this._dateService.ConvertDateToString(today);
         this.context.model.date = today;
+
+        //При создании пакета выставляем ОГВ первого в списке дела
+        if (this.context.model.files != null) {
+            this.context.model.organization = this.context.model.files[0].organization;
+        }
     }
 
     ngAfterViewInit() {
