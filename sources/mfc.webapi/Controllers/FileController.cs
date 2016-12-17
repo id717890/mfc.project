@@ -1,13 +1,14 @@
 ﻿using System.Net.Http;
 using System.Web.Http;
 using System.Net.Http.Headers;
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using AutoMapper;
+using mfc.domain.entities;
+using Newtonsoft.Json;
 
 namespace mfc.webapi.Controllers
 {
@@ -24,6 +25,15 @@ namespace mfc.webapi.Controllers
         {
             _mapper = mapper;
             _fileService = fileService;
+        }
+
+        // GET: api/files/5
+        [HttpGet]
+        [Route("{id}")]
+        public HttpResponseMessage Get(long id)
+        {
+            var file = _fileService.GetFileById(id);
+            return file != null ? Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<FileModel>(file)) : Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         // GET: api/files?pageIndex=1&pageSize=50
@@ -49,6 +59,33 @@ namespace mfc.webapi.Controllers
             response.Headers.Add("Total-rows", output.Key.ToString());
             return response;
         }
+
+        // POST: api/files/2/
+        [HttpPost]
+        [Route("{id}")]
+        public HttpResponseMessage Post(int id, [FromBody]ChangeStatusModel value)
+        {
+            var file = _fileService.GetFileById(id);
+            if (file == null) return Request.CreateResponse(HttpStatusCode.NotFound);
+
+            switch (value.Status)
+            {
+                case FileStages.SendForControl:
+                    _fileService.SendForControl(id, value.Comment);
+                break;
+                case FileStages.ReturnForFix:
+                    _fileService.Return(id, value.Comment);
+                break;
+                case FileStages.Checked:
+                    _fileService.Checked(id, string.Empty);
+                break;
+            }
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+
+
+
 
 
 

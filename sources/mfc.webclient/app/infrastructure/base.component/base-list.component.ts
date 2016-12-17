@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -31,6 +31,8 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     abstract newModel(): TModel;
     abstract cloneModel(model: TModel): TModel;
     abstract getEditComponent(): any;
+
+    @Output() tested=new EventEmitter();
 
     ngOnInit(): void {
         this.busyMessage = Messages.LOADING_LIST;
@@ -84,7 +86,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
                                 });
                             }).catch(x => this.handlerError(x));
                     }
-                }, () => null);
+                }, ()=>null);
             }).catch(this.handlerError);
     }
 

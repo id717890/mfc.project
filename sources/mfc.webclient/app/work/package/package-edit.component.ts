@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 
+import { AppSettings } from '../../infrastructure/application-settings';
 import { DialogRef, ModalComponent, CloseGuard, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { CompleterService, CompleterData } from 'ng2-completer';
@@ -27,21 +28,13 @@ import { DateService } from './../../infrastructure/assistant/date.service';
 })
 
 export class PackageEditComponent extends BaseEditComponent<Package> implements AfterViewInit, OnInit {
+    myDatePickerOptions = AppSettings.DEFAULT_DATE_PICKER_OPTION;
+    
     organizations: Organization[];
-
-    selected_organization: number = -1;
 
     currentDate: string;
     busy: Promise<any>;
     busyMessage: string = "Загрузка списков...";
-
-    /* Настройки для datepicker */
-    myDatePickerOptions = {
-        todayBtnTxt: 'Today',
-        dateFormat: 'dd.mm.yyyy',
-        firstDayOfWeek: 'mo',
-        inline: false,
-    };
 
     constructor(public modal: Modal
         , public dialog: DialogRef<BaseEditContext<Package>>

@@ -14,6 +14,7 @@ import { ActionEditComponent } from './action/action-edit.component';
 import { FileListComponent } from './file/file-list.component';
 import { FileService } from './file/file.service';
 import { FileEditComponent } from './file/file-edit.component';
+import { FileControlEditComponent } from './file/file-control-edit.component';
 
 // Пакеты
 import { PackageListComponent } from './package/package-list.component';
@@ -47,7 +48,7 @@ import { BusyModule, BusyConfig } from 'angular2-busy';
     ],
     declarations: [
         ActionListComponent, ActionEditComponent,
-        FileListComponent, FileEditComponent,
+        FileListComponent, FileEditComponent, FileControlEditComponent,
         PackageListComponent, PackageEditComponent
     ],
     providers: [

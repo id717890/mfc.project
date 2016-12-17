@@ -23,6 +23,7 @@ import { OrganizationEditComponent } from './admin/organizations/organization-ed
 import { ActionEditComponent } from './work/action/action-edit.component';
 import { FileEditComponent } from './work/file/file-edit.component';
 import { PackageEditComponent } from './work/package/package-edit.component';
+import { FileControlEditComponent } from './work/file/file-control-edit.component';
 
 import { routing, appRoutingProviders } from './app.router';
 import { DefaultRequestOptions } from './infrastructure/default-request-options';
@@ -102,7 +103,8 @@ import { DateService } from "./infrastructure/assistant/date.service";
     OrganizationEditComponent,
     ActionEditComponent,
     FileEditComponent,
-    PackageEditComponent
+    PackageEditComponent,
+    FileControlEditComponent
   ]
 })
 export class AppModule { }

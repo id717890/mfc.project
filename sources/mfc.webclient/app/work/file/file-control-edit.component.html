@@ -1,0 +1,83 @@
+<div class="container-fluid custom-modal-container">
+	<div class="row custom-modal-header">
+		<div class="col-xs-12">
+			<h3>{{dialog.context.title}}</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<form class="form" role="form" style="position: relative">
+				<div id="for-check-status" *ngIf="dialog.context.status=='check'">
+					<div class="row">
+						<div class="col-xs-2" style="text-align:right">
+							<label>Номер дела: </label>
+						</div>
+						<div class="col-xs-10">
+							<span>{{dialog.context.file?.caption}}</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2" style="text-align:right">
+							<label>Дата: </label>
+						</div>
+						<div class="col-xs-10">
+							<span>{{dialog.context.file?.date | date: 'dd.MM.yyyy'}}</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2" style="text-align:right">
+							<label>Эксперт: </label>
+						</div>
+						<div class="col-xs-10">
+							<span>{{dialog.context.file?.expert?.description}}</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2" style="text-align:right">
+							<label>ОГВ: </label>
+						</div>
+						<div class="col-xs-10">
+							<span>{{dialog.context.file?.organization?.caption}}</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2" style="text-align:right">
+							<label>Услуга: </label>
+						</div>
+						<div class="col-xs-10">
+							<span>{{dialog.context.file?.action?.service?.caption}}</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2" style="text-align:right">
+							<label>Контролёр: </label>
+						</div>
+						<div class="col-xs-10">
+							<span>{{dialog.context.file?.controller?.description}}</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2" style="text-align:right">
+							<label>Статус: </label>
+						</div>
+						<div class="col-xs-10">
+							<span>{{dialog.context.file?.status?.caption}}</span>
+						</div>
+					</div>
+				</div>
+
+				<div id="for-not-check-status" *ngIf="dialog.context.status!='check'">
+					<div class="form-group">
+						<label>Комментарий</label>
+						<input type="text" class="form-control" name="comment" [(ngModel)]="model">
+					</div>
+				</div>
+				<div class="form-group">
+					<button class="btn btn-success" (click)="dialog.close(model)" *ngIf="dialog.context.status!='check'">Отправить</button>
+					<button class="btn btn-success" (click)="dialog.close(model)" *ngIf="dialog.context.status=='check'">Подтвердить</button>
+					<button class="btn btn-primary" (click)="dialog.dismiss()">Отменить</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
