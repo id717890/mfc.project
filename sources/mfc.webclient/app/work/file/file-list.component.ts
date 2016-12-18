@@ -1,5 +1,6 @@
 import { Component, AfterViewInit } from "@angular/core";
 
+import { AppSettings } from '../../infrastructure/application-settings';
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DialogRef, ModalComponent, CloseGuard, overlayConfigFactory } from 'angular2-modal';
 import { CompleterService, CompleterData } from 'ng2-completer';
@@ -21,6 +22,7 @@ import { Service } from '../../models/service.model';
 import { ServiceService } from '../../admin/services/service.service';
 import { Package } from '../../models/package.model';
 import { PackageService } from '../package/package.service';
+import { DateService } from './../../infrastructure/assistant/date.service';
 
 @Component({
     selector: "mfc-file-list",
@@ -50,12 +52,7 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
     private autoCompleteServices: CompleterData;
 
     /* Настройки для datepicker */
-    myDatePickerOptions = {
-        todayBtnTxt: 'Today',
-        dateFormat: 'dd.mm.yyyy',
-        firstDayOfWeek: 'mo',
-        inline: false
-    };
+    myDatePickerOptions = AppSettings.DEFAULT_DATE_PICKER_OPTION;
 
     constructor(public modal: Modal, private fileService: FileService
         , private _fileStatusService: FileStatusService
@@ -64,6 +61,7 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
         , private _serviceService: ServiceService
         , private _packageService: PackageService
         , private _completerService: CompleterService
+        , private _dateService: DateService
     ) {
         super(modal, fileService);
         this.prepareForm();
@@ -128,11 +126,19 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
     //Собитие изменения даты начала диапазона
     onChangedDateBegin(event: any) {
         if (event.formatted != "") this.dateBegin = event.formatted;
+        else {
+            let today = new Date();
+            this.dateBegin = this._dateService.ConvertDateToString(today);
+        }
     }
 
     //Собитие изменения даты окончания диапазона
     onChangedDateEnd(event: any) {
         if (event.formatted != "") this.dateEnd = event.formatted;
+        else {
+            let today = new Date();
+            this.dateEnd = this._dateService.ConvertDateToString(today);
+        }
     }
 
     //Перелистывание страницы

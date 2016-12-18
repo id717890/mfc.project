@@ -13,11 +13,7 @@ import { FileHistoryComponent, FileHistoryContext } from './file-history.compone
 import { Action } from '../../models/action.model';
 import { ActionService } from '../action/action.service';
 import { ActionEditComponent } from '../action/action-edit.component';
-
-ActionEditComponent
-
 import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.component/base-edit.component';
-
 import { FileStageConstants } from '../../infrastructure/constants/file-stage.constants';
 
 @Component({
@@ -33,8 +29,6 @@ import { FileStageConstants } from '../../infrastructure/constants/file-stage.co
 export class FileEditComponent extends BaseEditComponent<File> implements AfterViewInit, OnInit {
     busy: Promise<any>;
     busyMessage: string = "Загрузка списков...";
-
-
 
     constructor(public modal: Modal
         , public dialog: DialogRef<BaseEditContext<File>>

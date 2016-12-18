@@ -1,5 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 
+import { AppSettings } from '../../infrastructure/application-settings';
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { BaseListComponent } from './../../infrastructure/base.component/base-list.component';
 import { PackageEditComponent } from './package-edit.component';
@@ -20,6 +21,9 @@ import { Messages } from '../../Infrastructure/application-messages';
 })
 
 export class PackageListComponent extends BaseListComponent<Package> implements AfterViewInit {
+    /* Настройки для datepicker */
+    myDatePickerOptions = AppSettings.DEFAULT_DATE_PICKER_OPTION;
+
     dateBegin: string;
     dateEnd: string;
 
@@ -29,14 +33,6 @@ export class PackageListComponent extends BaseListComponent<Package> implements 
 
     selectedOrganization: number = -1;
     selectedController: number = -1;
-
-    /* Настройки для datepicker */
-    myDatePickerOptions = {
-        todayBtnTxt: 'Today',
-        dateFormat: 'dd.mm.yyyy',
-        firstDayOfWeek: 'mo',
-        inline: false
-    };
 
     constructor(public modal: Modal, private packageService: PackageService
         , private organizationService: OrganizationService

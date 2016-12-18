@@ -6,31 +6,39 @@
 			<div [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
 				<div class="row">
 					<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 no-m">
-						<nav class="navbar navbar-default" role="navigation" style="margin-bottom:0">
-							<div class="navbar-inner">
-								<div class="form-inline" style="margin:5px">
-									<div class="form-group">
-										<my-date-picker [options]="myDatePickerOptions" (dateChanged)="onDateBeginChanged($event)" [selDate]="dateBegin"></my-date-picker>
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<label>От</label>
+											<my-date-picker [options]="myDatePickerOptions" (dateChanged)="onChangeDateBegin($event)" [selDate]="dateBegin"></my-date-picker>
+										</div>
 									</div>
-									<div class="form-group">&nbsp;-&nbsp;</div>
-									<div class="form-group">
-										<my-date-picker [options]="myDatePickerOptions" (dateChanged)="onDateEndChanged($event)" [selDate]="dateEnd"></my-date-picker>
+									<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<label>До</label>
+											<my-date-picker [options]="myDatePickerOptions" (dateChanged)="onChangeDateEnd($event)" [selDate]="dateEnd"></my-date-picker>
+										</div>
 									</div>
-									<div class="form-group">
-										<select name="expert" class="form-control" (change)="onExpertChange($event.target.value)">
-                    						<option [value]="-1">Все</option>
-                    						<option *ngFor="let expert of experts" [value]="expert.id">{{expert.user_name}}</option>
-                						</select>
+									<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<label>Эксперт</label>
+											<select name="expert" class="form-control" (change)="onExpertChange($event.target.value)">
+                    							<option [value]="-1">Все</option>
+                    							<option *ngFor="let expert of experts" [value]="expert.id">{{expert.user_name}}</option>
+                							</select>
+										</div>
 									</div>
-									<div class="form-group">
-										<button (click)="Search()" class="btn btn-default"><span class="glyphicon glyphicon-search">&nbsp;</span>Обновить</button>
-									</div>
-									<div class="form-group">
-										<button (click)="add()" class="btn btn-primary"><span class="glyphicon glyphicon-plus">&nbsp;</span>Добавить</button>
+									<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+										<div class="form-group" style="margin-bottom: 0;">
+											<button (click)="Search()" class="btn btn-default" style="width: 100%; margin-bottom: 5px;"><span class="glyphicon glyphicon-search">&nbsp;</span>Обновить</button>
+											<button (click)="add()" class="btn btn-primary"style="width: 100%"><span class="glyphicon glyphicon-plus">&nbsp;</span>Добавить</button>
+										</div>
 									</div>
 								</div>
 							</div>
-						</nav>
+						</div>
 					</div>
 				</div>
 

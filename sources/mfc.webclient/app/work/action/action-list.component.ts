@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { AppSettings } from '../../infrastructure/application-settings';
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { BaseListComponent } from './../../infrastructure/base.component/base-list.component';
 import { ActionEditComponent } from './action-edit.component';
@@ -9,6 +10,7 @@ import { User } from '../../models/user.model';
 import { ActionService } from './action.service';
 import { UserService } from '../../admin/users/user.service';
 import { Messages } from '../../Infrastructure/application-messages';
+import { DateService } from './../../infrastructure/assistant/date.service';
 
 @Component({
     selector: 'mfc-action-list',
@@ -22,18 +24,14 @@ export class ActionListComponent extends BaseListComponent<Action> {
     dateEnd: string;
 
     /* Настройки для datepicker */
-    myDatePickerOptions = {
-        todayBtnTxt: 'Today',
-        dateFormat: 'dd.mm.yyyy',
-        firstDayOfWeek: 'mo',
-        inline: false,
-        // sunHighlight: true,
-        // height: '34px',
-        width: '200px',
-        // selectionTxtFontSize: '16px'
-    };
+    myDatePickerOptions = AppSettings.DEFAULT_DATE_PICKER_OPTION;
 
-    constructor(public modal: Modal, private actionService: ActionService, private _userService: UserService) {
+    constructor(
+        public modal: Modal
+        , private actionService: ActionService
+        , private _userService: UserService
+        , private _dateService: DateService
+    ) {
         super(modal, actionService);
         this.fillLists();
         this.prepareForm();
@@ -51,11 +49,19 @@ export class ActionListComponent extends BaseListComponent<Action> {
         this.dateEnd = tomorrow.getDate() + '.' + (tomorrow.getMonth() + 1) + '.' + tomorrow.getFullYear();
     }
 
-    onDateBeginChanged(event: any) {
-        this.dateBegin = event.formatted;
+    onChangeDateBegin(event: any) {
+        if (event.formatted != "") this.dateBegin = event.formatted;
+        else {
+            let today = new Date();
+            this.dateBegin = this._dateService.ConvertDateToString(today);
+        }
     }
-    onDateEndChanged(event: any) {
-        this.dateEnd = event.formatted;
+    onChangeDateEnd(event: any) {
+        if (event.formatted != "") this.dateEnd = event.formatted;
+        else {
+            let today = new Date();
+            this.dateEnd = this._dateService.ConvertDateToString(today);
+        }
     }
 
     onExpertChange(user_id: any) {
