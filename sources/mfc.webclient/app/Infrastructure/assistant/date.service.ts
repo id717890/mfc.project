@@ -6,4 +6,9 @@ export class DateService {
             + value.getFullYear();
         return output;
     }
+
+    public ConvertStringToDate(value: string=null){
+        if (value===null) value=this.ConvertDateToString();
+        return new Date(value);
+    }
 }

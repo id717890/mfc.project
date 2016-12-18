@@ -29,7 +29,7 @@ import { DateService } from './../../infrastructure/assistant/date.service';
 
 export class PackageEditComponent extends BaseEditComponent<Package> implements AfterViewInit, OnInit {
     myDatePickerOptions = AppSettings.DEFAULT_DATE_PICKER_OPTION;
-    
+
     organizations: Organization[];
 
     currentDate: string;
@@ -68,10 +68,13 @@ export class PackageEditComponent extends BaseEditComponent<Package> implements 
     }
 
     onChangeDate(event: any) {
-        if (event.formatted != "" && event.epoc != 0) this.context.model.date = new Date(event.formatted);
+        if (event.formatted != "" && event.epoc != 0) {
+            this.currentDate = event.formatted;
+            this.context.model.date = new Date(event.date.year, event.date.month-1, event.date.day);
+        }
         else {
             let today = new Date();
-            this.currentDate = today.getDate() + '.' + (today.getMonth() + 1) + '.' + today.getFullYear();
+            this.currentDate = this._dateService.ConvertDateToString(today);
             this.context.model.date = today;
         }
     }

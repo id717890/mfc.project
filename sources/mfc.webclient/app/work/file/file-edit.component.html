@@ -80,7 +80,7 @@
 				<button class="btn btn-success btn-action" (click)="ChangeStatus('fix')">Вернуть для исправления</button>
 				<button class="btn btn-success btn-action" style="margin-bottom:0" (click)="ChangeStatus('check')">Проверено</button>
 				<hr>
-				<button class="btn btn-success btn-action">Прием</button>
+				<button class="btn btn-success btn-action" (click)="editActionOfFile(context.model.action)">Прием</button>
 				<button class="btn btn-success btn-action">Показать историю</button>
 			</div>
 		</div>

@@ -72,89 +72,39 @@ namespace mfc.webapi.Controllers
             {
                 case FileStages.SendForControl:
                     _fileService.SendForControl(id, value.Comment);
-                break;
+                    break;
                 case FileStages.ReturnForFix:
                     _fileService.Return(id, value.Comment);
-                break;
+                    break;
                 case FileStages.Checked:
                     _fileService.Checked(id, string.Empty);
-                break;
+                    break;
             }
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-
-
-
-
-
-
-
-
-        public HttpResponseMessage Get([FromUri]DateTime beginDate, [FromUri]DateTime endDate, [FromUri]int controller, [FromUri]int expert, [FromUri]int status, [FromUri]int organization, [FromUri]int service)
-        {
-            var fileService = CompositionRoot.Resolve<IFileService>();
-            var output = fileService.GetFiles(beginDate, endDate, controller, expert, status, organization, service).Select(x => new FileModel { });
-
-            return Request.CreateResponse(HttpStatusCode.OK, output);
-        }
-
-        // GET: api/file/:id
-        public HttpResponseMessage Get(int id)
-        {
-            var fileService = CompositionRoot.Resolve<IFileService>();
-
-            var output = fileService.GetFileById(id);
-            return output != null ?
-                Request.CreateResponse(HttpStatusCode.OK, new FileModel(output)) :
-                Request.CreateResponse(HttpStatusCode.NotFound);
-        }
-
-        // POST: api/file
-        public HttpResponseMessage Post([FromBody]FileModel value)
-        {
-            var fileService = CompositionRoot.Resolve<IFileService>();
-            //var identifier = fileService.Add()
-
-            //var response = Request.CreateResponse(HttpStatusCode.Created, new Uri(Request.RequestUri + "/" + identifier.ToString()), MediaTypeHeaderValue.Parse("application/json"));
-            //response.Headers.Location = new Uri(Request.RequestUri + identifier.ToString());
-
-            //return response;
-            return null;
-        }
-
-        // PUT: api/file/:id
+        // PUT: api/files/5
         [HttpPut]
+        [Route("{id}")]
         public HttpResponseMessage Put(int id, [FromBody]FileModel value)
         {
-            var fileService = CompositionRoot.Resolve<IFileService>();
-            var fileInfo = fileService.GetFileById(id);
-
-            if (fileInfo != null)
-            {
-                fileInfo.Caption = value.Caption;
-                fileService.Update(fileInfo);
-                return Request.CreateResponse(HttpStatusCode.OK);
-            }
-
-            return Request.CreateResponse(HttpStatusCode.NotFound);
+            var file = _fileService.GetFileById(id);
+            if (file == null) return Request.CreateResponse(HttpStatusCode.NotFound);
+            //            _fileService.Update(_mapper.Map<File>(value));  // Так не работает, Hibernate выдает ошибку "a different object with the same identifier value was already associated with the session"
+            file.Caption = value.Caption;
+            _fileService.Update(file);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        // DELETE: api/file/:id
+        // DELETE: api/files/:id
         [HttpDelete]
         [Route("{id}")]
         public HttpResponseMessage Delete(int id)
         {
-            var fileService = CompositionRoot.Resolve<IFileService>();
-            var fileInfo = fileService.GetFileById(id);
-
-            if (fileInfo != null)
-            {
-                fileService.Delete(id);
-                return Request.CreateResponse(HttpStatusCode.OK);
-            }
-
-            return Request.CreateResponse(HttpStatusCode.NotFound);
+            var file = _fileService.GetFileById(id);
+            if (file == null) return Request.CreateResponse(HttpStatusCode.NotFound);
+            _fileService.Delete(id);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }

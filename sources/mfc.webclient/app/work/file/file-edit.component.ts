@@ -9,6 +9,11 @@ import { CompleterService, CompleterData } from 'ng2-completer';
 import { File } from '../../models/file.model';
 import { FileService } from './file.service';
 import { FileControlEditContext, FileControlEditComponent } from './file-control-edit.component';
+import { Action } from '../../models/action.model';
+import { ActionService } from '../action/action.service';
+import { ActionEditComponent } from '../action/action-edit.component';
+
+ActionEditComponent
 
 import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.component/base-edit.component';
 
@@ -33,6 +38,7 @@ export class FileEditComponent extends BaseEditComponent<File> implements AfterV
     constructor(public modal: Modal
         , public dialog: DialogRef<BaseEditContext<File>>
         , private _fileService: FileService
+        , private _actionService: ActionService
     ) {
         super(dialog);
     }
@@ -60,6 +66,28 @@ export class FileEditComponent extends BaseEditComponent<File> implements AfterV
                             }
                             else this.handlerError(x)
                         }).catch(x => this.handlerError(x));
+                }, () => null);
+            }).catch(this.handlerError);
+    }
+
+    editActionOfFile(action: Action) {
+        this.modal
+            .open(ActionEditComponent, overlayConfigFactory({ title: 'Редактирование', model: action }, BSModalContext))
+            .then(x => {
+                x.result.then(output => {
+                    if (output != null) {
+                        this.busy = this._actionService.put(output)
+                            .then(x => {
+                                if (x["status"] == 200) {
+                                    this._fileService.getById(this.context.model.id)
+                                        .then(x => {
+                                            this.context.model = x["data"];
+                                        });
+                                    this.dialog.close(this.context.model);
+                                }
+                                else this.handlerError(x["statusText"])
+                            }).catch(x => this.handlerError(x));
+                    }
                 }, () => null);
             }).catch(this.handlerError);
     }
