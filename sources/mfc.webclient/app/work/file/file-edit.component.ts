@@ -9,6 +9,7 @@ import { CompleterService, CompleterData } from 'ng2-completer';
 import { File } from '../../models/file.model';
 import { FileService } from './file.service';
 import { FileControlEditContext, FileControlEditComponent } from './file-control-edit.component';
+import { FileHistoryComponent, FileHistoryContext } from './file-history.component';
 import { Action } from '../../models/action.model';
 import { ActionService } from '../action/action.service';
 import { ActionEditComponent } from '../action/action-edit.component';
@@ -90,6 +91,16 @@ export class FileEditComponent extends BaseEditComponent<File> implements AfterV
                     }
                 }, () => null);
             }).catch(this.handlerError);
+    }
+
+    historyFile(id: number)
+    {
+        this.modal
+            .open(FileHistoryComponent, overlayConfigFactory({ id: this.context.model.id }, BSModalContext))
+            .then(x => {
+                x.result.then(()=>null, () => null);
+            }).catch(this.handlerError);
+
     }
 
     protected handlerError(error: any) {

@@ -11,7 +11,7 @@
 				style="width:100%">Сохранить</button>
 		</div>
 		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-			<button id="button-cancel" class="btn btn-primary" (click)="dialog.dismiss()" style="width:100%">Отменить</button>
+			<button id="button-cancel" class="btn btn-default" (click)="dialog.dismiss()" style="width:100%">Отменить</button>
 		</div>
 	</div>
 	<div class="row">
@@ -76,12 +76,12 @@
 		</div>
 		<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 			<div class="panel panel-default" style="padding: 5px;">
-				<button class="btn btn-success btn-action" (click)="ChangeStatus('control')">Отправить на контроль</button>
-				<button class="btn btn-success btn-action" (click)="ChangeStatus('fix')">Вернуть для исправления</button>
+				<button class="btn btn-warning btn-action" (click)="ChangeStatus('control')">Отправить на контроль</button>
+				<button class="btn btn-danger btn-action" (click)="ChangeStatus('fix')">Вернуть для исправления</button>
 				<button class="btn btn-success btn-action" style="margin-bottom:0" (click)="ChangeStatus('check')">Проверено</button>
 				<hr>
-				<button class="btn btn-success btn-action" (click)="editActionOfFile(context.model.action)">Прием</button>
-				<button class="btn btn-success btn-action">Показать историю</button>
+				<button class="btn btn-primary btn-action" (click)="editActionOfFile(context.model.action)">Прием</button>
+				<button class="btn btn-primary btn-action" (click)="historyFile(context.model.id)">Показать историю</button>
 			</div>
 		</div>
 	</div>

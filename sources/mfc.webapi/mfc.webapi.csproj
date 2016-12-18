@@ -247,6 +247,7 @@
     <Compile Include="CompositeModule.cs" />
     <Compile Include="CompostionRoot.cs" />
     <Compile Include="Controllers\ActionPermissionController.cs" />
+    <Compile Include="Controllers\FileStatusHistoryController.cs" />
     <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\ActionController.cs" />
     <Compile Include="Controllers\ActionTypeController.cs" />
@@ -275,6 +276,7 @@
     <Compile Include="Models.Mappings\CustomerTypeModelProfile.cs" />
     <Compile Include="Models.Mappings\FileModelProfile.cs" />
     <Compile Include="Models.Mappings\FileStageModelProfile.cs" />
+    <Compile Include="Models.Mappings\FIleStatusHistoryModelProfile.cs" />
     <Compile Include="Models.Mappings\FileStatusModelProfile.cs" />
     <Compile Include="Models.Mappings\ModuleModelProfile.cs" />
     <Compile Include="Models.Mappings\OrganizationModelProfile.cs" />
@@ -285,6 +287,7 @@
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\ActionModel.cs" />
     <Compile Include="Models\ChangeStatusModel.cs" />
+    <Compile Include="Models\FileStatusHistoryModel.cs" />
     <Compile Include="Models\ModuleModel.cs" />
     <Compile Include="Models\ActionTypeModel.cs" />
     <Compile Include="Models\CustomerType.cs" />

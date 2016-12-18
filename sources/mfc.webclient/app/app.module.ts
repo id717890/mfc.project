@@ -22,8 +22,9 @@ import { ServiceEditComponent } from './admin/services/service-edit.component';
 import { OrganizationEditComponent } from './admin/organizations/organization-edit.component';
 import { ActionEditComponent } from './work/action/action-edit.component';
 import { FileEditComponent } from './work/file/file-edit.component';
-import { PackageEditComponent } from './work/package/package-edit.component';
 import { FileControlEditComponent } from './work/file/file-control-edit.component';
+import { FileHistoryComponent } from './work/file/file-history.component';
+import { PackageEditComponent } from './work/package/package-edit.component';
 
 import { routing, appRoutingProviders } from './app.router';
 import { DefaultRequestOptions } from './infrastructure/default-request-options';
@@ -102,9 +103,8 @@ import { DateService } from "./infrastructure/assistant/date.service";
     ServiceEditComponent,
     OrganizationEditComponent,
     ActionEditComponent,
-    FileEditComponent,
-    PackageEditComponent,
-    FileControlEditComponent
+    FileEditComponent, FileControlEditComponent, FileHistoryComponent, 
+    PackageEditComponent
   ]
 })
 export class AppModule { }

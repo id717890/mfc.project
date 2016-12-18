@@ -15,6 +15,10 @@ import { FileListComponent } from './file/file-list.component';
 import { FileService } from './file/file.service';
 import { FileEditComponent } from './file/file-edit.component';
 import { FileControlEditComponent } from './file/file-control-edit.component';
+import { FileHistoryComponent } from './file/file-history.component';
+import { FileStatusHistoryService } from './file/file-status-history.service';
+
+FileStatusHistoryService
 
 // Пакеты
 import { PackageListComponent } from './package/package-list.component';
@@ -48,13 +52,14 @@ import { BusyModule, BusyConfig } from 'angular2-busy';
     ],
     declarations: [
         ActionListComponent, ActionEditComponent,
-        FileListComponent, FileEditComponent, FileControlEditComponent,
+        FileListComponent, FileEditComponent, FileControlEditComponent, FileHistoryComponent,
         PackageListComponent, PackageEditComponent
     ],
     providers: [
         ActionService,
         FileService,
-        PackageService,PackageFileService
+        PackageService, PackageFileService,
+        FileStatusHistoryService
     ]
 })
 

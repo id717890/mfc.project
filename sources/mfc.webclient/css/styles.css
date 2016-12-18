@@ -401,3 +401,9 @@ table {
 .custom-modal-header{
     text-align: center;
 }
+
+/*Панель для вывода истории статусов дела*/
+.file-status-panel{
+    height: 300px;
+    overflow-y: scroll;
+}

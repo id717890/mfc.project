@@ -5,7 +5,6 @@ import { Headers, RequestOptions, RequestOptionsArgs, Response } from '@angular/
 import { File } from '../../models/file.model';
 import { BaseService } from './../../infrastructure/base.component/base.service';
 import { AppSettings } from '../../Infrastructure/application-settings';
-import { PostTypes } from './post-types'
 import { FileStageConstants } from '../../infrastructure/constants/file-stage.constants';
 
 
