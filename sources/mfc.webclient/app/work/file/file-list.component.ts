@@ -9,6 +9,7 @@ import { Messages } from '../../infrastructure/application-messages';
 import { BaseListComponent } from './../../infrastructure/base.component/base-list.component';
 import { FileEditComponent } from './file-edit.component';
 import { PackageEditComponent } from '../package/package-edit.component';
+import { FileAcceptComponent } from './file-accept.component';
 
 import { File } from '../../models/file.model';
 import { FileService } from './file.service';
@@ -79,6 +80,57 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
         })
     }
 
+    //Создать копию дела
+    CopyFiles()
+    {
+        alert("Функционал в разработке")
+    }
+
+    //Принять дела
+    AcceptFiles() {
+        //Перед приемом проверяем выбрал ли пользователь хотя бы одно дело
+        if (this.models.filter(x => x.is_selected).length == 0) {
+            this.modal.alert()
+                .size('sm')
+                .isBlocking(false)
+                .showClose(false)
+                .keyboard(27)
+                .title('Предупреждение!')
+                .body('Не выбрано ни одного дела!')
+                .open().then(x => { x.result.then(() => null, () => null) });
+        }
+        else {
+            let selectedFiles = this.models.filter(x => x.is_selected);
+            this.busy =
+                this.fileService.postAcceptFiles(selectedFiles)
+                    .then(x => {
+                        if (x.status == 200) {
+                            let acceptedList: File[];
+                            let rejectedList: File[] = [];
+                            let responsList = this.fileService.extractData(x)['data'];
+                            selectedFiles.forEach(item => {
+                                let find = false;
+                                responsList.forEach(x => {
+                                    if (x.id == item.id) {
+                                        find = true;
+                                        item.status = x.status;
+                                    }
+                                })
+                                if (find === false) rejectedList.push(item);
+                            })
+                            acceptedList = responsList;
+
+                            this.modal
+                                .open(FileAcceptComponent,
+                                overlayConfigFactory({ accept_list: acceptedList, reject_list: rejectedList }, BSModalContext)
+                                ).then(x => {
+                                    x.result.then(() => null, () => null);
+                                }).catch(this.handlerError);
+                        }
+                    })
+        }
+    }
+
     //Создать пакет
     CreatePackage() {
         //Перед созданием пакета проверяем выбрал ли пользователь хотя бы одно дело
@@ -90,7 +142,7 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
                 .keyboard(27)
                 .title('Предупреждение!')
                 .body('Не выбрано ни одного дела!')
-                .open().then(x=>{x.result.then(()=>null,()=>null)});
+                .open().then(x => { x.result.then(() => null, () => null) });
         }
         else {
             let model = new Package(null, '', null, null, null, '', this.models.filter(x => x.is_selected));

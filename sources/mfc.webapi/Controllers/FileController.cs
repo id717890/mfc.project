@@ -96,6 +96,17 @@ namespace mfc.webapi.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        // PUT: api/files/controll
+        [HttpPut]
+        [Route("controll")]
+        public HttpResponseMessage Put([FromBody]IEnumerable<FileModel> value)
+        {
+            var checkedFileIds = value.Select(x=>x.Id).Distinct();
+            var acceptedIds = new List<Int64>(_fileService.AcceptForControl(checkedFileIds));
+            var acceptModel = acceptedIds.Select(id => _mapper.Map<FileModel>(_fileService.GetFileById(id))).ToList();
+            return Request.CreateResponse(HttpStatusCode.OK, acceptModel);
+        }
+
         // DELETE: api/files/:id
         [HttpDelete]
         [Route("{id}")]

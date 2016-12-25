@@ -67,19 +67,15 @@
 										</div>
 									</div>
 									<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-										<div class="row" style="margin-bottom:5px">
-											<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-												<button class="btn btn-default glyphicon glyphicon-refresh" style="width:100%" (click)="Search()" title="Обновить"></button>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:5px">
-												<button class="btn btn-success glyphicon glyphicon-saved" style="width:100%" title="Принять">&nbsp;Принять</button>
-											</div>
-											<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-												<button class="btn btn-success glyphicon glyphicon-list" style="width:100%" (click)="CreatePackage()" title="Создать пакет">&nbsp;Пакет</button>
-											</div>
-										</div>
+										<label>&nbsp;</label>										
+										<button class="btn btn-default glyphicon glyphicon-refresh" style="width:100%" (click)="Search()" title="Обновить"></button>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12">
+										<button class="btn btn-success glyphicon glyphicon-saved" (click)="AcceptFiles()" title="Принять">&nbsp;Принять на контроль</button>
+										<button class="btn btn-default glyphicon glyphicon-list" (click)="CreatePackage()" title="Создать пакет">&nbsp;Создать пакет</button>
+										<button class="btn btn-default glyphicon glyphicon-copy" (click)="CopyFiles()" title="Создать копию">&nbsp;Создать копию</button>
 									</div>
 								</div>
 							</div>

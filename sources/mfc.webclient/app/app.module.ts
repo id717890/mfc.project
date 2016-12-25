@@ -25,6 +25,7 @@ import { FileEditComponent } from './work/file/file-edit.component';
 import { FileControlEditComponent } from './work/file/file-control-edit.component';
 import { FileHistoryComponent } from './work/file/file-history.component';
 import { PackageEditComponent } from './work/package/package-edit.component';
+import { FileAcceptComponent } from './work/file/file-accept.component';
 
 import { routing, appRoutingProviders } from './app.router';
 import { DefaultRequestOptions } from './infrastructure/default-request-options';
@@ -103,7 +104,7 @@ import { DateService } from "./infrastructure/assistant/date.service";
     ServiceEditComponent,
     OrganizationEditComponent,
     ActionEditComponent,
-    FileEditComponent, FileControlEditComponent, FileHistoryComponent, 
+    FileEditComponent, FileControlEditComponent, FileHistoryComponent, FileAcceptComponent, 
     PackageEditComponent
   ]
 })
