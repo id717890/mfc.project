@@ -28,13 +28,49 @@ export class ActionListComponent extends BaseListComponent<Action> {
 
     constructor(
         public modal: Modal
-        , private actionService: ActionService
+        , private _actionService: ActionService
         , private _userService: UserService
         , private _dateService: DateService
     ) {
-        super(modal, actionService);
+        super(modal, _actionService);
         this.fillLists();
         this.prepareForm();
+    }
+
+    copy() {
+        if (this.models.filter(x => x.is_selected).length == 0) {
+            this.modal.alert()
+                .size('sm')
+                .isBlocking(false)
+                .showClose(false)
+                .keyboard(27)
+                .title('Предупреждение!')
+                .body('Не выбрано ни одного приема!')
+                .open().then(x => { x.result.then(() => null, () => null) });
+        }
+        else {
+            let selectedActions = this.models.filter(x => x.is_selected);
+            this.busy =
+                this._actionService.postCopyAction(selectedActions)
+                    .then(x => {
+                        if (x.status == 200) {
+                            let responsList = this._actionService.extractData(x)['data'];
+                            if (responsList != null) {
+                                responsList.forEach(x => {
+                                    this.models.push(x);
+                                })
+                            }
+                        }
+                    })
+        }
+    }
+
+    //Выбираем все приемы на странице
+    onSelectAllFiles(event: any) {
+        if (event.target.checked)
+            this.models.forEach(x => x.is_selected = true);
+        else
+            this.models.forEach(x => x.is_selected = false);
     }
 
     private fillLists(): void {
@@ -73,7 +109,7 @@ export class ActionListComponent extends BaseListComponent<Action> {
     }
 
     Search() {
-        this.busy = this.actionService.getWithParameters(this.prepareData()).then(x => {
+        this.busy = this._actionService.getWithParameters(this.prepareData()).then(x => {
             this.models = x['data'];
             this.totalRows = x['total'];
         })
@@ -83,7 +119,7 @@ export class ActionListComponent extends BaseListComponent<Action> {
     getPage(page: number) {
         this.pageIndex = page;
         this.busy =
-            this.actionService.getWithParameters(this.prepareData()).then(x => {
+            this._actionService.getWithParameters(this.prepareData()).then(x => {
                 this.models = x['data'];
                 this.totalRows = x['total'];
             })
@@ -100,7 +136,7 @@ export class ActionListComponent extends BaseListComponent<Action> {
     }
 
     newModel(): Action {
-        return new Action(null, '', null, '', null, null, null, null, null, null, '', false, false);
+        return new Action(null, '', null, '', null, null, null, null, null, null, '', false, false, false);
     };
 
     cloneModel(model: Action): Action {
@@ -117,7 +153,8 @@ export class ActionListComponent extends BaseListComponent<Action> {
             model.service_child,
             model.comments,
             model.is_non_resident,
-            model.is_free_visit);
+            model.is_free_visit,
+            model.is_selected);
     };
 
     getEditComponent(): any {

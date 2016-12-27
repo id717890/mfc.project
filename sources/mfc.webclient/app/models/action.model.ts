@@ -19,7 +19,8 @@ export class Action extends BaseModel {
         public service_child: Service,
         public comments: string,
         public is_non_resident: boolean,
-        public is_free_visit: boolean
+        public is_free_visit: boolean,
+        public is_selected:boolean
     ) {
         super(id, caption);
     }

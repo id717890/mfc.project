@@ -35,7 +35,7 @@ namespace mfc.webapi.Controllers
             var actions = _mapper.Map<IEnumerable<ActionModel>>(_actionService.GetActions(queryDateBegin, queryDateEnd, null)).ToList();
             var response = Request.CreateResponse(HttpStatusCode.OK, actions);
             response.Headers.Add("Total-rows", actions.Count().ToString());
-            
+
             return response;
         }
 
@@ -125,6 +125,16 @@ namespace mfc.webapi.Controllers
             return msg;
         }
 
+        // POST: api/actions/copy
+        [HttpPost]
+        [Route("copy")]
+        public HttpResponseMessage Post([FromBody] IEnumerable<ActionModel> values)
+        {
+            if (values == null || !values.Any()) return Request.CreateResponse(HttpStatusCode.NoContent);
+            var copyList = values.Select(value => _mapper.Map<ActionModel>(_actionService.GetActionById(_actionService.Add(value.Date, value.Service.Id, value.Customer, value.ActionType.Id, value.CustomerType.Id, value.User.Id, value.ServiceChild?.Id ??-1, value.IsNonresident, value.FreeVisit, value.Comments)))).ToList();
+            return Request.CreateResponse(HttpStatusCode.OK, copyList);
+        }
+
         // PUT: api/actions/5
         [HttpPut]
         [Route("{id}")]
@@ -138,11 +148,11 @@ namespace mfc.webapi.Controllers
             /* А так работает */
             actions.Date = value.Date;
             actions.Customer = value.Customer;
-            actions.CustomerType= _mapper.Map<CustomerType>(value.CustomerType);
+            actions.CustomerType = _mapper.Map<CustomerType>(value.CustomerType);
             actions.Service = _mapper.Map<Service>(value.Service);
-            actions.ServiceChild= _mapper.Map<Service>(value.ServiceChild);
+            actions.ServiceChild = _mapper.Map<Service>(value.ServiceChild);
             actions.Type = _mapper.Map<ActionType>(value.ActionType);
-            actions.User= _mapper.Map<User>(value.User);
+            actions.User = _mapper.Map<User>(value.User);
             actions.Comments = value.Comments;
             actions.FreeVisit = value.FreeVisit;
             actions.IsNonresident = value.IsNonresident;
