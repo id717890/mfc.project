@@ -1,5 +1,5 @@
-import { Component, Output, Input, EventEmitter } from "@angular/core";
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component } from "@angular/core";
+import { FormBuilder } from '@angular/forms';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -15,14 +15,7 @@ import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.
 })
 
 export class FileStatusEditComponent extends BaseEditComponent<FileStatus> {
-    constructor(public dialog: DialogRef<BaseEditContext<FileStatus>>, formBuilder: FormBuilder) {
-        super(dialog, formBuilder.group({ 'caption' : [null, Validators.required] }));
-
-        //Заполняем форму
-        this.formGroup.patchValue({ caption: dialog.context.model.caption });
-    }
-
-    mapFormToModel(form: any): void {
-        this.context.model.caption = form.caption;
+    constructor(public dialog: DialogRef<BaseEditContext<FileStatus>>) {
+        super(dialog);
     }
 }

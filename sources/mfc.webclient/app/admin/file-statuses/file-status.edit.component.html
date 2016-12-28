@@ -1,21 +1,23 @@
 <span defaultOverlayTarget></span>
-<div class='container-fluid custom-modal-container' >
+<div class='container-fluid custom-modal-container'>
     <div class="row custom-modal-header">
         <div class="col-sm-12">
-        <div class="pull-left"><h1>{{context.title}}</h1></div>
-            <div class="input-group input-buttons pull-right" [ngClass]="{'has-error':!formGroup.controls['caption'].valid && formGroup.controls['caption'].touched}">
-                <button id="button-apply" class="btn btn-success" (click)="dialog.close(context.model)">Применить</button>
-                <button id="button-cancel" class="btn btn-primary" (click)="dialog.dismiss()">Отменить</button>
+            <div class="pull-left">
+                <h1>{{context.title}}</h1>
+            </div>
+            <div class="input-group input-buttons pull-right">
+                <button id="button-apply" class="btn btn-success" (click)="dialog.close(context.model)" [disabled]="!statusForm.form.valid">Сохранить</button>
+                <button id="button-cancel" class="btn btn-warning" (click)="dialog.dismiss()">Отменить</button>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12">
-            <form class="form-horizontal" [formGroup]="formGroup" >
-                <div class="input-group input-line" [ngClass]="{'has-error':!formGroup.controls['caption'].valid && formGroup.controls['caption'].touched, 'shake': isShaking}">
-                    <label>Наименование:</label>
-                    <input class="form-control" type="text" placeholder="Введите наименование" [formControl]="formGroup.controls['caption']">
-                    <div *ngIf="formGroup.controls['caption'].hasError('required') && formGroup.controls['caption'].touched" class="form-control alert alert-danger">Поле не может быть пустым.</div>
+        <div class="col-xs-12">
+            <form #statusForm="ngForm">
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Введите наименование" name="caption" [(ngModel)]="context.model.caption"
+                        required #caption="ngModel">
+                    <div [hidden]="caption.valid||caption.pristine" class="alert alert-danger">Укажите наименование</div>
                 </div>
             </form>
         </div>

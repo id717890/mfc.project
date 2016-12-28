@@ -51,10 +51,8 @@ namespace mfc.webapi.Controllers
         public HttpResponseMessage Post([FromBody]ActionTypeModel value)
         {
             var identifier = _actionTypeService.Create(value.Caption, value.NeedMakeFile);
-
-            var response = Request.CreateResponse(HttpStatusCode.Created, new Uri(Request.RequestUri + "/" + identifier.ToString()), MediaTypeHeaderValue.Parse("application/json"));
-            response.Headers.Location = new Uri(Request.RequestUri + identifier.ToString());
-
+            var response = Request.CreateResponse(HttpStatusCode.Created, new Uri(Request.RequestUri + "/" + identifier), MediaTypeHeaderValue.Parse("application/json"));
+            response.Headers.Location = new Uri(Request.RequestUri + "/" + identifier);
             return response;
         }
 

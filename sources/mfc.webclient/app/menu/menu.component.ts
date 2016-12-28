@@ -6,20 +6,20 @@ import { HashTable } from './../shared/hash-table';
 
 @Component({
     selector: 'main-menu',
-    templateUrl: 'app/menu/menu.component.html'
+    templateUrl: 'app/menu/menu.component.html',
+    
 })
 
 @Injectable()
 export class MenuComponent implements OnInit {
     actions: HashTable<boolean> = {};
     busy: Promise<any>;
-    busyMessage: string;
+    busyMessage: string="Загрузка модулей...";
 
     constructor(private actionPermissionService: ActionPermissionService) {
     }
 
     ngOnInit(): void {
-        this.busyMessage = Messages.LOADING;
         this.busy = this.actionPermissionService.get("")
             .then(actions => {
                 this.actions = {};

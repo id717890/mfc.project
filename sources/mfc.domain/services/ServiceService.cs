@@ -85,7 +85,7 @@ namespace mfc.domain.services {
 
             _is_cache_valid = false;
 
-            return 0;
+            return service.Id;
         }
 
 

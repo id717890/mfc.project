@@ -14,7 +14,7 @@ import { FileStatusEditComponent } from './file-statuses/file-status.edit.compon
 import { FileStatusListComponent } from './file-statuses/file-status.list.component';
 import { ActionTypeEditComponent } from './action-types/action-type.edit.component';
 import { ActionTypeListComponent } from './action-types/action-type.list.component';
-import { OrganizationTypeListComponent } from './organization-types/organization-type-list/organization-type-list.component';
+import { OrganizationTypeListComponent } from './organization-types/organization-type-list.component';
 import { OrganizationTypeEditComponent } from './organization-types/organization-type-edit.component';
 import { FileStageListComponent } from './file-stages/file-stage-list.component';
 import { ServiceListComponent } from './services/service-list.component';

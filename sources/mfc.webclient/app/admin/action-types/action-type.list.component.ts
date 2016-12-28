@@ -14,7 +14,11 @@ import { ActionTypeEditComponent } from './action-type.edit.component'
 @Component({
     selector: 'mfc-action-type-list',
     templateUrl: 'app/admin/action-types/action-type.list.component.html',
-    providers: [Modal]
+    providers: [Modal],
+    styles: [`
+        .glyphicon-ok-sign { color: green; font-size: 1.1em; }
+        .glyphicon-minus-sign { color: silver }
+    `],
 })
 
 export class ActionTypeListComponent extends BaseListComponent<ActionType> implements OnInit {
@@ -25,15 +29,15 @@ export class ActionTypeListComponent extends BaseListComponent<ActionType> imple
         super(modal, actionTypeService);
     }
 
-     newModel(): ActionType {
-         return new ActionType(null, '', false);
-     };
+    newModel(): ActionType {
+        return new ActionType(null, '', false);
+    };
 
-     cloneModel(model : ActionType): ActionType {
-         return new ActionType(model.id, model.caption, model.need_make_file);
-     };
+    cloneModel(model: ActionType): ActionType {
+        return new ActionType(model.id, model.caption, model.need_make_file);
+    };
 
-     getEditComponent() : any {
-         return ActionTypeEditComponent;
-     }
+    getEditComponent(): any {
+        return ActionTypeEditComponent;
+    }
 }
