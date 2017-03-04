@@ -3,6 +3,7 @@ import { RequestOptions } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { BusyModule, BusyConfig } from 'angular2-busy'; //Сторонний пакет для реализации busy indicatpr angular2-busy https://github.com/devyumao/angular2-busy
 
@@ -12,6 +13,7 @@ import { WorkModule } from './work/work.module';
 import { AppComponent } from './app.component';
 import { WorkComponent } from './work/work.component';
 import { MenuComponent } from './menu/menu.component';
+import { LoginComponent } from './login/login.component';
 
 import { ActionTypeEditComponent } from './admin/action-types/action-type.edit.component';
 import { FileStatusEditComponent } from './admin/file-statuses/file-status.edit.component';
@@ -34,6 +36,8 @@ import { LOGGING_ERROR_HANDLER_OPTIONS } from "./infrastructure/error.handler";
 @NgModule({
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     BusyModule.forRoot(
       new BusyConfig({
         message: 'Загрузка...',
@@ -64,6 +68,7 @@ import { LOGGING_ERROR_HANDLER_OPTIONS } from "./infrastructure/error.handler";
     AppComponent,
     MenuComponent,
     WorkComponent,
+    LoginComponent
   ],
   bootstrap: [AppComponent],
   providers: [
