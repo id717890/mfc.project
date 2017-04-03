@@ -9,6 +9,7 @@ using Ninject;
 using mfc.domain.services;
 using mfc.infrastructure.services;
 using System.Data.SqlClient;
+using NHibernate.Criterion;
 
 namespace mfc.dal.services {
     public class PackageRepository : Repository<Package>, IPackageRepository {
@@ -57,7 +58,6 @@ namespace mfc.dal.services {
             return ids;
         }
 
-
         public void UpdateFiles(long package_id, IEnumerable<long> file_ids) {
             var session = SqlProvider.CreateConnection();
             SqlTransaction tx = null;
@@ -88,5 +88,47 @@ namespace mfc.dal.services {
                 session.Close();
             }
         }
+
+        //Рефакторинг
+        public long TotalRows { get; set; }
+
+        public IEnumerable<Package> GetPackages(DateTime dateBegin, DateTime dateEnd, long organization, long controller, int pageIndex,
+            int pageSize)
+        {
+            var date1 = new DateTime(dateBegin.Year, dateBegin.Month, dateBegin.Day, 0, 0, 0);
+            var date2 = new DateTime(dateEnd.Year, dateEnd.Month, dateEnd.Day, 23, 59, 59);
+            var criteria = Session.CreateCriteria<Package>()
+                .Add(Restrictions.Between("Date", date1, date2))
+                .Add(Restrictions.Eq("IsDeleted", false));
+
+            var countOfFiles = Session.CreateCriteria<Package>()
+                .Add(Restrictions.Between("Date", date1, date2))
+                .Add(Restrictions.Eq("IsDeleted", false));
+
+            if (organization != -1)
+            {
+                criteria.CreateCriteria("Organization").Add(Restrictions.Eq("Id", organization));
+                countOfFiles.CreateCriteria("Organization").Add(Restrictions.Eq("Id", organization));
+            }
+
+            if (controller != -1)
+            {
+                criteria.CreateCriteria("Controller").Add(Restrictions.Eq("Id", controller));
+                countOfFiles.CreateCriteria("Controller").Add(Restrictions.Eq("Id", controller));
+            }
+
+            criteria
+                .AddOrder(Order.Desc("Date"))
+                .AddOrder(Order.Desc("Id"))
+                .SetMaxResults(pageSize)
+                .SetFirstResult((pageIndex - 1) * pageSize)
+                .Future<Package>();
+
+            countOfFiles.SetProjection(Projections.Count(Projections.Id()));
+            TotalRows = countOfFiles.FutureValue<int>().Value;
+
+            return criteria.List<Package>();
+        }
+
     }
 }

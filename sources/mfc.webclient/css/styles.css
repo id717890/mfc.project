@@ -13,10 +13,16 @@ h2, h3 {
 
 a {
     text-decoration: none !important;
+    cursor: pointer;
 }
 
 body {
     margin: 2em;
+}
+
+table {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
 }
 
 .navbar-bottom {
@@ -270,6 +276,11 @@ body {
     margin-left: -80px;
 }
 
+nav .ng-busy-default-sign{
+    top:5px !important;
+    padding: 6px 14px;
+}
+
 .input-buttons {
     margin-top: 25px;
 }
@@ -340,6 +351,12 @@ body {
 .col-width-50{
     width: 50px;
 }
+.col-width-60{
+    width: 60px;
+}
+.col-width-70{
+    width: 70px;
+}
 .col-width-80{
     width: 80px;
 }
@@ -361,5 +378,44 @@ body {
 .modal-body-error .panel{
     height: 100px;
     overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.margin-for-empty-list { margin-bottom:0px !important }
+
+@media (max-width: 768px) {
+    .modal-dialog{
+        width: 90% !important;
+    }
+
+    .modal-dialog .table{
+        font-size: 8px;
+    }
+}
+
+@media (max-width: 992px) and (min-width: 770px) {
+    .modal-dialog{
+        width: 80% !important;
+    }
+
+    .modal-dialog .table{
+        font-size: 10px;
+    }
+}
+
+@media (min-width: 994px) {
+    .modal-dialog{
+        width: 800px !important;
+    }
+}
+
+/*Заголовок диалогового окна*/
+.custom-modal-header{
+    text-align: center;
+}
+
+/*Панель для вывода истории статусов дела*/
+.file-status-panel{
+    height: 300px;
     overflow-y: scroll;
 }

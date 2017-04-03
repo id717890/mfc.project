@@ -26,11 +26,11 @@ export class ServiceListComponent extends BaseListComponent<Service> implements 
     }
 
      newModel(): Service {
-         return new Service(null, '', null, '');
+         return new Service(null, '', null);
      };
 
      cloneModel(model : Service): Service {
-         return new Service(model.id, model.caption, model.organization, model.organization_caption);
+         return new Service(model.id, model.caption, model.organization);
      };
 
      getEditComponent() : any{

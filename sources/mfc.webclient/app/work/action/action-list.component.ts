@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { AppSettings } from '../../infrastructure/application-settings';
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { BaseListComponent } from './../../infrastructure/base.component/base-list.component';
 import { ActionEditComponent } from './action-edit.component';
@@ -9,6 +10,7 @@ import { User } from '../../models/user.model';
 import { ActionService } from './action.service';
 import { UserService } from '../../admin/users/user.service';
 import { Messages } from '../../Infrastructure/application-messages';
+import { DateService } from './../../infrastructure/assistant/date.service';
 
 @Component({
     selector: 'mfc-action-list',
@@ -22,21 +24,53 @@ export class ActionListComponent extends BaseListComponent<Action> {
     dateEnd: string;
 
     /* Настройки для datepicker */
-    myDatePickerOptions = {
-        todayBtnTxt: 'Today',
-        dateFormat: 'dd.mm.yyyy',
-        firstDayOfWeek: 'mo',
-        inline: false,
-        // sunHighlight: true,
-        // height: '34px',
-        width: '200px',
-        // selectionTxtFontSize: '16px'
-    };
+    myDatePickerOptions = AppSettings.DEFAULT_DATE_PICKER_OPTION;
 
-    constructor(public modal: Modal, private actionService: ActionService, private _userService: UserService) {
-        super(modal, actionService);
+    constructor(
+        public modal: Modal
+        , private _actionService: ActionService
+        , private _userService: UserService
+        , private _dateService: DateService
+    ) {
+        super(modal, _actionService);
         this.fillLists();
         this.prepareForm();
+    }
+
+    copy() {
+        if (this.models.filter(x => x.is_selected).length == 0) {
+            this.modal.alert()
+                .size('sm')
+                .isBlocking(false)
+                .showClose(false)
+                .keyboard(27)
+                .title('Предупреждение!')
+                .body('Не выбрано ни одного приема!')
+                .open().then(x => { x.result.then(() => null, () => null) });
+        }
+        else {
+            let selectedActions = this.models.filter(x => x.is_selected);
+            this.busy =
+                this._actionService.postCopyAction(selectedActions)
+                    .then(x => {
+                        if (x.status == 200) {
+                            let responsList = this._actionService.extractData(x)['data'];
+                            if (responsList != null) {
+                                responsList.forEach(x => {
+                                    this.models.push(x);
+                                })
+                            }
+                        }
+                    })
+        }
+    }
+
+    //Выбираем все приемы на странице
+    onSelectAllFiles(event: any) {
+        if (event.target.checked)
+            this.models.forEach(x => x.is_selected = true);
+        else
+            this.models.forEach(x => x.is_selected = false);
     }
 
     private fillLists(): void {
@@ -51,11 +85,19 @@ export class ActionListComponent extends BaseListComponent<Action> {
         this.dateEnd = tomorrow.getDate() + '.' + (tomorrow.getMonth() + 1) + '.' + tomorrow.getFullYear();
     }
 
-    onDateBeginChanged(event: any) {
-        this.dateBegin = event.formatted;
+    onChangeDateBegin(event: any) {
+        if (event.formatted != "") this.dateBegin = event.formatted;
+        else {
+            let today = new Date();
+            this.dateBegin = this._dateService.ConvertDateToString(today);
+        }
     }
-    onDateEndChanged(event: any) {
-        this.dateEnd = event.formatted;
+    onChangeDateEnd(event: any) {
+        if (event.formatted != "") this.dateEnd = event.formatted;
+        else {
+            let today = new Date();
+            this.dateEnd = this._dateService.ConvertDateToString(today);
+        }
     }
 
     onExpertChange(user_id: any) {
@@ -67,7 +109,7 @@ export class ActionListComponent extends BaseListComponent<Action> {
     }
 
     Search() {
-        this.busy = this.actionService.getWithParameters(this.prepareData()).then(x => {
+        this.busy = this._actionService.getWithParameters(this.prepareData()).then(x => {
             this.models = x['data'];
             this.totalRows = x['total'];
         })
@@ -77,7 +119,7 @@ export class ActionListComponent extends BaseListComponent<Action> {
     getPage(page: number) {
         this.pageIndex = page;
         this.busy =
-            this.actionService.getWithParameters(this.prepareData()).then(x => {
+            this._actionService.getWithParameters(this.prepareData()).then(x => {
                 this.models = x['data'];
                 this.totalRows = x['total'];
             })
@@ -94,7 +136,7 @@ export class ActionListComponent extends BaseListComponent<Action> {
     }
 
     newModel(): Action {
-        return new Action(null, '', null, '', null, null, null, null, null, null, '', false, false);
+        return new Action(null, '', null, '', null, null, null, null, null, null, '', false, false, false);
     };
 
     cloneModel(model: Action): Action {
@@ -111,33 +153,11 @@ export class ActionListComponent extends BaseListComponent<Action> {
             model.service_child,
             model.comments,
             model.is_non_resident,
-            model.is_free_visit);
+            model.is_free_visit,
+            model.is_selected);
     };
 
     getEditComponent(): any {
         return ActionEditComponent;
-    }
-
-    delete(model: Action) {
-        this.modal
-            .confirm()
-            .title(Messages.ACTION_CONFIRM)
-            .body(Messages.DELETE_CONFIRM)
-            .open()
-            .then(x => {
-                x.result.then(result => {
-                    if (!result)
-                        return;
-
-                    this.busyMessage = Messages.SAVING;
-                    this.busy = this.actionService.delete(model)
-                        .then(res => {
-                            if (res) {
-                                this.models.splice(this.models.indexOf(model), 1);
-                                this.totalRows -= 1;
-                            }
-                        });
-                }, () => null);
-            });
     }
 }

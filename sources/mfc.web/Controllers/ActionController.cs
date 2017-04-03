@@ -37,7 +37,7 @@ namespace mfc.web.Controllers {
         [Inject]
         public IActionTypeService ActionTypeService { get; set; }
 
-        public ActionResult Index(string dateBegin = null, string dateEnd = null, Int64 user_id = -1, Int32 page = 1) {
+        public ActionResult Index(string beginDate = null, string endDate = null, Int64 user_id = -1, Int32 page = 1) {
             User user = null;
 
             //Если текущий пользователь не администратор, то тогда
@@ -51,14 +51,14 @@ namespace mfc.web.Controllers {
 
             var queryDateBegin = DateTime.Today;
 
-            if (!string.IsNullOrEmpty(dateBegin)) {
-                DateTime.TryParse(dateBegin, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDateBegin);
+            if (!string.IsNullOrEmpty(beginDate)) {
+                DateTime.TryParse(beginDate, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDateBegin);
             }
 
             var queryDateEnd = DateTime.Today;
 
-            if (!string.IsNullOrEmpty(dateEnd)) {
-                DateTime.TryParse(dateEnd, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDateEnd);
+            if (!string.IsNullOrEmpty(endDate)) {
+                DateTime.TryParse(endDate, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDateEnd);
             }
 
             //Загружаем настройки
@@ -93,22 +93,22 @@ namespace mfc.web.Controllers {
         }
 
         [HttpPost]
-        public ActionResult Index(DateTime dateBegin, DateTime dateEnd, Int64 selectedUserId = -1, Int32 page = 1) {
+        public ActionResult Index(DateTime beginDate, DateTime endDate, Int64 selectedUserId = -1, Int32 page = 1) {
             //сохраняем настройки фильтра
             Session[ActionControllerFilerKey] = new Dictionary<string, object>();
             var settings = Session[ActionControllerFilerKey] as IDictionary<string, object>;
             if (!settings.ContainsKey(DateBeginKey)) {
-                settings.Add(DateBeginKey, dateBegin);
+                settings.Add(DateBeginKey, beginDate);
             }
             else {
-                settings[DateBeginKey] = dateBegin;
+                settings[DateBeginKey] = beginDate;
             }
 
             if (!settings.ContainsKey(DateEndKey)) {
-                settings.Add(DateEndKey, dateEnd);
+                settings.Add(DateEndKey, endDate);
             }
             else {
-                settings[DateEndKey] = dateEnd;
+                settings[DateEndKey] = endDate;
             }
 
             if (!settings.ContainsKey(UserKey)) {
@@ -124,7 +124,7 @@ namespace mfc.web.Controllers {
                 user = UserService.GetUserById(selectedUserId);
             }
             
-            var model = CreateActionListModel(dateBegin, dateEnd, user);
+            var model = CreateActionListModel(beginDate, endDate, user);
             if (page == 0) {
                 page = 1;
             }

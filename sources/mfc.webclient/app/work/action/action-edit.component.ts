@@ -17,6 +17,7 @@ import { Organization } from '../../models/organization.model';
 import { OrganizationService } from '../../admin/organizations/organization.service';
 import { Service } from '../../models/service.model';
 import { ServiceService } from '../../admin/services/service.service';
+import { DateService } from './../../infrastructure/assistant/date.service';
 
 import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.component/base-edit.component';
 import { ActionContext } from './action-edit.context';
@@ -59,13 +60,18 @@ export class ActionEditComponent extends BaseEditComponent<Action> implements Af
         , private _organizationService: OrganizationService
         , private _serviceService: ServiceService
         , private completerService: CompleterService
+        , private _dateService: DateService
     ) {
         super(dialog);
     }
 
     ngOnInit() {
-        let today = new Date();
-        this.currentDate = today.getDate() + '.' + (today.getMonth() + 1) + '.' + today.getFullYear();
+        //Выставляем дату если при создании/редакитровании пакета
+        let today: Date = null;
+        if (this.context.model.date != null)
+            today = new Date(this.context.model.date);
+        else today = new Date();
+        this.currentDate = this._dateService.ConvertDateToString(today);
         this.context.model.date = today;
     }
 
@@ -74,10 +80,13 @@ export class ActionEditComponent extends BaseEditComponent<Action> implements Af
     }
 
     onChangeDate(event: any) {
-        if (event.formatted != "" && event.epoc != 0) this.context.model.date = new Date(event.date.year, event.date.month, event.date.day);
+        if (event.formatted != "" && event.epoc != 0) {
+            this.currentDate = event.formatted;
+            this.context.model.date = new Date(event.date.year, event.date.month-1, event.date.day);
+        }
         else {
             let today = new Date();
-            this.currentDate = today.getDate() + '.' + (today.getMonth() + 1) + '.' + today.getFullYear();
+            this.currentDate = this._dateService.ConvertDateToString(today);
             this.context.model.date = today;
         }
     }
@@ -105,7 +114,7 @@ export class ActionEditComponent extends BaseEditComponent<Action> implements Af
         if (item != null) {
             let service: Service = item.originalObject;
             this.context.model.service = service;
-            this.busy = this._serviceService.getWithParameters(this.prepareDataForServiceChild(service.organization, service.id)).then(x => {
+            this.busy = this._serviceService.getWithParameters(this.prepareDataForServiceChild(service.organization.id, service.id)).then(x => {
                 let data = x['data'];
                 this.service_childs = data;
                 this.autoCompleteServicesChild = this.completerService.local(this.service_childs, 'caption', 'caption');
@@ -156,7 +165,7 @@ export class ActionEditComponent extends BaseEditComponent<Action> implements Af
         this.busy =
             this._organizationService.get().then(x => {
                 this.organizations = x["data"];
-                if (this.context.model.service != null) this.selected_organization = this.context.model.service.organization;
+                if (this.context.model.service != null) this.selected_organization = this.context.model.service.organization.id;
                 else this.selected_organization = 0;
             });
 
@@ -199,7 +208,7 @@ export class ActionEditComponent extends BaseEditComponent<Action> implements Af
         let service = this.dialog.context.model.service;
         if (service != null) {
             // this.selected_organization=service.organization; //выставляем выбранный ОГВ            
-            this.busy = this._serviceService.getWithParameters(this.prepareData(service.organization)).then(x => {
+            this.busy = this._serviceService.getWithParameters(this.prepareData(service.organization.id)).then(x => {
                 this.services = x['data'];
                 this.autoCompleteServices = this.completerService.local(this.services, 'caption', 'caption');
                 this.selected_service = service.caption;
@@ -209,7 +218,7 @@ export class ActionEditComponent extends BaseEditComponent<Action> implements Af
         //Загрузка поля подуслгуи, если действие редактирование заполняем поле
         let service_child = this.dialog.context.model.service_child;
         if (service_child != null) {
-            this.busy = this._serviceService.getWithParameters(this.prepareDataForServiceChild(service.organization, service.id)).then(x => {
+            this.busy = this._serviceService.getWithParameters(this.prepareDataForServiceChild(service.organization.id, service.id)).then(x => {
                 this.service_childs = x['data'];
                 this.autoCompleteServicesChild = this.completerService.local(this.service_childs, 'caption', 'caption');
                 this.selected_service_child = service_child.caption;

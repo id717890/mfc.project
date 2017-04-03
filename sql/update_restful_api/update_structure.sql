@@ -20,6 +20,7 @@ insert into RoleModules (role_id, module) values (1, 'file');
 insert into RoleModules (role_id, module) values (1, 'action');
 insert into RoleModules (role_id, module) values (1, 'report');
 insert into RoleModules (role_id, module) values (1, 'customer-type');
+insert into RoleModules (role_id, module) values (1, 'package');
 
 create table RoleModuleOperations(role_id bigint, module nvarchar(250), operation nvarchar(250));
 

@@ -7,7 +7,7 @@ namespace mfc.webapi.Models.Mappings
     {
         public ActionTypeModelProfile()
         {
-            CreateMap<ActionType, ActionTypeInfo>()
+            CreateMap<ActionType, ActionTypeModel>()
                 .ForMember(x => x.Caption, s => s.MapFrom(x => x.Caption))
                 .ForMember(x => x.NeedMakeFile, s => s.MapFrom(x => x.NeedMakeFile))
                 .ReverseMap();

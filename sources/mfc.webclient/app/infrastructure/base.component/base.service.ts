@@ -44,7 +44,6 @@ export class BaseService<TModel extends BaseModel> extends AbstractService {
             .toPromise()
             .then(x => x, y => {
                 let error = this.extractData(y);
-                alert(error);
                 console.warn(error);
             })
             .catch(this.handlerError);

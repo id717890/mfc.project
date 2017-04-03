@@ -1,25 +1,26 @@
 <span defaultOverlayTarget></span>
-<div class='container-fluid custom-modal-container' >
+<div class='container-fluid custom-modal-container'>
     <div class="row custom-modal-header">
         <div class="col-sm-12">
-        <div class="pull-left"><h1>{{context.title}}</h1></div>
-            <div class="input-group input-buttons pull-right">
-                <button id="button-apply" class="btn btn-success" (click)="dialog.close(context.model)">Применить</button>
-                <button id="button-cancel" class="btn btn-primary" (click)="dialog.dismiss()">Отменить</button>
-            </div>
+            <h1>{{context.title}}</h1>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12">
-            <form class="form-horizontal" [formGroup]="formGroup" >
-                <div class="input-group input-line" [ngClass]="{'has-error':!formGroup.controls['caption'].valid && formGroup.controls['caption'].touched, 'shake': isShaking}">
-                    <label>Наименование:</label>
-                    <input class="form-control" type="text" placeholder="Введите наименование" [formControl]="formGroup.controls['caption']">
-                    <div *ngIf="formGroup.controls['caption'].hasError('required') && formGroup.controls['caption'].touched" class="form-control alert alert-danger">Поле не может быть пустым.</div>
+        <div class="col-xs-12">
+            <form role="form" #actionTypeForm="ngForm">
+                <div class="form-group">
+                    <label>Наименование</label>
+                    <input [(ngModel)]="context.model.caption" id="input-caption" class="form-control" name="caption" placeholder="Введите наименование"
+                        required #caption="ngModel" />
+                    <div [hidden]="caption.valid||caption.pristine" class="alert alert-danger">Укажите наименование</div>
                 </div>
-                <div class="input-group input-line">
-                    <label>Создавать дело:</label>
-                    <input class="form-control" type="checkbox" [formControl]="formGroup.controls['need_make_file']">
+                <div class="form-group">
+                    <input type="checkbox" id="input-need-make-file" name="need_make_file" [(ngModel)]="context.model.need_make_file">
+                    <label for="input-need-make-file">&nbsp;Создавать дело</label>
+                </div>
+                <div class="form-group">
+                    <button id="button-apply" class="btn btn-success" (click)="dialog.close(context.model)" [disabled]="!actionTypeForm.form.valid">Сохранить</button>
+                    <button id="button-cancel" class="btn btn-warning" (click)="dialog.dismiss()">Отменить</button>
                 </div>
             </form>
         </div>

@@ -28,7 +28,7 @@ namespace mfc.webapi.Controllers
         [Route("")]
         public HttpResponseMessage Get()
         {
-            var services = _mapper.Map<IEnumerable<ServiceInfo>>(_servicesService.GetAllServices());
+            var services = _mapper.Map<IEnumerable<ServiceModel>>(_servicesService.GetAllServices());
             if (services == null || !services.Any())
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
@@ -41,7 +41,7 @@ namespace mfc.webapi.Controllers
         [Route("")]
         public HttpResponseMessage Get(long organization)
         {
-            var services = _mapper.Map<IEnumerable<ServiceInfo>>(_servicesService.GetOrganizationServices(organization));
+            var services = _mapper.Map<IEnumerable<ServiceModel>>(_servicesService.GetOrganizationServices(organization));
             return services == null ? Request.CreateResponse(HttpStatusCode.NotFound) : Request.CreateResponse(HttpStatusCode.OK, services);
         }
 
@@ -50,7 +50,7 @@ namespace mfc.webapi.Controllers
         [Route("")]
         public HttpResponseMessage Get(int organization, int parent)
         {
-            var services = _mapper.Map<IEnumerable<ServiceInfo>>(_servicesService.GetOrganizationServices(organization,parent));
+            var services = _mapper.Map<IEnumerable<ServiceModel>>(_servicesService.GetOrganizationServices(organization,parent));
             return services == null ? Request.CreateResponse(HttpStatusCode.NotFound) : Request.CreateResponse(HttpStatusCode.OK, services);
         }
 
@@ -63,14 +63,14 @@ namespace mfc.webapi.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
-            return Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<ServiceInfo>(service));
+            return Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<ServiceModel>(service));
         }
 
         [HttpPost]
         [Route("")]
-        public HttpResponseMessage Post([FromBody]Models.ServiceInfo value)
+        public HttpResponseMessage Post([FromBody]Models.ServiceModel value)
         {
-            var id = _servicesService.Create(value.Caption, value.OrganizationId);
+            var id = _servicesService.Create(value.Caption, value.Organization.Id);
 
             var response = Request.CreateResponse(HttpStatusCode.Created);
             response.Headers.Location = new Uri($"{Request.RequestUri}/{id}");

@@ -30,7 +30,7 @@
 					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 						<div class="form-group">
 							<label>Категория заявителя/посетителя</label>
-							<select name="customerType" class="form-control" [(ngModel)]="context.model.customer_type">
+							<select name="customerType" class="form-control" [(ngModel)]="context.model.customer_type" required>
 								<option *ngFor="let customerType of context.customerTypes" [ngValue]="customerType">{{customerType.caption}}</option>
 							</select>
 						</div>
@@ -39,11 +39,9 @@
 				<div class="form-group">
 					<label>ОГВ</label>
 					<select name="organization" class="form-control" (change)="onChangeOrganization($event.target.value)" [(ngModel)]="selected_organization"
-						#ogv>
+						#ogv required>
 						<option selected="selected" value="0">Выберите ОГВ</option>						
-						<option *ngFor="let organization of organizations" [value]="organization.id"
-						
-						>{{organization.caption}}</option>
+						<option *ngFor="let organization of organizations" [value]="organization.id">{{organization.caption}}</option>
 					</select>
 				</div>
 				<div>
@@ -86,7 +84,7 @@
 					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 						<div class="form-group">
 							<label>Тип услуги</label>
-							<select name="actionType" class="form-control" [(ngModel)]="context.model.action_type">
+							<select name="actionType" class="form-control" [(ngModel)]="context.model.action_type" required>
 								<option *ngFor="let actionTypes of context.actionTypes" [ngValue]="actionTypes" >{{actionTypes.caption}}</option>
 							</select>
 						</div>
@@ -94,7 +92,7 @@
 					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 						<div class="form-group">
 							<label>Эксперт</label>
-							<select name="expert" class="form-control" [(ngModel)]="context.model.expert">
+							<select name="expert" class="form-control" [(ngModel)]="context.model.expert" required>
 								<option *ngFor="let expert of context.users" [ngValue]="expert" >{{expert.user_name}}</option>
 							</select>
 						</div>

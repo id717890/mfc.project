@@ -19,7 +19,7 @@ namespace mfc.webapi.Models
             Controller = new AccountModel(file.Controller);
             Expert = new AccountModel(file.Expert);
             Status = new FileStatusModel(file.CurrentStatus);
-            Organization = new OrganizationInfo(file.Ogv);
+            Organization = new OrganizationModel(file.Ogv);
         }
 
         /// <summary>
@@ -68,21 +68,21 @@ namespace mfc.webapi.Models
         /// Организация
         /// </summary>
         [JsonProperty("organization")]
-        public OrganizationInfo Organization { get; set; }
+        public OrganizationModel Organization { get; set; }
 
-//        public domain.entities.File ConvertToFile()
-//        {
-//            return new domain.entities.File
-//            {
-//                Id = this.Id,
-//                Caption = this.Caption,
-//                Date = this.Date,
-//                Action = this.Action.ConvertToAction(),
-//                Controller = this.Controller.ConvertToUser(),
-//                Expert = this.Expert.ConvertToUser(),
-//                CurrentStatus = this.Status.ConvertToFileStatus(),
-//                Ogv = this.Organization.ConvertToOrganization()
-//            };
-//        }
+        //        public domain.entities.File ConvertToFile()
+        //        {
+        //            return new domain.entities.File
+        //            {
+        //                Id = this.Id,
+        //                Caption = this.Caption,
+        //                Date = this.Date,
+        //                Action = this.Action.ConvertToAction(),
+        //                Controller = this.Controller.ConvertToUser(),
+        //                Expert = this.Expert.ConvertToUser(),
+        //                CurrentStatus = this.Status.ConvertToFileStatus(),
+        //                Ogv = this.Organization.ConvertToOrganization()
+        //            };
+        //        }
     }
 }

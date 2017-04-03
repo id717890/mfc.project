@@ -1,9 +1,9 @@
-﻿<div [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
-    <div id="navbar" class="navbar-collapse collapse">
+<div [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative; margin-left:90px">
+    <div id="navbar" class="navbar-collapse collapse main-menu">
         <ul class="nav navbar-nav navbar-left">
             <li *ngIf="actions['action']"><a [routerLink]="['actions']">Приемы</a></li>
             <li *ngIf="actions['file']"><a [routerLink]="['files']">Дела</a></li>
-            <li *ngIf="actions['packet']"><a [routerLink]="['packets']">Пакеты</a></li>
+            <li *ngIf="actions['package']"><a [routerLink]="['packages']">Пакеты</a></li>
             <li *ngIf="actions['report']"><a [routerLink]="['reports']">Отчеты</a></li>
         </ul>
 

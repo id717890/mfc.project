@@ -30,7 +30,7 @@ namespace mfc.webapi.Controllers
         [Route("")]
         public HttpResponseMessage Get()
         {
-            var output = _mapper.Map<IEnumerable<OrganizationInfo>> (_organizationService.GetAllOrganizations());
+            var output = _mapper.Map<IEnumerable<OrganizationModel>> (_organizationService.GetAllOrganizations());
 
             return Request.CreateResponse(HttpStatusCode.OK, output);
         }
@@ -41,13 +41,13 @@ namespace mfc.webapi.Controllers
         {
             var output = _organizationService.GetOrganizationById(id);
             return output != null ?
-                Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<OrganizationInfo>(output)) :
+                Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<OrganizationModel>(output)) :
                 Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         [HttpPost]
         [Route("")]
-        public HttpResponseMessage Post([FromBody]OrganizationInfo value)
+        public HttpResponseMessage Post([FromBody]OrganizationModel value)
         {
             //todo: обработка ошибок и правильный возврат кода HTTP.
             var identifier = _organizationService.CreateOrganization(value.Caption, value.FullCaption, value.OrganizationType.Id);
@@ -61,7 +61,7 @@ namespace mfc.webapi.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public HttpResponseMessage Put(int id, [FromBody]OrganizationInfo value)
+        public HttpResponseMessage Put(int id, [FromBody]OrganizationModel value)
         {
             //todo: обработка ошибок и возврат кода HTTP в соответствии с соглашением
             var organization = _organizationService.GetOrganizationById(id);

@@ -11,15 +11,6 @@ import {BaseEditComponent, BaseEditContext} from './../../infrastructure/base.co
 
 @Component({
     selector: 'modal-content',
-    styles: [`
-        .input-line {
-            margin-bottom: 25px;
-            width: 100%;
-        }
-        .input-buttons {
-            margin-top: 10px;
-        }
-    `],
     templateUrl: 'app/admin/customer-types/customer-type-edit.component.html',
     providers: [ Modal ]
 })

@@ -6,7 +6,7 @@ import { CustomerTypeListComponent } from "./customer-types/customer-type-list.c
 import { UserListComponent } from "./users/user-list.component";
 import { FileStatusListComponent } from "./file-statuses/file-status.list.component";
 import { ActionTypeListComponent } from "./action-types/action-type.list.component";
-import { OrganizationTypeListComponent } from './organization-types/organization-type-list/organization-type-list.component';
+import { OrganizationTypeListComponent } from './organization-types/organization-type-list.component';
 import { FileStageListComponent } from './file-stages/file-stage-list.component';
 import { ServiceListComponent } from "./services/service-list.component";
 import { OrganizationListComponent } from "./organizations/organization-list.component";

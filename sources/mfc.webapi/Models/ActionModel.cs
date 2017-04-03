@@ -14,10 +14,10 @@ namespace mfc.webapi.Models
             Customer = action.Customer;
             CustomerType = action.CustomerType != null ? new CustomerTypeInfo(action.CustomerType) : new CustomerTypeInfo(domain.entities.CustomerType.Empty);
 
-            Service = action.Service != null ? new ServiceInfo(action.Service) : null;
-            ServiceChild = action.ServiceChild != null ? new ServiceInfo(action.ServiceChild) : null;
+            Service = action.Service != null ? new ServiceModel(action.Service) : null;
+            ServiceChild = action.ServiceChild != null ? new ServiceModel(action.ServiceChild) : null;
 
-            ActionType = new ActionTypeInfo(action.Type);
+            ActionType = new ActionTypeModel(action.Type);
             User = action.User != null ? new AccountModel(action.User) : null;
         }
 
@@ -49,19 +49,19 @@ namespace mfc.webapi.Models
         /// Услуга
         /// </summary>
         [JsonProperty("service")]
-        public ServiceInfo Service { get; set; }
+        public ServiceModel Service { get; set; }
 
         /// <summary>
         /// Дочерняя услуга
         /// </summary>
         [JsonProperty("service_child")]
-        public ServiceInfo ServiceChild { get; set; }
+        public ServiceModel ServiceChild { get; set; }
 
         /// <summary>
         /// Вид деятельности
         /// </summary>
         [JsonProperty("action_type")]
-        public ActionTypeInfo ActionType { get; set; }
+        public ActionTypeModel ActionType { get; set; }
 
         /// <summary>
         /// Эксперт

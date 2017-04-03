@@ -14,6 +14,16 @@ import { ActionEditComponent } from './action/action-edit.component';
 import { FileListComponent } from './file/file-list.component';
 import { FileService } from './file/file.service';
 import { FileEditComponent } from './file/file-edit.component';
+import { FileControlEditComponent } from './file/file-control-edit.component';
+import { FileHistoryComponent } from './file/file-history.component';
+import { FileStatusHistoryService } from './file/file-status-history.service';
+import { FileAcceptComponent } from './file/file-accept.component';
+
+// Пакеты
+import { PackageListComponent } from './package/package-list.component';
+import { PackageService } from './package/package.service';
+import { PackageFileService } from './package/package-file.service';
+import { PackageEditComponent } from './package/package-edit.component';
 
 import { MyDatePickerModule } from 'mydatepicker';  // https://github.com/kekeh/mydatepicker
 import { Ng2PaginationModule } from 'ng2-pagination'; //https://github.com/michaelbromley/ng2-pagination
@@ -41,11 +51,14 @@ import { BusyModule, BusyConfig } from 'angular2-busy';
     ],
     declarations: [
         ActionListComponent, ActionEditComponent,
-        FileListComponent, FileEditComponent
+        FileListComponent, FileEditComponent, FileControlEditComponent, FileHistoryComponent, FileAcceptComponent,
+        PackageListComponent, PackageEditComponent
     ],
     providers: [
         ActionService,
-        FileService
+        FileService,
+        PackageService, PackageFileService,
+        FileStatusHistoryService
     ]
 })
 

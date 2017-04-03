@@ -25,7 +25,7 @@ namespace mfc.web.Controllers
 
         public HttpResponseMessage Get()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<OrganizationTypeInfo>>(organizationService.GetAllTypes()));
+            return Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<OrganizationTypeModel>>(organizationService.GetAllTypes()));
         }
 
         // GET: api/organizationtype/:id
@@ -33,12 +33,12 @@ namespace mfc.web.Controllers
         {
             var output = organizationService.GetTypeById(id);
             return output != null ?
-                Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<OrganizationTypeInfo>(output)) :
+                Request.CreateResponse(HttpStatusCode.OK, _mapper.Map<OrganizationTypeModel>(output)) :
                 Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         // POST: api/organizationtype
-        public HttpResponseMessage Post([FromBody]OrganizationTypeInfo value)
+        public HttpResponseMessage Post([FromBody]OrganizationTypeModel value)
         {
             var identifier = organizationService.CreateType(value.Caption);
 
@@ -50,7 +50,7 @@ namespace mfc.web.Controllers
 
         // PUT: api/organizationtype/:id
         [HttpPut]
-        public HttpResponseMessage Put(int id, [FromBody]OrganizationTypeInfo value)
+        public HttpResponseMessage Put(int id, [FromBody]OrganizationTypeModel value)
         {
             var organizationType = organizationService.GetTypeById(id);
 

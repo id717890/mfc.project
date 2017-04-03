@@ -24,6 +24,10 @@ import { ServiceEditComponent } from './admin/services/service-edit.component';
 import { OrganizationEditComponent } from './admin/organizations/organization-edit.component';
 import { ActionEditComponent } from './work/action/action-edit.component';
 import { FileEditComponent } from './work/file/file-edit.component';
+import { FileControlEditComponent } from './work/file/file-control-edit.component';
+import { FileHistoryComponent } from './work/file/file-history.component';
+import { PackageEditComponent } from './work/package/package-edit.component';
+import { FileAcceptComponent } from './work/file/file-accept.component';
 
 import { routing, appRoutingProviders } from './app.router';
 import { DefaultRequestOptions } from './infrastructure/default-request-options';
@@ -32,6 +36,8 @@ import { ActionPermissionService } from './infrastructure/security/action-permis
 import { ErrorLogService } from "./infrastructure/error.service";                   //https://www.bennadel.com/blog/3138-creating-a-custom-errorhandler-in-angular-2-rc-6.htm
 import { LOGGING_ERROR_HANDLER_PROVIDERS } from "./infrastructure/error.handler";
 import { LOGGING_ERROR_HANDLER_OPTIONS } from "./infrastructure/error.handler";
+import { DateService } from "./infrastructure/assistant/date.service";
+
 
 @NgModule({
   imports: [
@@ -91,7 +97,8 @@ import { LOGGING_ERROR_HANDLER_OPTIONS } from "./infrastructure/error.handler";
         rethrowError: true,
         unwrapError: false
       }
-    }
+    },
+    DateService
   ],
   entryComponents: [
     FileStatusEditComponent,
@@ -102,7 +109,8 @@ import { LOGGING_ERROR_HANDLER_OPTIONS } from "./infrastructure/error.handler";
     ServiceEditComponent,
     OrganizationEditComponent,
     ActionEditComponent,
-    FileEditComponent
+    FileEditComponent, FileControlEditComponent, FileHistoryComponent, FileAcceptComponent, 
+    PackageEditComponent
   ]
 })
 export class AppModule { }

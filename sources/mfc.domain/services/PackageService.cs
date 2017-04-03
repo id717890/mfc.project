@@ -64,9 +64,10 @@ namespace mfc.domain.services {
 
         public IEnumerable<File> GetPackageFiles(long packageId) {
             List<File> files = new List<File>();
-
-            foreach (var id in PackageRepository.GetPackageFileIds(packageId)) {
-                files.Add(FileService.GetFileById(id));
+            foreach (var id in PackageRepository.GetPackageFileIds(packageId))
+            {
+                var file = FileService.GetFileById(id);
+                if (!file.IsDeleted) files.Add(file);
             }
 
             return files;
@@ -115,7 +116,6 @@ namespace mfc.domain.services {
             ReturnStatusForFiles(return_status);
         }
 
-
         public void Update(Package package) {
             var unit_of_work = UnitOfWorkProvider.GetUnitOfWork();
             unit_of_work.BeginTransaction();
@@ -162,6 +162,14 @@ namespace mfc.domain.services {
                     FileService.Update(file);
                 }
             }
+        }
+
+
+        public KeyValuePair<long, IEnumerable<Package>> GetPackages(DateTime beginDate, DateTime endDate, long organization, long controller, int pageIndex,
+            int pageSize)
+        {
+            var packages = PackageRepository.GetPackages(beginDate, endDate, organization, controller, pageIndex, pageSize).OrderByDescending(x => x.Date).ThenByDescending(x => x.Id);
+            return new KeyValuePair<long, IEnumerable<Package>>(PackageRepository.TotalRows, packages);
         }
     }
 }

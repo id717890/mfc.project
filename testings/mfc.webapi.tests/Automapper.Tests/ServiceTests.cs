@@ -6,55 +6,48 @@ namespace mfc.webapi.tests.Automapper.Tests
 {
     [TestFixture]
     [Category(TestCategories.AutomapperTest)]
-    public class ServiceTests : AutomapperBaseTests<Service, ServiceInfo>
+    public class ServiceTests : AutomapperBaseTests<Service, ServiceModel>
     {
 
-        [TestCase(1, "Service caption 1", 1, "Organization caption 3")]
-        [TestCase(2, "Service caption 2", 3, "Organization caption 1")]
-        [TestCase(4, "Service caption 3", 2, "Organization caption 2")]
-        public void ServiceToModel(long serviceId, string serviceCaption, long organizationId, string organizationCaption)
+        [TestCase(1, "Service caption 1", null)]
+        [TestCase(2, "Service caption 2", null)]
+        [TestCase(4, "Service caption 3", null)]
+        public void ServiceToModel(long serviceId, string serviceCaption, Organization organization)
         {
             var service = new Service
             {
                 Id = serviceId,
                 Caption = serviceCaption,
-                Organization = new Organization()
-                {
-                    Id = organizationId,
-                    Caption = organizationCaption,
-                }
+                Organization = organization
             };
             AssertEntity(service);
         }
 
 
-        [TestCase(1, "Service caption", 1, "Organization caption")]
-        public void ModelToService(long serviceId, string serviceCaption, long organizationId, string organizationCaption)
+        [TestCase(1, "Service caption", null)]
+        public void ModelToService(long serviceId, string serviceCaption, OrganizationModel organization)
         {
-            var service = new ServiceInfo
+            var service = new ServiceModel
             {
                 Id = serviceId,
                 Caption = serviceCaption,
-                OrganizationId = organizationId,
-                Organization = organizationCaption,
+                Organization = organization
             };
             AssertModel(service);
         }
 
-        protected override void AssertEntityToModel(Service entity, ServiceInfo model)
+        protected override void AssertEntityToModel(Service entity, ServiceModel model)
         {
             Assert.AreEqual(entity.Id, model.Id);
             Assert.AreEqual(entity.Caption, model.Caption);
-            Assert.AreEqual(entity.Organization.Id, model.OrganizationId);
-            Assert.AreEqual(entity.Organization.Caption, model.Organization);
+            Assert.AreEqual(entity.Organization, model.Organization);
         }
 
-        protected override void AssertModelToEntity(ServiceInfo model, Service entity)
+        protected override void AssertModelToEntity(ServiceModel model, Service entity)
         {
             Assert.AreEqual(model.Id, entity.Id);
             Assert.AreEqual(model.Caption, entity.Caption);
-            Assert.AreEqual(model.OrganizationId, entity.Organization.Id);
-            Assert.AreEqual(model.Organization, entity.Organization.Caption);
+            Assert.AreEqual(model.Organization, entity.Organization);
         }
     }
 }

@@ -25,4 +25,11 @@ export class ActionService extends BaseService<Action> {
             .then(x => this.extractData(x))
             .catch(this.handlerError);
     }
+
+    postCopyAction(actions: Action[]) {
+        return this._http.post(this.getApiTag() + "/copy", JSON.stringify(actions))
+            .toPromise()
+            .then(x => x)
+            .catch(this.handlerError);
+    }
 }

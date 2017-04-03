@@ -14,17 +14,8 @@ import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.
 
 @Component({
     selector: 'modal-content',
-    styles: [`
-        .input-line {
-            margin-bottom: 25px;
-            width: 100%;
-        }
-        .input-buttons {
-            margin-top: 10px;
-        }
-    `],
     templateUrl: 'app/admin/organizations/organization-edit.component.html',
-    providers: [ Modal ]
+    providers: [Modal]
 })
 
 export class OrganizationEditComponent extends BaseEditComponent<Organization> implements AfterViewInit {
@@ -36,7 +27,7 @@ export class OrganizationEditComponent extends BaseEditComponent<Organization> i
         this.organizationTypeService.get()
             .then(models => {
                 this.dialog.context.organizationTypes = models['data'];
-                
+
                 //поскольку в typescript нет возможности переопределить
                 //оператор равенства, то для нормальной работы binding selector
                 //заменяет ссылку на OrganizationType из формы списка на полученную в запросе 
@@ -44,9 +35,9 @@ export class OrganizationEditComponent extends BaseEditComponent<Organization> i
                 if (types != null && this.dialog.context.model.organization_type != null) {
                     var id = this.dialog.context.model.organization_type.id;
                     for (var item of types) {
-                        if (item.id == id){
+                        if (item.id == id) {
                             this.dialog.context.model.organization_type = item;
-                            break; 
+                            break;
                         }
                     }
                 }

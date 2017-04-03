@@ -36,20 +36,20 @@ namespace mfc.web.Controllers {
 
         //
         // GET: /File/
-        public ActionResult Index(string beginDate = null, string endDate = null, Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1, Int64 serviceId = -1, Int32 page = 1) {
+        public ActionResult Index(string dateBegin = null, string dateEnd = null, Int64 controllerId = -1, Int64 expertId = -1, Int64 statusId = -1, Int64 orgId = -1, Int64 serviceId = -1, Int32 page = 1) {
             Logger.Debug($"FileController.Index start");
 
             DateTime queryDateBegin = DateTime.Today;
             queryDateBegin = new DateTime(queryDateBegin.Year, queryDateBegin.Month, 1);
 
-            if (!string.IsNullOrEmpty(beginDate)) {
-                DateTime.TryParse(beginDate, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDateBegin);
+            if (!string.IsNullOrEmpty(dateBegin)) {
+                DateTime.TryParse(dateBegin, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDateBegin);
             }
 
             DateTime queryDateEnd = queryDateBegin.AddMonths(1).AddSeconds(-1);
 
-            if (!string.IsNullOrEmpty(endDate)) {
-                DateTime.TryParse(endDate, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDateEnd);
+            if (!string.IsNullOrEmpty(dateEnd)) {
+                DateTime.TryParse(dateEnd, CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.AssumeLocal, out queryDateEnd);
             }
             //загружаем настройки фильтра
             var settings = Session[FileControllerIndexKey] as IDictionary<string, object>;

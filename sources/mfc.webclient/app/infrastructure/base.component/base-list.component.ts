@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -32,13 +32,15 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     abstract cloneModel(model: TModel): TModel;
     abstract getEditComponent(): any;
 
+    @Output() tested=new EventEmitter();
+
     ngOnInit(): void {
         this.busyMessage = Messages.LOADING_LIST;
         this.busy = this.service.get()
             .then(models => {
                 this.models = models['data'];       // извлекаем массив данных
                 this.totalRows = models['total'];   // извлекаем общее кол-во строк сущности для корректного отображения страниц
-        });
+            });
     }
 
     add() {
@@ -84,7 +86,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
                                 });
                             }).catch(x => this.handlerError(x));
                     }
-                }, () => null);
+                }, ()=>null);
             }).catch(this.handlerError);
     }
 
@@ -104,9 +106,10 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
                         .then(res => {
                             if (res) {
                                 this.models.splice(this.models.indexOf(model), 1);
+                                this.totalRows -= 1;
                             }
                         });
-                });
+                }, () => null);
             });
     }
 
