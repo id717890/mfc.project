@@ -25,7 +25,7 @@ import { PackageService } from './package/package.service';
 import { PackageFileService } from './package/package-file.service';
 import { PackageEditComponent } from './package/package-edit.component';
 
-import { MyDatePickerModule } from 'mydatepicker';  // https://github.com/kekeh/mydatepicker
+import { MyDatePickerModule } from 'mydatepicker';
 import { Ng2PaginationModule } from 'ng2-pagination'; //https://github.com/michaelbromley/ng2-pagination
 import { Ng2CompleterModule } from "ng2-completer";  //https://github.com/oferh/ng2-completer
 

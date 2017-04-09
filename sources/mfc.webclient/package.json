@@ -27,7 +27,7 @@
     "base64-js": "^0.0.8",
     "bootstrap": "^3.3.6",
     "core-js": "^2.4.1",
-    "mydatepicker": "^1.0.0",
+    "mydatepicker": "^1.8.3",
     "ng2-completer": "^0.2.3",
     "ng2-pagination": "^0.5.1",
     "reflect-metadata": "^0.1.3",
