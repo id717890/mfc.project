@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RequestOptions } from '@angular/http';
 
 import { WorkModule } from './work/work.module';
+import { AdminModule } from './admin/admin.module';
 
 import { AppComponent } from './app.component';
 import { DialogComponent } from './dialog/dialog.component';
@@ -18,7 +19,7 @@ import { routing, appRoutingProviders } from './app.router';
 
 
 @NgModule({
-  imports: [BrowserModule, BrowserAnimationsModule, routing, WorkModule],
+  imports: [BrowserModule, BrowserAnimationsModule, routing, WorkModule, AdminModule],
   declarations: [AppComponent, DialogComponent, MenuComponent, WorkComponent],
   bootstrap: [AppComponent],
   providers: [
