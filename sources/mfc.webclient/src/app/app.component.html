@@ -1,7 +1,15 @@
-<h1>Hello Angular </h1>
+<div id="wrapper">
+    <main-menu>
+    </main-menu>
+
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
 
 <button (click)="onShowDialog()" class="btn">Open</button>
-
 <app-dialog [(visible)]="showDialog">
   
 </app-dialog>
