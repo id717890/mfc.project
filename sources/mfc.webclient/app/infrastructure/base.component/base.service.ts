@@ -56,7 +56,7 @@ export class BaseService<TModel extends BaseModel> extends AbstractService {
             .catch(this.handlerError);
     }
 
-    delete(model: TModel): Promise<Boolean> {
+    delete(model: TModel): Promise<Boolean|void> {
         return this._http.delete(`${this.getApiTag()}/${model.id}`)
             .toPromise()
             .then(res => true)
@@ -73,7 +73,7 @@ export class BaseService<TModel extends BaseModel> extends AbstractService {
             data: Object[] 
         }        
          */
-        let output = [];
+        let output: any[] = [];
         let data = res.json();
         let total: number = +res.headers.get('Total-rows');
         output['total'] = total != null ? total : 0;

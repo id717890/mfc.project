@@ -13,7 +13,6 @@ import { WorkModule } from './work/work.module';
 import { AppComponent } from './app.component';
 import { WorkComponent } from './work/work.component';
 import { MenuComponent } from './menu/menu.component';
-import { LoginComponent } from './login/login.component';
 
 import { ActionTypeEditComponent } from './admin/action-types/action-type.edit.component';
 import { FileStatusEditComponent } from './admin/file-statuses/file-status.edit.component';
@@ -48,18 +47,6 @@ import { DateService } from "./infrastructure/assistant/date.service";
       new BusyConfig({
         message: 'Загрузка...',
         backdrop: true,
-        /*template: `
-          <div class="panel panel-default ">
-            <div class="sk-wave">
-              <div class="sk-rect sk-rect1"></div>
-              <div class="sk-rect sk-rect2"></div>
-              <div class="sk-rect sk-rect3"></div>
-              <div class="sk-rect sk-rect4"></div>
-              <div class="sk-rect sk-rect5"></div>
-              <div class="sk-text">{{message}}</div>       
-            </div>
-          </div>    
-                `,*/
         delay: 50,
         minDuration: 100
       })
@@ -73,8 +60,7 @@ import { DateService } from "./infrastructure/assistant/date.service";
   declarations: [
     AppComponent,
     MenuComponent,
-    WorkComponent,
-    LoginComponent
+    WorkComponent
   ],
   bootstrap: [AppComponent],
   providers: [

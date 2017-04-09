@@ -88,13 +88,14 @@ export class PackageListComponent extends BaseListComponent<Package> implements 
 
     //Подготавливаем данные для обновления фильтра
     private prepareDataForSearch(): any[] {
-        let param = [];
+        let param: any[] = [];
         param["pageIndex"] = this.pageIndex;
         param["pageSize"] = this.pageSize;
         param["beginDate"] = this.dateBegin;
         param["endDate"] = this.dateEnd;
         param["organization"] = this.selectedOrganization;
         param["controller"] = this.selectedController;
+        
         return param;
     }
 

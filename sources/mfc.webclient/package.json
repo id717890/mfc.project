@@ -1,13 +1,25 @@
 {
-  "name": "angular-quickstart",
-  "version": "1.0.0",
+  "name": "mfc-project",
+  "version": "2.0.0",
+  "description": "Приложение для автоматизации работы МФЦ",
   "scripts": {
-    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
-    "lite": "lite-server",
-    "postinstall": "typings install",
-    "tsc": "tsc",
-    "tsc:w": "tsc -w",
-    "typings": "typings"
+    "test:once": "karma start karma.conf.js --single-run",
+    "build": "ntsc -p app/",
+    "serve": "lite-server -c=bs-config.json",
+    "prestart": "npm run build",
+    "start": "concurrently \"npm run build:watch\" \"npm run serve\"",
+    "pretest": "npm run build",
+    "test": "concurrently \"npm run build:watch\" \"karma start karma.conf.js\"",
+    "pretest:once": "npm run build",
+    "build:watch": "ntsc -p app/ -w",
+    "build:upgrade": "ntsc",
+    "serve:upgrade": "http-server",
+    "build:aot": "ngc -p tsconfig-aot.json && rollup -c rollup-config.js",
+    "serve:aot": "lite-server -c bs-config.aot.json",
+    "build:babel": "babel app -d app --extensions \".es6\" --source-maps",
+    "copy-dist-files": "node ./copy-dist-files.js",
+    "i18n": "ng-xi18n",
+    "lint": "tslint ./app/**/*.ts -t verbose"
   },
   "license": "ISC",
   "dependencies": {
@@ -30,6 +42,7 @@
     "mydatepicker": "^1.8.3",
     "ng2-completer": "^0.2.3",
     "ng2-pagination": "^0.5.1",
+    "ntypescript": "^1.201609302242.1",
     "reflect-metadata": "^0.1.3",
     "rxjs": "5.0.0-beta.12",
     "semantic-ui-loader": "^2.2.3",
@@ -42,5 +55,8 @@
     "lite-server": "^2.2.2",
     "typescript": "^2.0.2",
     "typings": "^1.3.2"
+  },
+  "repository": {
+    
   }
 }

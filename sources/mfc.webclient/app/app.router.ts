@@ -4,7 +4,6 @@ import { AdminComponent } from "./admin/admin.component";
 import { WorkComponent } from "./work/work.component";
 import { ActionListComponent } from "./work/action/action-list.component";
 import { FileListComponent } from "./work/file/file-list.component";
-import { LoginComponent } from './login/login.component';
 import { PackageListComponent } from "./work/package/package-list.component";
 
 const appRoutes: Routes = [
@@ -12,7 +11,6 @@ const appRoutes: Routes = [
   { path: 'admin', component: AdminComponent },
   { path: 'actions', component: ActionListComponent },
   { path: 'files', component: FileListComponent },
-  { path: 'login', component: LoginComponent },
   { path: 'packages', component: PackageListComponent },
   { path: '', component: WorkComponent }
 ];

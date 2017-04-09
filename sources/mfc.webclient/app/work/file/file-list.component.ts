@@ -103,14 +103,14 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
             let selectedFiles = this.models.filter(x => x.is_selected);
             this.busy =
                 this.fileService.postAcceptFiles(selectedFiles)
-                    .then(x => {
+                    .then((x:any) => {
                         if (x.status == 200) {
                             let acceptedList: File[];
                             let rejectedList: File[] = [];
                             let responsList = this.fileService.extractData(x)['data'];
                             selectedFiles.forEach(item => {
                                 let find = false;
-                                responsList.forEach(x => {
+                                responsList.forEach((x:any) => {
                                     if (x.id == item.id) {
                                         find = true;
                                         item.status = x.status;
@@ -206,7 +206,7 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
 
     //Подготавливаем данные для обновления фильтра
     private prepareDataForSearch(): any[] {
-        let param = [];
+        let param: any[] = [];
         param["pageIndex"] = this.pageIndex;
         param["pageSize"] = this.pageSize;
         param["beginDate"] = this.dateBegin;
@@ -216,6 +216,7 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
         param["service"] = this.selectedService;
         param["expert"] = this.selectedExpert;
         param["controller"] = this.selectedController;
+
         return param;
     }
 

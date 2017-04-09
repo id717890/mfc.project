@@ -130,15 +130,17 @@ export class ActionEditComponent extends BaseEditComponent<Action> implements Af
     }
 
     private prepareData(organizationId: number): any[] {
-        let param = [];
+        let param: any[] = [];
         param["organization"] = organizationId;
+        
         return param;
     }
 
     private prepareDataForServiceChild(organizationId: number, parent: number): any[] {
-        let param = [];
+        let param: any[] = [];
         param["organization"] = organizationId;
         param["parent"] = parent;
+
         return param;
     }
 

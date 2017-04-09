@@ -29,7 +29,6 @@ export class ActionService extends BaseService<Action> {
     postCopyAction(actions: Action[]) {
         return this._http.post(this.getApiTag() + "/copy", JSON.stringify(actions))
             .toPromise()
-            .then(x => x)
             .catch(this.handlerError);
     }
 }
