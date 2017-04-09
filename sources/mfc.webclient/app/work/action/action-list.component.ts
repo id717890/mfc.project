@@ -52,11 +52,11 @@ export class ActionListComponent extends BaseListComponent<Action> {
             let selectedActions = this.models.filter(x => x.is_selected);
             this.busy =
                 this._actionService.postCopyAction(selectedActions)
-                    .then(x => {
+                    .then((x: any) => {
                         if (x.status == 200) {
                             let responsList = this._actionService.extractData(x)['data'];
                             if (responsList != null) {
-                                responsList.forEach(x => {
+                                responsList.forEach((x: any) => {
                                     this.models.push(x);
                                 })
                             }
@@ -126,12 +126,13 @@ export class ActionListComponent extends BaseListComponent<Action> {
     }
 
     private prepareData(): any[] {
-        let param = [];
+        let param: any[] = [];
         param["dateEnd"] = this.dateEnd;
         param["dateBegin"] = this.dateBegin;
         param["pageIndex"] = this.pageIndex;
         param["pageSize"] = this.pageSize;
         param["userId"] = this.selectedExpert;
+
         return param;
     }
 

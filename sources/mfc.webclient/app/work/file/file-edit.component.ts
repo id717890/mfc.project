@@ -51,7 +51,7 @@ export class FileEditComponent extends BaseEditComponent<File> implements AfterV
             .then(x => {
                 x.result.then(output => {
                     this.busy = this._fileService.postStatus(this.context.model.id, status, output)
-                        .then(x => {
+                        .then((x:any) => {
                             if (x.status == 200) {
                                 this.busy = this._fileService.getById(this.context.model.id)
                                     .then(x => {
