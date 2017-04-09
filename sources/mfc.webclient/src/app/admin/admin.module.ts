@@ -34,14 +34,24 @@ import { CustomerTypeService } from './customer-types/customer-type.service';
 //import { ServiceService } from './services/service.service';
 //import { OrganizationService } from './organizations/organization.service';
 
+import { BusyConfig } from '../shared/busy/busy-config';
+import { BusyModule } from '../shared/busy/busy.module';
+
 @NgModule({
   imports: [
     BrowserModule,
     HttpModule,
     adminRouting,
     FormsModule,
-    ReactiveFormsModule/*,
-    BusyModule*/
+    ReactiveFormsModule,
+    BusyModule.forRoot(
+            new BusyConfig({
+                message: 'Загрузка...',
+                backdrop: true,
+                delay: 50,
+                minDuration: 100
+            })
+        )
   ],
   declarations: [
     AdminComponent,

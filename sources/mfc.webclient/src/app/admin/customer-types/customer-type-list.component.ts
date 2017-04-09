@@ -19,9 +19,6 @@ import { CustomerTypeEditComponent } from './customer-type-edit.component';
 
 export class CustomerTypeListComponent extends BaseListComponent<CustomerType> implements OnInit {
     customerTypes: CustomerType[];
-    busy: Promise<any>;
-    busyMessage: string;
-
 
     constructor(/*public modal: Modal, */private customerTypeService: CustomerTypeService) {
         super(/*modal, */customerTypeService);

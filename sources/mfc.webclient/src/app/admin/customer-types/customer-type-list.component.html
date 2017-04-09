@@ -1,6 +1,6 @@
 <h2 class="page-header">Категории посетителей/заявителей</h2>
 
-<div style="position: relative">
+<div [ngBusy]="{busy: busy, message: busyMessage}" style="position: relative">
 	<div class="form-group">
 		<a (click)="add()" class="btn btn-primary">Добавить категорию</a>
 	</div>

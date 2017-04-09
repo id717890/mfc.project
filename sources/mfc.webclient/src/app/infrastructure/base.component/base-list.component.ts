@@ -35,12 +35,18 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     @Output() tested=new EventEmitter();
 
     ngOnInit(): void {
-        /*this.busyMessage = Messages.LOADING_LIST;
-        this.busy = this.service.get()
+        /*this.service.get()
             .then(models => {
                 this.models = models['data'];       // извлекаем массив данных
                 this.totalRows = models['total'];   // извлекаем общее кол-во строк сущности для корректного отображения страниц
             });*/
+        this.busyMessage = Messages.LOADING_LIST;
+        console.log(this.busyMessage);
+        this.busy = this.service.get()
+            .then(models => {
+                this.models = models['data'];       // извлекаем массив данных
+                this.totalRows = models['total'];   // извлекаем общее кол-во строк сущности для корректного отображения страниц
+            });
     }
 
     add() {
