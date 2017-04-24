@@ -15,12 +15,13 @@ import { ActionPermissionService } from './infrastructure/security/action-permis
 
 import { DefaultRequestOptions } from './infrastructure/default-request-options';
 import { routing, appRoutingProviders } from './app.router';
+import { DialogDirective } from './dialog/dialog.directive';
 
 
 
 @NgModule({
   imports: [BrowserModule, BrowserAnimationsModule, routing, WorkModule, AdminModule],
-  declarations: [AppComponent, DialogComponent, MenuComponent, WorkComponent],
+  declarations: [AppComponent, DialogComponent, MenuComponent, WorkComponent, DialogDirective],
   bootstrap: [AppComponent],
   providers: [
     appRoutingProviders,

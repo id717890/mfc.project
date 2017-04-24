@@ -35,13 +35,8 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     @Output() tested=new EventEmitter();
 
     ngOnInit(): void {
-        /*this.service.get()
-            .then(models => {
-                this.models = models['data'];       // извлекаем массив данных
-                this.totalRows = models['total'];   // извлекаем общее кол-во строк сущности для корректного отображения страниц
-            });*/
         this.busyMessage = Messages.LOADING_LIST;
-        console.log(this.busyMessage);
+
         this.busy = this.service.get()
             .then(models => {
                 this.models = models['data'];       // извлекаем массив данных
@@ -50,7 +45,9 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     }
 
     add() {
-        /*let model: TModel = this.newModel();
+        let model: TModel = this.newModel();
+        //todo: implement
+        /*
         this.modal
             .open(
             this.getEditComponent(),
@@ -73,8 +70,11 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     }
 
     edit(model: TModel) {
-        /*let clone: TModel = this.cloneModel(model);
-        this.modal
+        let clone: TModel = this.cloneModel(model);
+        console.log(clone);
+
+        //todo: implement
+        /*this.modal
             .open(
             this.getEditComponent(),
             overlayConfigFactory({ title: 'Редактирование', model: clone }, BSModalContext)
@@ -97,6 +97,8 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     }
 
     delete(model: TModel) {
+        console.log(model);
+        //todo: implement
         /*this.modal
             .confirm()
             .title(Messages.ACTION_CONFIRM)

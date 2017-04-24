@@ -36,6 +36,8 @@ import { CustomerTypeService } from './customer-types/customer-type.service';
 
 import { BusyConfig } from '../shared/busy/busy-config';
 import { BusyModule } from '../shared/busy/busy.module';
+import {TestComponent} from './customer-types/test.component';
+
 
 @NgModule({
   imports: [
@@ -55,7 +57,7 @@ import { BusyModule } from '../shared/busy/busy.module';
   ],
   declarations: [
     AdminComponent,
-    CustomerTypeListComponent, CustomerTypeEditComponent//,
+    CustomerTypeListComponent, CustomerTypeEditComponent, TestComponent//,
     //UserListComponent, UserEditComponent, UserPasswordComponent,
     //FileStatusListComponent, FileStatusEditComponent,
     //ActionTypeListComponent, ActionTypeEditComponent,
@@ -64,6 +66,7 @@ import { BusyModule } from '../shared/busy/busy.module';
     //ServiceListComponent, ServiceEditComponent,
     //OrganizationListComponent, OrganizationEditComponent
   ],
+  entryComponents: [CustomerTypeEditComponent, TestComponent],
   providers: [
     //UserService,
     CustomerTypeService//,
