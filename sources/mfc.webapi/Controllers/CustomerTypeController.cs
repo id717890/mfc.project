@@ -21,6 +21,7 @@ namespace mfc.webapi.Controllers
         [Route("")]
         public HttpResponseMessage Get()
         {
+            System.Threading.Thread.Sleep(3000);
             //todo: обработка ошибок и возврат кода HTTP в соответствии с соглашением
             var types = _customerTypeService.GetAllTypes().Select(type => new Models.CustomerTypeInfo(type)).ToArray();
             if (types == null || types.Length == 0)

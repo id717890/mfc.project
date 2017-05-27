@@ -1,0 +1,47 @@
+<h2 class="page-header">Категории посетителей/заявителей</h2>
+
+<div [ngBusy]="{busy: busy, message: busyMessage}" style="position: relative">
+	<div class="form-group">
+		<a (click)="add()" class="btn btn-primary">Новый</a>
+	</div>
+	<div class="row">
+		<div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+			<div class="panel panel-default">
+				<table class="table table-striped table-hover table-condensed table-responsive">
+					<colgroup>
+						<col>
+						<col class="col-width-50">
+					</colgroup>
+					<thead>
+						<tr>
+							<th hidden>Id</th>
+							<th>Наименование</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let model of models">
+							<td hidden>{{model.id}}</td>
+							<td>{{model.caption}}</td>
+							<td>
+								<a (click)="edit(model)" class="glyphicon glyphicon-edit" title="Редактировать"></a>
+								<a (click)="delete(model)" class="glyphicon glyphicon-remove" title="Удалить запись"></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<mfc-dialog>
+</mfc-dialog>
+
+
+<button (click)="onShowDialog()" class="btn">Open</button>
+<!--
+<app-dialog [(visible)]="showDialog">
+  
+</app-dialog>
+
+-->
