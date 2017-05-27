@@ -1,0 +1,52 @@
+<h2 class="page-header">Список пользователей</h2>
+
+<div [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
+	<div class="form-group">
+		<a (click)="add()" class="btn btn-primary">Добавить пользователя</a>
+	</div>
+	<div class="panel panel-default">
+		<table class="table table-striped table-hover table-condensed table-responsive">
+			<colgroup>
+				<col>
+				<col>
+				<col class="col-width-20">
+				<col class="col-width-20">
+				<col class="col-width-20">
+				<col class="col-width-80">
+			</colgroup>
+			<thead>
+				<tr>
+					<th>Имя пользователя</th>
+					<th>Описание</th>
+					<th title="Администратор">А</th>
+					<th title="Эксперт">Э</th>
+					<th title="Контролер">К</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let model of models; let i = index">
+					<td>{{model.user_name}}</td>
+					<td>{{model.description}}</td>
+					<td>
+						<span class="glyphicon glyphicon-ok-sign" *ngIf="model.is_admin"></span>
+						<span class="glyphicon glyphicon-minus-sign" *ngIf="!model.is_admin"></span>
+					</td>
+					<td>
+						<span class="glyphicon glyphicon-ok-sign" *ngIf="model.is_expert"></span>
+						<span class="glyphicon glyphicon-minus-sign" *ngIf="!model.is_expert"></span>
+					</td>
+					<td>
+						<span class="glyphicon glyphicon-ok-sign" *ngIf="model.is_controller"></span>
+						<span class="glyphicon glyphicon-minus-sign" *ngIf="!model.is_controller"></span>
+					</td>
+					<td>
+						<a (click)="edit(model)" class="glyphicon glyphicon-edit" title="Редактировать"></a>
+						<a data-toggle="modal" data-target="#ChangePassword" class="glyphicon glyphicon-lock" title="Сменить пароль"></a>
+						<a (click)="delete(model)" class="glyphicon glyphicon-remove" title="Удалить запись"></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
