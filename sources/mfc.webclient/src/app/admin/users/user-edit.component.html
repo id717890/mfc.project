@@ -1,0 +1,40 @@
+<span defaultOverlayTarget></span>
+<div class='container-fluid custom-modal-container'>
+	<div class="row custom-modal-header">
+		<div class="col-sm-12">
+			<h1>{{context.title}}</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<form id="user-editor" role="form">
+				<input [(ngModel)]="context.model.id" type="hidden" id="input-id" name="id">
+
+				<div class="form-group" [ngClass]="{'has-error':!formGroup.controls['user_name'].valid && formGroup.controls['user_name'].touched, 'shake': isShaking}">
+					<input id="input-user_name" class="form-control" name="user_name" placeholder="Логин" [formControl]="formGroup.controls['user_name']">
+					<div *ngIf="!formGroup.controls['user_name'].valid && formGroup.controls['user_name'].touched" class="form-control alert alert-danger">Укажите логин пользователя</div>
+				</div>
+				<div class="form-group" [ngClass]="{'has-error':!formGroup.controls['description'].valid && formGroup.controls['description'].touched, 'shake': isShaking}">
+					<input id="input-description" class="form-control" name="description" placeholder="Ф.И.О. пользователя" [formControl]="formGroup.controls['description']">
+					<div *ngIf="!formGroup.controls['description'].valid && formGroup.controls['description'].touched" class="form-control alert alert-danger">Укажите Ф.И.О. пользователя</div>
+				</div>
+				<div class="form-group">
+					<input type="checkbox" id="input-is-admin" name="is_admin" [formControl]="formGroup.controls['is_admin']">
+					<label for="input-is-admin">&nbsp;Администратор</label>
+				</div>
+				<div class="form-group">
+					<input type="checkbox" id="input-is-expert" name="is_expert" [formControl]="formGroup.controls['is_expert']">
+					<label for="input-is-expert">&nbsp;Эксперт</label>
+				</div>
+				<div class="form-group">
+					<input type="checkbox" id="input-is-controller" name="is_controller" [formControl]="formGroup.controls['is_controller']">
+					<label for="input-is-controller">&nbsp;Контролер</label>
+				</div>
+				<div class="form-group">
+					<a id="button-apply" class="btn btn-success" (click)="dialog.close(context.model)">Сохранить</a>
+					<a id="button-cancel" class="btn btn-warning" (click)="dialog.dismiss()">Отменить</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

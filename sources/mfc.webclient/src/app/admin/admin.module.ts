@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminComponent } from './admin.component';
 import { CustomerTypeListComponent } from './customer-types/customer-type-list.component';
 import { CustomerTypeEditComponent } from './customer-types/customer-type-edit.component';
-//import { UserListComponent } from './users/user-list.component';
+import { UserListComponent } from './users/user-list.component';
 //import { UserEditComponent } from './users/user-edit.component';
 //import { UserPasswordComponent } from './users/user-password.component';
 //import { FileStatusEditComponent } from './file-statuses/file-status.edit.component';
@@ -25,7 +25,7 @@ import { CustomerTypeEditComponent } from './customer-types/customer-type-edit.c
 
 import { adminRouting } from './admin.router';
 
-//import { UserService } from './users/user.service';
+import { UserService } from './users/user.service';
 import { CustomerTypeService } from './customer-types/customer-type.service';
 //import { FileStatusService } from './file-statuses/file-status.service';
 //import { ActionTypeService } from './action-types/action-type.service';
@@ -57,8 +57,8 @@ import {TestComponent} from './customer-types/test.component';
   ],
   declarations: [
     AdminComponent,
-    CustomerTypeListComponent, CustomerTypeEditComponent, TestComponent//,
-    //UserListComponent, UserEditComponent, UserPasswordComponent,
+    CustomerTypeListComponent, CustomerTypeEditComponent, TestComponent,
+    UserListComponent//, UserEditComponent, UserPasswordComponent,
     //FileStatusListComponent, FileStatusEditComponent,
     //ActionTypeListComponent, ActionTypeEditComponent,
     //OrganizationTypeListComponent, OrganizationTypeEditComponent,
@@ -68,7 +68,7 @@ import {TestComponent} from './customer-types/test.component';
   ],
   entryComponents: [CustomerTypeEditComponent, TestComponent],
   providers: [
-    //UserService,
+    UserService,
     CustomerTypeService//,
     //FileStatusService,
     //ActionTypeService,
