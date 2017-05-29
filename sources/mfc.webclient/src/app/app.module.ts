@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { MdDialogModule, MdButtonModule, MdCardModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { RequestOptions } from '@angular/http';
 
 import { WorkModule } from './work/work.module';
@@ -18,11 +20,12 @@ import { routing, appRoutingProviders } from './app.router';
 import { DialogDirective } from './dialog/dialog.directive';
 
 
-
 @NgModule({
-  imports: [BrowserModule, BrowserAnimationsModule, routing, WorkModule, AdminModule],
-  declarations: [AppComponent, DialogComponent, MenuComponent, WorkComponent, DialogDirective],
-  bootstrap: [AppComponent],
+  imports: [BrowserModule, BrowserAnimationsModule, routing, WorkModule, AdminModule, MdDialogModule, MdButtonModule, MdCardModule],
+  declarations: [AppComponent, DialogComponent, MenuComponent, WorkComponent, DialogDirective
+  ],
+  bootstrap: [AppComponent
+  ],
   providers: [
     appRoutingProviders,
     { provide: RequestOptions, useClass: DefaultRequestOptions },
