@@ -15,7 +15,8 @@ import { UserListComponent } from './users/user-list.component';
 //import { ActionTypeEditComponent } from './action-types/action-type.edit.component';
 import { ActionTypeListComponent } from './action-types/action-type.list.component';
 import { OrganizationTypeListComponent } from './organization-types/organization-type-list.component';
-//import { OrganizationTypeEditComponent } from './organization-types/organization-type-edit.component';
+import { OrganizationTypeEditComponent } from './organization-types/organization-type-edit.component';
+import { OrganizationTypeCreateComponent } from './organization-types/organization-type-create.component';
 //import { FileStageListComponent } from './file-stages/file-stage-list.component';
 //import { ServiceListComponent } from './services/service-list.component';
 //import { ServiceEditComponent } from './services/service-edit.component';
@@ -37,7 +38,7 @@ import { OrganizationService } from './organizations/organization.service';
 import { BusyConfig } from '../shared/busy/busy-config';
 import { BusyModule } from '../shared/busy/busy.module';
 import { TestComponent } from './customer-types/test.component';
-
+import { DialogOverviewExampleDialog } from './organization-types/organization-type-list.component';
 
 @NgModule({
   imports: [
@@ -65,8 +66,10 @@ import { TestComponent } from './customer-types/test.component';
     //FileStageListComponent,
     //ServiceListComponent, ServiceEditComponent,
     OrganizationListComponent//, OrganizationEditComponent
+    ,DialogOverviewExampleDialog
+    ,OrganizationTypeEditComponent,OrganizationTypeCreateComponent
   ],
-  entryComponents: [CustomerTypeEditComponent, TestComponent],
+  entryComponents: [CustomerTypeEditComponent, TestComponent, OrganizationTypeEditComponent,OrganizationTypeCreateComponent],
   providers: [
     UserService,
     CustomerTypeService,
