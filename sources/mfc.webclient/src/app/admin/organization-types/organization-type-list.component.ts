@@ -7,8 +7,11 @@ import { BaseListComponent } from './../../infrastructure/base.component/base-li
 
 import { OrganizationTypeService } from './organization-type.service';
 import { OrganizationTypeEditComponent } from './organization-type-edit.component'
+import { OrganizationTypeCreateComponent } from './organization-type-create.component'
 
 import { OrganizationType } from '../../models/organization-type.model';
+
+import { MdDialog, MdButton, MdDialogRef } from '@angular/material';
 
 @Component({
     selector: 'mfc-organizationType-list',
@@ -21,11 +24,27 @@ export class OrganizationTypeListComponent extends BaseListComponent<Organizatio
     //selectedOrganizationType: OrganizationType;
     busy: Promise<any>;
     busyMessage: string;
-	
-    constructor(private organizationTypeService: OrganizationTypeService){
+
+
+
+    constructor(public dialog: MdDialog, private organizationTypeService: OrganizationTypeService) {
         super(organizationTypeService);
         //this.refreshList();
     }
+
+    create_ogv_type() {
+        let dialogRef = this.dialog.open(OrganizationTypeCreateComponent, {
+            data: new OrganizationType(null, '')
+        });
+    }
+
+    edit2(model: OrganizationType) {
+        let dialogRef = this.dialog.open(OrganizationTypeCreateComponent, {
+            data: model
+        });
+
+    }
+
 
     //private refreshList(): void {
     //    this.organizationTypeService.get().then(orientation_types_list => this.organizationTypes = orientation_types_list);
@@ -43,3 +62,9 @@ export class OrganizationTypeListComponent extends BaseListComponent<Organizatio
         return OrganizationTypeEditComponent;
     }
 }
+
+@Component({
+    selector: 'ttt',
+    templateUrl: './test.html',
+})
+export class DialogOverviewExampleDialog { }
