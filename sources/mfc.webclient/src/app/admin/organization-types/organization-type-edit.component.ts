@@ -17,11 +17,9 @@ export class OrganizationTypeEditComponent {
 
     constructor(
         @Inject(MD_DIALOG_DATA) public data: OrganizationTypeContext,
-        public dialogRef: MdDialogRef<OrganizationTypeEditComponent>,
-        private organization_type_service: OrganizationTypeService
+        public dialogRef: MdDialogRef<OrganizationTypeEditComponent>
     ) {
         this.context=data;
-        console.log(data);
         if (data.organization_type.id == null) this.header_text = "Новый тип ОГВ"; else this.header_text = "Редактирование"
     }
 

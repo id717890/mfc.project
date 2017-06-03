@@ -61,7 +61,7 @@ table {
 
 .page-header {
     padding: 0;
-    margin: 0 0 15px 0 !important;
+    margin: 0 0 5px 0 !important;
     text-align: left;
     border-color: #ffffff;
     font-size: 21px;
@@ -344,6 +344,9 @@ nav .ng-busy-default-sign{
 .col-width-20{
     width: 20px;
 }
+.col-width-25{
+    width: 25px;
+}
 .col-width-30{
     width: 30px;
 }
@@ -420,4 +423,12 @@ nav .ng-busy-default-sign{
 .file-status-panel{
     height: 300px;
     overflow-y: scroll;
+}
+
+.add-row-btn{
+    display: none !important;
+}
+
+table tr:hover .add-row-btn{
+    display: inline-block !important;
 }

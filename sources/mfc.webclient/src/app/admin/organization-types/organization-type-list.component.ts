@@ -73,7 +73,6 @@ export class OrganizationTypeListComponent extends BaseListComponent<Organizatio
                     }).catch(x => this.handlerError(x));
             }
         });
-
     }
 
 
