@@ -7,7 +7,7 @@ import { BaseListComponent } from './../../infrastructure/base.component/base-li
 
 import { OrganizationTypeService } from './organization-type.service';
 import { OrganizationTypeEditComponent } from './organization-type-edit.component'
-import { OrganizationTypeCreateComponent } from './organization-type-create.component'
+import { OrganizationTypeContext } from './organization-type.context'
 
 import { OrganizationType } from '../../models/organization-type.model';
 
@@ -20,27 +20,58 @@ import { MdDialog, MdButton, MdDialogRef } from '@angular/material';
 })
 
 export class OrganizationTypeListComponent extends BaseListComponent<OrganizationType> {
-    //organizationTypes: OrganizationType[] = [];
-    //selectedOrganizationType: OrganizationType;
-    busy: Promise<any>;
-    busyMessage: string;
-
-
+    private dialogRef: any;
 
     constructor(public dialog: MdDialog, private organizationTypeService: OrganizationTypeService) {
         super(organizationTypeService);
-        //this.refreshList();
+
     }
 
     create_ogv_type() {
-        let dialogRef = this.dialog.open(OrganizationTypeCreateComponent, {
-            data: new OrganizationType(null, '')
+        let context = new OrganizationTypeContext(new OrganizationType(null, ''));
+
+        this.dialogRef = this.dialog.open(OrganizationTypeEditComponent,
+            {
+                height: 'auto',
+                width: '600px',
+                data: context
+            });
+
+        this.dialogRef.afterClosed().subscribe(result => {
+            if (result != null) {
+                this.organizationTypeService.post(result)
+                    .then(x => {
+                        if (x != null) {
+                            this.models.push(x);
+                            this.totalRows += 1;
+                        }
+                    })  //Здесь нужна проверка на null, т.к. если API вернул ответ с ошибкой, то х=undefined
+                    .catch(x => this.handlerError(x));
+            }
         });
     }
 
-    edit2(model: OrganizationType) {
-        let dialogRef = this.dialog.open(OrganizationTypeCreateComponent, {
-            data: model
+    edit_ogv_type(model: OrganizationType) {
+        let context = new OrganizationTypeContext(model);
+
+        this.dialogRef = this.dialog.open(OrganizationTypeEditComponent, {
+            height: 'auto',
+            width: '600px',
+            data: context
+        });
+
+        this.dialogRef.afterClosed().subscribe(result => {
+            if (result != null) {
+                this.organizationTypeService.put(result)
+                    .then(x => {
+                        Object.keys(x).forEach((key) => {
+                            if (key === 'id') {
+                                return;
+                            }
+                            model[key] = x[key];
+                        });
+                    }).catch(x => this.handlerError(x));
+            }
         });
 
     }
@@ -62,9 +93,3 @@ export class OrganizationTypeListComponent extends BaseListComponent<Organizatio
         return OrganizationTypeEditComponent;
     }
 }
-
-@Component({
-    selector: 'ttt',
-    templateUrl: './test.html',
-})
-export class DialogOverviewExampleDialog { }

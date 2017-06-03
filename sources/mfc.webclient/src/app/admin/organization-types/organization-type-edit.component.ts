@@ -1,21 +1,31 @@
 import { Component, Output, Input, EventEmitter, Inject } from "@angular/core";
 import { NgForm } from "@angular/forms";
 
-// import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
-// import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
-
-
 import { OrganizationType } from '../../models/organization-type.model';
 import { OrganizationTypeService } from './organization-type.service';
-import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.component/base-edit.component';
-import {MD_DIALOG_DATA} from '@angular/material';
+import { OrganizationTypeContext } from './organization-type.context';
+import { MaterialModule, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 @Component({
-    selector: 'modal-content',
+    selector: 'org-type-create-edit-dlg',
     templateUrl: 'app/admin/organization-types/organization-type-edit.component.html'
-    //,providers: [ Modal ]
 })
 
-export class OrganizationTypeEditComponent extends BaseEditComponent<OrganizationType> {
-    constructor(@Inject(MD_DIALOG_DATA) public data: OrganizationType) { super() }
+export class OrganizationTypeEditComponent {
+    public header_text = "";
+    public context:OrganizationTypeContext;
+
+    constructor(
+        @Inject(MD_DIALOG_DATA) public data: OrganizationTypeContext,
+        public dialogRef: MdDialogRef<OrganizationTypeEditComponent>,
+        private organization_type_service: OrganizationTypeService
+    ) {
+        this.context=data;
+        console.log(data);
+        if (data.organization_type.id == null) this.header_text = "Новый тип ОГВ"; else this.header_text = "Редактирование"
+    }
+
+    submit(model: OrganizationType) {
+        this.dialogRef.close(model)
+    }
 }

@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { MdDialogModule, MdButtonModule, MdCardModule } from '@angular/material';
+import { MaterialModule, MdDialogModule, MdButtonModule, MdCardModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { RequestOptions } from '@angular/http';
 
 import { WorkModule } from './work/work.module';
 import { AdminModule } from './admin/admin.module';
+import { Material } from './shared/material.module';
 
 import { AppComponent } from './app.component';
 import { DialogComponent } from './dialog/dialog.component';
@@ -21,7 +22,9 @@ import { DialogDirective } from './dialog/dialog.directive';
 
 
 @NgModule({
-  imports: [BrowserModule, BrowserAnimationsModule, routing, WorkModule, AdminModule, MdDialogModule, MdButtonModule, MdCardModule],
+  imports: [
+    BrowserModule, BrowserAnimationsModule, routing, Material, WorkModule, AdminModule,
+  ],
   declarations: [AppComponent, DialogComponent, MenuComponent, WorkComponent, DialogDirective
   ],
   bootstrap: [AppComponent

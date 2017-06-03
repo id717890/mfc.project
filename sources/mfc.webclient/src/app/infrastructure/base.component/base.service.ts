@@ -35,9 +35,9 @@ export class BaseService<TModel extends BaseModel> extends AbstractService {
     }
 
     post(model: TModel): Promise<TModel> {
-        return null;
+        // return null;
        //todo: implements
-        /*return this._http.post(this.getApiTag(), JSON.stringify(model))
+        return this._http.post(this.getApiTag(), JSON.stringify(model))
             .flatMap((x: Response) => {
                 var location = x.headers.get('Location');
                 return this._http.get(location);
@@ -48,7 +48,7 @@ export class BaseService<TModel extends BaseModel> extends AbstractService {
                 let error = this.extractData(y);
                 console.warn(error);
             })
-            .catch(this.handlerError);*/
+            .catch(this.handlerError);
     }
 
     put(model: TModel) {
