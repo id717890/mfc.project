@@ -2,27 +2,21 @@ import { Directive, Component, ViewChild, ComponentFactoryResolver, Type, ViewCo
 import { Observable } from 'rxjs/Observable';
 import { OnInit } from '@angular/core';
 
-//import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
-//import { DialogRef, overlayConfigFactory } from 'angular2-modal';
-
 import { BaseListComponent } from './../../infrastructure/base.component/base-list.component';
-import {DialogDirective} from './../../dialog/dialog.directive';
 
 import { CustomerTypeService } from './customer-type.service';
 import { CustomerType } from '../../models/customer-type.model';
 import { CustomerTypeEditComponent } from './customer-type-edit.component';
 
-import {TestComponent} from './test.component';
+import { TestComponent } from './test.component';
 
-@Directive({selector: '[mfc-dialog]'})
+@Directive({ selector: '[mfc-dialog]' })
 class ChildDirective {
 }
 
 @Component({
     selector: 'mfc-customer-type-list',
-    templateUrl: 'app/admin/customer-types/customer-type-list.component.html'/*,
-    providers: [Modal]*/
-    
+    templateUrl: 'app/admin/customer-types/customer-type-list.component.html'
 })
 
 export class CustomerTypeListComponent extends BaseListComponent<CustomerType> implements OnInit {
@@ -45,15 +39,11 @@ export class CustomerTypeListComponent extends BaseListComponent<CustomerType> i
         return CustomerTypeEditComponent;
     }
 
-    //showDialog = false;
-
     onShowDialog() {
-        let componentFactory  = this.componentFactoryResolver.resolveComponentFactory(this.getEditComponent());
+        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.getEditComponent());
         let viewContainerRef = this.dialogHost.viewContainerRef;
         viewContainerRef.clear();
         viewContainerRef.createComponent(componentFactory);
-        
-        /*this.showDialog = !this.showDialog;
-        console.log(this.showDialog);*/
+
     }
 }

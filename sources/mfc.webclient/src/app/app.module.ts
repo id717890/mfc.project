@@ -10,7 +10,6 @@ import { AdminModule } from './admin/admin.module';
 import { Material } from './shared/material.module';
 
 import { AppComponent } from './app.component';
-import { DialogComponent } from './dialog/dialog.component';
 import { MenuComponent } from './menu/menu.component';
 import { WorkComponent } from './work/work.component';
 
@@ -18,16 +17,17 @@ import { ActionPermissionService } from './infrastructure/security/action-permis
 
 import { DefaultRequestOptions } from './infrastructure/default-request-options';
 import { routing, appRoutingProviders } from './app.router';
-import { DialogDirective } from './dialog/dialog.directive';
 
 
 @NgModule({
   imports: [
-    BrowserModule, BrowserAnimationsModule, routing, Material, WorkModule, AdminModule,
+    BrowserModule, Material, BrowserAnimationsModule, routing, WorkModule, AdminModule,
   ],
-  declarations: [AppComponent, DialogComponent, MenuComponent, WorkComponent, DialogDirective
+  declarations: [
+    AppComponent, MenuComponent, WorkComponent
   ],
-  bootstrap: [AppComponent
+  bootstrap: [
+    AppComponent
   ],
   providers: [
     appRoutingProviders,
