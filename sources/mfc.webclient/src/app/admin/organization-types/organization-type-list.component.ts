@@ -92,11 +92,6 @@ export class OrganizationTypeListComponent extends BaseListComponent<Organizatio
             });
     }
 
-    test()
-    {
-        this.dialog_service.alert('test','asdasdasdasdasd');
-    }
-
     newModel(): OrganizationType {
         return new OrganizationType(null, '');
     };
