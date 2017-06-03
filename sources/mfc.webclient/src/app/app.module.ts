@@ -13,6 +13,11 @@ import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
 import { WorkComponent } from './work/work.component';
 
+// Dialogs
+import { DialogService } from './infrastructure/dialog/dialog.service';
+import { DialogConfirm } from './infrastructure/dialog/dialog-confirm.component';
+import { DialogAlert } from './infrastructure/dialog/dialog-alert.component';
+
 import { ActionPermissionService } from './infrastructure/security/action-permission.service';
 
 import { DefaultRequestOptions } from './infrastructure/default-request-options';
@@ -21,18 +26,23 @@ import { routing, appRoutingProviders } from './app.router';
 
 @NgModule({
   imports: [
-    BrowserModule, Material, BrowserAnimationsModule, routing, WorkModule, AdminModule,
+    BrowserModule, MaterialModule, Material, BrowserAnimationsModule, routing, WorkModule, AdminModule,
+  ],
+  exports: [
+    DialogConfirm, DialogAlert,
   ],
   declarations: [
-    AppComponent, MenuComponent, WorkComponent
+    AppComponent, MenuComponent, WorkComponent, DialogConfirm, DialogAlert
   ],
   bootstrap: [
     AppComponent
   ],
   providers: [
+    DialogService,
     appRoutingProviders,
     { provide: RequestOptions, useClass: DefaultRequestOptions },
     ActionPermissionService
-  ]
+  ],
+  entryComponents: [DialogConfirm, DialogAlert],
 })
 export class AppModule { }

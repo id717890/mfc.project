@@ -8,6 +8,7 @@ import { BaseListComponent } from './../../infrastructure/base.component/base-li
 import { OrganizationTypeService } from './organization-type.service';
 import { OrganizationTypeEditComponent } from './organization-type-edit.component'
 import { OrganizationTypeContext } from './organization-type.context'
+import { DialogService } from '../../infrastructure/dialog/dialog.service'
 
 import { OrganizationType } from '../../models/organization-type.model';
 
@@ -16,13 +17,12 @@ import { MdDialog, MdButton, MdDialogRef } from '@angular/material';
 @Component({
     selector: 'mfc-organizationType-list',
     templateUrl: 'app/admin/organization-types/organization-type-list.component.html'
-    //,providers: [Modal]
 })
 
 export class OrganizationTypeListComponent extends BaseListComponent<OrganizationType> {
     private dialogRef: any;
 
-    constructor(public dialog: MdDialog, private organizationTypeService: OrganizationTypeService) {
+    constructor(public dialog: MdDialog, private organizationTypeService: OrganizationTypeService, private dialog_service: DialogService) {
         super(organizationTypeService);
 
     }
@@ -75,10 +75,27 @@ export class OrganizationTypeListComponent extends BaseListComponent<Organizatio
         });
     }
 
+    delete_ogv_type(model: OrganizationType) {
+        console.log(model);
 
-    //private refreshList(): void {
-    //    this.organizationTypeService.get().then(orientation_types_list => this.organizationTypes = orientation_types_list);
-    //}
+        this.dialog_service
+            .confirm('', 'Удалить запись?')
+            .subscribe(result => {
+                if (result == true) {
+                    this.organizationTypeService.delete(model)
+                        .then(res => {
+                            this.models.splice(this.models.indexOf(model), 1);
+                            this.totalRows -= 1;
+                        })
+                        .catch(this.handlerError);
+                }
+            });
+    }
+
+    test()
+    {
+        this.dialog_service.alert('test','asdasdasdasdasd');
+    }
 
     newModel(): OrganizationType {
         return new OrganizationType(null, '');

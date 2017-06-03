@@ -3,7 +3,7 @@ import { Http, Headers, RequestOptions, RequestOptionsArgs, Response, URLSearchP
 import { BaseModel } from './../../models/base.model';
 
 import { AppSettings } from './../application-settings';
-import { AbstractService} from './../abstract-service';
+import { AbstractService } from './../abstract-service';
 
 @Injectable()
 export class BaseService<TModel extends BaseModel> extends AbstractService {
@@ -36,7 +36,7 @@ export class BaseService<TModel extends BaseModel> extends AbstractService {
 
     post(model: TModel): Promise<TModel> {
         // return null;
-       //todo: implements
+        //todo: implements
         return this._http.post(this.getApiTag(), JSON.stringify(model))
             .flatMap((x: Response) => {
                 var location = x.headers.get('Location');
@@ -58,13 +58,11 @@ export class BaseService<TModel extends BaseModel> extends AbstractService {
             .catch(this.handlerError);
     }
 
-    delete(model: TModel): Promise<Boolean> {
-        //todo: implement delete
-        /*return this._http.delete(`${this.getApiTag()}/${model.id}`)
+    delete(model: TModel):Promise<boolean> {
+        return this._http.delete(`${this.getApiTag()}/${model.id}`)
             .toPromise()
             .then(res => true)
-            .catch(this.handlerError);*/
-            return null;
+            .catch(this.handlerError);
     }
 
     extractData(res: Response) {
@@ -83,15 +81,15 @@ export class BaseService<TModel extends BaseModel> extends AbstractService {
 
         output['total'] = total != null ? total : 0;
         output['data'] = data;
-        
+
         return output;
     }
 
     public handlerError(error: any) {
-        if (error!=null && error.message!=null)
-        console.log(error.message);
-        else if (error!=null && error.message==null)
-        console.log(error);
+        if (error != null && error.message != null)
+            console.log(error.message);
+        else if (error != null && error.message == null)
+            console.log(error);
         else console.log("Произошла не понятная ошибка");
     }
 }

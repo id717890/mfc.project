@@ -432,3 +432,7 @@ nav .ng-busy-default-sign{
 table tr:hover .add-row-btn{
     display: inline-block !important;
 }
+
+.cdk-overlay-container{
+    z-index: 1030;
+}
