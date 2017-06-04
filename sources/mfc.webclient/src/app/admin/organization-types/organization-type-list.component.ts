@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { BaseListComponent } from './../../infrastructure/base.component/base-list.component';
 import { OrganizationTypeService } from './organization-type.service';
-import { OrganizationTypeEditComponent } from './organization-type-edit.component'
-import { DialogService } from '../../infrastructure/dialog/dialog.service'
+import { OrganizationTypeEditComponent } from './organization-type-edit.component';
+import { DialogService } from '../../infrastructure/dialog/dialog.service';
 import { OrganizationType } from '../../models/organization-type.model';
 import { MdDialog, MdButton, MdDialogRef } from '@angular/material';
 
@@ -12,7 +12,7 @@ import { MdDialog, MdButton, MdDialogRef } from '@angular/material';
 })
 
 export class OrganizationTypeListComponent extends BaseListComponent<OrganizationType> {
-    constructor(public dialog: MdDialog, private organizationTypeService: OrganizationTypeService, private dialogService: DialogService) {
+    constructor(public dialog: MdDialog, protected organizationTypeService: OrganizationTypeService, protected dialogService: DialogService) {
         super(dialog, organizationTypeService, dialogService);
     }
 

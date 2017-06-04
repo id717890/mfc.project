@@ -5,6 +5,7 @@ import { Headers, RequestOptions, RequestOptionsArgs, Response } from '@angular/
 import { Action } from '../../models/action.model';
 import { BaseService } from './../../infrastructure/base.component/base.service';
 import { AppSettings } from '../../Infrastructure/application-settings';
+import { ResponseData } from '../../Infrastructure/base.component/response-data';
 
 @Injectable()
 export class ActionService extends BaseService<Action> {
@@ -16,7 +17,7 @@ export class ActionService extends BaseService<Action> {
         return super.getApiTag() + 'actions';
     }
 
-    get(): Promise<Action[]> {
+    get(): Promise<ResponseData<Action>> {
         let params: URLSearchParams = new URLSearchParams();
         params.set("pageIndex", "1");
         params.set("pageSize", AppSettings.DEFAULT_PAGE_SIZE.toString());

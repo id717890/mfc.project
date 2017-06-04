@@ -7,7 +7,7 @@ import { BaseContext } from './base-context.component';
 import { Messages } from './../application-messages';
 import { AppSettings } from './../application-settings';
 import { MdDialog, MdButton, MdDialogRef } from '@angular/material';
-import { DialogService } from '../../infrastructure/dialog/dialog.service'
+import { DialogService } from '../../infrastructure/dialog/dialog.service';
 
 @Component({
     selector: 'mfc-base-list'
@@ -23,7 +23,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     pageSize: number = AppSettings.DEFAULT_PAGE_SIZE;  // количество элементов на странице
     pageIndex: number = 1; //текущая страница
 
-    constructor(public dialog: MdDialog, private service: BaseService<TModel>, private dialog_service: DialogService) { }
+    constructor(public dialog: MdDialog, protected service: BaseService<TModel>, protected dialogService: DialogService) { }
 
     abstract newModel(): TModel;
     abstract cloneModel(model: TModel): TModel;
@@ -53,7 +53,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
                 data: context
             });
 
-        this.dialogRef.afterClosed().subscribe(result => {
+        this.dialogRef.afterClosed().subscribe((result: any) => {
             if (result != null) {
                 this.service.post(result)
                     .then(x => {
@@ -75,7 +75,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
             width: '600px',
             data: context
         });
-        this.dialogRef.afterClosed().subscribe(result => {
+        this.dialogRef.afterClosed().subscribe((result: any) => {
             if (result != null) {
                 this.service.put(result)
                     .then(x => {
@@ -91,7 +91,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     }
 
     delete(model: TModel) {
-        this.dialog_service
+        this.dialogService
             .confirm('', 'Удалить запись?')
             .subscribe(result => {
                 if (result == true) {

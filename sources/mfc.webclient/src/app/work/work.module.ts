@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core';
 import { Http, HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MaterialModule, MdNativeDateModule} from '@angular/material';
 
 import { WorkComponent } from './work.component';
 
 // Приемы
 import { ActionListComponent } from './action/action-list.component';
 import { ActionService } from './action/action.service';
+import { DateService } from './../infrastructure/assistant/date.service';
 //import { ActionEditComponent } from './action/action-edit.component';
 
 // Дела
@@ -37,6 +39,8 @@ import { BusyConfig } from '../shared/busy/busy-config';
         BrowserModule,
         HttpModule,
         FormsModule,
+        MaterialModule,
+        MdNativeDateModule,
         //Ng2CompleterModule,
         ReactiveFormsModule,
         BusyModule.forRoot(
@@ -56,7 +60,8 @@ import { BusyConfig } from '../shared/busy/busy-config';
         PackageListComponent, PackageEditComponent*/
     ],
     providers: [
-        ActionService/*,
+        ActionService
+        , DateService /*,
         FileService,
         PackageService, PackageFileService,
         FileStatusHistoryService*/

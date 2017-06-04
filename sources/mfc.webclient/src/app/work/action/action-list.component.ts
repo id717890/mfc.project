@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MdDialog, MdButton, MdDialogRef } from '@angular/material';
 
 import { AppSettings } from '../../infrastructure/application-settings';
 //import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -11,27 +12,30 @@ import { ActionService } from './action.service';
 import { UserService } from '../../admin/users/user.service';
 import { Messages } from '../../Infrastructure/application-messages';
 import { DateService } from './../../infrastructure/assistant/date.service';
+import { DialogService } from '../../infrastructure/dialog/dialog.service';
 
 @Component({
     selector: 'mfc-action-list',
     templateUrl: 'app/work/action/action-list.component.html'
 })
 
-export class ActionListComponent extends BaseListComponent<Action> {
+export class ActionListComponent /*extends BaseListComponent<Action>*/ {
     experts: User[];
     selectedExpert: number = -1;
-    dateBegin: string;
-    dateEnd: string;
-
-    /* Настройки для datepicker */
-    myDatePickerOptions = AppSettings.DEFAULT_DATE_PICKER_OPTION;
+    dateBegin: Date;
+    dateEnd: Date;
+    models: Action[];
+    busy: Promise<any>;
+    busyMessage: string;
+    dialog: MdDialog;
 
     constructor(
-        private _actionService: ActionService
+        protected _actionService: ActionService
+        , protected dialogService: DialogService
         , private _userService: UserService
         , private _dateService: DateService
     ) {
-        super(_actionService);
+        //super(dialog, _actionService, dialogService);
         this.fillLists();
         this.prepareForm();
     }
@@ -73,63 +77,44 @@ export class ActionListComponent extends BaseListComponent<Action> {
     }
 
     private fillLists(): void {
-        this.busy = this._userService.get().then(x => this.experts = x["data"]);    //получаем список пользоввателей для combobox
+        this.busy = this._userService.get().then(x => {
+            let users: User[] = [User.AllUser];
+            users = users.concat(x.data);
+
+            this.experts = users;
+        });
     }
 
     private prepareForm(): void {
-        let today = new Date();
-        let tomorrow = new Date();
-        tomorrow.setDate(today.getDate() + 1);
-        this.dateBegin = today.getDate() + '.' + (today.getMonth() + 1) + '.' + today.getFullYear();
-        this.dateEnd = tomorrow.getDate() + '.' + (tomorrow.getMonth() + 1) + '.' + tomorrow.getFullYear();
+        this.dateBegin = new Date();
+        this.dateEnd = new Date();
+        this.selectedExpert = -1;
     }
 
-    onChangeDateBegin(event: any) {
-        if (event.formatted != "") this.dateBegin = event.formatted;
-        else {
-            let today = new Date();
-            this.dateBegin = this._dateService.ConvertDateToString(today);
-        }
-    }
-    onChangeDateEnd(event: any) {
-        if (event.formatted != "") this.dateEnd = event.formatted;
-        else {
-            let today = new Date();
-            this.dateEnd = this._dateService.ConvertDateToString(today);
-        }
-    }
-
-    onExpertChange(user_id: any) {
-        this.selectedExpert = user_id;
-    }
-
-    onChangeExp(user_id: any) {
-        console.log(user_id);
-    }
-
-    Search() {
+    
+    refresh() {
         this.busy = this._actionService.getWithParameters(this.prepareData()).then(x => {
-            this.models = x['data'];
-            this.totalRows = x['total'];
+            this.models = x.data;
         })
     }
 
     //Перелистывание страницы
     getPage(page: number) {
-        this.pageIndex = page;
+        /*this.pageIndex = page;
         this.busy =
             this._actionService.getWithParameters(this.prepareData()).then(x => {
                 this.models = x['data'];
                 this.totalRows = x['total'];
-            })
+            })*/
     }
 
     private prepareData(): any[] {
         let param: any[] = [];
-        param["dateEnd"] = this.dateEnd;
-        param["dateBegin"] = this.dateBegin;
-        param["pageIndex"] = this.pageIndex;
-        param["pageSize"] = this.pageSize;
+        param["dateEnd"] = this._dateService.ConvertDateToString(this.dateEnd);
+        param["dateBegin"] = this._dateService.ConvertDateToString(this.dateBegin);
+        //todo: установка значений для пейджинга
+        param["pageIndex"] = 0;
+        param["pageSize"] = 100;
         param["userId"] = this.selectedExpert;
 
         return param;

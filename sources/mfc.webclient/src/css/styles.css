@@ -436,3 +436,58 @@ table tr:hover .add-row-btn{
 .cdk-overlay-container{
     z-index: 1030;
 }
+
+.action-toolbar-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+.action-toolbar-section button, md-input-container {
+    margin: 5px;
+}
+
+.menu-bar {
+    padding: 0;
+    overflow: hidden;
+    user-select: none;
+    list-style-type: none;
+    margin: 0;
+    position: relative;
+}
+
+.menu-item {
+    border: 2px solid #ffffff;
+    padding: 3px 8px;
+    cursor: pointer;
+    max-height: 36px;
+    display: inline-block;
+    max-width: 250px;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    white-space: nowrap;
+}
+
+.menu-item:hover {
+    border: 2px solid #106ebe;
+    background-color: #deecf9;
+}
+
+.menu-item-main {
+    height: 26px;
+    margin: 0 !important;
+    background-color: #0078d7;
+    border: 2px solid #0078d7;
+    color: #fff;
+}
+
+.menu-item-main:hover {
+    border: 2px solid #106ebe;
+    background-color: #106ebe;
+}
