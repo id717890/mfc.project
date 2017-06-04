@@ -54,7 +54,7 @@ import { MaterialModule } from '@angular/material';
       new BusyConfig({
         message: 'Загрузка...',
         backdrop: true,
-        delay: 50,
+        delay: 30,
         minDuration: 100
       })
     )
