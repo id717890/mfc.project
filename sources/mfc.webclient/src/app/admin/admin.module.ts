@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Http, HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //import { BusyModule, BusyConfig } from 'angular2-busy';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AdminComponent } from './admin.component';
 import { CustomerTypeListComponent } from './customer-types/customer-type-list.component';
@@ -14,9 +14,11 @@ import { UserListComponent } from './users/user-list.component';
 //import { FileStatusListComponent } from './file-statuses/file-status.list.component';
 //import { ActionTypeEditComponent } from './action-types/action-type.edit.component';
 import { ActionTypeListComponent } from './action-types/action-type.list.component';
+
+// OrganizationType
 import { OrganizationTypeListComponent } from './organization-types/organization-type-list.component';
 import { OrganizationTypeEditComponent } from './organization-types/organization-type-edit.component';
-import { OrganizationTypeCreateComponent } from './organization-types/organization-type-create.component';
+
 //import { FileStageListComponent } from './file-stages/file-stage-list.component';
 //import { ServiceListComponent } from './services/service-list.component';
 //import { ServiceEditComponent } from './services/service-edit.component';
@@ -38,15 +40,16 @@ import { OrganizationService } from './organizations/organization.service';
 import { BusyConfig } from '../shared/busy/busy-config';
 import { BusyModule } from '../shared/busy/busy.module';
 import { TestComponent } from './customer-types/test.component';
-import { DialogOverviewExampleDialog } from './organization-types/organization-type-list.component';
+// import { DialogOverviewExampleDialog } from './organization-types/organization-type-list.component';
+import { MaterialModule } from '@angular/material';
+
 
 @NgModule({
   imports: [
     BrowserModule,
+    MaterialModule, 
     HttpModule,
-    adminRouting,
-    FormsModule,
-    ReactiveFormsModule,
+    adminRouting,ReactiveFormsModule,    FormsModule,
     BusyModule.forRoot(
       new BusyConfig({
         message: 'Загрузка...',
@@ -66,10 +69,10 @@ import { DialogOverviewExampleDialog } from './organization-types/organization-t
     //FileStageListComponent,
     //ServiceListComponent, ServiceEditComponent,
     OrganizationListComponent//, OrganizationEditComponent
-    ,DialogOverviewExampleDialog
-    ,OrganizationTypeEditComponent,OrganizationTypeCreateComponent
+    // ,DialogOverviewExampleDialog
+    ,OrganizationTypeEditComponent
   ],
-  entryComponents: [CustomerTypeEditComponent, TestComponent, OrganizationTypeEditComponent,OrganizationTypeCreateComponent],
+  entryComponents: [CustomerTypeEditComponent, TestComponent, OrganizationTypeEditComponent],
   providers: [
     UserService,
     CustomerTypeService,
