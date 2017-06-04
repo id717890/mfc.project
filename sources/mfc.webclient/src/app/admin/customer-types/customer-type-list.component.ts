@@ -24,7 +24,7 @@ export class CustomerTypeListComponent extends BaseListComponent<CustomerType> i
     customerTypes: CustomerType[];
 
     constructor(/*public modal: Modal, */private customerTypeService: CustomerTypeService, private componentFactoryResolver: ComponentFactoryResolver, private viewContainerRef: ViewContainerRef) {
-        super(/*modal, */customerTypeService);
+        super(null, customerTypeService,null);// Перевести на material dialog + base component
     }
 
     newModel(): CustomerType {

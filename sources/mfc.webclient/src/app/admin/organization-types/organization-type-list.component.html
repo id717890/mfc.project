@@ -19,13 +19,13 @@
         <tbody>
             <tr *ngFor="let model of models; let i = index">
                 <td>
-                    <a (click)="create_ogv_type(model)" class="glyphicon glyphicon-plus add-row-btn" title="Новая запсь"></a>
+                    <a (click)="add()" class="glyphicon glyphicon-plus add-row-btn" title="Новая запись"></a>
                 </td>
                 <td hidden>{{model.id}}</td>
                 <td>{{model.caption}}</td>
                 <td>
-                    <a (click)="edit_ogv_type(model)" class="glyphicon glyphicon-edit" title="Редактировать"></a>
-                    <a (click)="delete_ogv_type(model)" class="glyphicon glyphicon-remove" title="Удалить запись"></a>
+                    <a (click)="edit(model)" class="glyphicon glyphicon-edit" title="Редактировать"></a>
+                    <a (click)="delete(model)" class="glyphicon glyphicon-remove" title="Удалить запись"></a>
                 </td>
             </tr>
         </tbody>
