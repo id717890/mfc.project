@@ -55,7 +55,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
 
         this.dialogRef.afterClosed().subscribe((result: any) => {
             if (result != null) {
-                this.service.post(result)
+                this.busy = this.service.post(result)
                     .then(x => {
                         if (x != null) {
                             this.models.push(x);
@@ -77,7 +77,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
         });
         this.dialogRef.afterClosed().subscribe((result: any) => {
             if (result != null) {
-                this.service.put(result)
+                this.busy = this.service.put(result)
                     .then(x => {
                         Object.keys(x).forEach((key) => {
                             if (key === 'id') {
@@ -95,7 +95,7 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
             .confirm('', 'Удалить запись?')
             .subscribe(result => {
                 if (result == true) {
-                    this.service.delete(model)
+                    this.busy = this.service.delete(model)
                         .then(res => {
                             this.models.splice(this.models.indexOf(model), 1);
                             this.totalRows -= 1;

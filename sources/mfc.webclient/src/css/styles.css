@@ -1,5 +1,13 @@
 @import '../node_modules/@angular/material/prebuilt-themes/indigo-pink.css';
 
+html {
+    height: 100%;
+}
+
+body{
+    height: calc(100% - 50px);
+}
+
 /* Master Styles */
 h1 {
     color: #369;
@@ -274,7 +282,7 @@ table {
     position: absolute !important;
     border: 1px solid #d8d8d8 !important;
     border-radius: 4px !important;
-    top:100px !important;
+    /*top:100px !important;*/
     margin-left: -80px;
 }
 

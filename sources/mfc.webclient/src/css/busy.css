@@ -22,6 +22,9 @@
 }
 .ng-busy-default-wrapper {
   text-align: center;
+  display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .ng-busy-default-sign {
   position: relative;
