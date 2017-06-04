@@ -1,35 +1,48 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { MdDialogModule, MdButtonModule, MdCardModule } from '@angular/material';
+import { MaterialModule, MdDialogModule, MdButtonModule, MdCardModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { RequestOptions } from '@angular/http';
 
 import { WorkModule } from './work/work.module';
 import { AdminModule } from './admin/admin.module';
+import { Material } from './shared/material.module';
 
 import { AppComponent } from './app.component';
-import { DialogComponent } from './dialog/dialog.component';
 import { MenuComponent } from './menu/menu.component';
 import { WorkComponent } from './work/work.component';
+
+// Dialogs
+import { DialogService } from './infrastructure/dialog/dialog.service';
+import { DialogConfirm } from './infrastructure/dialog/dialog-confirm.component';
+import { DialogAlert } from './infrastructure/dialog/dialog-alert.component';
 
 import { ActionPermissionService } from './infrastructure/security/action-permission.service';
 
 import { DefaultRequestOptions } from './infrastructure/default-request-options';
 import { routing, appRoutingProviders } from './app.router';
-import { DialogDirective } from './dialog/dialog.directive';
 
 
 @NgModule({
-  imports: [BrowserModule, BrowserAnimationsModule, routing, WorkModule, AdminModule, MdDialogModule, MdButtonModule, MdCardModule],
-  declarations: [AppComponent, DialogComponent, MenuComponent, WorkComponent, DialogDirective
+  imports: [
+    BrowserModule, MaterialModule, Material, BrowserAnimationsModule, routing, WorkModule, AdminModule,
   ],
-  bootstrap: [AppComponent
+  exports: [
+    DialogConfirm, DialogAlert,
+  ],
+  declarations: [
+    AppComponent, MenuComponent, WorkComponent, DialogConfirm, DialogAlert
+  ],
+  bootstrap: [
+    AppComponent
   ],
   providers: [
+    DialogService,
     appRoutingProviders,
     { provide: RequestOptions, useClass: DefaultRequestOptions },
     ActionPermissionService
-  ]
+  ],
+  entryComponents: [DialogConfirm, DialogAlert],
 })
 export class AppModule { }

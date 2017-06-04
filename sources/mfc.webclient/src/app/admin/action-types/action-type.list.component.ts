@@ -22,7 +22,7 @@ export class ActionTypeListComponent extends BaseListComponent<ActionType> imple
     busyMessage: string;
 
     constructor(private actionTypeService: ActionTypeService) {
-        super(actionTypeService);
+        super(null, actionTypeService,null); // Перевести на material dialog + base component
     }
 
      newModel(): ActionType {

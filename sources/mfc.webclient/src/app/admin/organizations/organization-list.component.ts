@@ -23,7 +23,7 @@ export class OrganizationListComponent extends BaseListComponent<Organization> i
 
 
     constructor(private organizationService: OrganizationService) {
-        super(organizationService);
+        super(null, organizationService,null);// Перевести на material dialog + base component
     }
 
      newModel(): Organization {
