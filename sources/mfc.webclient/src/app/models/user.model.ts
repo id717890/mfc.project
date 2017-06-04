@@ -12,4 +12,5 @@ export class User extends BaseModel {
     ) {
         super(id, caption);
     }
+    public static AllUser: User = new User(-1, "Все", "Все", "Все пользователи", false, false, false);
 }

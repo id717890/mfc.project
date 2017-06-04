@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core';
 import { Http, HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MaterialModule, MdNativeDateModule} from '@angular/material';
 
 import { WorkComponent } from './work.component';
 
 // Приемы
-//import { ActionListComponent } from './action/action-list.component';
-//import { ActionService } from './action/action.service';
+import { ActionListComponent } from './action/action-list.component';
+import { ActionService } from './action/action.service';
+import { DateService } from './../infrastructure/assistant/date.service';
 //import { ActionEditComponent } from './action/action-edit.component';
 
 // Дела
@@ -29,15 +31,18 @@ import { WorkComponent } from './work.component';
 //import { Ng2PaginationModule } from 'ng2-pagination'; //https://github.com/michaelbromley/ng2-pagination
 //import { Ng2CompleterModule } from "ng2-completer";  //https://github.com/oferh/ng2-completer
 
-//import { BusyModule, BusyConfig } from 'angular2-busy';
+import { BusyModule } from '../shared/busy/busy.module';
+import { BusyConfig } from '../shared/busy/busy-config';
 
 @NgModule({
     imports: [
         BrowserModule,
         HttpModule,
         FormsModule,
+        MaterialModule,
+        MdNativeDateModule,
         //Ng2CompleterModule,
-        ReactiveFormsModule/*,
+        ReactiveFormsModule,
         BusyModule.forRoot(
             new BusyConfig({
                 message: 'Загрузка...',
@@ -45,17 +50,18 @@ import { WorkComponent } from './work.component';
                 delay: 50,
                 minDuration: 100
             })
-        ),
+        ),/*
         MyDatePickerModule,
         Ng2PaginationModule*/
     ],
     declarations: [
-        /*ActionListComponent, ActionEditComponent,
+        ActionListComponent/*, ActionEditComponent,
         FileListComponent, FileEditComponent, FileControlEditComponent, FileHistoryComponent, FileAcceptComponent,
         PackageListComponent, PackageEditComponent*/
     ],
     providers: [
-        /*ActionService,
+        ActionService
+        , DateService /*,
         FileService,
         PackageService, PackageFileService,
         FileStatusHistoryService*/

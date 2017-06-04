@@ -4,6 +4,7 @@ import { BaseModel } from './../../models/base.model';
 
 import { AppSettings } from './../application-settings';
 import { AbstractService } from './../abstract-service';
+import {ResponseData} from './response-data';
 
 @Injectable()
 export class BaseService<TModel extends BaseModel> extends AbstractService {
@@ -15,22 +16,26 @@ export class BaseService<TModel extends BaseModel> extends AbstractService {
         return this.apiUrl;
     }
 
-    get(): Promise<TModel[]> {
+    get(): Promise<ResponseData<TModel>> {
         return this._http.get(this.getApiTag())
             .toPromise()
-            .then(x => this.extractData(x))
+            .then(x => {
+                return this.extractData(x);
+            })
             .catch(this.handlerError);
     }
 
     //Для отправки GET запроса с параметрами
-    getWithParameters(parameters: any[]): Promise<TModel[]> {
+    getWithParameters(parameters: any[]): Promise<ResponseData<TModel>> {
         let params: URLSearchParams = new URLSearchParams();
         Object.keys(parameters).forEach((key) => {
             params.set(key, parameters[key].toString());
         });
         return this._http.get(this.getApiTag(), { search: params })
             .toPromise()
-            .then(x => this.extractData(x))
+            .then(x => {
+                return this.extractData(x);
+            })
             .catch(this.handlerError);
     }
 
@@ -65,7 +70,7 @@ export class BaseService<TModel extends BaseModel> extends AbstractService {
             .catch(this.handlerError);
     }
 
-    extractData(res: Response) {
+    extractData(res: Response): ResponseData<TModel> {
         /*
         В headers ответа от сервера добавлен заголовок "Total-rows", в который пишется кол-во строк запрошенной сущности.
         Это количество нужно для компонента ng2-pagination, чтобы корректно рассчитывать кол-во страниц.
@@ -82,7 +87,7 @@ export class BaseService<TModel extends BaseModel> extends AbstractService {
         output['total'] = total != null ? total : 0;
         output['data'] = data;
 
-        return output;
+        return new ResponseData<TModel>(total, data);
     }
 
     public handlerError(error: any) {

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { MaterialModule, MdDialogModule, MdButtonModule, MdCardModule } from '@angular/material';
+import { MaterialModule, MdDialogModule, MdButtonModule, MdCardModule, MdNativeDateModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { RequestOptions } from '@angular/http';
@@ -26,7 +26,7 @@ import { routing, appRoutingProviders } from './app.router';
 
 @NgModule({
   imports: [
-    BrowserModule, MaterialModule, Material, BrowserAnimationsModule, routing, WorkModule, AdminModule,
+    BrowserModule, MaterialModule, Material, MdNativeDateModule, BrowserAnimationsModule, routing, WorkModule, AdminModule,
   ],
   exports: [
     DialogConfirm, DialogAlert,
