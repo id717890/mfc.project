@@ -32,6 +32,9 @@ export class OrganizationEditComponent extends BaseEdit2Component<Organization>{
             let organization_types: OrganizationType[] = [OrganizationType.AllOrganizationType];
             organization_types = organization_types.concat(x.data);
             this.organization_types = organization_types;
+
+            //Пока что такое решение, чтобы при редактировании в combobox подставлялся объект из списка
+            this.context.model.organization_type = this.organization_types.filter(x => x.id == this.context.model.organization_type.id)[0];
         });
     }
 }
