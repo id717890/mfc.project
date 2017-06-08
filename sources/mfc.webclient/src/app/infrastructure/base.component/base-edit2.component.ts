@@ -8,7 +8,7 @@ import { BaseContext } from './base-context.component';
 
 export class BaseEdit2Component<TModel extends BaseModel> {
     public header_text = "";
-    private context:BaseContext<TModel>;
+    public context:BaseContext<TModel>;
 
     constructor(
         @Inject(MD_DIALOG_DATA) data: BaseContext<TModel>,

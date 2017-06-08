@@ -1,43 +1,31 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import {OnInit} from '@angular/core';
-// import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
-// import { DialogRef, overlayConfigFactory } from 'angular2-modal';
-
-import {BaseListComponent} from './../../infrastructure/base.component/base-list.component';
-
-import {OrganizationService} from './organization.service';
-import {Organization} from './../../models/organization.model';
-import {OrganizationType} from './../../models/organization-type.model';
-import {OrganizationEditComponent} from './organization-edit.component';
+import { BaseListComponent } from './../../infrastructure/base.component/base-list.component';
+import { OrganizationService } from './organization.service';
+import { OrganizationEditComponent } from './organization-edit.component';
+import { DialogService } from '../../infrastructure/dialog/dialog.service';
+import { Organization } from './../../models/organization.model';
+import { OrganizationType } from './../../models/organization-type.model';
+import { MdDialog, MdButton, MdDialogRef } from '@angular/material';
 
 @Component({
+    selector: 'mfc-organization-list',
     templateUrl: 'app/admin/organizations/organization-list.component.html'
-    //,providers: [Modal]
 })
 
-export class OrganizationListComponent extends BaseListComponent<Organization> implements OnInit {
-    organizations: Organization[];
-    busy: Promise<any>;
-    busyMessage: string;
-
-
-    constructor(private organizationService: OrganizationService) {
-        super(null, organizationService,null);// Перевести на material dialog + base component
+export class OrganizationListComponent extends BaseListComponent<Organization> {
+    constructor(public dialog: MdDialog, protected organizationService: OrganizationService, protected dialogService: DialogService) {
+        super(dialog, organizationService, dialogService);// Перевести на material dialog + base component
     }
 
-     newModel(): Organization {
-         return new Organization(null, '', '', null);
-     };
+    newModel(): Organization {
+        return new Organization(null, '', '', null);
+    };
 
-     cloneModel(model : Organization): Organization {
-         console.log("clone");
-        console.log(model);
-        console.log(model.organization_type);
-         return new Organization(model.id, model.caption, model.full_caption, model.organization_type);
-     };
+    cloneModel(model: Organization): Organization {
+        return new Organization(model.id, model.caption, model.full_caption, model.organization_type);
+    };
 
-     getEditComponent() : any {
-         return OrganizationEditComponent;
-     }
+    getEditComponent(): any {
+        return OrganizationEditComponent;
+    }
 }

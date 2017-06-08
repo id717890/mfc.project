@@ -1,8 +1,7 @@
-<span defaultOverlayTarget></span>
 <div class='container-fluid custom-modal-container'>
 	<div class="row custom-modal-header">
 		<div class="col-sm-12">
-			<h1>{{context.title}}</h1>
+			<h1>{{header_text}}</h1>
 		</div>
 	</div>
 	<div class="row">
@@ -10,27 +9,22 @@
 			<form id="organization-edit-form" class="form-horizontal" role="form" #orgForm="ngForm">
 				<input [(ngModel)]="context.model.id" type="hidden" id="input-id" name="id">
 
-				<div class="input-group">
-
-					<input [(ngModel)]="context.model.caption" id="input-caption" class="form-control" name="caption" placeholder="Наименование"
-						required 
-                        #caption="ngModel"/>
-                    <div [hidden]="caption.valid||caption.pristine" class="alert alert-danger">Укажите наименование</div>
-
-					<input [(ngModel)]="context.model.full_caption" id="input-full-caption" class="form-control" name="full-caption" placeholder="Полное  наименование">
-
-					<select [(ngModel)]="context.model.organization_type" name="input-organization-type" class="form-control"
-                        required
-                        #orgType="ngModel">
-						<option *ngFor="let type of context.organizationTypes" [ngValue]="type">{{type.caption}}</option>
-					</select>
-                    <div [hidden]="orgType.valid||orgType.pristine" class="alert alert-danger">Укажите тип</div>
-				</div>
-
+				<md-input-container class="m-input-container">
+					<input mdInput [(ngModel)]="context.model.caption" id="input-caption" name="caption" placeholder="Наименование" required
+					 #caption="ngModel" />
+				</md-input-container>
+				<md-input-container class="m-input-container">
+					<input mdInput [(ngModel)]="context.model.full_caption" id="input-caption" name="full_caption" placeholder="Полное наименование"
+					 required #full_caption="ngModel" />
+				</md-input-container>
+				<md-select placeholder="ОГВ" class="m-input-select" [(ngModel)]="context.model.organization_type" name="organization_type"
+				 required #ogv="ngModel">
+					<md-option *ngFor="let ogv of organization_types" [value]="ogv">{{ogv.caption}}</md-option>
+				</md-select>
 				<div class="form-group input-buttons">
-					<div class="col-sm-12 controls">
-						<button id="button-apply" class="btn btn-success" (click)="dialog.close(context.model)" [disabled]="!orgForm.form.valid">Применить</button>
-						<button id="button-cancel" class="btn btn-primary" (click)="dialog.dismiss()">Отменить</button>
+					<div class="col-sm-12  text-right">
+						<button md-raised-button id="button-apply" (click)="submit(context.model)" [disabled]="!orgForm.form.valid">OK</button>
+						<button md-button id="button-cancel" (click)="dialogRef.close()">Отменить</button>
 					</div>
 				</div>
 			</form>

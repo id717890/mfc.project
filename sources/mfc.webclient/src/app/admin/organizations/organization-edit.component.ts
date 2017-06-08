@@ -1,38 +1,37 @@
-import { Component, Output, Input, EventEmitter, OnInit, AfterViewInit } from "@angular/core";
-import { FormBuilder, Validators } from '@angular/forms';
-
-// import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
-// import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
-
-import { OrganizationTypeService } from './../organization-types/organization-type.service';
-import { OrganizationService } from './organization.service';
+import { Component, Inject } from "@angular/core";
+import { NgForm } from "@angular/forms";
 import { Organization } from './../../models/organization.model';
 import { OrganizationType } from './../../models/organization-type.model';
-import { OrganizationEditContext } from './organization-edit-context';
-
-import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.component/base-edit.component';
+import { OrganizationTypeService } from '../organization-types/organization-type.service';
+import { MaterialModule, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { BaseEdit2Component } from './../../infrastructure/base.component/base-edit2.component';
+import { BaseContext } from './../../infrastructure/base.component/base-context.component';
 
 @Component({
-    selector: 'modal-content',
-    styles: [`
-        .input-line {
-            margin-bottom: 25px;
-            width: 100%;
-        }
-        .input-buttons {
-            margin-top: 10px;
-        }
-    `],
+    selector: 'ogv-create-edit-dlg',
     templateUrl: 'app/admin/organizations/organization-edit.component.html'
-    //,providers: [ Modal ]
 })
 
-export class OrganizationEditComponent extends BaseEditComponent<Organization> implements AfterViewInit {
-    constructor(private organizationTypeService: OrganizationTypeService) {
-        super();
+export class OrganizationEditComponent extends BaseEdit2Component<Organization>{
+    organization_types: OrganizationType[];
+    // selected_ogv: OrganizationType;
+    busy: Promise<any>;
+    busyMessage: string;
+
+    constructor(
+        @Inject(MD_DIALOG_DATA) data: BaseContext<Organization>,
+        public dialogRef: MdDialogRef<OrganizationEditComponent>,
+        private organization_type_service: OrganizationTypeService
+    ) {
+        super(data, dialogRef);
+        this.fillLists();
     }
 
-    ngAfterViewInit() {
-        
+    private fillLists(): void {
+        this.busy = this.organization_type_service.get().then(x => {
+            let organization_types: OrganizationType[] = [OrganizationType.AllOrganizationType];
+            organization_types = organization_types.concat(x.data);
+            this.organization_types = organization_types;
+        });
     }
 }

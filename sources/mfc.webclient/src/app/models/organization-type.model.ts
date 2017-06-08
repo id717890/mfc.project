@@ -7,4 +7,6 @@ export class OrganizationType extends BaseModel {
     ) {
         super(id, caption);
     }
+
+    public static AllOrganizationType: OrganizationType = new OrganizationType(null, "Все");
 }

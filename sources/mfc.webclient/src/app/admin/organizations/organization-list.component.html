@@ -1,19 +1,28 @@
-<h2 class="page-header">Справочник ОГВ</h2>
-
 <div [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
-
-	<a (click)="add()" class="btn btn-primary">Новый</a>
-	<table class="table table-bordered table-striped table-hover table-condensed table-responsive">
+	<h2 class="page-header">Справочник ОГВ</h2>
+	<table class="table table-striped table-hover table-condensed table-responsive">
+		<colgroup>
+			<col class="col-width-25">
+			<col>
+			<col>
+			<col>
+			<col class="col-width-60">
+		</colgroup>
 		<thead>
 			<tr>
+				<th></th>
 				<th hidden>Id</th>
 				<th>Наименование</th>
 				<th>Полное наименование</th>
 				<th>ОГВ</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr *ngFor="let model of models">
+				<td>
+					<a (click)="add()" class="glyphicon glyphicon-plus add-row-btn" title="Новая запись"></a>
+				</td>
 				<td hidden>{{model.id}}</td>
 				<td>{{model.caption}}</td>
 				<td>{{model.full_caption}}</td>
