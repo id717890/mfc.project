@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mfc.dal", "sources\mfc.dal\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mfc.webapi", "sources\mfc.webapi\mfc.webapi.csproj", "{8340FD03-7EFC-4788-89C7-4611E26D9EF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mfc.webapi.tests", "testings\mfc.webapi.tests\mfc.webapi.tests.csproj", "{C32BCE9C-A195-4939-AEA4-68C38CB2DD2B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mfc.webapi.tests", "sources\mfc.webapi.tests\mfc.webapi.tests.csproj", "{C32BCE9C-A195-4939-AEA4-68C38CB2DD2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
