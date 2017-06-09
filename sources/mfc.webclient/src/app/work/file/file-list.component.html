@@ -1,0 +1,67 @@
+<div [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
+	<h2 class="page-header">Список дел</h2>
+	<md-card>
+		<md-card-content>
+			<section class="action-toolbar-section">
+				<md-input-container>
+					<input mdInput [mdDatepicker]="pickerStart" placeholder="От" [(ngModel)]="dateBegin">
+					<button mdSuffix [mdDatepickerToggle]="pickerStart"></button>
+					<md-datepicker #pickerStart></md-datepicker>
+				</md-input-container>
+				<md-input-container>
+					<input mdInput [mdDatepicker]="pickerEnd" placeholder="До" [(ngModel)]="dateEnd">
+					<button mdSuffix [mdDatepickerToggle]="pickerEnd"></button>
+					<md-datepicker #pickerEnd></md-datepicker>
+				</md-input-container>
+				<md-select placeholder="Статус" [(ngModel)]="selectedStatus">
+					<md-option *ngFor="let status of statuses" [value]="status.id">{{status.caption}}</md-option>
+				</md-select>
+			</section>
+		</md-card-content>
+	</md-card>
+	<table class="table table-striped table-condensed table-hover table-responsive table-condensed">
+		<colgroup>
+			<col>
+			<col class="col-width-20">
+			<col class="col-width-50">
+			<col>
+			<col>
+			<col>
+			<col>
+			<col>
+			<col class="col-width-50">
+		</colgroup>
+		<thead>
+			<tr>
+				<th><input type="checkbox" (change)="onSelectAllFiles($event)" [(ngModel)]="checkAll"></th>
+				<th>Дата</th>
+				<th>Описание</th>
+				<th>Услуга</th>
+				<th>ОГВ</th>
+				<th>Эксперт</th>
+				<th>Контролёр</th>
+				<th>Статус</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let model of models">
+				<td><input type="checkbox" [(ngModel)]="model.is_selected"></td>
+				<td title="{{model.date | date: 'dd.MM.yyyy HH:mm'}}">{{model.date | date: 'dd.MM.yy'}}</td>
+				<td>{{model.caption}}</td>
+				<td>{{model.action?.service?.caption}}</td>
+				<td>{{model.organization?.caption}}</td>
+				<td>{{model.expert?.description}}</td>
+				<td>{{model.controller?.description}}</td>
+				<td>{{model.status?.caption}}</td>
+				<td>
+					<a (click)="edit(model)" class="glyphicon glyphicon-edit" title="Редактировать"></a>
+					<a (click)="delete(model)" class="glyphicon glyphicon-remove" title="Удалить запись"></a>
+				</td>
+			</tr>
+			<tr *ngIf="totalRows==0">
+				<td colspan="9" style="text-align:center; padding: 15px">За указанный период данные отсутствуют</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

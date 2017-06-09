@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
-import { Observable } from "rxjs/Observable";
-
-import "rxjs/Rx";
-import 'rxjs/add/operator/toPromise';
 
 import { ActionType } from '../../models/action-type.model';
 import { BaseService } from '../../infrastructure/base.component/base.service';
@@ -14,7 +10,7 @@ export class ActionTypeService extends BaseService<ActionType> {
         super(http);
     }
 
-    getApiTag() : string {
+    getApiTag(): string {
         return super.getApiTag() + 'action-types';
     }
 }

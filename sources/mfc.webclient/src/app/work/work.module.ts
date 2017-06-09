@@ -13,8 +13,8 @@ import { DateService } from './../infrastructure/assistant/date.service';
 //import { ActionEditComponent } from './action/action-edit.component';
 
 // Дела
-//import { FileListComponent } from './file/file-list.component';
-//import { FileService } from './file/file.service';
+import { FileListComponent } from './file/file-list.component';
+import { FileService } from './file/file.service';
 //import { FileEditComponent } from './file/file-edit.component';
 //import { FileControlEditComponent } from './file/file-control-edit.component';
 //import { FileHistoryComponent } from './file/file-history.component';
@@ -55,15 +55,15 @@ import { BusyConfig } from '../shared/busy/busy-config';
         Ng2PaginationModule*/
     ],
     declarations: [
-        ActionListComponent/*, ActionEditComponent,
-        FileListComponent, FileEditComponent, FileControlEditComponent, FileHistoryComponent, FileAcceptComponent,
-        PackageListComponent, PackageEditComponent*/
+        ActionListComponent, //, ActionEditComponent,
+        FileListComponent, //FileEditComponent, FileControlEditComponent, FileHistoryComponent, FileAcceptComponent,
+        //PackageListComponent, PackageEditComponent*/
     ],
     providers: [
         ActionService
-        , DateService /*,
-        FileService,
-        PackageService, PackageFileService,
+        , DateService 
+        , FileService,
+        /*PackageService, PackageFileService,
         FileStatusHistoryService*/
     ]
 })

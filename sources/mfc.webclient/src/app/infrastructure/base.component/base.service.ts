@@ -4,8 +4,9 @@ import { BaseModel } from './../../models/base.model';
 
 import { AppSettings } from './../application-settings';
 import { AbstractService } from './../abstract-service';
-import {ResponseData} from './response-data';
-
+import { ResponseData } from './response-data';
+import 'rxjs/Rx';
+import 'rxjs/add/operator/map'
 @Injectable()
 export class BaseService<TModel extends BaseModel> extends AbstractService {
     constructor(protected _http: Http) {
@@ -40,8 +41,6 @@ export class BaseService<TModel extends BaseModel> extends AbstractService {
     }
 
     post(model: TModel): Promise<TModel> {
-        // return null;
-        //todo: implements
         return this._http.post(this.getApiTag(), JSON.stringify(model))
             .flatMap((x: Response) => {
                 var location = x.headers.get('Location');
@@ -63,7 +62,7 @@ export class BaseService<TModel extends BaseModel> extends AbstractService {
             .catch(this.handlerError);
     }
 
-    delete(model: TModel):Promise<boolean> {
+    delete(model: TModel): Promise<boolean> {
         return this._http.delete(`${this.getApiTag()}/${model.id}`)
             .toPromise()
             .then(res => true)

@@ -1,0 +1,23 @@
+<div class='container-fluid custom-modal-container'>
+    <div class="row custom-modal-header">
+        <div class="col-sm-12">
+            <h1>{{header_text}}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <form id="file-status-edit-form" class="form-horizontal" role="form" #fileStatusForm="ngForm">
+                <md-input-container class="m-input-container">
+                    <input mdInput [(ngModel)]="context.model.caption" id="input-caption" name="caption" placeholder="Наименование" required
+                        #caption="ngModel" />
+                </md-input-container>
+                <div class="form-group input-buttons">
+                    <div class="col-sm-12  text-right">
+                        <button md-raised-button id="button-apply" (click)="submit(context.model)" [disabled]="!fileStatusForm.form.valid">OK</button>
+                        <button md-button id="button-cancel" (click)="dialogRef.close()">Отменить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
