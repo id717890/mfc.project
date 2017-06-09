@@ -28,8 +28,6 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
     abstract newModel(): TModel;
     abstract cloneModel(model: TModel): TModel;
     abstract getEditComponent(): any;
-    // abstract dialogHeight():string;
-    // abstract dialogWidth():string;
 
     @Output() tested = new EventEmitter();
 
@@ -43,13 +41,13 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
             });
     }
 
-    add() {
+    add(height: string = AppSettings.DEFAULT_DIALOG_HEIGHT, width: string = AppSettings.DEFAULT_DIALOG_WIDTH) {
         let model: TModel = this.newModel();
         let context = new BaseContext(model);
         this.dialogRef = this.dialog.open(this.getEditComponent(),
             {
-                height: 'auto',
-                width: '600px',
+                height: height,
+                width: width,
                 data: context
             });
 
@@ -67,12 +65,12 @@ export abstract class BaseListComponent<TModel extends BaseModel> implements OnI
         });
     }
 
-    edit(model: TModel) {
+    edit(model: TModel, height: string = AppSettings.DEFAULT_DIALOG_HEIGHT, width: string = AppSettings.DEFAULT_DIALOG_WIDTH) {
         let clone: TModel = this.cloneModel(model);
         let context = new BaseContext(model);
         this.dialogRef = this.dialog.open(this.getEditComponent(), {
-            height: 'auto',
-            width: '600px',
+            height: height,
+            width: width,
             data: context
         });
         this.dialogRef.afterClosed().subscribe((result: any) => {
