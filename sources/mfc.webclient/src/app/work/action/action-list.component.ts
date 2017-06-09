@@ -4,7 +4,7 @@ import { MdDialog, MdButton, MdDialogRef } from '@angular/material';
 import { AppSettings } from '../../infrastructure/application-settings';
 //import { Modal, OneButtonPresetBuilder, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { BaseListComponent } from './../../infrastructure/base.component/base-list.component';
-//import { ActionEditComponent } from './action-edit.component';
+import { ActionEditComponent } from './action-edit.component';
 
 import { Action } from '../../models/action.model';
 import { User } from '../../models/user.model';
@@ -19,7 +19,7 @@ import { DialogService } from '../../infrastructure/dialog/dialog.service';
     templateUrl: 'app/work/action/action-list.component.html'
 })
 
-export class ActionListComponent /*extends BaseListComponent<Action>*/ {
+export class ActionListComponent extends BaseListComponent<Action> {
     experts: User[];
     selectedExpert: number = -1;
     dateBegin: Date;
@@ -27,9 +27,19 @@ export class ActionListComponent /*extends BaseListComponent<Action>*/ {
     models: Action[];
     busy: Promise<any>;
     busyMessage: string;
-    dialog: MdDialog;
 
-    constructor(
+    constructor(public dialog: MdDialog
+        , protected dialogService: DialogService
+        , protected actionService: ActionService
+        , private userService: UserService
+        , private dateService: DateService) {
+        super(dialog, actionService, dialogService);
+
+        this.fillLists();
+        this.prepareForm();
+    }
+
+    /*constructor(
         protected _actionService: ActionService
         , protected dialogService: DialogService
         , private _userService: UserService
@@ -38,7 +48,7 @@ export class ActionListComponent /*extends BaseListComponent<Action>*/ {
         //super(dialog, _actionService, dialogService);
         this.fillLists();
         this.prepareForm();
-    }
+    }*/
 
     /*copy() {
         if (this.models.filter(x => x.is_selected).length == 0) {
@@ -77,7 +87,7 @@ export class ActionListComponent /*extends BaseListComponent<Action>*/ {
     }
 
     private fillLists(): void {
-        this.busy = this._userService.get().then(x => {
+        this.busy = this.userService.get().then(x => {
             let users: User[] = [User.AllUser];
             users = users.concat(x.data);
 
@@ -91,9 +101,9 @@ export class ActionListComponent /*extends BaseListComponent<Action>*/ {
         this.selectedExpert = -1;
     }
 
-    
+
     refresh() {
-        this.busy = this._actionService.getWithParameters(this.prepareData()).then(x => {
+        this.busy = this.actionService.getWithParameters(this.prepareData()).then(x => {
             this.models = x.data;
         })
     }
@@ -110,8 +120,8 @@ export class ActionListComponent /*extends BaseListComponent<Action>*/ {
 
     private prepareData(): any[] {
         let param: any[] = [];
-        param["dateEnd"] = this._dateService.ConvertDateToString(this.dateEnd);
-        param["dateBegin"] = this._dateService.ConvertDateToString(this.dateBegin);
+        param["dateEnd"] = this.dateService.ConvertDateToString(this.dateEnd);
+        param["dateBegin"] = this.dateService.ConvertDateToString(this.dateBegin);
         //todo: установка значений для пейджинга
         param["pageIndex"] = 0;
         param["pageSize"] = 100;
@@ -143,7 +153,6 @@ export class ActionListComponent /*extends BaseListComponent<Action>*/ {
     };
 
     getEditComponent(): any {
-        //return ActionEditComponent;
-        return null;
+        return ActionEditComponent;
     }
 }

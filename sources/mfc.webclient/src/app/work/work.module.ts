@@ -10,7 +10,7 @@ import { WorkComponent } from './work.component';
 import { ActionListComponent } from './action/action-list.component';
 import { ActionService } from './action/action.service';
 import { DateService } from './../infrastructure/assistant/date.service';
-//import { ActionEditComponent } from './action/action-edit.component';
+import { ActionEditComponent } from './action/action-edit.component';
 
 // Дела
 import { FileListComponent } from './file/file-list.component';
@@ -54,8 +54,12 @@ import { BusyConfig } from '../shared/busy/busy-config';
         MyDatePickerModule,
         Ng2PaginationModule*/
     ],
+    entryComponents: [
+        ActionEditComponent,
+    ],
     declarations: [
-        ActionListComponent, //, ActionEditComponent,
+        ActionListComponent, 
+        ActionEditComponent,
         FileListComponent, //FileEditComponent, FileControlEditComponent, FileHistoryComponent, FileAcceptComponent,
         //PackageListComponent, PackageEditComponent*/
     ],

@@ -2,7 +2,7 @@ import { Component, Inject } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActionType } from '../../models/action-type.model'
 import { MaterialModule, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
-import { BaseEdit2Component } from './../../infrastructure/base.component/base-edit2.component';
+import { BaseEditComponent } from './../../infrastructure/base.component/base-edit.component';
 import { BaseContext } from './../../infrastructure/base.component/base-context.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { BaseContext } from './../../infrastructure/base.component/base-context.
     templateUrl: 'app/admin/action-types/action-type.edit.component.html'
 })
 
-export class ActionTypeEditComponent extends BaseEdit2Component<ActionType> {
+export class ActionTypeEditComponent extends BaseEditComponent<ActionType> {
     constructor(
         @Inject(MD_DIALOG_DATA) data: BaseContext<ActionType>,
         public dialogRef: MdDialogRef<ActionTypeEditComponent>

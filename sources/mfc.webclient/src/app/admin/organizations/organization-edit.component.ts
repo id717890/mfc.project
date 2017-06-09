@@ -4,7 +4,7 @@ import { Organization } from './../../models/organization.model';
 import { OrganizationType } from './../../models/organization-type.model';
 import { OrganizationTypeService } from '../organization-types/organization-type.service';
 import { MaterialModule, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
-import { BaseEdit2Component } from './../../infrastructure/base.component/base-edit2.component';
+import { BaseEditComponent } from './../../infrastructure/base.component/base-edit.component';
 import { BaseContext } from './../../infrastructure/base.component/base-context.component';
 
 @Component({
@@ -12,7 +12,7 @@ import { BaseContext } from './../../infrastructure/base.component/base-context.
     templateUrl: 'app/admin/organizations/organization-edit.component.html'
 })
 
-export class OrganizationEditComponent extends BaseEdit2Component<Organization> implements AfterViewInit {
+export class OrganizationEditComponent extends BaseEditComponent<Organization> implements AfterViewInit {
     organization_types: OrganizationType[];
     // selected_ogv: OrganizationType;
     busy: Promise<any>;

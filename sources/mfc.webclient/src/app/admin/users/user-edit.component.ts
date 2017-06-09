@@ -6,7 +6,8 @@ import { NgForm } from "@angular/forms";
 
 import { User } from '../../models/user.model';
 import { UserService } from './user.service'
-import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.component/base-edit.component';
+import { BaseContext } from './../../infrastructure/base.component/base-context.component';
+import { BaseEditComponent } from './../../infrastructure/base.component/base-edit.component';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({

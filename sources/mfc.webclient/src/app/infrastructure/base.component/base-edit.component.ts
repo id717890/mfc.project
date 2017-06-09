@@ -1,55 +1,24 @@
-import { Component, Output, Input, EventEmitter } from "@angular/core";
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-
-import { Observable } from 'rxjs/Observable';
-
-//import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
-//import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
-
-import { BaseService } from './base.service';
+import { Component, Output, Input, EventEmitter, Inject } from "@angular/core";
+import { NgForm } from "@angular/forms";
 import { BaseModel } from './../../models/base.model';
 
-export class BaseEditContext<TModel extends BaseModel> /*extends BSModalContext*/ {
-    public title: string;
-    public model: TModel;
-}
+import { OrganizationType } from '../../models/organization-type.model';
+import { MaterialModule, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { BaseContext } from './base-context.component';
 
-export class BaseEditComponent<TModel /*extends BaseModel> implements CloseGuard, ModalComponent<BaseEditContext<TModel>*/> {
-    /*context: BaseEditContext<TModel>;
-    isShaking: boolean = false;
+export class BaseEditComponent<TModel extends BaseModel> {
+    public header_text = "";
+    public context: BaseContext<TModel>;
 
-    constructor(public dialog: DialogRef<BaseEditContext<TModel>>, public formGroup: FormGroup = null) {
-        this.context = dialog.context;
-
-        if (!dialog.context.model)
-            dialog.context.model.reset();
-
-        dialog.setCloseGuard(this);
-        if (formGroup != null) {
-            formGroup.valueChanges.subscribe((form: any) => this.mapFormToModel(form));
-        }
+    constructor(
+        @Inject(MD_DIALOG_DATA) data: BaseContext<TModel>,
+        public dialogRef: MdDialogRef<BaseEditComponent<TModel>>
+    ) {
+        this.context = data;
+        if (data.model.id == null) this.header_text = "Новая запись"; else this.header_text = "Редактирование"
     }
 
-    mapFormToModel(form: any): void {
+    submit(model: TModel) {
+        this.dialogRef.close(model)
     }
-
-    beforeDismiss(): boolean {
-        return false;
-    }
-
-    beforeClose(): boolean {
-        if (this.formGroup != null && !this.formGroup.valid) {
-            let timer = Observable.timer(1000, 1000);
-            this.isShaking = true;
-
-            let subscription = timer.subscribe(t => {
-                this.isShaking = false;
-                subscription.unsubscribe();
-            });
-
-            return true;
-        }
-
-        return false;
-    }*/
 }

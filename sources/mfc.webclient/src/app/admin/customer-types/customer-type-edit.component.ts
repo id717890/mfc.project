@@ -6,8 +6,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 import { CustomerTypeService } from './customer-type.service';
 import { CustomerType } from './../../models/customer-type.model';
-
-import {BaseEditComponent, BaseEditContext} from './../../infrastructure/base.component/base-edit.component';
+import { BaseContext } from './../../infrastructure/base.component/base-context.component';
+import { BaseEditComponent } from './../../infrastructure/base.component/base-edit.component';
 
 @Component({
     selector: 'modal-content',
