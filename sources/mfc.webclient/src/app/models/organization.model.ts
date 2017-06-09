@@ -10,4 +10,6 @@ export class Organization extends BaseModel {
     ) {
         super(id, caption);
     }
+
+    public static AllOrganizations: Organization = new Organization(-1, "Все", "Все", null);
 }

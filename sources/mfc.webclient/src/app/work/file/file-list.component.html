@@ -3,19 +3,47 @@
 	<md-card>
 		<md-card-content>
 			<section class="action-toolbar-section">
-				<md-input-container>
-					<input mdInput [mdDatepicker]="pickerStart" placeholder="От" [(ngModel)]="dateBegin">
-					<button mdSuffix [mdDatepickerToggle]="pickerStart"></button>
-					<md-datepicker #pickerStart></md-datepicker>
-				</md-input-container>
-				<md-input-container>
-					<input mdInput [mdDatepicker]="pickerEnd" placeholder="До" [(ngModel)]="dateEnd">
-					<button mdSuffix [mdDatepickerToggle]="pickerEnd"></button>
-					<md-datepicker #pickerEnd></md-datepicker>
-				</md-input-container>
-				<md-select placeholder="Статус" [(ngModel)]="selectedStatus">
-					<md-option *ngFor="let status of statuses" [value]="status.id">{{status.caption}}</md-option>
-				</md-select>
+				<div class="col-lg-2 col-md-4 col-xs-12">
+					<md-input-container class="m-input-container">
+						<input mdInput [mdDatepicker]="pickerStart" placeholder="От" [(ngModel)]="dateBegin">
+						<button mdSuffix [mdDatepickerToggle]="pickerStart"></button>
+						<md-datepicker #pickerStart></md-datepicker>
+					</md-input-container>
+				</div>
+				<div class="col-lg-2 col-md-4 col-xs-12">
+					<md-input-container class="m-input-container">
+						<input mdInput [mdDatepicker]="pickerEnd" placeholder="До" [(ngModel)]="dateEnd">
+						<button mdSuffix [mdDatepickerToggle]="pickerEnd"></button>
+						<md-datepicker #pickerEnd></md-datepicker>
+					</md-input-container>
+				</div>
+				<div class="col-lg-2 col-md-4 col-xs-12">
+					<md-select placeholder="Статус" [(ngModel)]="selectedStatus" class="m-input-select">
+						<md-option *ngFor="let status of fileStatuses" [value]="status.id">{{status.caption}}</md-option>
+					</md-select>
+				</div>
+				<div class="col-lg-2 col-md-4 col-xs-12">
+					<md-select placeholder="ОГВ" [(ngModel)]="selectedOgv" class="m-input-select">
+						<md-option *ngFor="let ogv of organizations" [value]="ogv.id">{{ogv.caption}}</md-option>
+					</md-select>
+				</div>
+				<div class="col-lg-2 col-md-4 col-xs-12">
+					<md-select placeholder="Эксперт" [(ngModel)]="selectedExpert" class="m-input-select">
+						<md-option *ngFor="let expert of experts" [value]="expert.id">{{expert.user_name}}</md-option>
+					</md-select>
+				</div>
+				<div class="col-lg-2 col-md-4 col-xs-12">
+					<md-select placeholder="Контролёр" [(ngModel)]="selectedController" class="m-input-select">
+						<md-option *ngFor="let controller of controllers" [value]="controller.id">{{controller.user_name}}</md-option>
+					</md-select>
+				</div>
+
+
+
+
+
+
+
 			</section>
 		</md-card-content>
 	</md-card>
