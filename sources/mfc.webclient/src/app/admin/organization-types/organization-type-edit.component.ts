@@ -1,4 +1,4 @@
-import { Component, Output, Input, EventEmitter, Inject } from "@angular/core";
+import { Component, Inject } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { OrganizationType } from '../../models/organization-type.model';
 import { MaterialModule, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';

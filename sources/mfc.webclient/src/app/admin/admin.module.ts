@@ -13,6 +13,15 @@ import { OrganizationListComponent } from './organizations/organization-list.com
 import { OrganizationEditComponent } from './organizations/organization-edit.component';
 import { OrganizationService } from './organizations/organization.service';
 
+// ActionType
+import { ActionTypeListComponent } from './action-types/action-type.list.component';
+import { ActionTypeEditComponent } from './action-types/action-type.edit.component';
+import { ActionTypeService } from './action-types/action-type.service';
+
+
+
+
+
 
 
 
@@ -26,8 +35,6 @@ import { UserListComponent } from './users/user-list.component';
 //import { UserPasswordComponent } from './users/user-password.component';
 //import { FileStatusEditComponent } from './file-statuses/file-status.edit.component';
 //import { FileStatusListComponent } from './file-statuses/file-status.list.component';
-//import { ActionTypeEditComponent } from './action-types/action-type.edit.component';
-import { ActionTypeListComponent } from './action-types/action-type.list.component';
 
 
 
@@ -41,7 +48,6 @@ import { adminRouting } from './admin.router';
 import { UserService } from './users/user.service';
 import { CustomerTypeService } from './customer-types/customer-type.service';
 //import { FileStatusService } from './file-statuses/file-status.service';
-import { ActionTypeService } from './action-types/action-type.service';
 //import { FileStageService } from './file-stages/file-stage.service';
 //import { ServiceService } from './services/service.service';
 
@@ -72,7 +78,7 @@ import { MaterialModule } from '@angular/material';
     CustomerTypeListComponent, CustomerTypeEditComponent, TestComponent,
     UserListComponent, //UserEditComponent, UserPasswordComponent,
     //FileStatusListComponent, FileStatusEditComponent,
-    ActionTypeListComponent, //ActionTypeEditComponent,
+    ActionTypeListComponent, ActionTypeEditComponent,
     OrganizationTypeListComponent, OrganizationTypeEditComponent,
     OrganizationListComponent, OrganizationEditComponent
     //FileStageListComponent,
@@ -81,7 +87,8 @@ import { MaterialModule } from '@angular/material';
   ],
   entryComponents: [CustomerTypeEditComponent, TestComponent,
     OrganizationTypeEditComponent,
-    OrganizationEditComponent
+    OrganizationEditComponent,
+    ActionTypeEditComponent
   ],
   providers: [
     UserService,

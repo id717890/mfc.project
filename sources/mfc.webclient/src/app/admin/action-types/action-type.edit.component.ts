@@ -1,34 +1,20 @@
-import { Component, Output, Input, EventEmitter } from "@angular/core";
-import { FormBuilder, Validators } from '@angular/forms';
-
-// import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
-// import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
-
+import { Component, Inject } from "@angular/core";
+import { NgForm } from "@angular/forms";
 import { ActionType } from '../../models/action-type.model'
-import { BaseEditComponent, BaseEditContext } from './../../infrastructure/base.component/base-edit.component';
-
-// export class ActionTypeEditContext extends BSModalContext {
-//     public title: string;
-//     public actionType: ActionType;
-// }
+import { MaterialModule, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { BaseEdit2Component } from './../../infrastructure/base.component/base-edit2.component';
+import { BaseContext } from './../../infrastructure/base.component/base-context.component';
 
 @Component({
-    selector: 'modal-content',
+    selector: 'action-type-create-edit-dlg',
     templateUrl: 'app/admin/action-types/action-type.edit.component.html'
-    //,providers: [ Modal ]
 })
 
-export class ActionTypeEditComponent extends BaseEditComponent<ActionType> {
-    is_changing: boolean;
-
-    public caption: string;
-    public need_make_file: boolean;
-
-    constructor() {
-        super();
-    }
-
-    public checked(actionType: ActionType) {
-        actionType.need_make_file = !actionType.need_make_file;
+export class ActionTypeEditComponent extends BaseEdit2Component<ActionType> {
+    constructor(
+        @Inject(MD_DIALOG_DATA) data: BaseContext<ActionType>,
+        public dialogRef: MdDialogRef<ActionTypeEditComponent>
+    ) {
+        super(data, dialogRef);
     }
 }

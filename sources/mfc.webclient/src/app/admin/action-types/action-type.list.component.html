@@ -1,10 +1,15 @@
-<h2 class="page-header">Справочник "Виды деятельности"</h2>
-
 <div [ngBusy]="{busy: busy, message:busyMessage}" style="position: relative">
-    <a (click)="add()" class="btn btn-primary">Новый</a>
-    <table class="table table-bordered table-striped table-hover table-condensed table-responsive">
+    <h2 class="page-header">Справочник "Виды деятельности"</h2>
+    <table class="table table-striped table-hover table-responsive">
+        <colgroup>
+            <col class="col-width-30">
+            <col>
+            <col>
+            <col class="col-width-60">
+        </colgroup>
         <thead>
             <tr>
+                <th></th>
                 <th>Описание</th>
                 <th>Создавать дела</th>
                 <th></th>
@@ -12,9 +17,12 @@
         </thead>
         <tbody>
             <tr *ngFor="let model of models">
+                <td>
+                    <a (click)="add()" class="glyphicon glyphicon-plus add-row-btn" title="Новая запись"></a>
+                </td>
                 <td>{{model.caption}}</td>
                 <td>
-                    <input #{{model.id}} [ngModel]="model.need_make_file" type="checkbox" onclick="return false">
+						<span class="glyphicon glyphicon-ok-sign" *ngIf="model.need_make_file"></span>
                 </td>
                 <td>
                     <a (click)="edit(model)" class="glyphicon glyphicon-edit" title="Редактировать"></a>

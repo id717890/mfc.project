@@ -7,7 +7,7 @@ import { OrganizationType } from '../../models/organization-type.model';
 import { MdDialog, MdButton, MdDialogRef } from '@angular/material';
 
 @Component({
-    selector: 'mfc-organizationType-list',
+    selector: 'mfc-organization-type-list',
     templateUrl: 'app/admin/organization-types/organization-type-list.component.html'
 })
 
