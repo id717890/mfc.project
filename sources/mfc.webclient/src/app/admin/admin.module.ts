@@ -24,6 +24,10 @@ import { FileStatusEditComponent } from './file-statuses/file-status.edit.compon
 import { FileStatusService } from './file-statuses/file-status.service';
 
 
+//Services
+import { ServiceService } from './services/service.service';
+
+
 
 
 
@@ -51,7 +55,6 @@ import { adminRouting } from './admin.router';
 import { UserService } from './users/user.service';
 import { CustomerTypeService } from './customer-types/customer-type.service';
 //import { FileStageService } from './file-stages/file-stage.service';
-//import { ServiceService } from './services/service.service';
 
 import { BusyConfig } from '../shared/busy/busy-config';
 import { BusyModule } from '../shared/busy/busy.module';
@@ -101,7 +104,7 @@ import { MaterialModule } from '@angular/material';
     OrganizationService,
     OrganizationTypeService,
     //FileStageService,
-    //ServiceService,
+    ServiceService,
   ]
 })
 

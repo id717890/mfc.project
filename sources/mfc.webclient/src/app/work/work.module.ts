@@ -66,7 +66,7 @@ import { BusyConfig } from '../shared/busy/busy-config';
     providers: [
         ActionService
         , DateService 
-        , FileService,
+        , FileService
         /*PackageService, PackageFileService,
         FileStatusHistoryService*/
     ]

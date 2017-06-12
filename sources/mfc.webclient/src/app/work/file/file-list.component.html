@@ -37,17 +37,29 @@
 						<md-option *ngFor="let controller of controllers" [value]="controller.id">{{controller.user_name}}</md-option>
 					</md-select>
 				</div>
+				<div class="col-lg-6 col-xs-12">
+					<md-input-container class="m-input-container">
+						<input mdInput placeholder="Выберите услугу" [mdAutocomplete]="auto" [formControl]="serviceCtrl">
+					</md-input-container>
 
-
-
-
-
-
-
+					<md-autocomplete #auto="mdAutocomplete" [displayWith]="displayService">
+						<md-option *ngFor="let service of filteredServices | async" [value]="service">
+							{{ service.caption }}
+						</md-option>
+					</md-autocomplete>
+				</div>
+				<div class="col-lg-6 col-xs-12">
+					<ul class="menu-bar">
+						<li class="menu-item menu-item-main" (click)="refresh()"><span class="glyphicon glyphicon-search">&nbsp;</span><span>Обновить</span></li>
+						<li class="menu-item" (click)="add()"><span class="glyphicon glyphicon-saved">&nbsp;</span><span>На контроль</span></li>
+						<li class="menu-item" (click)="copy()"><span class="glyphicon glyphicon-list">&nbsp;</span><span>Создать пакет</span></li>
+						<li class="menu-item" (click)="copy()"><span class="glyphicon glyphicon-copy">&nbsp;</span><span>Копировать</span></li>
+					</ul>
+				</div>
 			</section>
 		</md-card-content>
 	</md-card>
-	<table class="table table-striped table-condensed table-hover table-responsive table-condensed">
+	<table class="table table-striped table-condensed table-hover table-responsive table-condensed" style="margin-top:10px">
 		<colgroup>
 			<col>
 			<col class="col-width-20">
