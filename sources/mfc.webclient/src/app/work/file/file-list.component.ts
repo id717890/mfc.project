@@ -21,6 +21,7 @@ import { ServiceService } from '../../admin/services/service.service';
 import { Service } from '../../models/service.model';
 
 import { Observable } from 'rxjs/Rx';
+import { DateService } from './../../infrastructure/assistant/date.service';
 
 @Component({
     selector: 'mfc-organization-list',
@@ -52,12 +53,16 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
         , private _organizationService: OrganizationService
         , private _userService: UserService
         , private _serviceService: ServiceService
+        , private _fileService: FileService
+        , private _dateService: DateService
     ) {
         super(dialog, organizationService, dialogService);
         this.prepareForm();
     }
 
     ngOnInit() {
+        this.busyMessage="Загрузка списка...";
+        
         this.serviceCtrl = new FormControl();
         this.filteredServices = this.serviceCtrl.valueChanges
             .startWith(null)
@@ -66,6 +71,24 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
 
     ngAfterViewInit() {
         this.fillComboboxLists();
+        this.refresh();
+    }
+
+
+
+    //Подготавливаем данные для обновления фильтра
+    private prepareDataForSearch(): any[] {
+        let param = [];
+        param["pageIndex"] = this.pageIndex;
+        param["pageSize"] = this.pageSize;
+        param["beginDate"] = this._dateService.ConvertDateToString(this.dateBegin);
+        param["endDate"] = this._dateService.ConvertDateToString(this.dateEnd);
+        param["status"] = this.selectedStatus;
+        param["organization"] = this.selectedOgv;
+        param["service"] = this.selectedService ? this.selectedService.id : -1;
+        param["expert"] = this.selectedExpert;
+        param["controller"] = this.selectedController;
+        return param;
     }
 
     filterServices(caption: string) {
@@ -74,8 +97,31 @@ export class FileListComponent extends BaseListComponent<File> implements AfterV
     }
 
     displayService(service: Service): string {
-        this.selectedService = service;
         return service ? service.caption : '';
+    }
+
+    //Обновить фильтр
+    refresh() {
+        
+        this.busy = this._fileService.getWithParameters(this.prepareDataForSearch()).then(x => {
+            let files: File[] = [];
+            files = files.concat(x.data);
+            this.models = files;
+            this.totalRows = x.count;
+        })
+    }
+
+    //Перелистывание страницы
+    getPage(page: number) {
+        this.pageIndex = page;
+        // this.checkAll = false;
+        this.busy =
+            this._fileService.getWithParameters(this.prepareDataForSearch()).then(x => {
+                let files: File[] = [];
+                files = files.concat(x.data);
+                this.models = files;
+                this.totalRows = x.count;
+            })
     }
 
     private prepareForm(): void {

@@ -28,7 +28,7 @@ import { FileService } from './file/file.service';
 //import { PackageEditComponent } from './package/package-edit.component';
 
 //import { MyDatePickerModule } from 'mydatepicker';
-//import { Ng2PaginationModule } from 'ng2-pagination'; //https://github.com/michaelbromley/ng2-pagination
+import { Ng2PaginationModule } from 'ng2-pagination'; //https://github.com/michaelbromley/ng2-pagination
 //import { Ng2CompleterModule } from "ng2-completer";  //https://github.com/oferh/ng2-completer
 
 import { BusyModule } from '../shared/busy/busy.module';
@@ -50,9 +50,11 @@ import { BusyConfig } from '../shared/busy/busy-config';
                 delay: 50,
                 minDuration: 100
             })
-        ),/*
+        ),
+        Ng2PaginationModule
+        /*
         MyDatePickerModule,
-        Ng2PaginationModule*/
+        */
     ],
     entryComponents: [
         ActionEditComponent,

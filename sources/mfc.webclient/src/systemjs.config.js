@@ -27,6 +27,7 @@
       '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
       //'@angular/animations': 'npm:@angular/animations/bundles/animations.umd.js',
 	  '@angular/material': 'npm:@angular/material/bundles/material.umd.js',
+	  'ng2-pagination': 'npm:ng2-pagination',
 
       // other libraries
       'rxjs':                      'npm:rxjs',
@@ -44,7 +45,8 @@
       },
       rxjs: {
         defaultExtension: 'js'
-      }
+      },
+	  'ng2-pagination': { main: 'index.js', defaultExtension: 'js' },
     }
   });
 })(this);
